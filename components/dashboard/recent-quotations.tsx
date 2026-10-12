@@ -16,10 +16,10 @@ interface RecentQuotationsProps {
 }
 
 const statusColors = {
-  draft: 'bg-gray-100 text-gray-800',
-  sent: 'bg-blue-100 text-blue-800',
-  approved: 'bg-green-100 text-green-800',
-  rejected: 'bg-red-100 text-red-800',
+  draft: 'bg-secondary text-secondary-foreground ring-1 ring-inset ring-border-strong',
+  sent: 'bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-200 dark:bg-indigo-500/10 dark:text-indigo-300 dark:ring-indigo-500/20',
+  approved: 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20',
+  rejected: 'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20',
 }
 
 export function RecentQuotations({ quotations }: RecentQuotationsProps) {
@@ -29,7 +29,7 @@ export function RecentQuotations({ quotations }: RecentQuotationsProps) {
         <CardTitle>Recent Quotations</CardTitle>
         <Link 
           href="/dashboard/quotations" 
-          className="text-sm text-blue-600 hover:underline"
+          className="text-sm font-medium text-primary hover:text-primary-hover hover:underline"
         >
           View all
         </Link>
@@ -37,42 +37,42 @@ export function RecentQuotations({ quotations }: RecentQuotationsProps) {
       <CardContent>
         <div className="space-y-4">
           {quotations.length === 0 ? (
-            <p className="text-sm text-gray-500 text-center py-8">
+            <p className="text-sm text-muted-foreground text-center py-8">
               No quotations yet. Create your first one!
             </p>
           ) : (
             quotations.map((quotation) => (
               <div
                 key={quotation.id}
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-between rounded-xl border border-border p-4 transition-all duration-150 hover:border-border-strong hover:bg-muted/60 hover:shadow-sm"
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="font-medium text-gray-900">
+                    <p className="font-medium text-foreground">
                       {quotation.quotation_number}
                     </p>
                     <span
-                      className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      className={`px-2 py-0.5 text-xs font-medium rounded-full capitalize ${
                         statusColors[quotation.status as keyof typeof statusColors]
                       }`}
                     >
                       {quotation.status}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-muted-foreground mt-1">
                     {quotation.client_name}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-muted-foreground/70 mt-1">
                     {formatDate(quotation.created_at)}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold text-gray-900">
+                  <p className="font-semibold text-foreground">
                     {formatCurrency(quotation.total_amount)}
                   </p>
                   <Link
                     href={`/dashboard/quotations/${quotation.id}`}
-                    className="text-xs text-blue-600 hover:underline mt-1 inline-block"
+                    className="text-xs font-medium text-primary hover:text-primary-hover hover:underline mt-1 inline-block"
                   >
                     View details
                   </Link>

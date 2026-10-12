@@ -45,15 +45,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <div className="w-full max-w-md">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-background to-violet-100 p-4 overflow-hidden">
+      {/* Soft ambient glows */}
+      <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-400/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-violet-400/20 blur-3xl" />
+
+      <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-2">
             Design the Future of Windows & Doors
           </h1>
         </div>
 
-        <Card>
+        <Card className="shadow-lg border-border/60">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl text-center">
               Log in to access your tools & get started
@@ -89,7 +93,7 @@ export default function LoginPage() {
               </div>
 
               {error && (
-                <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
+                <div className="bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200 p-3 rounded-lg text-sm dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20">
                   {error}
                 </div>
               )}
@@ -100,14 +104,14 @@ export default function LoginPage() {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="rounded border-gray-300"
+                    className="rounded border-input accent-primary"
                   />
-                  <span className="text-sm text-gray-600">Remember Me</span>
+                  <span className="text-sm text-muted-foreground">Remember Me</span>
                 </label>
 
                 <Link
                   href="/forgot-password"
-                  className="text-sm text-blue-600 hover:underline"
+                  className="text-sm font-medium text-primary hover:text-primary-hover hover:underline"
                 >
                   Forgot Password?
                 </Link>
@@ -123,21 +127,21 @@ export default function LoginPage() {
             </form>
 
             <div className="mt-6 text-center space-y-2">
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-muted-foreground">
                 Don't have an account?{' '}
-                <Link href="/signup" className="text-blue-600 hover:underline">
+                <Link href="/signup" className="font-medium text-primary hover:text-primary-hover hover:underline">
                   Sign up
                 </Link>
               </div>
-              <div className="text-xs text-gray-400 space-x-4">
-                <Link href="/terms" className="hover:underline">
+              <div className="text-xs text-muted-foreground/70 space-x-4">
+                <Link href="/terms" className="hover:text-foreground hover:underline">
                   Term and Condition
                 </Link>
-                <Link href="/privacy" className="hover:underline">
+                <Link href="/privacy" className="hover:text-foreground hover:underline">
                   Privacy Policy
                 </Link>
               </div>
-              <div className="text-sm text-gray-500 mt-4">
+              <div className="text-sm text-muted-foreground mt-4">
                 Helpline No: 879475061, 8826619980
               </div>
             </div>

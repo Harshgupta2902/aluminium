@@ -38,14 +38,17 @@ export function Sidebar() {
   }
 
   return (
-    <div className="flex h-full w-64 flex-col bg-gray-900">
+    <div className="flex h-full w-64 flex-col bg-gradient-to-b from-[#161926] to-[#0d0f17] text-slate-300">
       {/* Logo */}
-      <div className="flex h-16 items-center justify-center border-b border-gray-800">
-        <h1 className="text-xl font-bold text-white">Soft Window</h1>
+      <div className="flex h-16 items-center gap-3 border-b border-white/5 px-5">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 shadow-[var(--shadow-primary)]">
+          <Palette className="h-5 w-5 text-white" />
+        </div>
+        <h1 className="text-lg font-semibold tracking-tight text-white">Soft Window</h1>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 px-3 py-4">
+      <nav className="flex-1 space-y-1 px-3 py-5">
         {navigation.map((item) => {
           const isActive = pathname === item.href
           return (
@@ -53,13 +56,21 @@ export function Sidebar() {
               key={item.name}
               href={item.href}
               className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                'group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150',
                 isActive
-                  ? 'bg-gray-800 text-white'
-                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                  ? 'bg-white/10 text-white shadow-sm'
+                  : 'text-slate-400 hover:bg-white/5 hover:text-white'
               )}
             >
-              <item.icon className="h-5 w-5" />
+              {isActive && (
+                <span className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-indigo-400" />
+              )}
+              <item.icon
+                className={cn(
+                  'h-5 w-5 transition-colors',
+                  isActive ? 'text-indigo-300' : 'text-slate-500 group-hover:text-slate-200'
+                )}
+              />
               {item.name}
             </Link>
           )
@@ -67,10 +78,10 @@ export function Sidebar() {
       </nav>
 
       {/* Logout */}
-      <div className="border-t border-gray-800 p-3">
+      <div className="border-t border-white/5 p-3">
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 transition-all duration-150 hover:bg-rose-500/10 hover:text-rose-300"
         >
           <LogOut className="h-5 w-5" />
           Logout

@@ -1,7 +1,7 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
 interface QuotationChartProps {
   data: {
@@ -19,27 +19,48 @@ export function QuotationChart({ data }: QuotationChartProps) {
       <CardContent>
         <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis 
-                dataKey="month" 
-                tick={{ fontSize: 12 }}
+            <AreaChart data={data} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
+              <defs>
+                <linearGradient id="quotationFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#4f46e5" stopOpacity={0.28} />
+                  <stop offset="100%" stopColor="#4f46e5" stopOpacity={0.02} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="4 4" stroke="var(--border)" vertical={false} />
+              <XAxis
+                dataKey="month"
+                tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }}
                 tickLine={false}
+                axisLine={{ stroke: 'var(--border)' }}
               />
-              <YAxis 
-                tick={{ fontSize: 12 }}
+              <YAxis
+                tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }}
                 tickLine={false}
+                axisLine={false}
+                allowDecimals={false}
               />
-              <Tooltip />
-              <Line 
-                type="monotone" 
-                dataKey="count" 
-                stroke="#2563eb" 
-                strokeWidth={2}
-                dot={{ fill: '#2563eb', r: 4 }}
-                activeDot={{ r: 6 }}
+              <Tooltip
+                cursor={{ stroke: 'var(--border-strong)', strokeWidth: 1 }}
+                contentStyle={{
+                  backgroundColor: 'var(--card)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '0.625rem',
+                  boxShadow: 'var(--shadow-md)',
+                  color: 'var(--foreground)',
+                  fontSize: '12px',
+                }}
+                labelStyle={{ color: 'var(--muted-foreground)', fontWeight: 500 }}
               />
-            </LineChart>
+              <Area
+                type="monotone"
+                dataKey="count"
+                stroke="#4f46e5"
+                strokeWidth={2.5}
+                fill="url(#quotationFill)"
+                dot={{ fill: '#4f46e5', r: 3, strokeWidth: 0 }}
+                activeDot={{ r: 6, strokeWidth: 2, stroke: 'var(--card)' }}
+              />
+            </AreaChart>
           </ResponsiveContainer>
         </div>
       </CardContent>
