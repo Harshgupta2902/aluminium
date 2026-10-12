@@ -1,0 +1,281 @@
+-- Supabase Database Schema for Aluminium Window Quotation System
+-- Execute these commands in your Supabase SQL Editor
+
+-- Enable UUID extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Users Table (extends Supabase auth.users)
+CREATE TABLE public.profiles (
+  id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  full_name TEXT NOT NULL,
+  company_name TEXT,
+  role TEXT CHECK (role IN ('admin', 'sales', 'accounts')) DEFAULT 'sales',
+  avatar_url TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Clients Table
+CREATE TABLE public.clients (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT,
+  phone TEXT NOT NULL,
+  address TEXT,
+  company TEXT,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Window Templates Table
+CREATE TABLE public.window_templates (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  category TEXT NOT NULL,
+  window_type TEXT CHECK (window_type IN ('sliding', 'casement', 'fixed', 'door', 'combination')) NOT NULL,
+  default_width NUMERIC NOT NULL,
+  default_height NUMERIC NOT NULL,
+  image_url TEXT,
+  description TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Window Designs Table
+CREATE TABLE public.window_designs (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  template_id UUID REFERENCES public.window_templates(id),
+  window_type TEXT NOT NULL,
+  width NUMERIC NOT NULL,
+  height NUMERIC NOT NULL,
+  profile_type TEXT NOT NULL,
+  glass_type TEXT NOT NULL,
+  glass_thickness NUMERIC NOT NULL,
+  color TEXT NOT NULL,
+  hardware JSONB DEFAULT '[]'::JSONB,
+  preview_image TEXT,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Profiles (Aluminium/UPVC) Table
+CREATE TABLE public.profiles_inventory (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  type TEXT CHECK (type IN ('aluminium', 'upvc')) NOT NULL,
+  weight_per_meter NUMERIC NOT NULL,
+  cost_per_kg NUMERIC NOT NULL,
+  cost_per_meter NUMERIC NOT NULL,
+  stock_quantity NUMERIC DEFAULT 0,
+  unit TEXT DEFAULT 'meters',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Glass Inventory Table
+CREATE TABLE public.glass_inventory (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  type TEXT NOT NULL,
+  thickness NUMERIC NOT NULL,
+  cost_per_sqft NUMERIC NOT NULL,
+  stock_quantity NUMERIC DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Accessories Table
+CREATE TABLE public.accessories (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  category TEXT NOT NULL,
+  cost NUMERIC NOT NULL,
+  stock_quantity INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Quotations Table
+CREATE TABLE public.quotations (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  quotation_number TEXT UNIQUE NOT NULL,
+  client_id UUID REFERENCES public.clients(id),
+  client_name TEXT NOT NULL,
+  client_email TEXT,
+  client_phone TEXT NOT NULL,
+  status TEXT CHECK (status IN ('draft', 'sent', 'approved', 'rejected')) DEFAULT 'draft',
+  total_amount NUMERIC NOT NULL DEFAULT 0,
+  items JSONB DEFAULT '[]'::JSONB,
+  notes TEXT,
+  valid_until DATE,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Invoices Table
+CREATE TABLE public.invoices (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  invoice_number TEXT UNIQUE NOT NULL,
+  quotation_id UUID REFERENCES public.quotations(id),
+  client_id UUID REFERENCES public.clients(id),
+  amount NUMERIC NOT NULL,
+  paid_amount NUMERIC DEFAULT 0,
+  status TEXT CHECK (status IN ('pending', 'partial', 'paid')) DEFAULT 'pending',
+  due_date DATE,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Calculation Formulas Table
+CREATE TABLE public.calculation_formulas (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  profile_weight_formula TEXT,
+  glass_area_formula TEXT,
+  labour_cost_per_sqft NUMERIC DEFAULT 0,
+  markup_percentage NUMERIC DEFAULT 0,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Row Level Security (RLS) Policies
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.clients ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.window_templates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.window_designs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.profiles_inventory ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.glass_inventory ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.accessories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.quotations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.invoices ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.calculation_formulas ENABLE ROW LEVEL SECURITY;
+
+-- Profiles policies
+CREATE POLICY "Users can view their own profile" ON public.profiles
+  FOR SELECT USING (auth.uid() = id);
+
+CREATE POLICY "Users can update their own profile" ON public.profiles
+  FOR UPDATE USING (auth.uid() = id);
+
+-- Clients policies
+CREATE POLICY "Authenticated users can view all clients" ON public.clients
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Authenticated users can create clients" ON public.clients
+  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+
+CREATE POLICY "Authenticated users can update clients" ON public.clients
+  FOR UPDATE USING (auth.role() = 'authenticated');
+
+-- Window templates policies (public read)
+CREATE POLICY "Anyone can view window templates" ON public.window_templates
+  FOR SELECT USING (true);
+
+-- Window designs policies
+CREATE POLICY "Authenticated users can view all designs" ON public.window_designs
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Authenticated users can create designs" ON public.window_designs
+  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+
+CREATE POLICY "Users can update their own designs" ON public.window_designs
+  FOR UPDATE USING (auth.uid() = created_by);
+
+-- Inventory policies
+CREATE POLICY "Authenticated users can view profiles inventory" ON public.profiles_inventory
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Authenticated users can view glass inventory" ON public.glass_inventory
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Authenticated users can view accessories" ON public.accessories
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+-- Quotations policies
+CREATE POLICY "Authenticated users can view all quotations" ON public.quotations
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Authenticated users can create quotations" ON public.quotations
+  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+
+CREATE POLICY "Users can update their own quotations" ON public.quotations
+  FOR UPDATE USING (auth.uid() = created_by);
+
+-- Invoices policies
+CREATE POLICY "Authenticated users can view all invoices" ON public.invoices
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Authenticated users can create invoices" ON public.invoices
+  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+
+-- Functions for automatic quotation number generation
+CREATE OR REPLACE FUNCTION generate_quotation_number()
+RETURNS TEXT AS $$
+DECLARE
+  next_number INTEGER;
+  quotation_number TEXT;
+BEGIN
+  SELECT COUNT(*) + 1 INTO next_number FROM public.quotations;
+  quotation_number := 'QT' || TO_CHAR(NOW(), 'YYYY') || '-' || LPAD(next_number::TEXT, 4, '0');
+  RETURN quotation_number;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger to auto-generate quotation number
+CREATE OR REPLACE FUNCTION set_quotation_number()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.quotation_number IS NULL OR NEW.quotation_number = '' THEN
+    NEW.quotation_number := generate_quotation_number();
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER generate_quotation_number_trigger
+  BEFORE INSERT ON public.quotations
+  FOR EACH ROW
+  EXECUTE FUNCTION set_quotation_number();
+
+-- Function for automatic invoice number generation
+CREATE OR REPLACE FUNCTION generate_invoice_number()
+RETURNS TEXT AS $$
+DECLARE
+  next_number INTEGER;
+  invoice_number TEXT;
+BEGIN
+  SELECT COUNT(*) + 1 INTO next_number FROM public.invoices;
+  invoice_number := 'INV' || TO_CHAR(NOW(), 'YYYY') || '-' || LPAD(next_number::TEXT, 4, '0');
+  RETURN invoice_number;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger to auto-generate invoice number
+CREATE OR REPLACE FUNCTION set_invoice_number()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.invoice_number IS NULL OR NEW.invoice_number = '' THEN
+    NEW.invoice_number := generate_invoice_number();
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER generate_invoice_number_trigger
+  BEFORE INSERT ON public.invoices
+  FOR EACH ROW
+  EXECUTE FUNCTION set_invoice_number();
+
+-- Insert sample window templates
+INSERT INTO public.window_templates (name, category, window_type, default_width, default_height, description) VALUES
+  ('Standard Sliding Window', 'Sliding', 'sliding', 1200, 1200, '2 track sliding window with standard dimensions'),
+  ('Large Sliding Door', 'Sliding', 'sliding', 2400, 2100, '3 track sliding door for balcony'),
+  ('Single Casement Window', 'Casement', 'casement', 900, 1200, 'Single opening casement window'),
+  ('Double Casement Window', 'Casement', 'casement', 1800, 1200, 'Double opening casement window'),
+  ('Fixed Window', 'Fixed', 'fixed', 1200, 900, 'Non-opening fixed window'),
+  ('Main Entry Door', 'Door', 'door', 900, 2100, 'Single panel entry door'),
+  ('Double Entry Door', 'Door', 'door', 1800, 2100, 'Double panel entry door');
