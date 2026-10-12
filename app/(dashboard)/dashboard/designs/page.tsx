@@ -1,4 +1,3 @@
-import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -7,28 +6,40 @@ import { Plus, Search } from 'lucide-react'
 import Link from 'next/link'
 import { WindowTemplateCard } from '@/components/design/window-template-card'
 
-export default async function DesignsPage() {
-  // The server Supabase client reads cookies, which is request-time work.
-  // connection() keeps this out of the prerendered static shell.
-  await connection()
+interface TemplateRow {
+  id: string
+  name: string
+  category: string
+  window_type: string
+  default_width: number
+  default_height: number
+  image_url?: string
+  description?: string
+}
 
+export default async function DesignsPage() {
   const supabase = await createClient()
-  
+
   // Fetch window templates
   const { data: templates } = await supabase
     .from('window_templates')
     .select('*')
     .order('category')
 
+  const templateList = (templates ?? []) as TemplateRow[]
+
   // Group templates by category
-  const templatesByCategory = templates?.reduce((acc: any, template) => {
-    const category = template.category
-    if (!acc[category]) {
-      acc[category] = []
-    }
-    acc[category].push(template)
-    return acc
-  }, {}) || {}
+  const templatesByCategory = templateList.reduce<Record<string, TemplateRow[]>>(
+    (acc, template) => {
+      const category = template.category
+      if (!acc[category]) {
+        acc[category] = []
+      }
+      acc[category].push(template)
+      return acc
+    },
+    {}
+  )
 
   return (
     <div className="space-y-6">
@@ -42,7 +53,7 @@ export default async function DesignsPage() {
         <Link href="/design/new">
           <Button>
             <Plus className="w-4 h-4 mr-2" />
-            Custom Design
+            Open Design Editor
           </Button>
         </Link>
       </div>
@@ -69,12 +80,17 @@ export default async function DesignsPage() {
           </CardContent>
         </Card>
       ) : (
-        Object.entries(templatesByCategory).map(([category, categoryTemplates]: [string, any]) => (
+        Object.entries(templatesByCategory).map(([category, categoryTemplates]) => (
           <div key={category}>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">{category}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {categoryTemplates.map((template: any) => (
-                <Link key={template.id} href={`/design/new?template=${template.id}`}>
+              {categoryTemplates.map((template) => (
+                <Link
+                  key={template.id}
+                  href={`/design/new?windowType=${encodeURIComponent(
+                    template.window_type
+                  )}&width=${template.default_width}&height=${template.default_height}`}
+                >
                   <WindowTemplateCard template={template} />
                 </Link>
               ))}

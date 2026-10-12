@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { DownloadPDFButton } from '@/components/quotations/download-pdf-button'
 import { SendWhatsAppButton } from '@/components/quotations/send-whatsapp-button'
-import { connection } from 'next/server'
 
 const statusColors = {
   draft: 'bg-gray-100 text-gray-800',
@@ -21,9 +20,6 @@ export default async function QuotationDetailPage({
 }: {
   params: Promise<{ id: string }>
 }) {
-  // Request-time route (session + per-request data); not prerendered.
-  await connection()
-
   const { id } = await params
   const supabase = await createClient()
 

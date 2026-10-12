@@ -216,6 +216,19 @@ export function findTemplate(key: string): WindowTemplate | undefined {
   return ALL_TEMPLATES.find((t) => t.key === key)
 }
 
+/**
+ * Return a sensible default editor template for a raw window type string
+ * (e.g. a DB value like "sliding", "casement", "fixed", "door"). Falls back
+ * to a 2-track sliding window when the type is unknown.
+ */
+export function defaultTemplateForType(
+  type: string | null | undefined
+): WindowTemplate {
+  const normalized = (type ?? '').toLowerCase()
+  const match = ALL_TEMPLATES.find((t) => t.type === normalized)
+  return match ?? findTemplate('sliding-2t')!
+}
+
 /** Build a fresh WindowShape from a template. */
 export function shapeFromTemplate(
   template: WindowTemplate,

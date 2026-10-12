@@ -3,12 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Plus, Users, Phone, Mail } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { connection } from 'next/server'
 
 export default async function ClientsPage() {
-  // Reads cookies (session) at request time; keep out of the static shell.
-  await connection()
-
   const supabase = await createClient()
 
   // Fetch clients

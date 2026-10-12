@@ -1,4 +1,3 @@
-import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { StatCard } from '@/components/dashboard/stat-card'
 import { RecentQuotations } from '@/components/dashboard/recent-quotations'
@@ -9,11 +8,6 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 export default async function DashboardPage() {
-  // This page reads cookies (session), live Supabase data, and the current
-  // date (new Date()). All of that is request-time work that can't be
-  // prerendered, so stop prerendering here.
-  await connection()
-
   const supabase = await createClient()
   const {
     data: { user },
@@ -34,7 +28,7 @@ export default async function DashboardPage() {
   const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
 
   // Fetch today's quotations count
-  const { data: todayQuotations, count: todayCount } = await supabase
+  const { count: todayCount } = await supabase
     .from('quotations')
     .select('*', { count: 'exact', head: true })
     .gte('created_at', today.toISOString())
@@ -114,7 +108,7 @@ export default async function DashboardPage() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
           <p className="text-gray-600 mt-1">
-            Welcome back! Here's what's happening today.
+            Welcome back! Here&apos;s what&apos;s happening today.
           </p>
         </div>
         <div className="flex gap-3">
@@ -124,7 +118,7 @@ export default async function DashboardPage() {
               New Quotation
             </Button>
           </Link>
-          <Link href="/dashboard/designs/new">
+          <Link href="/design/new">
             <Button variant="outline">
               <Palette className="w-4 h-4 mr-2" />
               New Design

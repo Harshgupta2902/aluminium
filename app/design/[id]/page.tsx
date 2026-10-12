@@ -1,8 +1,8 @@
-import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { EditorShell } from '@/components/design-editor/editor-shell'
 import {
   type DesignDocument,
+  defaultTemplateForType,
   emptyDetails,
   findTemplate,
   shapeFromTemplate,
@@ -13,19 +13,25 @@ export default async function DesignEditorPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ quotationId?: string; template?: string }>
+  searchParams: Promise<{
+    quotationId?: string
+    template?: string
+    windowType?: string
+    width?: string
+    height?: string
+  }>
 }) {
-  // Request-time route (session + per-request data); not prerendered.
-  await connection()
-
   const { id } = await params
-  const { quotationId, template: templateKey } = await searchParams
+  const sp = await searchParams
   const supabase = await createClient()
 
   const initialDocument = await buildInitialDocument(supabase, {
     id,
-    quotationId,
-    templateKey,
+    quotationId: sp.quotationId,
+    templateKey: sp.template,
+    windowType: sp.windowType,
+    width: sp.width ? Number(sp.width) : undefined,
+    height: sp.height ? Number(sp.height) : undefined,
   })
 
   return <EditorShell initialDocument={initialDocument} />
@@ -35,9 +41,16 @@ type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
 async function buildInitialDocument(
   supabase: SupabaseClient,
-  opts: { id: string; quotationId?: string; templateKey?: string }
+  opts: {
+    id: string
+    quotationId?: string
+    templateKey?: string
+    windowType?: string
+    width?: number
+    height?: number
+  }
 ): Promise<DesignDocument> {
-  const { id, quotationId, templateKey } = opts
+  const { id, quotationId, templateKey, windowType, width, height } = opts
 
   // 1) Editing an existing saved design: load its editor document if present.
   if (id && id !== 'new') {
@@ -90,12 +103,24 @@ async function buildInitialDocument(
     }
   }
 
-  // 3) Fresh document, optionally pre-seeded with a template from the URL.
+  // 3) Fresh document, optionally pre-seeded from the URL.
+  //    - ?template=<editor-key> picks an exact editor template
+  //    - ?windowType=<type>&width=&height= seeds from a DB template card
   const details = emptyDetails()
   const shapes = []
-  if (templateKey) {
-    const template = findTemplate(templateKey)
-    if (template) shapes.push(shapeFromTemplate(template, 1))
+
+  const seedTemplate = templateKey
+    ? findTemplate(templateKey)
+    : windowType
+      ? defaultTemplateForType(windowType)
+      : undefined
+
+  if (seedTemplate) {
+    const shape = shapeFromTemplate(seedTemplate, 1)
+    if (width && width > 0) shape.width = width
+    if (height && height > 0) shape.height = height
+    shapes.push(shape)
   }
+
   return { id: null, details, shapes }
 }
