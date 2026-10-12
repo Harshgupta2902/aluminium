@@ -1,7 +1,6 @@
 'use client'
 
-import { Bell, Search } from 'lucide-react'
-import { Input } from '@/components/ui/input'
+import { Bell } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface HeaderProps {
@@ -13,36 +12,21 @@ interface HeaderProps {
 
 export function Header({ user }: HeaderProps) {
   return (
-    <header className="sticky top-4 z-10 mx-4 mt-4 flex h-16 items-center justify-between rounded-xl border border-border bg-card/90 px-5 shadow-sm backdrop-blur-md">
-      {/* Search */}
-      <div className="flex items-center gap-4 flex-1 max-w-xl">
-        <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search quotations, clients, designs..."
-            className="pl-10"
-          />
+    <header className="sticky top-3 z-10 mx-4 mt-3 flex h-14 items-center justify-end gap-3 rounded-xl border border-border bg-card/90 px-4 shadow-sm backdrop-blur-md">
+      <Button variant="ghost" size="icon" className="relative h-9 w-9">
+        <Bell className="h-5 w-5" />
+        <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-destructive ring-2 ring-card"></span>
+      </Button>
+
+      <div className="flex items-center gap-2.5 border-l border-border pl-3">
+        <div className="text-right leading-tight">
+          <p className="text-sm font-medium text-foreground">
+            {user?.full_name || 'User'}
+          </p>
+          <p className="text-xs text-muted-foreground">{user?.email}</p>
         </div>
-      </div>
-
-      {/* Right side */}
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-destructive ring-2 ring-card"></span>
-        </Button>
-
-        <div className="flex items-center gap-3 border-l border-border pl-4">
-          <div className="text-right">
-            <p className="text-sm font-medium text-foreground">
-              {user?.full_name || 'User'}
-            </p>
-            <p className="text-xs text-muted-foreground">{user?.email}</p>
-          </div>
-          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center text-white font-semibold shadow-[var(--shadow-primary)] ring-2 ring-card">
-            {user?.full_name?.charAt(0) || 'U'}
-          </div>
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-hover text-sm font-semibold text-white shadow-[var(--shadow-primary)] ring-2 ring-card">
+          {user?.full_name?.charAt(0) || 'U'}
         </div>
       </div>
     </header>

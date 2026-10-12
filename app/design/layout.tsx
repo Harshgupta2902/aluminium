@@ -1,3 +1,4 @@
+import { connection } from 'next/server'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 
@@ -12,6 +13,10 @@ export default async function DesignLayout({
 }: {
   children: React.ReactNode
 }) {
+  // Per-user, request-time subtree: take a dynamic dependency up front so the
+  // session read never gets folded into the static shell during prerender.
+  await connection()
+
   const supabase = await createClient()
 
   const {
@@ -23,7 +28,7 @@ export default async function DesignLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {children}
     </div>
   )

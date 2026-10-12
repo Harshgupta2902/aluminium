@@ -1,3 +1,4 @@
+import { connection } from 'next/server'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Sidebar } from '@/components/dashboard/sidebar'
@@ -14,6 +15,10 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
+  // The whole dashboard is per-user, request-time UI. Take a dynamic
+  // dependency up front so the session read never lands in the static shell.
+  await connection()
+
   const supabase = await createClient()
 
   const {
@@ -35,7 +40,7 @@ export default async function DashboardLayout({
       <Sidebar />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header user={profile || undefined} />
-        <main className="flex-1 overflow-y-auto bg-background p-6 md:p-8">
+        <main className="flex-1 overflow-y-auto bg-background px-4 pb-6 pt-5">
           {children}
         </main>
       </div>

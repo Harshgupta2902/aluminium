@@ -35,7 +35,7 @@ export function RecentQuotations({ quotations }: RecentQuotationsProps) {
         </Link>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-2">
           {quotations.length === 0 ? (
             <p className="text-sm text-muted-foreground text-center py-8">
               No quotations yet. Create your first one!
@@ -44,7 +44,7 @@ export function RecentQuotations({ quotations }: RecentQuotationsProps) {
             quotations.map((quotation) => (
               <div
                 key={quotation.id}
-                className="flex items-center justify-between rounded-xl border border-border p-4 transition-all duration-150 hover:border-border-strong hover:bg-muted/60 hover:shadow-sm"
+                className="flex items-center justify-between rounded-lg border border-border p-3 transition-all duration-150 hover:border-border-strong hover:bg-muted/60"
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-2">

@@ -1,8 +1,9 @@
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Plus, Search } from 'lucide-react'
+import { PageHeader } from '@/components/dashboard/page-header'
+import { Plus } from 'lucide-react'
 import Link from 'next/link'
 import { WindowTemplateCard } from '@/components/design/window-template-card'
 
@@ -18,6 +19,9 @@ interface TemplateRow {
 }
 
 export default async function DesignsPage() {
+  // Live, request-time data: opt out of the static shell up front.
+  await connection()
+
   const supabase = await createClient()
 
   // Fetch window templates
@@ -42,48 +46,51 @@ export default async function DesignsPage() {
   )
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Window Designs</h1>
-          <p className="text-gray-600 mt-1">
-            Browse templates or create custom window designs
-          </p>
-        </div>
+    <div className="space-y-4">
+      <PageHeader
+        title="Window Designs"
+        description="Browse templates or create custom window designs"
+      >
         <Link href="/design/new">
           <Button>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="h-4 w-4" />
             Open Design Editor
           </Button>
         </Link>
-      </div>
+      </PageHeader>
 
-      {/* Search */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <Input
-              type="search"
-              placeholder="Search window templates..."
-              className="pl-10"
-            />
-          </div>
-        </CardContent>
-      </Card>
+      {/* Quick stats */}
+      <div className="grid grid-cols-3 gap-3">
+        <Card className="p-3">
+          <p className="text-xs text-muted-foreground">Total Templates</p>
+          <p className="mt-0.5 text-xl font-bold text-heading">{templates?.length || 0}</p>
+        </Card>
+        <Card className="p-3">
+          <p className="text-xs text-muted-foreground">Categories</p>
+          <p className="mt-0.5 text-xl font-bold text-heading">
+            {Object.keys(templatesByCategory).length}
+          </p>
+        </Card>
+        <Card className="p-3">
+          <p className="text-xs text-muted-foreground">Custom Designs</p>
+          <p className="mt-0.5 text-xl font-bold text-muted-foreground">Soon</p>
+        </Card>
+      </div>
 
       {/* Templates by Category */}
       {Object.keys(templatesByCategory).length === 0 ? (
         <Card>
           <CardContent className="py-12 text-center">
-            <p className="text-gray-500">No templates available yet</p>
+            <p className="text-sm text-muted-foreground">No templates available yet</p>
           </CardContent>
         </Card>
       ) : (
         Object.entries(templatesByCategory).map(([category, categoryTemplates]) => (
-          <div key={category}>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">{category}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div key={category} className="space-y-3">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              {category}
+            </h2>
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {categoryTemplates.map((template) => (
                 <Link
                   key={template.id}
@@ -98,36 +105,6 @@ export default async function DesignsPage() {
           </div>
         ))
       )}
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Total Templates</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold text-blue-600">{templates?.length || 0}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Categories</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold text-blue-600">
-              {Object.keys(templatesByCategory).length}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Custom Designs</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold text-blue-600">Coming Soon</p>
-          </CardContent>
-        </Card>
-      </div>
     </div>
   )
 }

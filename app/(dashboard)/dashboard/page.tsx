@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { StatCard } from '@/components/dashboard/stat-card'
 import { RecentQuotations } from '@/components/dashboard/recent-quotations'
 import { QuotationChart } from '@/components/dashboard/quotation-chart'
+import { PageHeader } from '@/components/dashboard/page-header'
 import { FileText, IndianRupee, Palette, Send } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -102,33 +103,27 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-heading">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">
-            Welcome back! Here&apos;s what&apos;s happening today.
-          </p>
-        </div>
-        <div className="flex gap-3">
-          <Link href="/dashboard/quotations/new">
-            <Button>
-              <FileText className="w-4 h-4 mr-2" />
-              New Quotation
-            </Button>
-          </Link>
-          <Link href="/design/new">
-            <Button variant="outline">
-              <Palette className="w-4 h-4 mr-2" />
-              New Design
-            </Button>
-          </Link>
-        </div>
-      </div>
+    <div className="space-y-4">
+      <PageHeader
+        title="Dashboard"
+        description="Welcome back! Here's what's happening today."
+      >
+        <Link href="/dashboard/quotations/new">
+          <Button>
+            <FileText className="h-4 w-4" />
+            New Quotation
+          </Button>
+        </Link>
+        <Link href="/design/new">
+          <Button variant="outline">
+            <Palette className="h-4 w-4" />
+            New Design
+          </Button>
+        </Link>
+      </PageHeader>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Today's Quotes"
           value={todayCount || 0}

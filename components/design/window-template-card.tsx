@@ -22,11 +22,11 @@ interface WindowTemplateCardProps {
 export function WindowTemplateCard({ template, onSelect }: WindowTemplateCardProps) {
   return (
     <Card
-      className="hover:shadow-lg transition-shadow cursor-pointer"
+      className="hover:shadow-md hover:border-border-strong transition-all cursor-pointer"
       onClick={onSelect ? () => onSelect(template) : undefined}
     >
-      <CardContent className="p-4">
-        <div className="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
+      <CardContent className="p-3">
+        <div className="aspect-[4/3] bg-muted rounded-lg mb-2.5 flex items-center justify-center overflow-hidden">
           {template.image_url ? (
             <Image
               src={template.image_url}
@@ -36,19 +36,21 @@ export function WindowTemplateCard({ template, onSelect }: WindowTemplateCardPro
               className="object-contain"
             />
           ) : (
-            <div className="text-center p-4">
-              <Palette className="w-12 h-12 mx-auto text-gray-400 mb-2" />
-              <p className="text-sm text-gray-500 capitalize">{template.window_type}</p>
+            <div className="text-center">
+              <Palette className="w-8 h-8 mx-auto text-muted-foreground/50 mb-1" />
+              <p className="text-xs text-muted-foreground capitalize">{template.window_type}</p>
             </div>
           )}
         </div>
-        <h3 className="font-semibold text-lg mb-1">{template.name}</h3>
-        <p className="text-sm text-gray-600 mb-2">{template.description}</p>
-        <div className="flex items-center justify-between text-sm text-gray-500">
+        <h3 className="font-semibold text-sm text-heading truncate">{template.name}</h3>
+        {template.description && (
+          <p className="text-xs text-muted-foreground truncate mb-1.5">{template.description}</p>
+        )}
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span className="capitalize">{template.category}</span>
           <span>{template.default_width} × {template.default_height}mm</span>
         </div>
-        <Button className="w-full mt-3" size="sm">
+        <Button className="w-full mt-2.5" size="sm">
           Use Template
         </Button>
       </CardContent>

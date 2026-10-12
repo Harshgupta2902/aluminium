@@ -1,3 +1,4 @@
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -14,6 +15,10 @@ const statusColors = {
 }
 
 export default async function QuotationsPage() {
+  // This route renders live, per-request data, so opt it out of the
+  // static shell by taking a dynamic dependency before any render work.
+  await connection()
+
   const supabase = await createClient()
 
   const { data: quotations } = await supabase

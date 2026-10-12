@@ -7,6 +7,7 @@ import {
   type WindowShape,
   type WindowTemplate,
   emptyDetails,
+  makeClientId,
   shapeFromTemplate,
 } from '@/lib/design-editor/model'
 
@@ -79,16 +80,22 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   past: [],
   future: [],
 
-  load: (doc) =>
+  load: (doc) => {
+    // `load` only runs on the client (from EditorShell's mount effect), so it
+    // is safe to mint fresh, globally-unique ids here. The server render used
+    // the document's deterministic ids, so re-id-ing only after mount keeps
+    // hydration stable while guaranteeing unique ids before persisting.
+    const shapes = doc.shapes.map((s) => ({ ...s, id: makeClientId() }))
     set({
       documentId: doc.id,
-      shapes: doc.shapes.map((s) => ({ ...s })),
+      shapes,
       details: { ...doc.details },
-      selectedId: doc.shapes[0]?.id ?? null,
+      selectedId: shapes[0]?.id ?? null,
       zoom: 1,
       past: [],
       future: [],
-    }),
+    })
+  },
 
   reset: () =>
     set({
@@ -110,6 +117,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
         x: offset,
         y: offset,
       })
+      shape.id = makeClientId()
       return {
         past: [...state.past, snapshot(state)],
         future: [],

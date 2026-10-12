@@ -12,12 +12,12 @@ interface QuotationChartProps {
 
 export function QuotationChart({ data }: QuotationChartProps) {
   return (
-    <Card className="col-span-2">
+    <Card>
       <CardHeader>
         <CardTitle>Quotation Activity — Last 7 months</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px]">
+        <div className="h-[240px]">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={data} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
               <defs>

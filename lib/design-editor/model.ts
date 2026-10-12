@@ -347,11 +347,38 @@ export function computeShapeGeometry(shape: WindowShape): ShapeGeometry {
  * Misc helpers
  * ------------------------------------------------------------------ */
 
-/** Short unique id without pulling in a uuid dependency. */
+/**
+ * Short unique id without pulling in a uuid dependency.
+ *
+ * IMPORTANT: this must be prerender-safe. Under Next.js 16 Cache Components,
+ * calling `Date.now()` / `Math.random()` during a server prerender throws a
+ * build error and also causes server/client hydration mismatches. So the id
+ * is derived from a monotonic in-process counter, which is deterministic on
+ * the server render and stable across hydration.
+ *
+ * For cross-session uniqueness (e.g. before persisting to the DB), re-id
+ * shapes on the client with `makeClientId()`.
+ */
+let __idCounter = 0
+
 export function makeId(): string {
-  return (
-    Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
-  )
+  __idCounter += 1
+  return `s${__idCounter.toString(36)}`
+}
+
+/**
+ * Client-only id generator. Safe to use in effects / event handlers that only
+ * run in the browser (never during a server prerender). Prefers the platform
+ * UUID when available and falls back to the deterministic counter.
+ */
+export function makeClientId(): string {
+  if (
+    typeof globalThis !== 'undefined' &&
+    typeof globalThis.crypto?.randomUUID === 'function'
+  ) {
+    return globalThis.crypto.randomUUID()
+  }
+  return makeId()
 }
 
 export function emptyDetails(): DesignDetails {

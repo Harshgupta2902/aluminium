@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { PageHeader } from '@/components/dashboard/page-header'
 import { Plus, Package, Wine, Wrench } from 'lucide-react'
 
 export default async function InventoryPage() {
@@ -35,61 +36,39 @@ export default async function InventoryPage() {
     .select('*')
     .limit(5)
 
+  const summary = [
+    { title: 'Profiles', count: profilesCount || 0, hint: 'Aluminium & UPVC profiles', icon: Package, action: 'Add Profile' },
+    { title: 'Glass', count: glassCount || 0, hint: 'Glass types & thickness', icon: Wine, action: 'Add Glass Type' },
+    { title: 'Accessories', count: accessoriesCount || 0, hint: 'Hardware & accessories', icon: Wrench, action: 'Add Accessory' },
+  ]
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Inventory Management</h1>
-        <p className="text-gray-600 mt-1">
-          Manage profiles, glass, and accessories stock
-        </p>
-      </div>
+    <div className="space-y-4">
+      <PageHeader
+        title="Inventory Management"
+        description="Manage profiles, glass, and accessories stock"
+      />
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Profiles</CardTitle>
-            <Package className="w-5 h-5 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold text-blue-600">{profilesCount || 0}</p>
-            <p className="text-sm text-gray-600 mt-2">Aluminium & UPVC profiles</p>
-            <Button className="w-full mt-4" size="sm">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Profile
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+        {summary.map((item) => (
+          <Card key={item.title} className="p-4">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">{item.title}</p>
+                <p className="mt-1 text-2xl font-bold text-heading">{item.count}</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">{item.hint}</p>
+              </div>
+              <div className="rounded-lg bg-primary-soft p-2.5">
+                <item.icon className="h-5 w-5 text-primary" />
+              </div>
+            </div>
+            <Button className="w-full mt-3" size="sm">
+              <Plus className="h-4 w-4" />
+              {item.action}
             </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Glass</CardTitle>
-            <Wine className="w-5 h-5 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold text-blue-600">{glassCount || 0}</p>
-            <p className="text-sm text-gray-600 mt-2">Glass types & thickness</p>
-            <Button className="w-full mt-4" size="sm">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Glass Type
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Accessories</CardTitle>
-            <Wrench className="w-5 h-5 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold text-blue-600">{accessoriesCount || 0}</p>
-            <p className="text-sm text-gray-600 mt-2">Hardware & accessories</p>
-            <Button className="w-full mt-4" size="sm">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Accessory
-            </Button>
-          </CardContent>
-        </Card>
+          </Card>
+        ))}
       </div>
 
       {/* Profiles */}
@@ -97,40 +76,40 @@ export default async function InventoryPage() {
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Profiles Inventory</CardTitle>
           <Button size="sm">
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="h-4 w-4" />
             Add New
           </Button>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           {!profiles || profiles.length === 0 ? (
-            <div className="text-center py-12">
-              <Package className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-500 mb-4">No profiles in inventory</p>
+            <div className="text-center py-10">
+              <Package className="w-10 h-10 mx-auto text-muted-foreground/40 mb-3" />
+              <p className="text-sm text-muted-foreground mb-4">No profiles in inventory</p>
               <Button>Add Your First Profile</Button>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-3 px-4">Name</th>
-                    <th className="text-left py-3 px-4">Type</th>
-                    <th className="text-right py-3 px-4">Weight/Meter</th>
-                    <th className="text-right py-3 px-4">Cost/Kg</th>
-                    <th className="text-right py-3 px-4">Cost/Meter</th>
-                    <th className="text-right py-3 px-4">Stock</th>
+                  <tr className="border-b border-border bg-muted/40 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <th className="px-4 py-2.5">Name</th>
+                    <th className="px-4 py-2.5">Type</th>
+                    <th className="px-4 py-2.5 text-right">Weight/Meter</th>
+                    <th className="px-4 py-2.5 text-right">Cost/Kg</th>
+                    <th className="px-4 py-2.5 text-right">Cost/Meter</th>
+                    <th className="px-4 py-2.5 text-right">Stock</th>
                   </tr>
                 </thead>
                 <tbody>
                   {profiles.map((profile) => (
-                    <tr key={profile.id} className="border-b hover:bg-gray-50">
-                      <td className="py-3 px-4 font-medium">{profile.name}</td>
-                      <td className="py-3 px-4 capitalize">{profile.type}</td>
-                      <td className="py-3 px-4 text-right">{profile.weight_per_meter} kg</td>
-                      <td className="py-3 px-4 text-right">₹{profile.cost_per_kg}</td>
-                      <td className="py-3 px-4 text-right">₹{profile.cost_per_meter}</td>
-                      <td className="py-3 px-4 text-right">
-                        <span className={profile.stock_quantity < 100 ? 'text-red-600 font-semibold' : ''}>
+                    <tr key={profile.id} className="border-b border-border last:border-0 hover:bg-muted/40">
+                      <td className="px-4 py-2.5 font-medium text-heading">{profile.name}</td>
+                      <td className="px-4 py-2.5 capitalize text-muted-foreground">{profile.type}</td>
+                      <td className="px-4 py-2.5 text-right text-muted-foreground">{profile.weight_per_meter} kg</td>
+                      <td className="px-4 py-2.5 text-right text-muted-foreground">₹{profile.cost_per_kg}</td>
+                      <td className="px-4 py-2.5 text-right text-muted-foreground">₹{profile.cost_per_meter}</td>
+                      <td className="px-4 py-2.5 text-right">
+                        <span className={profile.stock_quantity < 100 ? 'font-semibold text-destructive' : 'text-foreground'}>
                           {profile.stock_quantity} {profile.unit}
                         </span>
                       </td>
@@ -148,36 +127,36 @@ export default async function InventoryPage() {
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Glass Inventory</CardTitle>
           <Button size="sm">
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="h-4 w-4" />
             Add New
           </Button>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           {!glass || glass.length === 0 ? (
-            <div className="text-center py-12">
-              <Wine className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-500 mb-4">No glass in inventory</p>
+            <div className="text-center py-10">
+              <Wine className="w-10 h-10 mx-auto text-muted-foreground/40 mb-3" />
+              <p className="text-sm text-muted-foreground mb-4">No glass in inventory</p>
               <Button>Add Your First Glass Type</Button>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-3 px-4">Type</th>
-                    <th className="text-left py-3 px-4">Thickness</th>
-                    <th className="text-right py-3 px-4">Cost/Sqft</th>
-                    <th className="text-right py-3 px-4">Stock (Sqft)</th>
+                  <tr className="border-b border-border bg-muted/40 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <th className="px-4 py-2.5">Type</th>
+                    <th className="px-4 py-2.5">Thickness</th>
+                    <th className="px-4 py-2.5 text-right">Cost/Sqft</th>
+                    <th className="px-4 py-2.5 text-right">Stock (Sqft)</th>
                   </tr>
                 </thead>
                 <tbody>
                   {glass.map((item) => (
-                    <tr key={item.id} className="border-b hover:bg-gray-50">
-                      <td className="py-3 px-4 font-medium capitalize">{item.type}</td>
-                      <td className="py-3 px-4">{item.thickness}mm</td>
-                      <td className="py-3 px-4 text-right">₹{item.cost_per_sqft}</td>
-                      <td className="py-3 px-4 text-right">
-                        <span className={item.stock_quantity < 50 ? 'text-red-600 font-semibold' : ''}>
+                    <tr key={item.id} className="border-b border-border last:border-0 hover:bg-muted/40">
+                      <td className="px-4 py-2.5 font-medium capitalize text-heading">{item.type}</td>
+                      <td className="px-4 py-2.5 text-muted-foreground">{item.thickness}mm</td>
+                      <td className="px-4 py-2.5 text-right text-muted-foreground">₹{item.cost_per_sqft}</td>
+                      <td className="px-4 py-2.5 text-right">
+                        <span className={item.stock_quantity < 50 ? 'font-semibold text-destructive' : 'text-foreground'}>
                           {item.stock_quantity}
                         </span>
                       </td>
@@ -195,36 +174,36 @@ export default async function InventoryPage() {
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Accessories Inventory</CardTitle>
           <Button size="sm">
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="h-4 w-4" />
             Add New
           </Button>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           {!accessories || accessories.length === 0 ? (
-            <div className="text-center py-12">
-              <Wrench className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-500 mb-4">No accessories in inventory</p>
+            <div className="text-center py-10">
+              <Wrench className="w-10 h-10 mx-auto text-muted-foreground/40 mb-3" />
+              <p className="text-sm text-muted-foreground mb-4">No accessories in inventory</p>
               <Button>Add Your First Accessory</Button>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-3 px-4">Name</th>
-                    <th className="text-left py-3 px-4">Category</th>
-                    <th className="text-right py-3 px-4">Cost</th>
-                    <th className="text-right py-3 px-4">Stock</th>
+                  <tr className="border-b border-border bg-muted/40 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <th className="px-4 py-2.5">Name</th>
+                    <th className="px-4 py-2.5">Category</th>
+                    <th className="px-4 py-2.5 text-right">Cost</th>
+                    <th className="px-4 py-2.5 text-right">Stock</th>
                   </tr>
                 </thead>
                 <tbody>
                   {accessories.map((accessory) => (
-                    <tr key={accessory.id} className="border-b hover:bg-gray-50">
-                      <td className="py-3 px-4 font-medium">{accessory.name}</td>
-                      <td className="py-3 px-4 capitalize">{accessory.category}</td>
-                      <td className="py-3 px-4 text-right">₹{accessory.cost}</td>
-                      <td className="py-3 px-4 text-right">
-                        <span className={accessory.stock_quantity < 10 ? 'text-red-600 font-semibold' : ''}>
+                    <tr key={accessory.id} className="border-b border-border last:border-0 hover:bg-muted/40">
+                      <td className="px-4 py-2.5 font-medium text-heading">{accessory.name}</td>
+                      <td className="px-4 py-2.5 capitalize text-muted-foreground">{accessory.category}</td>
+                      <td className="px-4 py-2.5 text-right text-muted-foreground">₹{accessory.cost}</td>
+                      <td className="px-4 py-2.5 text-right">
+                        <span className={accessory.stock_quantity < 10 ? 'font-semibold text-destructive' : 'text-foreground'}>
                           {accessory.stock_quantity}
                         </span>
                       </td>

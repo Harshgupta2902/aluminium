@@ -1,14 +1,15 @@
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Plus, FileText, DollarSign } from 'lucide-react'
+import { PageHeader } from '@/components/dashboard/page-header'
+import { Plus, FileText, Eye } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import Link from 'next/link'
 
 const statusColors = {
-  pending: 'bg-yellow-100 text-yellow-800',
-  partial: 'bg-blue-100 text-blue-800',
-  paid: 'bg-green-100 text-green-800',
+  pending: 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20',
+  partial: 'bg-primary-soft text-primary ring-1 ring-inset ring-primary/20',
+  paid: 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20',
 }
 
 export default async function BillingPage() {
@@ -28,65 +29,36 @@ export default async function BillingPage() {
   const pendingCount = invoices?.filter(inv => inv.status === 'pending').length || 0
   const paidCount = invoices?.filter(inv => inv.status === 'paid').length || 0
 
+  const stats = [
+    { label: 'Total Revenue', value: formatCurrency(totalAmount), className: 'text-emerald-600 dark:text-emerald-400' },
+    { label: 'Total Paid', value: formatCurrency(totalPaid), className: 'text-primary' },
+    { label: 'Pending', value: formatCurrency(totalPending), className: 'text-amber-600 dark:text-amber-400' },
+    { label: 'Invoices', value: invoices?.length || 0, hint: `${paidCount} paid, ${pendingCount} pending`, className: 'text-heading' },
+  ]
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Billing & Invoicing</h1>
-          <p className="text-gray-600 mt-1">
-            Manage invoices and track payments
-          </p>
-        </div>
+    <div className="space-y-4">
+      <PageHeader
+        title="Billing & Invoicing"
+        description="Manage invoices and track payments"
+      >
         <Link href="/dashboard/billing/new">
           <Button>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="h-4 w-4" />
             New Invoice
           </Button>
         </Link>
-      </div>
+      </PageHeader>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <DollarSign className="w-4 h-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-green-600">{formatCurrency(totalAmount)}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-sm font-medium">Total Paid</CardTitle>
-            <DollarSign className="w-4 h-4 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-blue-600">{formatCurrency(totalPaid)}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-sm font-medium">Pending</CardTitle>
-            <DollarSign className="w-4 h-4 text-yellow-600" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-yellow-600">{formatCurrency(totalPending)}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-sm font-medium">Invoices</CardTitle>
-            <FileText className="w-4 h-4 text-gray-600" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-gray-900">{invoices?.length || 0}</p>
-            <p className="text-xs text-gray-500 mt-1">{paidCount} paid, {pendingCount} pending</p>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        {stats.map((s) => (
+          <Card key={s.label} className="p-4">
+            <p className="text-xs font-medium text-muted-foreground">{s.label}</p>
+            <p className={`mt-1 text-2xl font-bold ${s.className}`}>{s.value}</p>
+            {s.hint && <p className="mt-0.5 text-xs text-muted-foreground">{s.hint}</p>}
+          </Card>
+        ))}
       </div>
 
       {/* Invoices List */}
@@ -94,90 +66,85 @@ export default async function BillingPage() {
         <CardHeader>
           <CardTitle>All Invoices</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           {!invoices || invoices.length === 0 ? (
-            <div className="text-center py-12">
-              <FileText className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-500 mb-4">No invoices yet</p>
+            <div className="text-center py-10">
+              <FileText className="w-10 h-10 mx-auto text-muted-foreground/40 mb-3" />
+              <p className="text-sm text-muted-foreground mb-4">No invoices yet</p>
               <Link href="/dashboard/billing/new">
                 <Button>Create Your First Invoice</Button>
               </Link>
             </div>
           ) : (
-            <div className="space-y-4">
-              {invoices.map((invoice) => (
-                <div
-                  key={invoice.id}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3">
-                      <h3 className="font-semibold text-lg">
-                        {invoice.invoice_number}
-                      </h3>
-                      <span
-                        className={`px-3 py-1 text-xs font-medium rounded-full ${
-                          statusColors[invoice.status as keyof typeof statusColors]
-                        }`}
-                      >
-                        {invoice.status.toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="mt-2 space-y-1">
-                      <p className="text-gray-900">
-                        <span className="font-medium">Client:</span>{' '}
-                        {invoice.quotations?.client_name || 'N/A'}
-                      </p>
-                      {invoice.quotations?.quotation_number && (
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium">Quotation:</span>{' '}
-                          {invoice.quotations.quotation_number}
-                        </p>
-                      )}
-                      <p className="text-sm text-gray-500">
-                        Created: {formatDate(invoice.created_at)}
-                      </p>
-                      {invoice.due_date && (
-                        <p className="text-sm text-gray-500">
-                          Due: {formatDate(invoice.due_date)}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="text-right space-y-2">
-                    <div>
-                      <p className="text-sm text-gray-600">Amount</p>
-                      <p className="text-xl font-bold text-gray-900">
-                        {formatCurrency(invoice.amount)}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-600">Paid</p>
-                      <p className="text-sm font-semibold text-green-600">
-                        {formatCurrency(invoice.paid_amount)}
-                      </p>
-                    </div>
-                    {invoice.amount > invoice.paid_amount && (
-                      <div>
-                        <p className="text-xs text-gray-600">Due</p>
-                        <p className="text-sm font-semibold text-red-600">
-                          {formatCurrency(invoice.amount - invoice.paid_amount)}
-                        </p>
-                      </div>
-                    )}
-                    <div className="flex gap-2 mt-2">
-                      <Link href={`/dashboard/billing/${invoice.id}`}>
-                        <Button size="sm" variant="outline">
-                          View
-                        </Button>
-                      </Link>
-                      <Button size="sm">
-                        Record Payment
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-muted/40 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <th className="px-4 py-2.5">Invoice #</th>
+                    <th className="px-4 py-2.5">Client</th>
+                    <th className="px-4 py-2.5">Status</th>
+                    <th className="px-4 py-2.5">Created</th>
+                    <th className="px-4 py-2.5 text-right">Amount</th>
+                    <th className="px-4 py-2.5 text-right">Paid</th>
+                    <th className="px-4 py-2.5 text-right">Due</th>
+                    <th className="px-4 py-2.5 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {invoices.map((invoice) => {
+                    const due = invoice.amount - invoice.paid_amount
+                    return (
+                      <tr key={invoice.id} className="border-b border-border last:border-0 hover:bg-muted/40">
+                        <td className="px-4 py-2.5 font-medium text-heading whitespace-nowrap">
+                          {invoice.invoice_number}
+                        </td>
+                        <td className="px-4 py-2.5">
+                          <div className="text-foreground">{invoice.quotations?.client_name || 'N/A'}</div>
+                          {invoice.quotations?.quotation_number && (
+                            <div className="text-xs text-muted-foreground">
+                              {invoice.quotations.quotation_number}
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-4 py-2.5">
+                          <span
+                            className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                              statusColors[invoice.status as keyof typeof statusColors]
+                            }`}
+                          >
+                            {invoice.status.toUpperCase()}
+                          </span>
+                        </td>
+                        <td className="px-4 py-2.5 text-muted-foreground whitespace-nowrap">
+                          {formatDate(invoice.created_at)}
+                        </td>
+                        <td className="px-4 py-2.5 text-right font-semibold text-heading whitespace-nowrap">
+                          {formatCurrency(invoice.amount)}
+                        </td>
+                        <td className="px-4 py-2.5 text-right text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
+                          {formatCurrency(invoice.paid_amount)}
+                        </td>
+                        <td className="px-4 py-2.5 text-right whitespace-nowrap">
+                          <span className={due > 0 ? 'font-semibold text-destructive' : 'text-muted-foreground'}>
+                            {formatCurrency(due)}
+                          </span>
+                        </td>
+                        <td className="px-4 py-2.5">
+                          <div className="flex justify-end gap-2">
+                            <Link href={`/dashboard/billing/${invoice.id}`} title="View invoice">
+                              <Button size="sm" variant="outline" className="h-8 w-8 p-0">
+                                <Eye className="h-4 w-4" />
+                                <span className="sr-only">View invoice</span>
+                              </Button>
+                            </Link>
+                            <Button size="sm">Record</Button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
             </div>
           )}
         </CardContent>
