@@ -106,8 +106,8 @@ export default async function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-heading">Dashboard</h1>
+          <p className="text-muted-foreground mt-1">
             Welcome back! Here&apos;s what&apos;s happening today.
           </p>
         </div>

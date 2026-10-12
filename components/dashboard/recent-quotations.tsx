@@ -17,7 +17,7 @@ interface RecentQuotationsProps {
 
 const statusColors = {
   draft: 'bg-secondary text-secondary-foreground ring-1 ring-inset ring-border-strong',
-  sent: 'bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-200 dark:bg-indigo-500/10 dark:text-indigo-300 dark:ring-indigo-500/20',
+  sent: 'bg-primary-soft text-primary ring-1 ring-inset ring-primary/20',
   approved: 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20',
   rejected: 'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20',
 }

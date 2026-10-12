@@ -22,8 +22,8 @@ export function QuotationChart({ data }: QuotationChartProps) {
             <AreaChart data={data} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
               <defs>
                 <linearGradient id="quotationFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#4f46e5" stopOpacity={0.28} />
-                  <stop offset="100%" stopColor="#4f46e5" stopOpacity={0.02} />
+                  <stop offset="0%" stopColor="#7367f0" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="#7367f0" stopOpacity={0.02} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="4 4" stroke="var(--border)" vertical={false} />
@@ -54,10 +54,10 @@ export function QuotationChart({ data }: QuotationChartProps) {
               <Area
                 type="monotone"
                 dataKey="count"
-                stroke="#4f46e5"
+                stroke="#7367f0"
                 strokeWidth={2.5}
                 fill="url(#quotationFill)"
-                dot={{ fill: '#4f46e5', r: 3, strokeWidth: 0 }}
+                dot={{ fill: '#7367f0', r: 3, strokeWidth: 0 }}
                 activeDot={{ r: 6, strokeWidth: 2, stroke: 'var(--card)' }}
               />
             </AreaChart>

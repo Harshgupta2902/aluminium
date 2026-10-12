@@ -38,17 +38,17 @@ export function Sidebar() {
   }
 
   return (
-    <div className="flex h-full w-64 flex-col bg-gradient-to-b from-[#161926] to-[#0d0f17] text-slate-300">
+    <div className="flex h-full w-64 flex-col border-r border-border bg-card">
       {/* Logo */}
-      <div className="flex h-16 items-center gap-3 border-b border-white/5 px-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 shadow-[var(--shadow-primary)]">
+      <div className="flex h-16 items-center gap-3 px-5">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary shadow-[var(--shadow-primary)]">
           <Palette className="h-5 w-5 text-white" />
         </div>
-        <h1 className="text-lg font-semibold tracking-tight text-white">Soft Window</h1>
+        <h1 className="text-xl font-bold tracking-tight text-heading">Soft Window</h1>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 px-3 py-5">
+      <nav className="flex-1 space-y-1 px-3 py-4">
         {navigation.map((item) => {
           const isActive = pathname === item.href
           return (
@@ -56,19 +56,16 @@ export function Sidebar() {
               key={item.name}
               href={item.href}
               className={cn(
-                'group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150',
+                'group relative flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-all duration-150',
                 isActive
-                  ? 'bg-white/10 text-white shadow-sm'
-                  : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                  ? 'bg-gradient-to-r from-primary to-primary-hover text-primary-foreground shadow-[var(--shadow-primary)]'
+                  : 'text-foreground hover:bg-primary-soft hover:text-primary'
               )}
             >
-              {isActive && (
-                <span className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-indigo-400" />
-              )}
               <item.icon
                 className={cn(
                   'h-5 w-5 transition-colors',
-                  isActive ? 'text-indigo-300' : 'text-slate-500 group-hover:text-slate-200'
+                  isActive ? 'text-primary-foreground' : 'text-muted-foreground group-hover:text-primary'
                 )}
               />
               {item.name}
@@ -78,10 +75,10 @@ export function Sidebar() {
       </nav>
 
       {/* Logout */}
-      <div className="border-t border-white/5 p-3">
+      <div className="border-t border-border p-3">
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 transition-all duration-150 hover:bg-rose-500/10 hover:text-rose-300"
+          className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-foreground transition-all duration-150 hover:bg-destructive/10 hover:text-destructive"
         >
           <LogOut className="h-5 w-5" />
           Logout

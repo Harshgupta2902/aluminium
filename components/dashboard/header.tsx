@@ -13,7 +13,7 @@ interface HeaderProps {
 
 export function Header({ user }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-border bg-card/80 px-6 backdrop-blur-md">
+    <header className="sticky top-4 z-10 mx-4 mt-4 flex h-16 items-center justify-between rounded-xl border border-border bg-card/90 px-5 shadow-sm backdrop-blur-md">
       {/* Search */}
       <div className="flex items-center gap-4 flex-1 max-w-xl">
         <div className="relative w-full">
@@ -40,7 +40,7 @@ export function Header({ user }: HeaderProps) {
             </p>
             <p className="text-xs text-muted-foreground">{user?.email}</p>
           </div>
-          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-semibold shadow-[var(--shadow-primary)] ring-2 ring-card">
+          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center text-white font-semibold shadow-[var(--shadow-primary)] ring-2 ring-card">
             {user?.full_name?.charAt(0) || 'U'}
           </div>
         </div>

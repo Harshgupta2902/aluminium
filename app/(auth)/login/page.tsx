@@ -45,14 +45,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-background to-violet-100 p-4 overflow-hidden">
+    <div className="relative min-h-screen flex items-center justify-center bg-background p-4 overflow-hidden">
       {/* Soft ambient glows */}
-      <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-400/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-violet-400/20 blur-3xl" />
+      <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
 
       <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-2">
+          <h1 className="text-4xl font-bold tracking-tight text-heading mb-2">
             Design the Future of Windows & Doors
           </h1>
         </div>
@@ -128,7 +128,7 @@ export default function LoginPage() {
 
             <div className="mt-6 text-center space-y-2">
               <div className="text-sm text-muted-foreground">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link href="/signup" className="font-medium text-primary hover:text-primary-hover hover:underline">
                   Sign up
                 </Link>
