@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,7 +9,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { Plus, Trash2, Save, Send } from 'lucide-react'
+import { PageHeader } from '@/components/dashboard/page-header'
+import { Plus, Trash2, Send, Check, Loader2, CloudOff } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import { calculateItemTotal } from '@/lib/calculations'
 
@@ -30,11 +31,58 @@ interface QuotationItem {
   total: number
 }
 
+type SaveState = 'idle' | 'saving' | 'saved' | 'error'
+
+// Compute all derived costs for an item from its inputs.
+function withCosts(item: QuotationItem): QuotationItem {
+  const costs = calculateItemTotal({
+    dimensions: { width: item.width, height: item.height },
+    profileType: item.profileType,
+    profileWeightPerMeter: 1.5, // kg/m
+    profileCostPerKg: 250, // ₹/kg
+    glassType: item.glassType,
+    glassThickness: 5, // mm
+    glassCostPerSqft: 80, // ₹/sqft
+    accessoriesCost: item.accessories,
+    labourCostPerSqft: 50,
+    quantity: item.quantity,
+    markupPercentage: 15,
+  })
+
+  return {
+    ...item,
+    profileCost: costs.profileCost,
+    glassCost: costs.glassCost,
+    labourCost: costs.labourCost,
+    accessoriesCost: costs.accessoriesCost,
+    total: costs.totalWithQuantity,
+  }
+}
+
+function createItem(id: string): QuotationItem {
+  return withCosts({
+    id,
+    windowType: 'sliding',
+    width: 1200,
+    height: 1200,
+    quantity: 1,
+    profileType: 'aluminium',
+    glassType: 'clear',
+    color: 'white',
+    accessories: 0,
+    profileCost: 0,
+    glassCost: 0,
+    labourCost: 0,
+    accessoriesCost: 0,
+    total: 0,
+  })
+}
+
 export default function NewQuotationPage() {
   const router = useRouter()
   const supabase = createClient()
-  
-  const [loading, setLoading] = useState(false)
+
+  const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   // Client information
@@ -44,114 +92,44 @@ export default function NewQuotationPage() {
   const [notes, setNotes] = useState('')
   const [validUntil, setValidUntil] = useState('')
 
-  // Line items
-  const [items, setItems] = useState<QuotationItem[]>([
-    {
-      id: '1',
-      windowType: 'sliding',
-      width: 1200,
-      height: 1200,
-      quantity: 1,
-      profileType: 'aluminium',
-      glassType: 'clear',
-      color: 'white',
-      accessories: 0,
-      profileCost: 0,
-      glassCost: 0,
-      labourCost: 0,
-      accessoriesCost: 0,
-      total: 0,
-    },
-  ])
+  // Line items — initialized with computed costs so totals show immediately.
+  const [items, setItems] = useState<QuotationItem[]>(() => [createItem('1')])
 
-  // Calculate costs for an item
-  const calculateCosts = (item: QuotationItem) => {
-    const costs = calculateItemTotal({
-      dimensions: { width: item.width, height: item.height },
-      profileType: item.profileType,
-      profileWeightPerMeter: 1.5, // Default: 1.5 kg/m
-      profileCostPerKg: 250, // Default: ₹250/kg
-      glassType: item.glassType,
-      glassThickness: 5, // Default: 5mm
-      glassCostPerSqft: 80, // Default: ₹80/sqft
-      accessoriesCost: item.accessories,
-      labourCostPerSqft: 50,
-      quantity: item.quantity,
-      markupPercentage: 15,
-    })
+  // Autosave bookkeeping
+  const [saveState, setSaveState] = useState<SaveState>('idle')
+  const [savedAt, setSavedAt] = useState<Date | null>(null)
+  const quotationIdRef = useRef<string | null>(null)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const savingRef = useRef(false)
 
-    return {
-      ...item,
-      profileCost: costs.profileCost,
-      glassCost: costs.glassCost,
-      labourCost: costs.labourCost,
-      accessoriesCost: costs.accessoriesCost,
-      total: costs.totalWithQuantity,
-    }
-  }
-
-  // Update item and recalculate
   const updateItem = (id: string, updates: Partial<QuotationItem>) => {
-    setItems(items.map(item => {
-      if (item.id === id) {
-        const updated = { ...item, ...updates }
-        return calculateCosts(updated)
-      }
-      return item
-    }))
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? withCosts({ ...item, ...updates }) : item
+      )
+    )
   }
 
-  // Add new item
   const addItem = () => {
-    const newItem: QuotationItem = {
-      id: Date.now().toString(),
-      windowType: 'sliding',
-      width: 1200,
-      height: 1200,
-      quantity: 1,
-      profileType: 'aluminium',
-      glassType: 'clear',
-      color: 'white',
-      accessories: 0,
-      profileCost: 0,
-      glassCost: 0,
-      labourCost: 0,
-      accessoriesCost: 0,
-      total: 0,
-    }
-    setItems([...items, calculateCosts(newItem)])
+    setItems((prev) => [...prev, createItem(Date.now().toString())])
   }
 
-  // Remove item
   const removeItem = (id: string) => {
-    if (items.length > 1) {
-      setItems(items.filter(item => item.id !== id))
-    }
+    setItems((prev) => (prev.length > 1 ? prev.filter((item) => item.id !== id) : prev))
   }
 
-  // Calculate total
   const grandTotal = items.reduce((sum, item) => sum + item.total, 0)
+  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0)
 
-  // Save quotation
-  const saveQuotation = async (status: 'draft' | 'sent') => {
-    if (!clientName || !clientPhone) {
-      setError('Client name and phone are required')
-      return
-    }
-
-    setLoading(true)
-    setError(null)
-
-    try {
-      const { data: { user } } = await supabase.auth.getUser()
-      
-      if (!user) {
-        setError('You must be logged in')
-        return
-      }
-
-      // Prepare items data
-      const itemsData = items.map(item => ({
+  // Build the row payload shared by autosave and send.
+  const buildPayload = useCallback(
+    (status: 'draft' | 'sent') => ({
+      client_name: clientName,
+      client_email: clientEmail || null,
+      client_phone: clientPhone,
+      status,
+      total_amount: grandTotal,
+      items: items.map((item) => ({
         window_type: item.windowType,
         dimensions: { width: item.width, height: item.height },
         quantity: item.quantity,
@@ -164,51 +142,139 @@ export default function NewQuotationPage() {
         accessories_cost: item.accessoriesCost,
         labour_cost: item.labourCost,
         total_cost: item.total,
-      }))
+      })),
+      notes: notes || null,
+      valid_until: validUntil || null,
+    }),
+    [clientName, clientEmail, clientPhone, grandTotal, items, notes, validUntil]
+  )
 
-      // Insert quotation
-      const { data, error: insertError } = await supabase
-        .from('quotations')
-        .insert([
-          {
-            client_name: clientName,
-            client_email: clientEmail,
-            client_phone: clientPhone,
-            status: status,
-            total_amount: grandTotal,
-            items: itemsData,
-            notes: notes,
-            valid_until: validUntil || null,
-            created_by: user.id,
-          },
-        ])
-        .select()
-        .single()
+  // Persist the current state as a draft. Inserts on first call, updates after.
+  const persistDraft = useCallback(async () => {
+    // The quotations table requires client_name and client_phone.
+    if (!clientName.trim() || !clientPhone.trim()) return
+    if (savingRef.current) return
 
-      if (insertError) throw insertError
+    savingRef.current = true
+    setSaveState('saving')
+    setError(null)
 
-      // Redirect to quotations list
-      router.push('/dashboard/quotations')
-    } catch (err: any) {
-      setError(err.message || 'Failed to save quotation')
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) {
+        setSaveState('error')
+        setError('You must be logged in to save.')
+        return
+      }
+
+      const payload = buildPayload('draft')
+
+      if (quotationIdRef.current) {
+        const { error: updateError } = await supabase
+          .from('quotations')
+          .update(payload)
+          .eq('id', quotationIdRef.current)
+        if (updateError) throw updateError
+      } else {
+        const { data, error: insertError } = await supabase
+          .from('quotations')
+          .insert([{ ...payload, created_by: user.id }])
+          .select('id')
+          .single()
+        if (insertError) throw insertError
+        quotationIdRef.current = data.id
+      }
+
+      setSaveState('saved')
+      setSavedAt(new Date())
+    } catch (err) {
+      setSaveState('error')
+      setError(err instanceof Error ? err.message : 'Autosave failed')
     } finally {
-      setLoading(false)
+      savingRef.current = false
+    }
+  }, [buildPayload, clientName, clientPhone, supabase])
+
+  // Debounced autosave: fires 1.5s after the latest change.
+  useEffect(() => {
+    if (!clientName.trim() || !clientPhone.trim()) return
+
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => {
+      persistDraft()
+    }, 1500)
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+    }
+    // Re-run whenever any field that feeds buildPayload changes.
+  }, [clientName, clientEmail, clientPhone, notes, validUntil, items, persistDraft])
+
+  const sendQuotation = async () => {
+    if (!clientName.trim() || !clientPhone.trim()) {
+      setError('Client name and phone are required.')
+      return
+    }
+
+    setSending(true)
+    setError(null)
+
+    try {
+      // Make sure the latest edits are persisted first.
+      await persistDraft()
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) {
+        setError('You must be logged in.')
+        return
+      }
+
+      const payload = buildPayload('sent')
+
+      if (quotationIdRef.current) {
+        const { error: updateError } = await supabase
+          .from('quotations')
+          .update(payload)
+          .eq('id', quotationIdRef.current)
+        if (updateError) throw updateError
+      } else {
+        const { error: insertError } = await supabase
+          .from('quotations')
+          .insert([{ ...payload, created_by: user.id }])
+        if (insertError) throw insertError
+      }
+
+      router.push('/dashboard/quotations')
+      router.refresh()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to send quotation')
+    } finally {
+      setSending(false)
     }
   }
 
   return (
-    <div className="space-y-6 max-w-6xl">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">New Quotation</h1>
-          <p className="text-gray-600 mt-1">
-            Create a new quotation with auto-calculated pricing
-          </p>
-        </div>
-      </div>
+    <div className="mx-auto max-w-5xl space-y-4">
+      <PageHeader
+        title="New Quotation"
+        description="Create a quotation with auto-calculated pricing. Drafts save automatically."
+      >
+        <SaveStatus state={saveState} savedAt={savedAt} />
+        <Button variant="outline" size="sm" onClick={() => router.back()} disabled={sending}>
+          Cancel
+        </Button>
+        <Button size="sm" onClick={sendQuotation} disabled={sending}>
+          <Send className="h-4 w-4" />
+          {sending ? 'Sending...' : 'Save & Send'}
+        </Button>
+      </PageHeader>
 
       {error && (
-        <div className="bg-red-50 text-red-600 p-4 rounded-md">
+        <div className="rounded-lg bg-rose-50 p-3 text-sm text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20">
           {error}
         </div>
       )}
@@ -216,11 +282,11 @@ export default function NewQuotationPage() {
       {/* Client Information */}
       <Card>
         <CardHeader>
-          <CardTitle>Client Information</CardTitle>
+          <CardTitle className="text-base">Client Information</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            <div className="space-y-1.5">
               <Label htmlFor="clientName">Client Name *</Label>
               <Input
                 id="clientName"
@@ -230,7 +296,7 @@ export default function NewQuotationPage() {
                 required
               />
             </div>
-            <div>
+            <div className="space-y-1.5">
               <Label htmlFor="clientPhone">Phone Number *</Label>
               <Input
                 id="clientPhone"
@@ -241,8 +307,8 @@ export default function NewQuotationPage() {
                 required
               />
             </div>
-            <div>
-              <Label htmlFor="clientEmail">Email (Optional)</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="clientEmail">Email (optional)</Label>
               <Input
                 id="clientEmail"
                 type="email"
@@ -251,7 +317,7 @@ export default function NewQuotationPage() {
                 placeholder="Enter email"
               />
             </div>
-            <div>
+            <div className="space-y-1.5">
               <Label htmlFor="validUntil">Valid Until</Label>
               <Input
                 id="validUntil"
@@ -266,31 +332,32 @@ export default function NewQuotationPage() {
 
       {/* Line Items */}
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Window Items</CardTitle>
-          <Button onClick={addItem} size="sm">
-            <Plus className="w-4 h-4 mr-2" />
+        <CardHeader className="flex flex-row items-center justify-between space-y-0">
+          <CardTitle className="text-base">Window Items</CardTitle>
+          <Button onClick={addItem} size="sm" variant="outline">
+            <Plus className="h-4 w-4" />
             Add Item
           </Button>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3">
           {items.map((item, index) => (
-            <div key={item.id} className="border rounded-lg p-4 space-y-4">
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="font-medium">Item {index + 1}</h4>
+            <div key={item.id} className="space-y-3 rounded-lg border border-border p-3">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-semibold text-heading">Item {index + 1}</h4>
                 {items.length > 1 && (
                   <Button
                     variant="ghost"
-                    size="sm"
+                    size="icon"
+                    className="h-8 w-8"
                     onClick={() => removeItem(item.id)}
                   >
-                    <Trash2 className="w-4 h-4 text-red-600" />
+                    <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
                 )}
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div>
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                <div className="space-y-1.5">
                   <Label>Window Type</Label>
                   <Select
                     value={item.windowType}
@@ -303,7 +370,7 @@ export default function NewQuotationPage() {
                   </Select>
                 </div>
 
-                <div>
+                <div className="space-y-1.5">
                   <Label>Width (mm)</Label>
                   <Input
                     type="number"
@@ -312,7 +379,7 @@ export default function NewQuotationPage() {
                   />
                 </div>
 
-                <div>
+                <div className="space-y-1.5">
                   <Label>Height (mm)</Label>
                   <Input
                     type="number"
@@ -321,7 +388,7 @@ export default function NewQuotationPage() {
                   />
                 </div>
 
-                <div>
+                <div className="space-y-1.5">
                   <Label>Quantity</Label>
                   <Input
                     type="number"
@@ -331,7 +398,7 @@ export default function NewQuotationPage() {
                   />
                 </div>
 
-                <div>
+                <div className="space-y-1.5">
                   <Label>Profile Type</Label>
                   <Select
                     value={item.profileType}
@@ -342,7 +409,7 @@ export default function NewQuotationPage() {
                   </Select>
                 </div>
 
-                <div>
+                <div className="space-y-1.5">
                   <Label>Glass Type</Label>
                   <Select
                     value={item.glassType}
@@ -355,7 +422,7 @@ export default function NewQuotationPage() {
                   </Select>
                 </div>
 
-                <div>
+                <div className="space-y-1.5">
                   <Label>Color</Label>
                   <Select
                     value={item.color}
@@ -369,7 +436,7 @@ export default function NewQuotationPage() {
                   </Select>
                 </div>
 
-                <div>
+                <div className="space-y-1.5">
                   <Label>Accessories (₹)</Label>
                   <Input
                     type="number"
@@ -380,27 +447,27 @@ export default function NewQuotationPage() {
               </div>
 
               {/* Cost Breakdown */}
-              <div className="bg-gray-50 p-4 rounded-md">
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+              <div className="rounded-lg bg-secondary/50 p-3">
+                <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-5">
                   <div>
-                    <p className="text-gray-600">Profile</p>
-                    <p className="font-medium">{formatCurrency(item.profileCost)}</p>
+                    <p className="text-xs text-muted-foreground">Profile</p>
+                    <p className="font-medium text-foreground">{formatCurrency(item.profileCost)}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600">Glass</p>
-                    <p className="font-medium">{formatCurrency(item.glassCost)}</p>
+                    <p className="text-xs text-muted-foreground">Glass</p>
+                    <p className="font-medium text-foreground">{formatCurrency(item.glassCost)}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600">Labour</p>
-                    <p className="font-medium">{formatCurrency(item.labourCost)}</p>
+                    <p className="text-xs text-muted-foreground">Labour</p>
+                    <p className="font-medium text-foreground">{formatCurrency(item.labourCost)}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600">Accessories</p>
-                    <p className="font-medium">{formatCurrency(item.accessoriesCost)}</p>
+                    <p className="text-xs text-muted-foreground">Accessories</p>
+                    <p className="font-medium text-foreground">{formatCurrency(item.accessoriesCost)}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600">Total</p>
-                    <p className="font-bold text-lg">{formatCurrency(item.total)}</p>
+                    <p className="text-xs text-muted-foreground">Total</p>
+                    <p className="font-bold text-primary">{formatCurrency(item.total)}</p>
                   </div>
                 </div>
               </div>
@@ -412,14 +479,14 @@ export default function NewQuotationPage() {
       {/* Notes */}
       <Card>
         <CardHeader>
-          <CardTitle>Additional Notes</CardTitle>
+          <CardTitle className="text-base">Additional Notes</CardTitle>
         </CardHeader>
         <CardContent>
           <Textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Add any additional notes or terms..."
-            rows={4}
+            rows={3}
           />
         </CardContent>
       </Card>
@@ -427,51 +494,54 @@ export default function NewQuotationPage() {
       {/* Summary */}
       <Card>
         <CardHeader>
-          <CardTitle>Summary</CardTitle>
+          <CardTitle className="text-base">Summary</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2">
-            <div className="flex justify-between text-lg">
-              <span>Total Items:</span>
-              <span className="font-medium">{items.length}</span>
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Total Items</span>
+              <span className="font-medium text-foreground">{items.length}</span>
             </div>
-            <div className="flex justify-between text-lg">
-              <span>Total Quantity:</span>
-              <span className="font-medium">{items.reduce((sum, item) => sum + item.quantity, 0)}</span>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Total Quantity</span>
+              <span className="font-medium text-foreground">{totalQuantity}</span>
             </div>
-            <div className="flex justify-between text-2xl font-bold text-blue-600 pt-4 border-t">
-              <span>Grand Total:</span>
+            <div className="flex items-center justify-between border-t border-border pt-3 text-lg font-bold text-primary">
+              <span>Grand Total</span>
               <span>{formatCurrency(grandTotal)}</span>
             </div>
           </div>
         </CardContent>
       </Card>
-
-      {/* Actions */}
-      <div className="flex gap-4">
-        <Button
-          variant="outline"
-          onClick={() => router.back()}
-          disabled={loading}
-        >
-          Cancel
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => saveQuotation('draft')}
-          disabled={loading}
-        >
-          <Save className="w-4 h-4 mr-2" />
-          Save as Draft
-        </Button>
-        <Button
-          onClick={() => saveQuotation('sent')}
-          disabled={loading}
-        >
-          <Send className="w-4 h-4 mr-2" />
-          {loading ? 'Saving...' : 'Save & Send'}
-        </Button>
-      </div>
     </div>
   )
+}
+
+function SaveStatus({ state, savedAt }: { state: SaveState; savedAt: Date | null }) {
+  if (state === 'saving') {
+    return (
+      <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+        Saving...
+      </span>
+    )
+  }
+  if (state === 'error') {
+    return (
+      <span className="flex items-center gap-1.5 text-xs text-destructive">
+        <CloudOff className="h-3.5 w-3.5" />
+        Not saved
+      </span>
+    )
+  }
+  if (state === 'saved' && savedAt) {
+    return (
+      <span className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400">
+        <Check className="h-3.5 w-3.5" />
+        Saved{' '}
+        {savedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+      </span>
+    )
+  }
+  return null
 }
