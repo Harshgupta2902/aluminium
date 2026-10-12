@@ -1,14 +1,21 @@
--- Database Updates
--- This file contains incremental database changes
--- After applying these changes, merge them into supabase_setup.sql and clear this file
-
 -- =============================================================================
--- INSTRUCTIONS:
--- 1. Copy queries from this file
--- 2. Paste and run in Supabase SQL Editor
+-- DATABASE UPDATES
+-- =============================================================================
+-- This file contains incremental database changes.
+-- 
+-- WORKFLOW (ALWAYS FOLLOW):
+-- 1. Add new SQL changes HERE (never edit supabase_setup.sql directly)
+-- 2. Copy and paste THIS FILE's content into Supabase SQL Editor
 -- 3. After successful execution, merge changes into supabase_setup.sql
--- 4. Clear this file for next updates
+-- 4. Clear this file (reset to "No pending updates")
+-- 
+-- See DATABASE_WORKFLOW.md for detailed instructions.
+-- See .kiro/steering/database-rules.md for AI assistant rules.
 -- =============================================================================
 
--- No pending updates at this time
+-- STATUS: No pending updates at this time
 -- Initial schema is in supabase_setup.sql
+
+-- =============================================================================
+-- ADD NEW CHANGES BELOW THIS LINE
+-- =============================================================================

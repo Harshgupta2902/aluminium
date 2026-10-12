@@ -57,6 +57,17 @@ aluminium/
 
 ## Getting Started
 
+### Database Change Workflow ⚠️
+
+**IMPORTANT**: When making database changes, always follow this workflow:
+
+1. **Add SQL to `updates.sql`** (never edit `supabase_setup.sql` directly)
+2. **Copy & paste in Supabase SQL Editor** to test
+3. **Update `supabase_setup.sql`** after confirmation
+4. **Clear `updates.sql`** for next changes
+
+See `DATABASE_WORKFLOW.md` for detailed instructions.
+
 ### Prerequisites
 
 - Node.js 18+ installed
