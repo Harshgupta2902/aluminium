@@ -1,4 +1,3 @@
-import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -19,9 +18,6 @@ interface TemplateRow {
 }
 
 export default async function DesignsPage() {
-  // Live, request-time data: opt out of the static shell up front.
-  await connection()
-
   const supabase = await createClient()
 
   // Fetch window templates

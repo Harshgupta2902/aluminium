@@ -12,7 +12,7 @@ interface HeaderProps {
 
 export function Header({ user }: HeaderProps) {
   return (
-    <header className="sticky top-3 z-10 mx-4 mt-3 flex h-14 items-center justify-end gap-3 rounded-xl border border-border bg-card/90 px-4 shadow-sm backdrop-blur-md">
+    <header className="flex h-14 shrink-0 items-center justify-end gap-3 border-b border-border bg-card px-4">
       <Button variant="ghost" size="icon" className="relative h-9 w-9">
         <Bell className="h-5 w-5" />
         <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-destructive ring-2 ring-card"></span>
