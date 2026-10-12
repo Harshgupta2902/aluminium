@@ -54,23 +54,10 @@ export default function SignupPage() {
       }
 
       if (data.user) {
-        // Create profile in public.profiles table
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert([
-            {
-              id: data.user.id,
-              email: email,
-              full_name: fullName,
-              company_name: companyName,
-              role: 'admin',
-            },
-          ])
-
-        if (profileError) {
-          console.error('Profile creation error:', profileError)
-        }
-
+        // Profile is created automatically by the `on_auth_user_created`
+        // database trigger (handle_new_user), which reads full_name and
+        // company_name from the signUp metadata above. No client-side
+        // insert needed, which also avoids RLS/timing issues right after signup.
         router.push('/dashboard')
         router.refresh()
       }
