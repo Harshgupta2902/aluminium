@@ -2,8 +2,10 @@ import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/components/dashboard/page-header'
-import { Plus, Users, Phone, Mail } from 'lucide-react'
+import { Users, Phone, Mail } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
+import { AddClientDialog } from '@/components/crm/add-client-dialog'
+import Link from 'next/link'
 
 export default async function ClientsPage() {
   const supabase = await createClient()
@@ -52,10 +54,7 @@ export default async function ClientsPage() {
         title="Clients & CRM"
         description="Manage your clients and relationships"
       >
-        <Button>
-          <Plus className="h-4 w-4" />
-          Add Client
-        </Button>
+        <AddClientDialog />
       </PageHeader>
 
       {/* Summary Cards */}
@@ -78,7 +77,7 @@ export default async function ClientsPage() {
             <div className="text-center py-10">
               <Users className="w-10 h-10 mx-auto text-muted-foreground/40 mb-3" />
               <p className="text-sm text-muted-foreground mb-4">No clients yet</p>
-              <Button>Add Your First Client</Button>
+              <AddClientDialog trigger="empty-state" />
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -136,8 +135,9 @@ export default async function ClientsPage() {
                       </td>
                       <td className="px-4 py-2.5">
                         <div className="flex justify-end gap-2">
-                          <Button size="sm" variant="outline">View</Button>
-                          <Button size="sm">Quote</Button>
+                          <Link href={`/dashboard/quotations/new?client=${client.id}`}>
+                            <Button size="sm">Quote</Button>
+                          </Link>
                         </div>
                       </td>
                     </tr>

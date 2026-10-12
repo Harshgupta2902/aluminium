@@ -2,17 +2,34 @@ import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { ArrowLeft, Edit } from 'lucide-react'
+import { ArrowLeft, Pencil } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { DownloadPDFButton } from '@/components/quotations/download-pdf-button'
 import { SendWhatsAppButton } from '@/components/quotations/send-whatsapp-button'
 
-const statusColors = {
-  draft: 'bg-gray-100 text-gray-800',
-  sent: 'bg-blue-100 text-blue-800',
-  approved: 'bg-green-100 text-green-800',
-  rejected: 'bg-red-100 text-red-800',
+const statusStyles: Record<string, string> = {
+  draft:
+    'bg-secondary text-secondary-foreground ring-1 ring-inset ring-border-strong',
+  sent: 'bg-primary-soft text-primary ring-1 ring-inset ring-primary/20',
+  approved:
+    'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20',
+  rejected:
+    'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20',
+}
+
+interface QuotationLineItem {
+  window_type: string
+  dimensions: { width: number; height: number }
+  quantity: number
+  profile_type: string
+  glass_type: string
+  color: string
+  profile_cost: number
+  glass_cost: number
+  labour_cost: number
+  accessories_cost: number
+  total_cost: number
 }
 
 export default async function QuotationDetailPage({
@@ -33,76 +50,63 @@ export default async function QuotationDetailPage({
     notFound()
   }
 
-  const items = quotation.items || []
+  const items: QuotationLineItem[] = quotation.items || []
+  const status = quotation.status as string
 
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div className="mx-auto max-w-5xl space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
           <Link href="/dashboard/quotations">
-            <Button variant="ghost" size="icon">
-              <ArrowLeft className="w-5 h-5" />
+            <Button variant="ghost" size="icon" className="h-9 w-9">
+              <ArrowLeft className="h-5 w-5" />
             </Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              {quotation.quotation_number}
-            </h1>
-            <p className="text-gray-600 mt-1">
+            <div className="flex items-center gap-2.5">
+              <h1 className="text-xl font-bold leading-tight text-heading">
+                {quotation.quotation_number}
+              </h1>
+              <span
+                className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                  statusStyles[status] ?? statusStyles.draft
+                }`}
+              >
+                {status.toUpperCase()}
+              </span>
+            </div>
+            <p className="text-sm text-muted-foreground">
               Created on {formatDate(quotation.created_at)}
             </p>
           </div>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline">
-            <Edit className="w-4 h-4 mr-2" />
-            Edit
-          </Button>
+        <div className="flex items-center gap-2">
+          <Link href={`/dashboard/quotations/new?edit=${quotation.id}`}>
+            <Button variant="outline" size="sm">
+              <Pencil className="h-4 w-4" />
+              Edit
+            </Button>
+          </Link>
           <DownloadPDFButton quotation={quotation} />
           <SendWhatsAppButton quotation={quotation} />
         </div>
       </div>
 
-      {/* Status */}
-      <div>
-        <span
-          className={`px-4 py-2 text-sm font-medium rounded-full ${
-            statusColors[quotation.status as keyof typeof statusColors]
-          }`}
-        >
-          {quotation.status.toUpperCase()}
-        </span>
-      </div>
-
       {/* Client Information */}
       <Card>
         <CardHeader>
-          <CardTitle>Client Information</CardTitle>
+          <CardTitle className="text-base">Client Information</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm text-gray-600">Name</p>
-              <p className="font-medium text-lg">{quotation.client_name}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Phone</p>
-              <p className="font-medium text-lg">{quotation.client_phone}</p>
-            </div>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3 md:grid-cols-4">
+            <Field label="Name" value={quotation.client_name} />
+            <Field label="Phone" value={quotation.client_phone} />
             {quotation.client_email && (
-              <div>
-                <p className="text-sm text-gray-600">Email</p>
-                <p className="font-medium text-lg">{quotation.client_email}</p>
-              </div>
+              <Field label="Email" value={quotation.client_email} />
             )}
             {quotation.valid_until && (
-              <div>
-                <p className="text-sm text-gray-600">Valid Until</p>
-                <p className="font-medium text-lg">
-                  {formatDate(quotation.valid_until)}
-                </p>
-              </div>
+              <Field label="Valid Until" value={formatDate(quotation.valid_until)} />
             )}
           </div>
         </CardContent>
@@ -111,71 +115,48 @@ export default async function QuotationDetailPage({
       {/* Line Items */}
       <Card>
         <CardHeader>
-          <CardTitle>Items</CardTitle>
+          <CardTitle className="text-base">Items</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {items.map((item: any, index: number) => (
-              <div key={index} className="border rounded-lg p-4 space-y-3">
-                <div className="flex justify-between items-start">
+        <CardContent className="space-y-3">
+          {items.map((item, index) => (
+            <div key={index} className="space-y-3 rounded-lg border border-border p-3">
+              <div className="flex items-start justify-between">
+                <div>
+                  <h4 className="text-sm font-semibold capitalize text-heading">
+                    {item.window_type} Window
+                  </h4>
+                  <p className="text-xs text-muted-foreground">
+                    {item.dimensions.width}mm × {item.dimensions.height}mm
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-muted-foreground">Quantity</p>
+                  <p className="text-sm font-semibold text-heading">{item.quantity}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 text-sm">
+                <Field label="Profile" value={item.profile_type} capitalize />
+                <Field label="Glass" value={item.glass_type} capitalize />
+                <Field label="Color" value={item.color} capitalize />
+              </div>
+
+              <div className="rounded-lg bg-secondary/50 p-3">
+                <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-5">
+                  <Cost label="Profile" value={item.profile_cost} />
+                  <Cost label="Glass" value={item.glass_cost} />
+                  <Cost label="Labour" value={item.labour_cost} />
+                  <Cost label="Accessories" value={item.accessories_cost} />
                   <div>
-                    <h4 className="font-semibold text-lg capitalize">
-                      {item.window_type} Window
-                    </h4>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {item.dimensions.width}mm × {item.dimensions.height}mm
+                    <p className="text-xs text-muted-foreground">Total</p>
+                    <p className="font-bold text-primary">
+                      {formatCurrency(item.total_cost)}
                     </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-gray-600">Quantity</p>
-                    <p className="font-semibold text-lg">{item.quantity}</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-3 gap-4 text-sm">
-                  <div>
-                    <p className="text-gray-600">Profile</p>
-                    <p className="font-medium capitalize">{item.profile_type}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Glass</p>
-                    <p className="font-medium capitalize">{item.glass_type}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Color</p>
-                    <p className="font-medium capitalize">{item.color}</p>
-                  </div>
-                </div>
-
-                <div className="bg-gray-50 p-3 rounded-md">
-                  <div className="grid grid-cols-5 gap-4 text-sm">
-                    <div>
-                      <p className="text-gray-600">Profile</p>
-                      <p className="font-medium">{formatCurrency(item.profile_cost)}</p>
-                    </div>
-                    <div>
-                      <p className="text-gray-600">Glass</p>
-                      <p className="font-medium">{formatCurrency(item.glass_cost)}</p>
-                    </div>
-                    <div>
-                      <p className="text-gray-600">Labour</p>
-                      <p className="font-medium">{formatCurrency(item.labour_cost)}</p>
-                    </div>
-                    <div>
-                      <p className="text-gray-600">Accessories</p>
-                      <p className="font-medium">{formatCurrency(item.accessories_cost)}</p>
-                    </div>
-                    <div>
-                      <p className="text-gray-600 font-semibold">Total</p>
-                      <p className="font-bold text-blue-600">
-                        {formatCurrency(item.total_cost)}
-                      </p>
-                    </div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </CardContent>
       </Card>
 
@@ -183,31 +164,59 @@ export default async function QuotationDetailPage({
       {quotation.notes && (
         <Card>
           <CardHeader>
-            <CardTitle>Notes</CardTitle>
+            <CardTitle className="text-base">Notes</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-700 whitespace-pre-wrap">{quotation.notes}</p>
+            <p className="whitespace-pre-wrap text-sm text-foreground">
+              {quotation.notes}
+            </p>
           </CardContent>
         </Card>
       )}
 
       {/* Total */}
       <Card>
-        <CardContent className="pt-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-gray-600">Total Items</p>
-              <p className="text-2xl font-bold">{items.length}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-gray-600 mb-2">Grand Total</p>
-              <p className="text-4xl font-bold text-blue-600">
-                {formatCurrency(quotation.total_amount)}
-              </p>
-            </div>
+        <CardContent className="flex items-center justify-between py-4">
+          <div>
+            <p className="text-xs text-muted-foreground">Total Items</p>
+            <p className="text-xl font-bold text-heading">{items.length}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-xs text-muted-foreground">Grand Total</p>
+            <p className="text-2xl font-bold text-primary">
+              {formatCurrency(quotation.total_amount)}
+            </p>
           </div>
         </CardContent>
       </Card>
+    </div>
+  )
+}
+
+function Field({
+  label,
+  value,
+  capitalize,
+}: {
+  label: string
+  value: string
+  capitalize?: boolean
+}) {
+  return (
+    <div>
+      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className={`font-medium text-foreground ${capitalize ? 'capitalize' : ''}`}>
+        {value}
+      </p>
+    </div>
+  )
+}
+
+function Cost({ label, value }: { label: string; value: number }) {
+  return (
+    <div>
+      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="font-medium text-foreground">{formatCurrency(value)}</p>
     </div>
   )
 }
