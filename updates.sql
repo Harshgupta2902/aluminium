@@ -52,3 +52,15 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW
   EXECUTE FUNCTION public.handle_new_user();
+
+-- =============================================================================
+-- FEATURE: Interactive window design editor
+-- =============================================================================
+-- The /design/[id] editor stores a full canvas document (multiple window
+-- shapes + design detail fields). Add a single JSONB column to hold that
+-- document without disturbing the existing single-window columns.
+-- =============================================================================
+
+-- Full editor document: { details: {...}, shapes: [...] }
+ALTER TABLE public.window_designs
+  ADD COLUMN IF NOT EXISTS editor_document JSONB;
