@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Plus, FileText, DollarSign } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
+import { connection } from 'next/server'
 import Link from 'next/link'
 
 const statusColors = {
@@ -12,6 +13,9 @@ const statusColors = {
 }
 
 export default async function BillingPage() {
+  // Reads cookies (session) at request time; keep out of the static shell.
+  await connection()
+
   const supabase = await createClient()
 
   // Fetch invoices

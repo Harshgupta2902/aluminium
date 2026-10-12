@@ -1,3 +1,4 @@
+import { connection } from 'next/server'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 
@@ -6,6 +7,9 @@ export default async function DesignLayout({
 }: {
   children: React.ReactNode
 }) {
+  // The session read (token time-check + cookies) is request-time work.
+  await connection()
+
   const supabase = await createClient()
 
   const {

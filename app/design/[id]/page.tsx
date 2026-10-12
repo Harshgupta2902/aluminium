@@ -5,6 +5,7 @@ import { ArrowLeft, Edit, Download } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { formatDimensions, calculateGlassArea } from '@/lib/calculations'
+import { connection } from 'next/server'
 
 export default async function DesignViewPage({
   params,
@@ -13,6 +14,9 @@ export default async function DesignViewPage({
   params: Promise<{ id: string }>
   searchParams: Promise<{ quotationId?: string; environment?: string }>
 }) {
+  // Request-time route (session + per-request params/data); not prerendered.
+  await connection()
+
   const { id } = await params
   const { quotationId, environment } = await searchParams
   const supabase = await createClient()

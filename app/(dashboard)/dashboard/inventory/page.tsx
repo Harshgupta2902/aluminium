@@ -2,8 +2,12 @@ import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Plus, Package, Wine, Wrench } from 'lucide-react'
+import { connection } from 'next/server'
 
 export default async function InventoryPage() {
+  // Reads cookies (session) at request time; keep out of the static shell.
+  await connection()
+
   const supabase = await createClient()
 
   // Fetch inventory counts

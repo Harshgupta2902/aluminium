@@ -1,3 +1,4 @@
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { StatCard } from '@/components/dashboard/stat-card'
 import { RecentQuotations } from '@/components/dashboard/recent-quotations'
@@ -8,6 +9,11 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 export default async function DashboardPage() {
+  // This page reads cookies (session), live Supabase data, and the current
+  // date (new Date()). All of that is request-time work that can't be
+  // prerendered, so stop prerendering here.
+  await connection()
+
   const supabase = await createClient()
   const {
     data: { user },

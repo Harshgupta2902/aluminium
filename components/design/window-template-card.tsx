@@ -1,3 +1,5 @@
+'use client'
+
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Palette } from 'lucide-react'
@@ -14,12 +16,15 @@ interface WindowTemplateCardProps {
     image_url?: string
     description?: string
   }
-  onSelect: (template: any) => void
+  onSelect?: (template: WindowTemplateCardProps['template']) => void
 }
 
 export function WindowTemplateCard({ template, onSelect }: WindowTemplateCardProps) {
   return (
-    <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => onSelect(template)}>
+    <Card
+      className="hover:shadow-lg transition-shadow cursor-pointer"
+      onClick={onSelect ? () => onSelect(template) : undefined}
+    >
       <CardContent className="p-4">
         <div className="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
           {template.image_url ? (

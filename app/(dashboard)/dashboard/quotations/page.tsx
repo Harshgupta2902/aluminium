@@ -5,6 +5,7 @@ import { Plus, FileText } from 'lucide-react'
 import Link from 'next/link'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { DownloadPDFButton } from '@/components/quotations/download-pdf-button'
+import { connection } from 'next/server'
 
 const statusColors = {
   draft: 'bg-gray-100 text-gray-800',
@@ -14,6 +15,9 @@ const statusColors = {
 }
 
 export default async function QuotationsPage() {
+  // Reads cookies (session) at request time; keep out of the static shell.
+  await connection()
+
   const supabase = await createClient()
   
   const { data: quotations } = await supabase

@@ -1,7 +1,9 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
+// Next.js 16: the former `middleware.ts` convention is renamed to `proxy.ts`.
+// The function is exported as `proxy`.
+export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -15,9 +17,12 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
+          // Write cookies onto the request so downstream reads see them...
+          cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           )
+          // ...then recreate the response and copy cookies (with options)
+          // onto it so the Set-Cookie headers reach the browser.
           supabaseResponse = NextResponse.next({
             request,
           })
@@ -29,6 +34,8 @@ export async function middleware(request: NextRequest) {
     }
   )
 
+  // IMPORTANT: Do not run code between createServerClient and getUser().
+  // getUser() refreshes the auth token and triggers setAll above.
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -56,6 +63,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
+  // IMPORTANT: return the supabaseResponse so refreshed auth cookies persist.
   return supabaseResponse
 }
 

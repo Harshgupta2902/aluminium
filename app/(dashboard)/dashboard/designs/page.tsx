@@ -1,3 +1,4 @@
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -7,6 +8,10 @@ import Link from 'next/link'
 import { WindowTemplateCard } from '@/components/design/window-template-card'
 
 export default async function DesignsPage() {
+  // The server Supabase client reads cookies, which is request-time work.
+  // connection() keeps this out of the prerendered static shell.
+  await connection()
+
   const supabase = await createClient()
   
   // Fetch window templates
@@ -70,10 +75,7 @@ export default async function DesignsPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {categoryTemplates.map((template: any) => (
                 <Link key={template.id} href={`/design/new?template=${template.id}`}>
-                  <WindowTemplateCard
-                    template={template}
-                    onSelect={() => {}}
-                  />
+                  <WindowTemplateCard template={template} />
                 </Link>
               ))}
             </div>
