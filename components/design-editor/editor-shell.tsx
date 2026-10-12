@@ -23,6 +23,7 @@ export function EditorShell({
   const load = useEditorStore((s) => s.load)
   const toDocument = useEditorStore((s) => s.toDocument)
   const shapes = useEditorStore((s) => s.shapes)
+  const details = useEditorStore((s) => s.details)
 
   const [detailsOpen, setDetailsOpen] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -97,12 +98,24 @@ export function EditorShell({
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-gray-100">
       {/* Top bar */}
-      <header className="flex h-14 items-center justify-between border-b bg-white px-4">
-        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gray-900 text-lg font-bold text-white">
-          S
+      <header className="flex h-14 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-gray-800 to-gray-900 text-lg font-bold text-white shadow-sm">
+            S
+          </div>
+          <div className="leading-tight">
+            <div className="text-sm font-semibold text-gray-900">
+              {details.designName || details.designRef || 'Untitled design'}
+            </div>
+            <div className="text-xs text-gray-400">Window designer</div>
+          </div>
         </div>
         <div className="flex items-center gap-3">
-          {error && <span className="text-sm text-red-600">{error}</span>}
+          {error && (
+            <span className="rounded-md bg-red-50 px-2.5 py-1 text-sm text-red-600">
+              {error}
+            </span>
+          )}
           <Button onClick={handleSave} disabled={saving || shapes.length === 0}>
             {saving ? (
               <Loader2 className="h-4 w-4 animate-spin" />

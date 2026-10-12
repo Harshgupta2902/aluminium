@@ -1,6 +1,6 @@
 'use client'
 
-import { Minus, Plus, X } from 'lucide-react'
+import { AlertCircle, Minus, Plus, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
@@ -21,15 +21,20 @@ export function DetailsPanel({ onClose }: { onClose?: () => void }) {
 
   const selected = shapes.find((s) => s.id === selectedId) ?? null
 
+  // Lightweight validation surfaced in the footer.
+  const issues: string[] = []
+  if (!details.designRef.trim()) issues.push('Design Ref is required')
+  if (!details.glassType) issues.push('Glass Type is required')
+
   return (
-    <div className="flex h-full w-80 flex-col border-r bg-white">
-      <div className="flex items-center justify-between border-b px-4 py-3">
+    <div className="flex h-full w-80 flex-col border-r border-gray-200 bg-white">
+      <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
         <h2 className="text-base font-semibold text-gray-900">Design Details</h2>
         {onClose && (
           <button
             type="button"
             onClick={onClose}
-            className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+            className="rounded-md p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
             aria-label="Close"
           >
             <X className="h-4 w-4" />
@@ -37,7 +42,7 @@ export function DetailsPanel({ onClose }: { onClose?: () => void }) {
         )}
       </div>
 
-      <div className="flex-1 space-y-4 overflow-y-auto p-4">
+      <div className="flex-1 space-y-5 overflow-y-auto p-4">
         <div className="grid grid-cols-2 gap-3">
           <Field label="Design Ref" required>
             <Input
@@ -184,8 +189,21 @@ export function DetailsPanel({ onClose }: { onClose?: () => void }) {
         </Field>
       </div>
 
-      <div className="border-t p-4">
-        <Button className="w-full" onClick={onClose}>
+      <div className="space-y-2 border-t border-gray-200 bg-gray-50/60 p-4">
+        {issues.length > 0 && (
+          <div className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">
+            <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+            <span>
+              {issues.length} {issues.length === 1 ? 'issue' : 'issues'}:{' '}
+              {issues.join(', ')}
+            </span>
+          </div>
+        )}
+        <Button
+          className="w-full"
+          onClick={onClose}
+          disabled={issues.length > 0}
+        >
           Apply
         </Button>
       </div>
