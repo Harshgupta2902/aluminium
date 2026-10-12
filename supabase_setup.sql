@@ -73,6 +73,7 @@ CREATE TABLE public.window_designs (
   color TEXT NOT NULL,
   hardware JSONB DEFAULT '[]'::JSONB,
   preview_image TEXT,
+  editor_document JSONB,
   created_by UUID REFERENCES public.profiles(id),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
@@ -177,6 +178,10 @@ CREATE POLICY "Users can view their own profile" ON public.profiles
 
 CREATE POLICY "Users can update their own profile" ON public.profiles
   FOR UPDATE USING (auth.uid() = id);
+
+-- Safety-net INSERT policy: users can insert their own profile row
+CREATE POLICY "Users can insert their own profile" ON public.profiles
+  FOR INSERT WITH CHECK (auth.uid() = id);
 
 -- Clients policies
 CREATE POLICY "Authenticated users can view all clients" ON public.clients
@@ -286,6 +291,45 @@ CREATE TRIGGER generate_invoice_number_trigger
   BEFORE INSERT ON public.invoices
   FOR EACH ROW
   EXECUTE FUNCTION set_invoice_number();
+
+-- Auto-create a profile row when a new auth user signs up.
+-- SECURITY DEFINER lets it bypass RLS. Pulls full_name/company_name from the
+-- signup metadata (options.data) passed by the client.
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email, full_name, company_name, role)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NULLIF(NEW.raw_user_meta_data->>'full_name', ''), split_part(NEW.email, '@', 1)),
+    NEW.raw_user_meta_data->>'company_name',
+    'admin'
+  )
+  ON CONFLICT (id) DO NOTHING;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION public.handle_new_user();
+
+-- Backfill profiles for any existing auth users missing one (keeps the
+-- created_by foreign keys valid for accounts created before the trigger).
+INSERT INTO public.profiles (id, email, full_name, company_name, role)
+SELECT
+  u.id,
+  u.email,
+  COALESCE(NULLIF(u.raw_user_meta_data->>'full_name', ''), split_part(u.email, '@', 1)),
+  u.raw_user_meta_data->>'company_name',
+  'admin'
+FROM auth.users u
+LEFT JOIN public.profiles p ON p.id = u.id
+WHERE p.id IS NULL
+ON CONFLICT (id) DO NOTHING;
 
 -- Insert sample window templates
 INSERT INTO public.window_templates (name, category, window_type, default_width, default_height, description) VALUES

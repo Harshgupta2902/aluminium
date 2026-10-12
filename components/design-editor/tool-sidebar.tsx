@@ -6,7 +6,7 @@ import {
   SlidersHorizontal,
   Square,
   DoorOpen,
-  SlidersHorizontal as SlidingIcon,
+  GalleryHorizontal,
   X,
 } from 'lucide-react'
 import {
@@ -17,10 +17,8 @@ import { useEditorStore } from '@/store/design-editor'
 import { cn } from '@/lib/utils'
 import { MiniTemplatePreview } from './mini-template-preview'
 
-type PanelId = 'details' | string
-
 const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  'Sliding Windows': SlidingIcon,
+  'Sliding Windows': GalleryHorizontal,
   'Casement Windows': SlidersHorizontal,
   'Fixed Windows': Square,
   Doors: DoorOpen,

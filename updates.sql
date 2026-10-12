@@ -64,3 +64,31 @@ CREATE TRIGGER on_auth_user_created
 -- Full editor document: { details: {...}, shapes: [...] }
 ALTER TABLE public.window_designs
   ADD COLUMN IF NOT EXISTS editor_document JSONB;
+
+-- =============================================================================
+-- FIX: FK violation "quotations_created_by_fkey" (and the same for designs,
+--      invoices, clients) — the logged-in auth user has no row in profiles.
+-- =============================================================================
+-- The on_auth_user_created trigger only fills profiles for NEW signups.
+-- Existing auth users created before the trigger have no profile row, so any
+-- insert with created_by = auth.uid() fails the foreign key to profiles(id).
+--
+-- Backfill a profile row for every existing auth user that is missing one.
+-- Safe to run multiple times (ON CONFLICT DO NOTHING). full_name is NOT NULL,
+-- so fall back to the email local-part when no name metadata exists.
+-- =============================================================================
+
+INSERT INTO public.profiles (id, email, full_name, company_name, role)
+SELECT
+  u.id,
+  u.email,
+  COALESCE(
+    NULLIF(u.raw_user_meta_data->>'full_name', ''),
+    split_part(u.email, '@', 1)
+  ),
+  u.raw_user_meta_data->>'company_name',
+  'admin'
+FROM auth.users u
+LEFT JOIN public.profiles p ON p.id = u.id
+WHERE p.id IS NULL
+ON CONFLICT (id) DO NOTHING;
