@@ -7,6 +7,8 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { DownloadPDFButton } from '@/components/quotations/download-pdf-button'
 import { SendWhatsAppButton } from '@/components/quotations/send-whatsapp-button'
+import { DesignPreview } from '@/components/design-editor/design-preview'
+import type { DesignDocument } from '@/lib/design-editor/model'
 
 const statusStyles: Record<string, string> = {
   draft:
@@ -18,18 +20,15 @@ const statusStyles: Record<string, string> = {
     'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20',
 }
 
-interface QuotationLineItem {
-  window_type: string
-  dimensions: { width: number; height: number }
-  quantity: number
-  profile_type: string
-  glass_type: string
-  color: string
-  profile_cost: number
-  glass_cost: number
-  labour_cost: number
-  accessories_cost: number
-  total_cost: number
+interface DesignRow {
+  id: string
+  name: string
+  color: string | null
+  glass_type: string | null
+  area_sqft: number
+  rate_per_sqft: number
+  amount: number
+  editor_document: DesignDocument | null
 }
 
 export default async function QuotationDetailPage({
@@ -50,7 +49,16 @@ export default async function QuotationDetailPage({
     notFound()
   }
 
-  const items: QuotationLineItem[] = quotation.items || []
+  const { data: designRows } = await supabase
+    .from('window_designs')
+    .select('id, name, color, glass_type, area_sqft, rate_per_sqft, amount, editor_document')
+    .eq('quotation_id', id)
+    .order('sort_order', { ascending: true })
+    .order('created_at', { ascending: true })
+
+  const designs: DesignRow[] = (designRows as DesignRow[]) ?? []
+  const totalArea = designs.reduce((sum, d) => sum + (Number(d.area_sqft) || 0), 0)
+  const grandTotal = designs.reduce((sum, d) => sum + (Number(d.amount) || 0), 0)
   const status = quotation.status as string
 
   return (
@@ -112,51 +120,65 @@ export default async function QuotationDetailPage({
         </CardContent>
       </Card>
 
-      {/* Line Items */}
+      {/* Designs */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Items</CardTitle>
+          <CardTitle className="text-base">Designs</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          {items.map((item, index) => (
-            <div key={index} className="space-y-3 rounded-lg border border-border p-3">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h4 className="text-sm font-semibold capitalize text-heading">
-                    {item.window_type} Window
-                  </h4>
-                  <p className="text-xs text-muted-foreground">
-                    {item.dimensions.width}mm × {item.dimensions.height}mm
-                  </p>
+          {designs.length === 0 ? (
+            <p className="py-6 text-center text-sm text-muted-foreground">
+              No designs on this quotation.
+            </p>
+          ) : (
+            designs.map((design, index) => (
+              <div
+                key={design.id}
+                className="flex flex-col gap-4 rounded-lg border border-border p-3 sm:flex-row"
+              >
+                <div className="flex shrink-0 items-center justify-center rounded-md bg-secondary/40 p-2">
+                  {design.editor_document ? (
+                    <DesignPreview
+                      document={design.editor_document}
+                      width={240}
+                      height={190}
+                    />
+                  ) : (
+                    <div className="flex h-[190px] w-[240px] items-center justify-center text-xs text-muted-foreground">
+                      No preview
+                    </div>
+                  )}
                 </div>
-                <div className="text-right">
-                  <p className="text-xs text-muted-foreground">Quantity</p>
-                  <p className="text-sm font-semibold text-heading">{item.quantity}</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-3 text-sm">
-                <Field label="Profile" value={item.profile_type} capitalize />
-                <Field label="Glass" value={item.glass_type} capitalize />
-                <Field label="Color" value={item.color} capitalize />
-              </div>
-
-              <div className="rounded-lg bg-secondary/50 p-3">
-                <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-5">
-                  <Cost label="Profile" value={item.profile_cost} />
-                  <Cost label="Glass" value={item.glass_cost} />
-                  <Cost label="Labour" value={item.labour_cost} />
-                  <Cost label="Accessories" value={item.accessories_cost} />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Total</p>
-                    <p className="font-bold text-primary">
-                      {formatCurrency(item.total_cost)}
+                <div className="flex flex-1 flex-col justify-between gap-3">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h4 className="text-sm font-semibold text-heading">
+                        {index + 1}. {design.name || 'Untitled design'}
+                      </h4>
+                    </div>
+                    <p className="text-lg font-bold text-primary">
+                      {formatCurrency(design.amount)}
                     </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
+                    <Field
+                      label="Area"
+                      value={`${Number(design.area_sqft).toFixed(2)} Sqft`}
+                    />
+                    <Field
+                      label="Rate/Sqft"
+                      value={formatCurrency(design.rate_per_sqft)}
+                    />
+                    <Field
+                      label="Glass"
+                      value={design.glass_type || '—'}
+                    />
+                    <Field label="Color" value={design.color || '—'} capitalize />
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </CardContent>
       </Card>
 
@@ -177,14 +199,22 @@ export default async function QuotationDetailPage({
       {/* Total */}
       <Card>
         <CardContent className="flex items-center justify-between py-4">
-          <div>
-            <p className="text-xs text-muted-foreground">Total Items</p>
-            <p className="text-xl font-bold text-heading">{items.length}</p>
+          <div className="flex gap-8">
+            <div>
+              <p className="text-xs text-muted-foreground">Total Designs</p>
+              <p className="text-xl font-bold text-heading">{designs.length}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Total Area</p>
+              <p className="text-xl font-bold text-heading">
+                {totalArea.toFixed(2)} Sqft
+              </p>
+            </div>
           </div>
           <div className="text-right">
             <p className="text-xs text-muted-foreground">Grand Total</p>
             <p className="text-2xl font-bold text-primary">
-              {formatCurrency(quotation.total_amount)}
+              {formatCurrency(grandTotal)}
             </p>
           </div>
         </CardContent>
@@ -212,11 +242,4 @@ function Field({
   )
 }
 
-function Cost({ label, value }: { label: string; value: number }) {
-  return (
-    <div>
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="font-medium text-foreground">{formatCurrency(value)}</p>
-    </div>
-  )
-}
+

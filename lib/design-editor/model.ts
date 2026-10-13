@@ -58,6 +58,8 @@ export interface DesignDetails {
   designRef: string
   designName: string
   price: number | null
+  /** Rate charged per square foot. Drives the design's amount. */
+  ratePerSqft: number | null
   quantity: number
   unitPrice: boolean
   colour: string
@@ -386,6 +388,7 @@ export function emptyDetails(): DesignDetails {
     designRef: 'W1',
     designName: '',
     price: null,
+    ratePerSqft: null,
     quantity: 1,
     unitPrice: false,
     colour: 'White',

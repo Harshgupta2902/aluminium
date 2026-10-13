@@ -10,26 +10,21 @@ import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { PageHeader } from '@/components/dashboard/page-header'
-import { Plus, Trash2, Send, Check, Loader2, CloudOff, UserPlus } from 'lucide-react'
+import { DesignPreview } from '@/components/design-editor/design-preview'
+import {
+  Plus,
+  Trash2,
+  Send,
+  Check,
+  Loader2,
+  CloudOff,
+  UserPlus,
+  Pencil,
+  LayoutGrid,
+  X,
+} from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
-import { calculateItemTotal } from '@/lib/calculations'
-
-interface QuotationItem {
-  id: string
-  windowType: string
-  width: number
-  height: number
-  quantity: number
-  profileType: string
-  glassType: string
-  color: string
-  accessories: number
-  profileCost: number
-  glassCost: number
-  labourCost: number
-  accessoriesCost: number
-  total: number
-}
+import type { DesignDocument } from '@/lib/design-editor/model'
 
 type SaveState = 'idle' | 'saving' | 'saved' | 'error'
 
@@ -41,52 +36,18 @@ interface ClientOption {
   company: string | null
 }
 
+/** A design row linked to (or linkable to) a quotation. */
+interface DesignRow {
+  id: string
+  name: string
+  quotation_id: string | null
+  area_sqft: number
+  rate_per_sqft: number
+  amount: number
+  editor_document: DesignDocument | null
+}
+
 const NEW_CLIENT = '__new__'
-
-// Compute all derived costs for an item from its inputs.
-function withCosts(item: QuotationItem): QuotationItem {
-  const costs = calculateItemTotal({
-    dimensions: { width: item.width, height: item.height },
-    profileType: item.profileType,
-    profileWeightPerMeter: 1.5, // kg/m
-    profileCostPerKg: 250, // ₹/kg
-    glassType: item.glassType,
-    glassThickness: 5, // mm
-    glassCostPerSqft: 80, // ₹/sqft
-    accessoriesCost: item.accessories,
-    labourCostPerSqft: 50,
-    quantity: item.quantity,
-    markupPercentage: 15,
-  })
-
-  return {
-    ...item,
-    profileCost: costs.profileCost,
-    glassCost: costs.glassCost,
-    labourCost: costs.labourCost,
-    accessoriesCost: costs.accessoriesCost,
-    total: costs.totalWithQuantity,
-  }
-}
-
-function createItem(id: string): QuotationItem {
-  return withCosts({
-    id,
-    windowType: 'sliding',
-    width: 1200,
-    height: 1200,
-    quantity: 1,
-    profileType: 'aluminium',
-    glassType: 'clear',
-    color: 'white',
-    accessories: 0,
-    profileCost: 0,
-    glassCost: 0,
-    labourCost: 0,
-    accessoriesCost: 0,
-    total: 0,
-  })
-}
 
 export default function NewQuotationPage() {
   const router = useRouter()
@@ -102,7 +63,6 @@ export default function NewQuotationPage() {
 
   // Client information
   const [clients, setClients] = useState<ClientOption[]>([])
-  // Selected existing client id, or NEW_CLIENT when entering a new one.
   const [selectedClientId, setSelectedClientId] = useState<string>(NEW_CLIENT)
   const [clientName, setClientName] = useState('')
   const [clientEmail, setClientEmail] = useState('')
@@ -110,13 +70,23 @@ export default function NewQuotationPage() {
   const [notes, setNotes] = useState('')
   const [validUntil, setValidUntil] = useState('')
 
-  // The client_id persisted on the quotation (set when an existing client is
-  // chosen, or after a new client is auto-created on first save).
+  // Designs linked to this quotation.
+  const [designs, setDesigns] = useState<DesignRow[]>([])
+
+  // Catalogue picker.
+  const [catalogueOpen, setCatalogueOpen] = useState(false)
+
+  // The client_id persisted on the quotation.
   const clientIdRef = useRef<string | null>(null)
 
-  // Load existing clients for the picker. If the page was opened with a
-  // ?client=<id> param (e.g. from the Clients page "Quote" button), preselect
-  // that client so a new quotation starts linked to them.
+  // Autosave bookkeeping
+  const [saveState, setSaveState] = useState<SaveState>('idle')
+  const [savedAt, setSavedAt] = useState<Date | null>(null)
+  const quotationIdRef = useRef<string | null>(editId ?? null)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const savingRef = useRef(false)
+
+  // Load existing clients for the picker (and preselect from ?client=).
   useEffect(() => {
     let active = true
     supabase
@@ -144,7 +114,60 @@ export default function NewQuotationPage() {
     }
   }, [supabase, preselectClientId])
 
-  // When an existing client is picked, prefill the snapshot fields.
+  // Load the designs linked to a quotation.
+  const refreshDesigns = useCallback(
+    async (quotationId: string) => {
+      const { data } = await supabase
+        .from('window_designs')
+        .select('id, name, quotation_id, area_sqft, rate_per_sqft, amount, editor_document')
+        .eq('quotation_id', quotationId)
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: true })
+      setDesigns((data as DesignRow[]) ?? [])
+    },
+    [supabase]
+  )
+
+  // Edit mode: load the existing quotation + its designs.
+  useEffect(() => {
+    if (!editId) return
+    let active = true
+
+    async function loadQuotation() {
+      const { data, error: loadError } = await supabase
+        .from('quotations')
+        .select('*')
+        .eq('id', editId)
+        .single()
+
+      if (!active) return
+      if (loadError || !data) {
+        setError('Could not load this quotation for editing.')
+        setHydrated(true)
+        return
+      }
+
+      quotationIdRef.current = data.id
+      setClientName(data.client_name || '')
+      setClientEmail(data.client_email || '')
+      setClientPhone(data.client_phone || '')
+      setNotes(data.notes || '')
+      setValidUntil(data.valid_until || '')
+      if (data.client_id) {
+        clientIdRef.current = data.client_id
+        setSelectedClientId(data.client_id)
+      }
+
+      await refreshDesigns(data.id)
+      setHydrated(true)
+    }
+
+    loadQuotation()
+    return () => {
+      active = false
+    }
+  }, [editId, supabase, refreshDesigns])
+
   const handleSelectClient = (value: string) => {
     setSelectedClientId(value)
     if (value === NEW_CLIENT) {
@@ -163,97 +186,9 @@ export default function NewQuotationPage() {
     }
   }
 
-  // Line items — initialized with computed costs so totals show immediately.
-  const [items, setItems] = useState<QuotationItem[]>(() => [createItem('1')])
-
-  // Autosave bookkeeping
-  const [saveState, setSaveState] = useState<SaveState>('idle')
-  const [savedAt, setSavedAt] = useState<Date | null>(null)
-  const quotationIdRef = useRef<string | null>(null)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const savingRef = useRef(false)
-
-  // Edit mode: load the existing quotation into the form. quotationIdRef is set
-  // so autosave/send update this row instead of inserting a new one.
-  useEffect(() => {
-    if (!editId) return
-    let active = true
-
-    supabase
-      .from('quotations')
-      .select('*')
-      .eq('id', editId)
-      .single()
-      .then(({ data, error: loadError }) => {
-        if (!active) return
-        if (loadError || !data) {
-          setError('Could not load this quotation for editing.')
-          setHydrated(true)
-          return
-        }
-
-        quotationIdRef.current = data.id
-        setClientName(data.client_name || '')
-        setClientEmail(data.client_email || '')
-        setClientPhone(data.client_phone || '')
-        setNotes(data.notes || '')
-        setValidUntil(data.valid_until || '')
-
-        if (data.client_id) {
-          clientIdRef.current = data.client_id
-          setSelectedClientId(data.client_id)
-        }
-
-        const loadedItems = Array.isArray(data.items) ? data.items : []
-        if (loadedItems.length > 0) {
-          setItems(
-            loadedItems.map((it: Record<string, unknown>, i: number) =>
-              withCosts({
-                id: `${Date.now()}-${i}`,
-                windowType: (it.window_type as string) || 'sliding',
-                width: (it.dimensions as { width?: number })?.width ?? 1200,
-                height: (it.dimensions as { height?: number })?.height ?? 1200,
-                quantity: (it.quantity as number) || 1,
-                profileType: (it.profile_type as string) || 'aluminium',
-                glassType: (it.glass_type as string) || 'clear',
-                color: (it.color as string) || 'white',
-                accessories: (it.accessories_cost as number) || 0,
-                profileCost: 0,
-                glassCost: 0,
-                labourCost: 0,
-                accessoriesCost: 0,
-                total: 0,
-              })
-            )
-          )
-        }
-
-        setHydrated(true)
-      })
-
-    return () => {
-      active = false
-    }
-  }, [editId, supabase])
-
-  const updateItem = (id: string, updates: Partial<QuotationItem>) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? withCosts({ ...item, ...updates }) : item
-      )
-    )
-  }
-
-  const addItem = () => {
-    setItems((prev) => [...prev, createItem(Date.now().toString())])
-  }
-
-  const removeItem = (id: string) => {
-    setItems((prev) => (prev.length > 1 ? prev.filter((item) => item.id !== id) : prev))
-  }
-
-  const grandTotal = items.reduce((sum, item) => sum + item.total, 0)
-  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0)
+  // Totals are the aggregate of the linked designs.
+  const totalArea = designs.reduce((sum, d) => sum + (d.area_sqft || 0), 0)
+  const grandTotal = designs.reduce((sum, d) => sum + (d.amount || 0), 0)
 
   // Resolve the client to link. Reuses the selected/created client, or creates
   // a new clients row (deduped by phone) when entering a new client.
@@ -261,7 +196,6 @@ export default function NewQuotationPage() {
     async (userId: string): Promise<string | null> => {
       if (clientIdRef.current) return clientIdRef.current
 
-      // New client flow: try to match an existing one by phone first.
       const { data: existing } = await supabase
         .from('clients')
         .select('id')
@@ -294,7 +228,7 @@ export default function NewQuotationPage() {
     [clientName, clientEmail, clientPhone, supabase]
   )
 
-  // Build the row payload shared by autosave and send.
+  // The row payload shared by autosave and send.
   const buildPayload = useCallback(
     (status: 'draft' | 'sent', clientId: string | null) => ({
       client_id: clientId,
@@ -303,31 +237,16 @@ export default function NewQuotationPage() {
       client_phone: clientPhone,
       status,
       total_amount: grandTotal,
-      items: items.map((item) => ({
-        window_type: item.windowType,
-        dimensions: { width: item.width, height: item.height },
-        quantity: item.quantity,
-        profile_type: item.profileType,
-        glass_type: item.glassType,
-        color: item.color,
-        accessories: [],
-        profile_cost: item.profileCost,
-        glass_cost: item.glassCost,
-        accessories_cost: item.accessoriesCost,
-        labour_cost: item.labourCost,
-        total_cost: item.total,
-      })),
       notes: notes || null,
       valid_until: validUntil || null,
     }),
-    [clientName, clientEmail, clientPhone, grandTotal, items, notes, validUntil]
+    [clientName, clientEmail, clientPhone, grandTotal, notes, validUntil]
   )
 
-  // Persist the current state as a draft. Inserts on first call, updates after.
-  const persistDraft = useCallback(async () => {
-    // The quotations table requires client_name and client_phone.
-    if (!clientName.trim() || !clientPhone.trim()) return
-    if (savingRef.current) return
+  // Persist the current state as a draft; returns the quotation id (or null).
+  const persistDraft = useCallback(async (): Promise<string | null> => {
+    if (!clientName.trim() || !clientPhone.trim()) return quotationIdRef.current
+    if (savingRef.current) return quotationIdRef.current
 
     savingRef.current = true
     setSaveState('saving')
@@ -340,7 +259,7 @@ export default function NewQuotationPage() {
       if (!user) {
         setSaveState('error')
         setError('You must be logged in to save.')
-        return
+        return null
       }
 
       const clientId = await resolveClientId(user.id)
@@ -364,15 +283,17 @@ export default function NewQuotationPage() {
 
       setSaveState('saved')
       setSavedAt(new Date())
+      return quotationIdRef.current
     } catch (err) {
       setSaveState('error')
       setError(err instanceof Error ? err.message : 'Autosave failed')
+      return null
     } finally {
       savingRef.current = false
     }
   }, [buildPayload, clientName, clientPhone, resolveClientId, supabase])
 
-  // Debounced autosave: fires 1.5s after the latest change.
+  // Debounced autosave for the quotation header fields (client/notes/validity).
   useEffect(() => {
     if (!hydrated) return
     if (!clientName.trim() || !clientPhone.trim()) return
@@ -385,12 +306,96 @@ export default function NewQuotationPage() {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
     }
-    // Re-run whenever any field that feeds buildPayload changes.
-  }, [hydrated, clientName, clientEmail, clientPhone, notes, validUntil, items, persistDraft])
+  }, [hydrated, clientName, clientEmail, clientPhone, notes, validUntil, persistDraft])
+
+  // Open the design editor for a new design belonging to this quotation.
+  const addDesign = async () => {
+    if (!clientName.trim() || !clientPhone.trim()) {
+      setError('Enter client name and phone before adding a design.')
+      return
+    }
+    const id = await persistDraft()
+    if (!id) return
+    router.push(`/design/new?quotationId=${id}`)
+  }
+
+  const editDesign = (designId: string) => {
+    const id = quotationIdRef.current
+    router.push(
+      id ? `/design/${designId}?quotationId=${id}` : `/design/${designId}`
+    )
+  }
+
+  const removeDesign = async (designId: string) => {
+    const { error: delError } = await supabase
+      .from('window_designs')
+      .delete()
+      .eq('id', designId)
+    if (delError) {
+      setError(delError.message)
+      return
+    }
+    setDesigns((prev) => prev.filter((d) => d.id !== designId))
+  }
+
+  // Clone a catalogue design onto this quotation.
+  const addFromCatalogue = async (source: DesignRow) => {
+    if (!clientName.trim() || !clientPhone.trim()) {
+      setError('Enter client name and phone before adding a design.')
+      return
+    }
+    const quotationId = await persistDraft()
+    if (!quotationId) return
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) {
+      setError('You must be logged in.')
+      return
+    }
+
+    // Pull the full source row so we clone every column.
+    const { data: full } = await supabase
+      .from('window_designs')
+      .select('*')
+      .eq('id', source.id)
+      .single()
+    if (!full) return
+
+    // Clone every column except identity / linkage ones.
+    const rest = { ...(full as Record<string, unknown>) }
+    delete rest.id
+    delete rest.created_at
+    delete rest.updated_at
+    delete rest.quotation_id
+
+    const { error: insertError } = await supabase
+      .from('window_designs')
+      .insert([
+        {
+          ...rest,
+          quotation_id: quotationId,
+          sort_order: designs.length,
+          created_by: user.id,
+        },
+      ])
+    if (insertError) {
+      setError(insertError.message)
+      return
+    }
+
+    setCatalogueOpen(false)
+    await refreshDesigns(quotationId)
+  }
 
   const sendQuotation = async () => {
     if (!clientName.trim() || !clientPhone.trim()) {
       setError('Client name and phone are required.')
+      return
+    }
+    if (designs.length === 0) {
+      setError('Add at least one design before sending.')
       return
     }
 
@@ -398,8 +403,8 @@ export default function NewQuotationPage() {
     setError(null)
 
     try {
-      // Make sure the latest edits are persisted first.
-      await persistDraft()
+      const id = await persistDraft()
+      if (!id) return
 
       const {
         data: { user },
@@ -411,19 +416,11 @@ export default function NewQuotationPage() {
 
       const clientId = await resolveClientId(user.id)
       const payload = buildPayload('sent', clientId)
-
-      if (quotationIdRef.current) {
-        const { error: updateError } = await supabase
-          .from('quotations')
-          .update(payload)
-          .eq('id', quotationIdRef.current)
-        if (updateError) throw updateError
-      } else {
-        const { error: insertError } = await supabase
-          .from('quotations')
-          .insert([{ ...payload, created_by: user.id }])
-        if (insertError) throw insertError
-      }
+      const { error: updateError } = await supabase
+        .from('quotations')
+        .update(payload)
+        .eq('id', id)
+      if (updateError) throw updateError
 
       router.push('/dashboard/quotations')
       router.refresh()
@@ -440,12 +437,17 @@ export default function NewQuotationPage() {
         title={editId ? 'Edit Quotation' : 'New Quotation'}
         description={
           editId
-            ? 'Update this quotation. Changes save automatically.'
-            : 'Create a quotation with auto-calculated pricing. Drafts save automatically.'
+            ? 'Update this quotation and its designs. Changes save automatically.'
+            : 'Create a quotation, then add one or more window designs. Drafts save automatically.'
         }
       >
         <SaveStatus state={saveState} savedAt={savedAt} />
-        <Button variant="outline" size="sm" onClick={() => router.back()} disabled={sending}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => router.back()}
+          disabled={sending}
+        >
           Cancel
         </Button>
         <Button size="sm" onClick={sendQuotation} disabled={sending}>
@@ -545,7 +547,9 @@ export default function NewQuotationPage() {
                   {clientName.charAt(0).toUpperCase() || 'C'}
                 </div>
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-heading">{clientName}</p>
+                  <p className="truncate text-sm font-semibold text-heading">
+                    {clientName}
+                  </p>
                   <p className="truncate text-xs text-muted-foreground">
                     {clientPhone}
                     {clientEmail ? ` · ${clientEmail}` : ''}
@@ -565,161 +569,89 @@ export default function NewQuotationPage() {
         </CardContent>
       </Card>
 
-      {/* Line Items */}
+      {/* Designs */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-base">Window Items</CardTitle>
-          <Button onClick={addItem} size="sm" variant="outline">
-            <Plus className="h-4 w-4" />
-            Add Item
-          </Button>
+          <CardTitle className="text-base">Designs</CardTitle>
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={() => setCatalogueOpen(true)}
+              size="sm"
+              variant="outline"
+            >
+              <LayoutGrid className="h-4 w-4" />
+              From Catalogue
+            </Button>
+            <Button onClick={addDesign} size="sm">
+              <Plus className="h-4 w-4" />
+              Add Design
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-3">
-          {items.map((item, index) => (
-            <div key={item.id} className="space-y-3 rounded-lg border border-border p-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-soft text-xs font-bold text-primary">
-                    {index + 1}
-                  </span>
-                  <h4 className="text-sm font-semibold capitalize text-heading">
-                    {item.windowType} Window
-                  </h4>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-bold text-primary">
-                    {formatCurrency(item.total)}
-                  </span>
-                  {items.length > 1 && (
+          {designs.length === 0 ? (
+            <div className="rounded-lg border border-dashed border-border p-8 text-center">
+              <p className="text-sm text-muted-foreground">
+                No designs yet. Draw a new one or add from the catalogue.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {designs.map((design) => (
+                <div
+                  key={design.id}
+                  className="flex flex-col gap-3 rounded-lg border border-border p-3"
+                >
+                  <div className="flex items-center justify-center rounded-md bg-secondary/40 p-2">
+                    {design.editor_document ? (
+                      <DesignPreview
+                        document={design.editor_document}
+                        width={240}
+                        height={170}
+                      />
+                    ) : (
+                      <div className="flex h-[170px] w-[240px] items-center justify-center text-xs text-muted-foreground">
+                        No preview
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-heading">
+                        {design.name || 'Untitled design'}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {Number(design.area_sqft).toFixed(2)} Sqft ·{' '}
+                        {formatCurrency(design.rate_per_sqft)}/Sqft
+                      </p>
+                    </div>
+                    <p className="shrink-0 text-sm font-bold text-primary">
+                      {formatCurrency(design.amount)}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                      onClick={() => editDesign(design.id)}
+                    >
+                      <Pencil className="h-4 w-4" />
+                      Edit design
+                    </Button>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8"
-                      onClick={() => removeItem(item.id)}
+                      className="h-9 w-9"
+                      onClick={() => removeDesign(design.id)}
                     >
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
-                  )}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                <div className="space-y-1.5">
-                  <Label>Window Type</Label>
-                  <Select
-                    value={item.windowType}
-                    onChange={(e) => updateItem(item.id, { windowType: e.target.value })}
-                  >
-                    <option value="sliding">Sliding</option>
-                    <option value="casement">Casement</option>
-                    <option value="fixed">Fixed</option>
-                    <option value="door">Door</option>
-                  </Select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label>Width (mm)</Label>
-                  <Input
-                    type="number"
-                    value={item.width}
-                    onChange={(e) => updateItem(item.id, { width: parseInt(e.target.value) || 0 })}
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label>Height (mm)</Label>
-                  <Input
-                    type="number"
-                    value={item.height}
-                    onChange={(e) => updateItem(item.id, { height: parseInt(e.target.value) || 0 })}
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label>Quantity</Label>
-                  <Input
-                    type="number"
-                    min="1"
-                    value={item.quantity}
-                    onChange={(e) => updateItem(item.id, { quantity: parseInt(e.target.value) || 1 })}
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label>Profile Type</Label>
-                  <Select
-                    value={item.profileType}
-                    onChange={(e) => updateItem(item.id, { profileType: e.target.value })}
-                  >
-                    <option value="aluminium">Aluminium</option>
-                    <option value="upvc">UPVC</option>
-                  </Select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label>Glass Type</Label>
-                  <Select
-                    value={item.glassType}
-                    onChange={(e) => updateItem(item.id, { glassType: e.target.value })}
-                  >
-                    <option value="clear">Clear</option>
-                    <option value="tinted">Tinted</option>
-                    <option value="laminated">Laminated</option>
-                    <option value="tempered">Tempered</option>
-                  </Select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label>Color</Label>
-                  <Select
-                    value={item.color}
-                    onChange={(e) => updateItem(item.id, { color: e.target.value })}
-                  >
-                    <option value="white">White</option>
-                    <option value="black">Black</option>
-                    <option value="grey">Grey</option>
-                    <option value="brown">Brown</option>
-                    <option value="wood-finish">Wood Finish</option>
-                  </Select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label>Accessories (₹)</Label>
-                  <Input
-                    type="number"
-                    value={item.accessories}
-                    onChange={(e) => updateItem(item.id, { accessories: parseInt(e.target.value) || 0 })}
-                  />
-                </div>
-              </div>
-
-              {/* Cost Breakdown */}
-              <div className="rounded-lg bg-secondary/50 p-3">
-                <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-5">
-                  <div>
-                    <p className="text-xs text-muted-foreground">Profile</p>
-                    <p className="font-medium text-foreground">{formatCurrency(item.profileCost)}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">Glass</p>
-                    <p className="font-medium text-foreground">{formatCurrency(item.glassCost)}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">Labour</p>
-                    <p className="font-medium text-foreground">{formatCurrency(item.labourCost)}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">Accessories</p>
-                    <p className="font-medium text-foreground">{formatCurrency(item.accessoriesCost)}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">Total</p>
-                    <p className="font-bold text-primary">{formatCurrency(item.total)}</p>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
+          )}
         </CardContent>
       </Card>
 
@@ -746,12 +678,16 @@ export default function NewQuotationPage() {
         <CardContent>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Total Items</span>
-              <span className="font-medium text-foreground">{items.length}</span>
+              <span className="text-muted-foreground">Total Designs</span>
+              <span className="font-medium text-foreground">
+                {designs.length}
+              </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Total Quantity</span>
-              <span className="font-medium text-foreground">{totalQuantity}</span>
+              <span className="text-muted-foreground">Total Area</span>
+              <span className="font-medium text-foreground">
+                {totalArea.toFixed(2)} Sqft
+              </span>
             </div>
             <div className="flex items-center justify-between border-t border-border pt-3 text-lg font-bold text-primary">
               <span>Grand Total</span>
@@ -760,11 +696,117 @@ export default function NewQuotationPage() {
           </div>
         </CardContent>
       </Card>
+
+      {catalogueOpen && (
+        <CatalogueDialog
+          onClose={() => setCatalogueOpen(false)}
+          onPick={addFromCatalogue}
+        />
+      )}
     </div>
   )
 }
 
-function SaveStatus({ state, savedAt }: { state: SaveState; savedAt: Date | null }) {
+/** Modal listing saved designs to clone onto the current quotation. */
+function CatalogueDialog({
+  onClose,
+  onPick,
+}: {
+  onClose: () => void
+  onPick: (design: DesignRow) => void
+}) {
+  const supabase = createClient()
+  const [loading, setLoading] = useState(true)
+  const [items, setItems] = useState<DesignRow[]>([])
+
+  useEffect(() => {
+    let active = true
+    supabase
+      .from('window_designs')
+      .select('id, name, quotation_id, area_sqft, rate_per_sqft, amount, editor_document')
+      .order('created_at', { ascending: false })
+      .limit(60)
+      .then(({ data }) => {
+        if (!active) return
+        setItems((data as DesignRow[]) ?? [])
+        setLoading(false)
+      })
+    return () => {
+      active = false
+    }
+  }, [supabase])
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      <div className="flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg bg-background shadow-xl">
+        <div className="flex items-center justify-between border-b border-border px-4 py-3">
+          <h2 className="text-base font-semibold text-heading">
+            Add from Catalogue
+          </h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-md p-1.5 text-muted-foreground hover:bg-muted"
+            aria-label="Close"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto p-4">
+          {loading ? (
+            <div className="flex items-center justify-center py-12 text-sm text-muted-foreground">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Loading designs...
+            </div>
+          ) : items.length === 0 ? (
+            <p className="py-12 text-center text-sm text-muted-foreground">
+              No saved designs yet.
+            </p>
+          ) : (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {items.map((d) => (
+                <button
+                  key={d.id}
+                  type="button"
+                  onClick={() => onPick(d)}
+                  className="flex flex-col items-center gap-2 rounded-lg border border-border p-2 text-left transition-colors hover:border-primary hover:bg-primary-soft/40"
+                >
+                  <div className="flex w-full items-center justify-center rounded bg-secondary/40 p-1">
+                    {d.editor_document ? (
+                      <DesignPreview
+                        document={d.editor_document}
+                        width={160}
+                        height={120}
+                      />
+                    ) : (
+                      <div className="h-[120px] w-[160px]" />
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <p className="truncate text-xs font-medium text-heading">
+                      {d.name || 'Untitled'}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground">
+                      {Number(d.area_sqft).toFixed(2)} Sqft
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SaveStatus({
+  state,
+  savedAt,
+}: {
+  state: SaveState
+  savedAt: Date | null
+}) {
   if (state === 'saving') {
     return (
       <span className="flex items-center gap-1.5 text-xs text-muted-foreground">

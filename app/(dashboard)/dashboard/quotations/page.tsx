@@ -21,6 +21,27 @@ export default async function QuotationsPage() {
     .select('*')
     .order('created_at', { ascending: false })
 
+  // Aggregate each quotation's designs (area + amount) in a single query.
+  const quotationIds = (quotations ?? []).map((q) => q.id)
+  const totalsByQuotation = new Map<string, { area: number; amount: number }>()
+  if (quotationIds.length > 0) {
+    const { data: designRows } = await supabase
+      .from('window_designs')
+      .select('quotation_id, area_sqft, amount')
+      .in('quotation_id', quotationIds)
+
+    for (const row of designRows ?? []) {
+      if (!row.quotation_id) continue
+      const current = totalsByQuotation.get(row.quotation_id) ?? {
+        area: 0,
+        amount: 0,
+      }
+      current.area += Number(row.area_sqft) || 0
+      current.amount += Number(row.amount) || 0
+      totalsByQuotation.set(row.quotation_id, current)
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -56,13 +77,17 @@ export default async function QuotationsPage() {
                   <th className="px-4 py-3">Client</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3">Created</th>
-                  <th className="px-4 py-3">Valid Until</th>
+                  <th className="px-4 py-3 text-right">Area (Sqft)</th>
                   <th className="px-4 py-3 text-right">Amount</th>
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {quotations.map((quotation) => (
+                {quotations.map((quotation) => {
+                  const totals = totalsByQuotation.get(quotation.id)
+                  const amount = totals?.amount ?? quotation.total_amount
+                  const area = totals?.area ?? 0
+                  return (
                   <tr
                     key={quotation.id}
                     className="border-b border-border last:border-0 transition-colors hover:bg-muted/40"
@@ -91,11 +116,11 @@ export default async function QuotationsPage() {
                     <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                       {formatDate(quotation.created_at)}
                     </td>
-                    <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
-                      {quotation.valid_until ? formatDate(quotation.valid_until) : '—'}
+                    <td className="px-4 py-3 text-right text-foreground whitespace-nowrap">
+                      {area > 0 ? `${area.toFixed(2)}` : '—'}
                     </td>
                     <td className="px-4 py-3 text-right font-semibold text-primary whitespace-nowrap">
-                      {formatCurrency(quotation.total_amount)}
+                      {formatCurrency(amount)}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex justify-end gap-2">
@@ -109,7 +134,8 @@ export default async function QuotationsPage() {
                       </div>
                     </td>
                   </tr>
-                ))}
+                  )
+                })}
               </tbody>
             </table>
           </div>
