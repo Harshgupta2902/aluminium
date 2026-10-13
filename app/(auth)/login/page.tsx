@@ -4,8 +4,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { AuthShell } from '@/components/auth/auth-shell'
+import { AuthField } from '@/components/auth/auth-field'
+import { Mail, Lock, Loader2, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 
 export default function LoginPage() {
@@ -37,7 +38,7 @@ export default function LoginPage() {
         router.push('/dashboard')
         router.refresh()
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred')
     } finally {
       setLoading(false)
@@ -45,109 +46,116 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-background p-4 overflow-hidden">
-      {/* Soft ambient glows */}
-      <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
+    <AuthShell>
+      {/* Mobile brand mark */}
+      <div className="mb-8 flex items-center gap-2.5 lg:hidden">
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-lg font-bold text-primary-foreground shadow-[var(--shadow-primary)]">
+          S
+        </span>
+        <span className="text-lg font-semibold tracking-tight text-heading">
+          SoftWindow
+        </span>
+      </div>
 
-      <div className="relative w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold tracking-tight text-heading mb-2">
-            Design the Future of Windows & Doors
-          </h1>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold tracking-tight text-heading">
+          Welcome back 👋
+        </h1>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          Log in to access your designs and quotations.
+        </p>
+      </div>
+
+      <form onSubmit={handleLogin} className="space-y-4">
+        <AuthField
+          id="email"
+          label="Email"
+          type="email"
+          value={email}
+          onChange={setEmail}
+          placeholder="you@company.com"
+          icon={<Mail />}
+          autoComplete="email"
+          disabled={loading}
+          required
+        />
+
+        <AuthField
+          id="password"
+          label="Password"
+          type="password"
+          value={password}
+          onChange={setPassword}
+          placeholder="••••••••"
+          icon={<Lock />}
+          autoComplete="current-password"
+          disabled={loading}
+          required
+        />
+
+        {error && (
+          <div className="flex items-start gap-2 rounded-lg bg-rose-50 p-3 text-sm text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20">
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between">
+          <label className="flex cursor-pointer items-center gap-2">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="h-4 w-4 rounded border-input accent-primary"
+            />
+            <span className="text-sm text-muted-foreground">Remember me</span>
+          </label>
+
+          <Link
+            href="/forgot-password"
+            className="text-sm font-medium text-primary hover:text-primary-hover hover:underline"
+          >
+            Forgot password?
+          </Link>
         </div>
 
-        <Card className="shadow-lg border-border/60">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">
-              Log in to access your tools & get started
-            </CardTitle>
-            <CardDescription className="text-center">
-              Enter your credentials to continue
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="space-y-2">
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  disabled={loading}
-                  className="w-full"
-                />
-              </div>
+        <Button type="submit" size="lg" className="w-full" disabled={loading}>
+          {loading ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Logging in...
+            </>
+          ) : (
+            'Login'
+          )}
+        </Button>
+      </form>
 
-              <div className="space-y-2">
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  disabled={loading}
-                  className="w-full"
-                />
-              </div>
+      <div className="mt-6 space-y-4 text-center">
+        <div className="text-sm text-muted-foreground">
+          Don&apos;t have an account?{' '}
+          <Link
+            href="/signup"
+            className="font-medium text-primary hover:text-primary-hover hover:underline"
+          >
+            Sign up
+          </Link>
+        </div>
 
-              {error && (
-                <div className="bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200 p-3 rounded-lg text-sm dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20">
-                  {error}
-                </div>
-              )}
+        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/70">
+          <Link href="/terms" className="hover:text-foreground hover:underline">
+            Terms &amp; Conditions
+          </Link>
+          <span className="text-border-strong">•</span>
+          <Link href="/privacy" className="hover:text-foreground hover:underline">
+            Privacy Policy
+          </Link>
+        </div>
 
-              <div className="flex items-center justify-between">
-                <label className="flex items-center space-x-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    className="rounded border-input accent-primary"
-                  />
-                  <span className="text-sm text-muted-foreground">Remember Me</span>
-                </label>
-
-                <Link
-                  href="/forgot-password"
-                  className="text-sm font-medium text-primary hover:text-primary-hover hover:underline"
-                >
-                  Forgot Password?
-                </Link>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={loading}
-              >
-                {loading ? 'Logging in...' : 'Login'}
-              </Button>
-            </form>
-
-            <div className="mt-6 text-center space-y-2">
-              <div className="text-sm text-muted-foreground">
-                Don&apos;t have an account?{' '}
-                <Link href="/signup" className="font-medium text-primary hover:text-primary-hover hover:underline">
-                  Sign up
-                </Link>
-              </div>
-              <div className="text-xs text-muted-foreground/70 space-x-4">
-                <Link href="/terms" className="hover:text-foreground hover:underline">
-                  Term and Condition
-                </Link>
-                <Link href="/privacy" className="hover:text-foreground hover:underline">
-                  Privacy Policy
-                </Link>
-              </div>
-              <div className="text-sm text-muted-foreground mt-4">
-                Helpline No: 879475061, 8826619980
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <p className="text-xs text-muted-foreground">
+          Helpline: 879475061, 8826619980
+        </p>
       </div>
-    </div>
+    </AuthShell>
   )
 }
