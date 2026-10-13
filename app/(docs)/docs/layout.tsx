@@ -29,8 +29,8 @@ export default function DocsLayout({ children }: { children: ReactNode }) {
             <Link href="/login" className="hidden sm:block">
               <Button variant="ghost" size="sm">Log in</Button>
             </Link>
-            <Link href="/signup">
-              <Button size="sm">Get started</Button>
+            <Link href="/login">
+              <Button size="sm">Log in</Button>
             </Link>
           </div>
         </div>

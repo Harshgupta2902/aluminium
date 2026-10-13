@@ -133,13 +133,7 @@ export default function LoginPage() {
 
       <div className="mt-6 space-y-4 text-center">
         <div className="text-sm text-muted-foreground">
-          Don&apos;t have an account?{' '}
-          <Link
-            href="/signup"
-            className="font-medium text-primary hover:text-primary-hover hover:underline"
-          >
-            Sign up
-          </Link>
+          Need an account? Contact your administrator to get set up.
         </div>
 
         <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/70">

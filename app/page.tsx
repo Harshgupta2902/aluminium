@@ -53,11 +53,11 @@ function SiteNav() {
           <Link href="/docs" className="transition-colors hover:text-foreground">Docs</Link>
         </nav>
         <div className="flex items-center gap-2">
-          <Link href="/login">
-            <Button variant="ghost" size="sm">Log in</Button>
-          </Link>
           <Link href="/signup">
-            <Button size="sm">Get started</Button>
+            <Button variant="ghost" size="sm">Request access</Button>
+          </Link>
+          <Link href="/login">
+            <Button size="sm">Log in</Button>
           </Link>
         </div>
       </div>
@@ -86,9 +86,9 @@ function Hero() {
             from one simple workspace.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link href="/signup">
+            <Link href="/login">
               <Button size="lg">
-                Start for free
+                Log in
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -100,7 +100,7 @@ function Hero() {
           </div>
 
           <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
-            {['No credit card required', '20+ window types', 'PDF proposals'].map((t) => (
+            {['Admin-managed accounts', '20+ window types', 'PDF proposals'].map((t) => (
               <span key={t} className="inline-flex items-center gap-1.5">
                 <Check className="h-3.5 w-3.5 text-primary" />
                 {t}
@@ -407,12 +407,13 @@ function CallToAction() {
             Ready to quote your next job?
           </h2>
           <p className="relative mx-auto mt-3 max-w-md text-white/80">
-            Create your account and build your first quotation today.
+            Log in to build your next quotation, or ask your administrator for an
+            account.
           </p>
           <div className="relative mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/signup">
+            <Link href="/login">
               <Button size="lg" className="bg-white text-primary hover:bg-white/90">
-                Get started free
+                Log in
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -426,9 +427,6 @@ function CallToAction() {
               </Button>
             </Link>
           </div>
-          <p className="relative mt-4 text-xs text-white/60">
-            No credit card required · Set up in minutes
-          </p>
         </div>
       </div>
     </section>
