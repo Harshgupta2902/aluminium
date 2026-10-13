@@ -74,9 +74,121 @@ CREATE TABLE public.window_designs (
   hardware JSONB DEFAULT '[]'::JSONB,
   preview_image TEXT,
   editor_document JSONB,
+  -- A design belongs to a quotation (nullable so the standalone editor works).
+  -- FK added after the quotations table is created (see ALTER below).
+  quotation_id UUID,
+  -- Persisted pricing for cheap quotation aggregation.
+  area_sqft NUMERIC NOT NULL DEFAULT 0,
+  rate_per_sqft NUMERIC NOT NULL DEFAULT 0,
+  amount NUMERIC NOT NULL DEFAULT 0,
+  sort_order INTEGER NOT NULL DEFAULT 0,
   created_by UUID REFERENCES public.profiles(id),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Fast lookup of all designs for a quotation.
+CREATE INDEX IF NOT EXISTS window_designs_quotation_id_idx
+  ON public.window_designs (quotation_id);
+
+-- =============================================================================
+-- Design editor configurable lists + pricing
+-- =============================================================================
+-- Shared columns on every list table: name, is_active, is_default, sort_order.
+
+-- Glass options.
+CREATE TABLE public.design_glasses (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  rate_per_sqft NUMERIC NOT NULL DEFAULT 0,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  is_default BOOLEAN NOT NULL DEFAULT FALSE,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Colour / finish options.
+CREATE TABLE public.design_colors (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  hex TEXT,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  is_default BOOLEAN NOT NULL DEFAULT FALSE,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- GI hardware lists (galvanized iron sections).
+CREATE TABLE public.gi_tracks (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  profile_code TEXT,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  is_default BOOLEAN NOT NULL DEFAULT FALSE,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+CREATE TABLE public.gi_sashes (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  profile_code TEXT,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  is_default BOOLEAN NOT NULL DEFAULT FALSE,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+CREATE TABLE public.gi_interlocks (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  profile_code TEXT,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  is_default BOOLEAN NOT NULL DEFAULT FALSE,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+CREATE TABLE public.gi_locks (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  profile_code TEXT,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  is_default BOOLEAN NOT NULL DEFAULT FALSE,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Per-window-type base rate.
+CREATE TABLE public.design_type_rates (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  window_type TEXT NOT NULL UNIQUE,
+  base_rate NUMERIC NOT NULL DEFAULT 0,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+-- Single-row global pricing config.
+CREATE TABLE public.design_pricing_config (
+  id INTEGER PRIMARY KEY DEFAULT 1,
+  gst_percentage NUMERIC NOT NULL DEFAULT 18,
+  install_percentage NUMERIC NOT NULL DEFAULT 10,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  CONSTRAINT design_pricing_config_singleton CHECK (id = 1)
 );
 
 -- Profiles (Aluminium/UPVC) Table
@@ -133,6 +245,11 @@ CREATE TABLE public.quotations (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
 );
 
+-- Now that quotations exists, link window_designs.quotation_id to it.
+ALTER TABLE public.window_designs
+  ADD CONSTRAINT window_designs_quotation_id_fkey
+  FOREIGN KEY (quotation_id) REFERENCES public.quotations(id) ON DELETE CASCADE;
+
 -- Invoices Table
 CREATE TABLE public.invoices (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -171,6 +288,14 @@ ALTER TABLE public.accessories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.quotations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.invoices ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.calculation_formulas ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.design_glasses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.design_colors ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.gi_tracks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.gi_sashes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.gi_interlocks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.gi_locks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.design_type_rates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.design_pricing_config ENABLE ROW LEVEL SECURITY;
 
 -- Profiles policies
 CREATE POLICY "Users can view their own profile" ON public.profiles
@@ -233,6 +358,27 @@ CREATE POLICY "Authenticated users can view all invoices" ON public.invoices
 
 CREATE POLICY "Authenticated users can create invoices" ON public.invoices
   FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+
+-- Design editor list policies: authenticated users can read + manage.
+DO $$
+DECLARE
+  t TEXT;
+BEGIN
+  FOREACH t IN ARRAY ARRAY[
+    'design_glasses','design_colors','gi_tracks','gi_sashes',
+    'gi_interlocks','gi_locks','design_type_rates','design_pricing_config'
+  ]
+  LOOP
+    EXECUTE format(
+      'CREATE POLICY %I ON public.%I FOR SELECT USING (auth.role() = ''authenticated'')',
+      t || '_select', t
+    );
+    EXECUTE format(
+      'CREATE POLICY %I ON public.%I FOR ALL USING (auth.role() = ''authenticated'') WITH CHECK (auth.role() = ''authenticated'')',
+      t || '_write', t
+    );
+  END LOOP;
+END $$;
 
 -- Functions for automatic quotation number generation
 CREATE OR REPLACE FUNCTION generate_quotation_number()
@@ -340,3 +486,67 @@ INSERT INTO public.window_templates (name, category, window_type, default_width,
   ('Fixed Window', 'Fixed', 'fixed', 1200, 900, 'Non-opening fixed window'),
   ('Main Entry Door', 'Door', 'door', 900, 2100, 'Single panel entry door'),
   ('Double Entry Door', 'Door', 'door', 1800, 2100, 'Double panel entry door');
+
+-- Design editor seed data -----------------------------------------------------
+
+-- Glasses.
+INSERT INTO public.design_glasses (name, is_default, sort_order) VALUES
+  ('4MM CLEAR GLASS', FALSE, 1),
+  ('5MM CLEAR GLASS', TRUE, 2),
+  ('5MM CLEAR TOUGHENED GLASS', FALSE, 3),
+  ('6MM TINTED GLASS', FALSE, 4),
+  ('6MM TOUGHENED GLASS', FALSE, 5),
+  ('8MM TOUGHENED GLASS', FALSE, 6),
+  ('DOUBLE GLAZED UNIT', FALSE, 7);
+
+-- Colours.
+INSERT INTO public.design_colors (name, hex, is_default, sort_order) VALUES
+  ('White', '#ffffff', TRUE, 1),
+  ('Black', '#1a1a1a', FALSE, 2),
+  ('Grey', '#8a8a8a', FALSE, 3),
+  ('Brown', '#5a3a22', FALSE, 4),
+  ('Bronze', '#8c7853', FALSE, 5),
+  ('Wood Finish', '#9c6b3f', FALSE, 6),
+  ('Anodized', '#b7b7b7', FALSE, 7);
+
+-- GI hardware.
+INSERT INTO public.gi_tracks (name, is_default, sort_order) VALUES
+  ('2 Track', TRUE, 1), ('3 Track', FALSE, 2), ('Slim Track', FALSE, 3);
+INSERT INTO public.gi_sashes (name, is_default, sort_order) VALUES
+  ('Standard Sash', TRUE, 1), ('Slim Sash', FALSE, 2);
+INSERT INTO public.gi_interlocks (name, is_default, sort_order) VALUES
+  ('Standard Interlock', TRUE, 1), ('Slim Interlock', FALSE, 2);
+INSERT INTO public.gi_locks (name, is_default, sort_order) VALUES
+  ('SLD TOUCH LOCK LEFT', TRUE, 1),
+  ('SLD TOUCH LOCK RIGHT', FALSE, 2),
+  ('Mortise Lock', FALSE, 3);
+
+-- Per-type base rates.
+INSERT INTO public.design_type_rates (window_type, base_rate, sort_order) VALUES
+  ('fixed', 850, 1),
+  ('sliding', 1100, 2),
+  ('casement', 1350, 3),
+  ('double-casement', 1350, 4),
+  ('fixed-casement', 1200, 5),
+  ('tophung', 1250, 6),
+  ('louvered', 950, 7),
+  ('awning', 1200, 8),
+  ('door-single', 2500, 9),
+  ('door-double', 4200, 10),
+  ('ventilator', 700, 11),
+  ('exhaust-fan', 600, 12),
+  ('exhaust-fan-rect', 600, 13),
+  ('ac-sleeve', 800, 14),
+  ('glass-block', 900, 15),
+  ('georgian-bars', 1000, 16),
+  ('roller-shutter', 1400, 17),
+  ('skylight', 1600, 18),
+  ('grille', 750, 19),
+  ('mesh-screen', 500, 20),
+  ('roller-blind', 650, 21),
+  ('fly-screen', 500, 22),
+  ('frosted-film', 300, 23);
+
+-- Single pricing-config row.
+INSERT INTO public.design_pricing_config (id, gst_percentage, install_percentage)
+VALUES (1, 18, 10);
