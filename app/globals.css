@@ -1,92 +1,92 @@
 @import "tailwindcss";
 
 :root {
-  /* Surfaces — Vuexy light lavender-gray app bg, white floating cards */
-  --background: #f8f7fa;
-  --foreground: #4b4b5a;
-  --heading: #2f2b3d;
+  /* Surfaces — soft off-white app bg with cool-white floating cards */
+  --background: #f6f8fb;
+  --foreground: #475569;
+  --heading: #1e293b;
   --card: #ffffff;
-  --card-foreground: #4b4b5a;
+  --card-foreground: #475569;
 
-  /* Brand — Vuexy signature violet */
-  --primary: #7367f0;
-  --primary-hover: #6354e8;
+  /* Brand — modern blue */
+  --primary: #2f6bff;
+  --primary-hover: #1f58ee;
   --primary-foreground: #ffffff;
-  --primary-soft: #eceafe;
+  --primary-soft: #e6efff;
 
-  /* Supporting roles */
-  --secondary: #f1f0f2;
-  --secondary-foreground: #5d5869;
-  --accent: #f3f2fd;
-  --accent-foreground: #6354e8;
-  --muted: #f6f5f8;
-  --muted-foreground: #8a8699;
+  /* Supporting roles — cool neutral off-whites */
+  --secondary: #eef2f7;
+  --secondary-foreground: #475569;
+  --accent: #eaf1ff;
+  --accent-foreground: #1f58ee;
+  --muted: #f1f5f9;
+  --muted-foreground: #7a8699;
 
   /* Status */
-  --destructive: #ea5455;
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --success: #28c76f;
+  --success: #22c55e;
   --success-foreground: #ffffff;
-  --warning: #ff9f43;
+  --warning: #f59e0b;
   --warning-foreground: #ffffff;
-  --info: #00cfe8;
+  --info: #0ea5e9;
   --info-foreground: #ffffff;
 
-  /* Lines & focus — very light, soft borders */
-  --border: #ebe9f1;
-  --border-strong: #dcd9e6;
-  --input: #e4e2ec;
-  --ring: #beb6f6;
+  /* Lines & focus — light blue-tinted borders */
+  --border: #e4eaf2;
+  --border-strong: #d2dbe8;
+  --input: #dbe3ee;
+  --ring: #9cc0ff;
 
   --radius: 0.625rem;
 
-  /* Soft, large, airy shadows so cards float like Vuexy */
-  --shadow-xs: 0 1px 2px 0 rgb(47 43 61 / 0.06);
-  --shadow-sm: 0 2px 6px 0 rgb(47 43 61 / 0.08);
-  --shadow-md: 0 4px 18px 0 rgb(47 43 61 / 0.10);
-  --shadow-lg: 0 8px 28px -2px rgb(47 43 61 / 0.14);
-  --shadow-primary: 0 4px 14px -2px rgb(115 103 240 / 0.45);
+  /* Soft, large, airy shadows with a cool blue cast */
+  --shadow-xs: 0 1px 2px 0 rgb(30 41 59 / 0.06);
+  --shadow-sm: 0 2px 6px 0 rgb(30 41 59 / 0.08);
+  --shadow-md: 0 4px 18px 0 rgb(30 41 59 / 0.10);
+  --shadow-lg: 0 8px 28px -2px rgb(30 41 59 / 0.14);
+  --shadow-primary: 0 6px 18px -3px rgb(47 107 255 / 0.42);
 }
 
 .dark {
-  /* Vuexy dark — deep blue-violet surfaces */
-  --background: #25293c;
-  --foreground: #cfccd6;
-  --heading: #e4e2ec;
-  --card: #2f3349;
-  --card-foreground: #cfccd6;
+  /* Dark — deep cool blue-slate surfaces */
+  --background: #0f172a;
+  --foreground: #cbd5e1;
+  --heading: #f1f5f9;
+  --card: #1e293b;
+  --card-foreground: #cbd5e1;
 
-  --primary: #7367f0;
-  --primary-hover: #8077f2;
+  --primary: #4f87ff;
+  --primary-hover: #659bff;
   --primary-foreground: #ffffff;
-  --primary-soft: #3a3660;
+  --primary-soft: #1e3253;
 
-  --secondary: #3a3f57;
-  --secondary-foreground: #cfccd6;
-  --accent: #3b3a5a;
-  --accent-foreground: #c3bdf5;
-  --muted: #353a52;
-  --muted-foreground: #9d9bb0;
+  --secondary: #273449;
+  --secondary-foreground: #cbd5e1;
+  --accent: #22324d;
+  --accent-foreground: #a9c7ff;
+  --muted: #1f2b3f;
+  --muted-foreground: #94a3b8;
 
-  --destructive: #ea5455;
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --success: #28c76f;
+  --success: #22c55e;
   --success-foreground: #ffffff;
-  --warning: #ff9f43;
+  --warning: #f59e0b;
   --warning-foreground: #ffffff;
-  --info: #00cfe8;
+  --info: #0ea5e9;
   --info-foreground: #ffffff;
 
-  --border: #434968;
-  --border-strong: #525879;
-  --input: #434968;
-  --ring: #7367f0;
+  --border: #334155;
+  --border-strong: #45566e;
+  --input: #334155;
+  --ring: #4f87ff;
 
-  --shadow-xs: 0 1px 2px 0 rgb(15 17 28 / 0.4);
-  --shadow-sm: 0 2px 6px 0 rgb(15 17 28 / 0.5);
-  --shadow-md: 0 4px 18px 0 rgb(15 17 28 / 0.55);
-  --shadow-lg: 0 8px 28px -2px rgb(15 17 28 / 0.65);
-  --shadow-primary: 0 4px 14px -2px rgb(115 103 240 / 0.5);
+  --shadow-xs: 0 1px 2px 0 rgb(2 6 23 / 0.4);
+  --shadow-sm: 0 2px 6px 0 rgb(2 6 23 / 0.5);
+  --shadow-md: 0 4px 18px 0 rgb(2 6 23 / 0.55);
+  --shadow-lg: 0 8px 28px -2px rgb(2 6 23 / 0.65);
+  --shadow-primary: 0 6px 18px -3px rgb(79 135 255 / 0.5);
 }
 
 @theme inline {

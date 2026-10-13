@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { ReactNode } from 'react'
 
 /**
- * Two-panel auth layout: a branded violet showcase on the left (hidden on
+ * Two-panel auth layout: a branded blue showcase on the left (hidden on
  * small screens) and the form on the right. Shared by login + signup so both
  * pages stay visually consistent.
  */
@@ -19,7 +19,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
 
 function BrandPanel() {
   return (
-    <div className="relative hidden w-[46%] max-w-[640px] shrink-0 overflow-hidden bg-primary lg:flex lg:flex-col lg:justify-between">
+    <div className="relative hidden w-[46%] max-w-[640px] shrink-0 overflow-hidden bg-gradient-to-br from-[#1e3a8a] via-[#2f6bff] to-[#38bdf8] lg:flex lg:flex-col lg:justify-between">
       {/* Ambient glows */}
       <div className="pointer-events-none absolute -left-20 -top-24 h-80 w-80 rounded-full bg-white/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-28 -right-16 h-96 w-96 rounded-full bg-black/15 blur-3xl" />

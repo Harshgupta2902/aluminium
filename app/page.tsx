@@ -26,6 +26,7 @@ export default async function Home() {
       <main>
         <Hero />
         <Features />
+        <StatsStrip />
         <HowItWorks />
         <CallToAction />
       </main>
@@ -171,8 +172,8 @@ function HeroArt() {
             <rect x="92" y="118" width="4" height="24" rx="2" fill="#4b5563" />
             <rect x="108" y="118" width="4" height="24" rx="2" fill="#4b5563" />
             {/* slide arrow */}
-            <line x1="60" y1="130" x2="88" y2="130" stroke="#7367f0" strokeWidth="2.5" strokeLinecap="round" />
-            <polyline points="80,123 90,130 80,137" fill="none" stroke="#7367f0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <line x1="60" y1="130" x2="88" y2="130" stroke="#2f6bff" strokeWidth="2.5" strokeLinecap="round" />
+            <polyline points="80,123 90,130 80,137" fill="none" stroke="#2f6bff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
 
             {/* ---- coupler divider ---- */}
             <rect x="176" y="24" width="16" height="212" fill="url(#aluV)" />
@@ -189,7 +190,7 @@ function HeroArt() {
             <rect x="205" y="118" width="4" height="24" rx="2" fill="#4b5563" />
 
             {/* selected-section highlight on left */}
-            <rect x="30" y="30" width="144" height="200" rx="3" fill="none" stroke="#7367f0" strokeWidth="2.5" />
+            <rect x="30" y="30" width="144" height="200" rx="3" fill="none" stroke="#2f6bff" strokeWidth="2.5" />
 
             {/* section badges */}
             <g>
@@ -285,34 +286,69 @@ const FEATURES = [
   },
 ]
 
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary-soft px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+      {children}
+    </span>
+  )
+}
+
 function Features() {
   return (
-    <section id="features" className="scroll-mt-20 border-t border-border/60 py-20">
+    <section id="features" className="scroll-mt-20 border-t border-border/60 py-24">
       <div className="mx-auto max-w-6xl px-5">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-heading">
+          <Eyebrow>Features</Eyebrow>
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-heading sm:text-4xl">
             Everything you need to quote faster
           </h2>
-          <p className="mt-3 text-muted-foreground">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
             From the first sketch to the signed proposal, SoftWindow keeps your
             whole workflow in one tidy place.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((f) => (
             <div
               key={f.title}
-              className="rounded-xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-[var(--shadow-md)]"
+              className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[var(--shadow-lg)]"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary-soft text-primary">
+              {/* top accent on hover */}
+              <span className="absolute inset-x-0 top-0 h-0.5 scale-x-0 bg-gradient-to-r from-primary to-[#38bdf8] transition-transform duration-200 group-hover:scale-x-100" />
+              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-[#4f9bff] text-white shadow-[var(--shadow-primary)]">
                 <f.icon className="h-5 w-5" />
               </span>
-              <h3 className="mt-4 text-base font-semibold text-heading">{f.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
+              <h3 className="mt-5 text-base font-semibold text-heading">{f.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  )
+}
+
+const STATS = [
+  { value: '20+', label: 'Window & door types' },
+  { value: '1-click', label: 'PDF proposals' },
+  { value: 'Auto', label: 'Area & pricing' },
+  { value: 'GST + install', label: 'Built into totals' },
+]
+
+function StatsStrip() {
+  return (
+    <section className="border-t border-border/60 bg-gradient-to-b from-primary-soft/40 to-transparent py-14">
+      <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-5 md:grid-cols-4">
+        {STATS.map((s) => (
+          <div key={s.label} className="text-center">
+            <p className="text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+              {s.value}
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{s.label}</p>
+          </div>
+        ))}
       </div>
     </section>
   )
@@ -326,23 +362,34 @@ const STEPS = [
 
 function HowItWorks() {
   return (
-    <section id="how" className="scroll-mt-20 border-t border-border/60 bg-muted/40 py-20">
+    <section id="how" className="scroll-mt-20 border-t border-border/60 bg-muted/40 py-24">
       <div className="mx-auto max-w-6xl px-5">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-heading">
+          <Eyebrow>How it works</Eyebrow>
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-heading sm:text-4xl">
             Three steps to a sent quotation
           </h2>
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+            No training required — the flow mirrors how you already work.
+          </p>
         </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {STEPS.map((s) => (
-            <div key={s.n} className="relative rounded-xl border border-border bg-card p-6">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-base font-bold text-primary-foreground shadow-[var(--shadow-primary)]">
-                {s.n}
-              </span>
-              <h3 className="mt-4 text-base font-semibold text-heading">{s.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
-            </div>
-          ))}
+
+        <div className="relative mt-14">
+          {/* connector line across the three steps */}
+          <div className="pointer-events-none absolute left-0 right-0 top-5 hidden h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent md:block" />
+          <div className="grid gap-6 md:grid-cols-3">
+            {STEPS.map((s) => (
+              <div key={s.n} className="relative flex flex-col items-center text-center">
+                <span className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-[#4f9bff] text-base font-bold text-white shadow-[var(--shadow-primary)] ring-4 ring-background">
+                  {s.n}
+                </span>
+                <div className="mt-5 w-full rounded-2xl border border-border bg-card p-6 transition-shadow hover:shadow-[var(--shadow-md)]">
+                  <h3 className="text-base font-semibold text-heading">{s.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -353,23 +400,35 @@ function CallToAction() {
   return (
     <section className="py-20">
       <div className="mx-auto max-w-5xl px-5">
-        <div className="relative overflow-hidden rounded-3xl bg-primary px-8 py-14 text-center shadow-[var(--shadow-lg)]">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1e3a8a] via-[#2f6bff] to-[#38bdf8] px-8 py-14 text-center shadow-[var(--shadow-lg)]">
           <div className="pointer-events-none absolute -left-16 -top-20 h-64 w-64 rounded-full bg-white/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-24 -right-10 h-72 w-72 rounded-full bg-black/15 blur-3xl" />
-          <h2 className="relative text-3xl font-bold tracking-tight text-white">
+          <h2 className="relative text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Ready to quote your next job?
           </h2>
-          <p className="relative mx-auto mt-3 max-w-md text-white/75">
+          <p className="relative mx-auto mt-3 max-w-md text-white/80">
             Create your account and build your first quotation today.
           </p>
-          <div className="relative mt-7 flex justify-center">
+          <div className="relative mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link href="/signup">
               <Button size="lg" className="bg-white text-primary hover:bg-white/90">
                 Get started free
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
+            <Link href="/docs/getting-started">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              >
+                Read the guide
+              </Button>
+            </Link>
           </div>
+          <p className="relative mt-4 text-xs text-white/60">
+            No credit card required · Set up in minutes
+          </p>
         </div>
       </div>
     </section>
