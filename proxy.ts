@@ -42,25 +42,72 @@ export async function proxy(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
 
-  // Protect dashboard routes
-  if (!user && pathname.startsWith('/dashboard')) {
+  // Protect dashboard + design routes.
+  if (!user && (pathname.startsWith('/dashboard') || pathname.startsWith('/design'))) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
-  // Protect design route
-  if (!user && pathname.startsWith('/design')) {
+  // Resolve the role once for any authenticated app request so we can route
+  // the superadmin to their dedicated console and keep users out of /admin.
+  let role: string | null = null
+  if (
+    user &&
+    (pathname.startsWith('/dashboard') ||
+      pathname.startsWith('/design') ||
+      pathname === '/login' ||
+      pathname === '/signup')
+  ) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+    role = profile?.role ?? null
+  }
+  const isSuper = role === 'superadmin'
+
+  const toAdmin = () => {
     const url = request.nextUrl.clone()
-    url.pathname = '/login'
+    url.pathname = '/dashboard/admin'
     return NextResponse.redirect(url)
   }
-
-  // Redirect authenticated users away from auth pages
-  if (user && (pathname === '/login' || pathname === '/signup')) {
+  const toDashboard = () => {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
+  }
+
+  if (user) {
+    const inAdminArea = pathname.startsWith('/dashboard/admin')
+
+    // Non-superadmin trying to reach the admin console → user dashboard.
+    if (inAdminArea && !isSuper) return toDashboard()
+
+    // Superadmin anywhere in the user-facing app (dashboard non-admin, or the
+    // design editor) → their admin console. The superadmin has no use for the
+    // quotation/design tooling.
+    if (
+      isSuper &&
+      ((pathname.startsWith('/dashboard') && !inAdminArea) ||
+        pathname.startsWith('/design'))
+    ) {
+      return toAdmin()
+    }
+  }
+
+  // Public signup is disabled — route it to login (or the right home).
+  if (pathname === '/signup') {
+    if (user) return isSuper ? toAdmin() : toDashboard()
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
+  }
+
+  // Redirect authenticated users away from the login page.
+  if (user && pathname === '/login') {
+    return isSuper ? toAdmin() : toDashboard()
   }
 
   // IMPORTANT: return the supabaseResponse so refreshed auth cookies persist.
