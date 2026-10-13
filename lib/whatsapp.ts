@@ -44,7 +44,7 @@ export async function sendQuotationViaWhatsApp(params: SendQuotationParams): Pro
       client_phone: quotation.client_phone,
       created_at: quotation.created_at,
       valid_until: quotation.valid_until,
-      items: quotation.items || [],
+      designs: quotation.designs || [],
       total_amount: quotation.total_amount,
       notes: quotation.notes,
       company_name: 'Soft Window',

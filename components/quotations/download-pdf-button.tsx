@@ -3,16 +3,17 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Download } from 'lucide-react'
-import { downloadQuotationPDF } from '@/lib/pdf-generator'
+import { downloadQuotationPDF, type QuotationPDFDesign } from '@/lib/pdf-generator'
+import { createClient } from '@/lib/supabase/client'
 
 interface QuotationData {
+  id: string
   quotation_number: string
   client_name: string
   client_email?: string | null
   client_phone?: string | null
   created_at: string
   valid_until?: string | null
-  items?: unknown[]
   total_amount: number
   notes?: string | null
 }
@@ -24,12 +25,35 @@ interface DownloadPDFButtonProps {
   iconOnly?: boolean
 }
 
-export function DownloadPDFButton({ quotation, variant = 'outline', size = 'default', iconOnly = false }: DownloadPDFButtonProps) {
+export function DownloadPDFButton({
+  quotation,
+  variant = 'outline',
+  size = 'default',
+  iconOnly = false,
+}: DownloadPDFButtonProps) {
   const [loading, setLoading] = useState(false)
+  const supabase = createClient()
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     setLoading(true)
     try {
+      // Pull the quotation's designs for the proposal.
+      const { data: designRows } = await supabase
+        .from('window_designs')
+        .select('name, color, glass_type, area_sqft, rate_per_sqft, amount, editor_document')
+        .eq('quotation_id', quotation.id)
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: true })
+
+      const designs = (designRows ?? []) as QuotationPDFDesign[]
+      const totalArea = designs.reduce(
+        (sum, d) => sum + (Number(d.area_sqft) || 0),
+        0
+      )
+      const totalAmount =
+        designs.reduce((sum, d) => sum + (Number(d.amount) || 0), 0) ||
+        quotation.total_amount
+
       downloadQuotationPDF({
         quotation_number: quotation.quotation_number,
         client_name: quotation.client_name,
@@ -37,8 +61,9 @@ export function DownloadPDFButton({ quotation, variant = 'outline', size = 'defa
         client_phone: quotation.client_phone ?? '',
         created_at: quotation.created_at,
         valid_until: quotation.valid_until ?? undefined,
-        items: quotation.items || [],
-        total_amount: quotation.total_amount,
+        designs,
+        total_area: totalArea,
+        total_amount: totalAmount,
         notes: quotation.notes ?? undefined,
         company_name: 'Soft Window',
         company_address: 'Your Company Address',
@@ -64,7 +89,9 @@ export function DownloadPDFButton({ quotation, variant = 'outline', size = 'defa
         className="h-8 w-8 p-0"
       >
         <Download className="h-4 w-4" />
-        <span className="sr-only">{loading ? 'Generating...' : 'Download PDF'}</span>
+        <span className="sr-only">
+          {loading ? 'Generating...' : 'Download PDF'}
+        </span>
       </Button>
     )
   }

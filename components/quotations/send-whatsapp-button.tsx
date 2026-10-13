@@ -6,7 +6,13 @@ import { Send } from 'lucide-react'
 import { sendQuotationViaWhatsApp, createWhatsAppLink } from '@/lib/whatsapp'
 
 interface SendWhatsAppButtonProps {
-  quotation: any
+  quotation: {
+    quotation_number: string
+    client_name: string
+    client_phone: string
+    total_amount: number
+    [key: string]: unknown
+  }
   variant?: 'default' | 'outline' | 'ghost'
   size?: 'default' | 'sm' | 'lg'
 }
