@@ -27,7 +27,13 @@ CREATE TABLE public.profiles (
   email TEXT UNIQUE NOT NULL,
   full_name TEXT NOT NULL,
   company_name TEXT,
-  role TEXT CHECK (role IN ('admin', 'sales', 'accounts')) DEFAULT 'sales',
+  phone TEXT,
+  role TEXT CHECK (role IN ('superadmin', 'admin', 'user', 'sales', 'accounts')) DEFAULT 'user',
+  -- Per-user account controls (managed by the superadmin).
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  can_access_designs BOOLEAN NOT NULL DEFAULT TRUE,
+  can_access_billing BOOLEAN NOT NULL DEFAULT TRUE,
+  can_access_inventory BOOLEAN NOT NULL DEFAULT TRUE,
   avatar_url TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
@@ -191,6 +197,42 @@ CREATE TABLE public.design_pricing_config (
   CONSTRAINT design_pricing_config_singleton CHECK (id = 1)
 );
 
+-- =============================================================================
+-- Billing periods (admin-managed multi-user)
+-- =============================================================================
+-- Each row is one billing cycle for a user. The ACTIVE period is the one whose
+-- [starts_at, ends_at] range contains today. It carries the quotation limit
+-- (NULL = unlimited) that resets each period, and acts as the account expiry.
+CREATE TABLE public.billing_periods (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  plan_name TEXT NOT NULL DEFAULT 'Standard',
+  amount NUMERIC NOT NULL DEFAULT 0,
+  starts_at DATE NOT NULL DEFAULT CURRENT_DATE,
+  ends_at DATE NOT NULL,
+  quotation_limit INTEGER, -- NULL = unlimited
+  is_paid BOOLEAN NOT NULL DEFAULT FALSE,
+  notes TEXT,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS billing_periods_user_id_idx
+  ON public.billing_periods (user_id);
+CREATE INDEX IF NOT EXISTS billing_periods_range_idx
+  ON public.billing_periods (user_id, starts_at, ends_at);
+
+-- Superadmin check used across RLS. SECURITY DEFINER avoids recursive policy
+-- evaluation when reading profiles.role.
+CREATE OR REPLACE FUNCTION public.is_superadmin()
+RETURNS BOOLEAN AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid() AND role = 'superadmin'
+  );
+$$ LANGUAGE sql SECURITY DEFINER STABLE;
+
 -- Profiles (Aluminium/UPVC) Table
 CREATE TABLE public.profiles_inventory (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -296,41 +338,44 @@ ALTER TABLE public.gi_interlocks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.gi_locks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.design_type_rates ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.design_pricing_config ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.billing_periods ENABLE ROW LEVEL SECURITY;
 
--- Profiles policies
-CREATE POLICY "Users can view their own profile" ON public.profiles
-  FOR SELECT USING (auth.uid() = id);
+-- Per-user ownership with superadmin override. Owners access rows where
+-- created_by = auth.uid(); superadmin accesses everything.
 
-CREATE POLICY "Users can update their own profile" ON public.profiles
-  FOR UPDATE USING (auth.uid() = id);
+-- Profiles: own row, or superadmin.
+CREATE POLICY "profiles_select" ON public.profiles
+  FOR SELECT USING (auth.uid() = id OR public.is_superadmin());
+CREATE POLICY "profiles_insert" ON public.profiles
+  FOR INSERT WITH CHECK (auth.uid() = id OR public.is_superadmin());
+CREATE POLICY "profiles_update" ON public.profiles
+  FOR UPDATE USING (auth.uid() = id OR public.is_superadmin());
+CREATE POLICY "profiles_delete" ON public.profiles
+  FOR DELETE USING (public.is_superadmin());
 
--- Safety-net INSERT policy: users can insert their own profile row
-CREATE POLICY "Users can insert their own profile" ON public.profiles
-  FOR INSERT WITH CHECK (auth.uid() = id);
+-- Clients.
+CREATE POLICY "clients_select" ON public.clients
+  FOR SELECT USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "clients_insert" ON public.clients
+  FOR INSERT WITH CHECK (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "clients_update" ON public.clients
+  FOR UPDATE USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "clients_delete" ON public.clients
+  FOR DELETE USING (created_by = auth.uid() OR public.is_superadmin());
 
--- Clients policies
-CREATE POLICY "Authenticated users can view all clients" ON public.clients
-  FOR SELECT USING (auth.role() = 'authenticated');
-
-CREATE POLICY "Authenticated users can create clients" ON public.clients
-  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-
-CREATE POLICY "Authenticated users can update clients" ON public.clients
-  FOR UPDATE USING (auth.role() = 'authenticated');
-
--- Window templates policies (public read)
+-- Window templates (public read).
 CREATE POLICY "Anyone can view window templates" ON public.window_templates
   FOR SELECT USING (true);
 
--- Window designs policies
-CREATE POLICY "Authenticated users can view all designs" ON public.window_designs
-  FOR SELECT USING (auth.role() = 'authenticated');
-
-CREATE POLICY "Authenticated users can create designs" ON public.window_designs
-  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-
-CREATE POLICY "Users can update their own designs" ON public.window_designs
-  FOR UPDATE USING (auth.uid() = created_by);
+-- Window designs.
+CREATE POLICY "designs_select" ON public.window_designs
+  FOR SELECT USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "designs_insert" ON public.window_designs
+  FOR INSERT WITH CHECK (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "designs_update" ON public.window_designs
+  FOR UPDATE USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "designs_delete" ON public.window_designs
+  FOR DELETE USING (created_by = auth.uid() OR public.is_superadmin());
 
 -- Inventory policies
 CREATE POLICY "Authenticated users can view profiles inventory" ON public.profiles_inventory
@@ -342,24 +387,33 @@ CREATE POLICY "Authenticated users can view glass inventory" ON public.glass_inv
 CREATE POLICY "Authenticated users can view accessories" ON public.accessories
   FOR SELECT USING (auth.role() = 'authenticated');
 
--- Quotations policies
-CREATE POLICY "Authenticated users can view all quotations" ON public.quotations
-  FOR SELECT USING (auth.role() = 'authenticated');
+-- Quotations.
+CREATE POLICY "quotations_select" ON public.quotations
+  FOR SELECT USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "quotations_insert" ON public.quotations
+  FOR INSERT WITH CHECK (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "quotations_update" ON public.quotations
+  FOR UPDATE USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "quotations_delete" ON public.quotations
+  FOR DELETE USING (created_by = auth.uid() OR public.is_superadmin());
 
-CREATE POLICY "Authenticated users can create quotations" ON public.quotations
-  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+-- Invoices.
+CREATE POLICY "invoices_select" ON public.invoices
+  FOR SELECT USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "invoices_insert" ON public.invoices
+  FOR INSERT WITH CHECK (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "invoices_update" ON public.invoices
+  FOR UPDATE USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "invoices_delete" ON public.invoices
+  FOR DELETE USING (created_by = auth.uid() OR public.is_superadmin());
 
-CREATE POLICY "Users can update their own quotations" ON public.quotations
-  FOR UPDATE USING (auth.uid() = created_by);
+-- Billing periods: a user reads own; only superadmin writes.
+CREATE POLICY "billing_periods_select" ON public.billing_periods
+  FOR SELECT USING (user_id = auth.uid() OR public.is_superadmin());
+CREATE POLICY "billing_periods_write" ON public.billing_periods
+  FOR ALL USING (public.is_superadmin()) WITH CHECK (public.is_superadmin());
 
--- Invoices policies
-CREATE POLICY "Authenticated users can view all invoices" ON public.invoices
-  FOR SELECT USING (auth.role() = 'authenticated');
-
-CREATE POLICY "Authenticated users can create invoices" ON public.invoices
-  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-
--- Design editor list policies: authenticated users can read + manage.
+-- Design editor lists: all authenticated users read; only superadmin writes.
 DO $$
 DECLARE
   t TEXT;
@@ -374,7 +428,7 @@ BEGIN
       t || '_select', t
     );
     EXECUTE format(
-      'CREATE POLICY %I ON public.%I FOR ALL USING (auth.role() = ''authenticated'') WITH CHECK (auth.role() = ''authenticated'')',
+      'CREATE POLICY %I ON public.%I FOR ALL USING (public.is_superadmin()) WITH CHECK (public.is_superadmin())',
       t || '_write', t
     );
   END LOOP;
@@ -441,6 +495,8 @@ CREATE TRIGGER generate_invoice_number_trigger
 -- Auto-create a profile row when a new auth user signs up.
 -- SECURITY DEFINER lets it bypass RLS. Pulls full_name/company_name from the
 -- signup metadata (options.data) passed by the client.
+-- New users default to role 'user' (or an explicit role passed in signup
+-- metadata). The superadmin is promoted by the seed below.
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -450,7 +506,7 @@ BEGIN
     NEW.email,
     COALESCE(NULLIF(NEW.raw_user_meta_data->>'full_name', ''), split_part(NEW.email, '@', 1)),
     NEW.raw_user_meta_data->>'company_name',
-    'admin'
+    COALESCE(NULLIF(NEW.raw_user_meta_data->>'role', ''), 'user')
   )
   ON CONFLICT (id) DO NOTHING;
   RETURN NEW;
@@ -471,11 +527,24 @@ SELECT
   u.email,
   COALESCE(NULLIF(u.raw_user_meta_data->>'full_name', ''), split_part(u.email, '@', 1)),
   u.raw_user_meta_data->>'company_name',
-  'admin'
+  'user'
 FROM auth.users u
 LEFT JOIN public.profiles p ON p.id = u.id
 WHERE p.id IS NULL
 ON CONFLICT (id) DO NOTHING;
+
+-- Superadmin seed. Promote admin@gmail.com (create the AUTH login separately in
+-- the Supabase Dashboard → Authentication → Users). Idempotent.
+UPDATE public.profiles
+  SET role = 'superadmin', is_active = TRUE
+  WHERE email = 'admin@gmail.com';
+
+INSERT INTO public.profiles (id, email, full_name, role, is_active)
+SELECT u.id, u.email, 'Super Admin', 'superadmin', TRUE
+FROM auth.users u
+LEFT JOIN public.profiles p ON p.id = u.id
+WHERE u.email = 'admin@gmail.com' AND p.id IS NULL
+ON CONFLICT (id) DO UPDATE SET role = 'superadmin', is_active = TRUE;
 
 -- Insert sample window templates
 INSERT INTO public.window_templates (name, category, window_type, default_width, default_height, description) VALUES
