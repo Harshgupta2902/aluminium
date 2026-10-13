@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import Link from 'next/link'
 
 export default function SettingsPage() {
   return (
@@ -20,14 +21,19 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Calculation Formulas</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-500">Cost calculation settings</p>
-          </CardContent>
-        </Card>
+        <Link href="/dashboard/settings/design-catalog" className="block">
+          <Card className="h-full transition-colors hover:border-primary hover:bg-primary-soft/30">
+            <CardHeader>
+              <CardTitle>Design Catalog &amp; Pricing</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-500">
+                Glass, colours, GI hardware and per-type base rates, GST &amp;
+                install used by the design editor
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
 
         <Card>
           <CardHeader>
