@@ -49,6 +49,7 @@ function SiteNav() {
         <nav className="hidden items-center gap-7 text-sm font-medium text-muted-foreground md:flex">
           <a href="#features" className="transition-colors hover:text-foreground">Features</a>
           <a href="#how" className="transition-colors hover:text-foreground">How it works</a>
+          <Link href="/docs" className="transition-colors hover:text-foreground">Docs</Link>
         </nav>
         <div className="flex items-center gap-2">
           <Link href="/login">
@@ -90,9 +91,9 @@ function Hero() {
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/login">
+            <Link href="/docs/getting-started">
               <Button size="lg" variant="outline">
-                Log in
+                Getting Started Guide
               </Button>
             </Link>
           </div>
@@ -386,6 +387,7 @@ function SiteFooter() {
           <span className="text-sm font-semibold text-heading">SoftWindow</span>
         </div>
         <div className="flex items-center gap-5 text-sm text-muted-foreground">
+          <Link href="/docs" className="hover:text-foreground">Docs</Link>
           <Link href="/terms" className="hover:text-foreground">Terms</Link>
           <Link href="/privacy" className="hover:text-foreground">Privacy</Link>
           <Link href="/login" className="hover:text-foreground">Log in</Link>
