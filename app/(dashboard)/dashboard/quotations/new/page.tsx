@@ -25,6 +25,8 @@ import {
 } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import type { DesignDocument } from '@/lib/design-editor/model'
+import { getMyQuotationUsage } from '../actions'
+import type { QuotationUsage } from '@/lib/access'
 
 type SaveState = 'idle' | 'saving' | 'saved' | 'error'
 
@@ -61,6 +63,11 @@ export default function NewQuotationPage() {
   // Blocks autosave until an edited quotation finishes loading.
   const [hydrated, setHydrated] = useState(!editId)
 
+  // Quotation-limit usage (create mode only). null until loaded.
+  const [usage, setUsage] = useState<QuotationUsage | null>(null)
+  // Once a draft is created in this session it no longer counts against the gate.
+  const createdThisSession = useRef(false)
+
   // Client information
   const [clients, setClients] = useState<ClientOption[]>([])
   const [selectedClientId, setSelectedClientId] = useState<string>(NEW_CLIENT)
@@ -85,6 +92,19 @@ export default function NewQuotationPage() {
   const quotationIdRef = useRef<string | null>(editId ?? null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const savingRef = useRef(false)
+
+  // Load the user's quotation usage (only relevant when creating a new one).
+  useEffect(() => {
+    if (editId) return
+    let active = true
+    void (async () => {
+      const u = await getMyQuotationUsage()
+      if (active) setUsage(u)
+    })()
+    return () => {
+      active = false
+    }
+  }, [editId])
 
   // Load existing clients for the picker (and preselect from ?client=).
   useEffect(() => {
@@ -272,6 +292,19 @@ export default function NewQuotationPage() {
           .eq('id', quotationIdRef.current)
         if (updateError) throw updateError
       } else {
+        // Enforce the quotation limit before creating the first draft. Re-check
+        // server-side here (fresh count) to avoid stale client state.
+        if (!editId && !createdThisSession.current) {
+          const fresh = await getMyQuotationUsage()
+          setUsage(fresh)
+          if (!fresh.canCreate) {
+            setSaveState('error')
+            setError(
+              `You've reached your quotation limit (${fresh.used}/${fresh.limit}) for this billing period.`
+            )
+            return null
+          }
+        }
         const { data, error: insertError } = await supabase
           .from('quotations')
           .insert([{ ...payload, created_by: user.id }])
@@ -279,6 +312,7 @@ export default function NewQuotationPage() {
           .single()
         if (insertError) throw insertError
         quotationIdRef.current = data.id
+        createdThisSession.current = true
       }
 
       setSaveState('saved')
@@ -291,7 +325,7 @@ export default function NewQuotationPage() {
     } finally {
       savingRef.current = false
     }
-  }, [buildPayload, clientName, clientPhone, resolveClientId, supabase])
+  }, [buildPayload, clientName, clientPhone, resolveClientId, supabase, editId])
 
   // Debounced autosave for the quotation header fields (client/notes/validity).
   useEffect(() => {
@@ -459,6 +493,27 @@ export default function NewQuotationPage() {
       {error && (
         <div className="rounded-lg bg-rose-50 p-3 text-sm text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20">
           {error}
+        </div>
+      )}
+
+      {!editId && usage && !usage.unlimited && (
+        <div
+          className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm ring-1 ring-inset ${
+            usage.canCreate
+              ? 'bg-primary-soft text-primary ring-primary/20'
+              : 'bg-amber-50 text-amber-700 ring-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20'
+          }`}
+        >
+          <span>
+            {usage.canCreate
+              ? `Quotations used this period: ${usage.used} / ${usage.limit}`
+              : `You've reached your limit of ${usage.limit} quotations for this billing period.`}
+          </span>
+          {usage.periodEnds && (
+            <span className="shrink-0 text-xs opacity-80">
+              Resets {new Date(usage.periodEnds).toLocaleDateString()}
+            </span>
+          )}
         </div>
       )}
 
