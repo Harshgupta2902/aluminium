@@ -1,12 +1,13 @@
 import { createClient } from '@/lib/supabase/server'
-import { EditorShell } from '@/components/design-editor/editor-shell'
+import { FrameEditorShell } from '@/components/design-editor/frame-editor-shell'
 import {
-  type DesignDocument,
-  defaultTemplateForType,
-  emptyDetails,
-  findTemplate,
-  shapeFromTemplate,
-} from '@/lib/design-editor/model'
+  type FrameDocument,
+  type WindowTypeId,
+  createFrameDocument,
+  emptyFrameDetails,
+  isFrameDocument,
+  WINDOW_TYPE_MAP,
+} from '@/lib/design-editor/frame-model'
 
 export default async function DesignEditorPage({
   params,
@@ -15,7 +16,6 @@ export default async function DesignEditorPage({
   params: Promise<{ id: string }>
   searchParams: Promise<{
     quotationId?: string
-    template?: string
     windowType?: string
     width?: string
     height?: string
@@ -25,34 +25,37 @@ export default async function DesignEditorPage({
   const sp = await searchParams
   const supabase = await createClient()
 
-  const initialDocument = await buildInitialDocument(supabase, {
+  const initialDocument = await buildInitialFrame(supabase, {
     id,
     quotationId: sp.quotationId,
-    templateKey: sp.template,
     windowType: sp.windowType,
     width: sp.width ? Number(sp.width) : undefined,
     height: sp.height ? Number(sp.height) : undefined,
   })
 
-  return <EditorShell initialDocument={initialDocument} />
+  return (
+    <FrameEditorShell
+      initialDocument={initialDocument}
+      quotationId={sp.quotationId ?? null}
+    />
+  )
 }
 
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
-async function buildInitialDocument(
+async function buildInitialFrame(
   supabase: SupabaseClient,
   opts: {
     id: string
     quotationId?: string
-    templateKey?: string
     windowType?: string
     width?: number
     height?: number
   }
-): Promise<DesignDocument> {
-  const { id, quotationId, templateKey, windowType, width, height } = opts
+): Promise<FrameDocument> {
+  const { id, quotationId, windowType, width, height } = opts
 
-  // 1) Editing an existing saved design: load its editor document if present.
+  // 1) Existing saved design.
   if (id && id !== 'new') {
     const { data } = await supabase
       .from('window_designs')
@@ -61,66 +64,77 @@ async function buildInitialDocument(
       .single()
 
     if (data) {
-      if (data.editor_document) {
-        const doc = data.editor_document as DesignDocument
-        return { ...doc, id: data.id }
+      const stored = data.editor_document
+      if (isFrameDocument(stored)) {
+        return { ...stored, id: data.id }
       }
-      // Legacy design without an editor document: synthesize one.
-      const details = emptyDetails()
-      details.designName = data.name ?? ''
-      details.colour = data.color ?? details.colour
-      details.glassType = data.glass_type ?? ''
-      const template =
-        findTemplate(`${data.window_type}-1`) ??
-        findTemplate('sliding-2t')!
-      const shape = shapeFromTemplate(template, 1)
-      shape.width = Number(data.width) || shape.width
-      shape.height = Number(data.height) || shape.height
-      return { id: data.id, details, shapes: [shape] }
+      // Legacy document (old shape model) or none: migrate from DB columns.
+      return migrateLegacy(data)
     }
   }
 
-  // 2) Seeded from a quotation's first item.
+  // 2) Fresh frame, optionally seeded from a quotation and/or URL hints.
+  const doc = createFrameDocument(
+    width && width > 0 ? width : undefined,
+    height && height > 0 ? height : undefined
+  )
+
   if (quotationId) {
     const { data: quotation } = await supabase
       .from('quotations')
-      .select('*')
+      .select('client_name')
       .eq('id', quotationId)
       .single()
-
-    if (quotation?.items?.length) {
-      const item = quotation.items[0]
-      const details = emptyDetails()
-      details.designName = `${quotation.client_name} - Window`
-      details.colour = item.color ?? details.colour
-      details.glassType = item.glass_type ?? ''
-      const template =
-        findTemplate(`${item.window_type}-1`) ?? findTemplate('sliding-2t')!
-      const shape = shapeFromTemplate(template, 1)
-      shape.width = item.dimensions?.width ?? shape.width
-      shape.height = item.dimensions?.height ?? shape.height
-      return { id: null, details, shapes: [shape] }
+    if (quotation?.client_name) {
+      doc.details.designName = `${quotation.client_name} - Window`
     }
   }
 
-  // 3) Fresh document, optionally pre-seeded from the URL.
-  //    - ?template=<editor-key> picks an exact editor template
-  //    - ?windowType=<type>&width=&height= seeds from a DB template card
-  const details = emptyDetails()
-  const shapes = []
-
-  const seedTemplate = templateKey
-    ? findTemplate(templateKey)
-    : windowType
-      ? defaultTemplateForType(windowType)
-      : undefined
-
-  if (seedTemplate) {
-    const shape = shapeFromTemplate(seedTemplate, 1)
-    if (width && width > 0) shape.width = width
-    if (height && height > 0) shape.height = height
-    shapes.push(shape)
+  // Pre-place a window type if the URL hints one.
+  const seedType = normalizeType(windowType)
+  if (seedType && doc.sections[0]) {
+    doc.sections[0].window = {
+      type: seedType,
+      props: WINDOW_TYPE_MAP[seedType].defaults(),
+    }
   }
 
-  return { id: null, details, shapes }
+  return doc
+}
+
+/** Build a frame from the legacy single-window columns / old shape document. */
+function migrateLegacy(data: Record<string, unknown>): FrameDocument {
+  const w = Number(data.width) || 1500
+  const h = Number(data.height) || 1200
+  const doc = createFrameDocument(w, h)
+  doc.id = (data.id as string) ?? null
+  doc.details = {
+    ...emptyFrameDetails(),
+    designName: (data.name as string) ?? '',
+    colour: (data.color as string) ?? 'White',
+    glassType: (data.glass_type as string) ?? '',
+    ratePerSqft:
+      typeof data.rate_per_sqft === 'number' && data.rate_per_sqft > 0
+        ? (data.rate_per_sqft as number)
+        : null,
+  }
+  const type = normalizeType(data.window_type as string) ?? 'sliding'
+  if (doc.sections[0]) {
+    doc.sections[0].window = { type, props: WINDOW_TYPE_MAP[type].defaults() }
+  }
+  return doc
+}
+
+/** Map a loose window_type string to a known type id. */
+function normalizeType(raw: string | null | undefined): WindowTypeId | null {
+  if (!raw) return null
+  const v = raw.toLowerCase()
+  if (WINDOW_TYPE_MAP[v]) return v as WindowTypeId
+  if (v.includes('slid')) return 'sliding'
+  if (v.includes('casement')) return 'casement'
+  if (v.includes('door')) return 'door-single'
+  if (v.includes('fix')) return 'fixed'
+  if (v.includes('louver')) return 'louvered'
+  if (v.includes('vent')) return 'ventilator'
+  return null
 }
