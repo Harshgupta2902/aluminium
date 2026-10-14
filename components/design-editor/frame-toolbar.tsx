@@ -1,6 +1,6 @@
 'use client'
 
-import { Undo2, Redo2, Trash2, Eraser, Maximize2 } from 'lucide-react'
+import { Undo2, Redo2, Trash2, Eraser, Maximize2, Image as ImageIcon } from 'lucide-react'
 import { useFrameStore, MIN_ZOOM, MAX_ZOOM } from '@/store/frame-editor'
 
 /**
@@ -59,8 +59,54 @@ export function FrameToolbar() {
       </div>
 
       <ToolButton icon={Maximize2} label="Fit" onClick={fitZoom} />
+
+      <Divider />
+
+      <ToolButton icon={ImageIcon} label="PNG" onClick={exportCanvasPng} />
     </div>
   )
+}
+
+/**
+ * Export the editor canvas (the first <svg> inside the canvas area) to a PNG
+ * and trigger a download. Serializes the SVG, rasterises via an Image onto a
+ * 2x canvas, then downloads a data URL.
+ */
+async function exportCanvasPng() {
+  const svg = document.querySelector<SVGSVGElement>('[data-frame-canvas] svg')
+  if (!svg) return
+  const serializer = new XMLSerializer()
+  const source = serializer.serializeToString(svg)
+  const svgBlob = new Blob([source], { type: 'image/svg+xml;charset=utf-8' })
+  const url = URL.createObjectURL(svgBlob)
+
+  const width = svg.width.baseVal.value || svg.viewBox.baseVal.width || 1200
+  const height = svg.height.baseVal.value || svg.viewBox.baseVal.height || 800
+
+  const img = new Image()
+  await new Promise<void>((resolve, reject) => {
+    img.onload = () => resolve()
+    img.onerror = reject
+    img.src = url
+  }).catch(() => {})
+
+  const scale = 2
+  const canvas = document.createElement('canvas')
+  canvas.width = width * scale
+  canvas.height = height * scale
+  const ctx = canvas.getContext('2d')
+  if (ctx) {
+    ctx.fillStyle = '#ffffff'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.scale(scale, scale)
+    ctx.drawImage(img, 0, 0)
+  }
+  URL.revokeObjectURL(url)
+
+  const a = document.createElement('a')
+  a.href = canvas.toDataURL('image/png', 1)
+  a.download = `window-${Date.now()}.png`
+  a.click()
 }
 
 function ToolButton({

@@ -9,10 +9,12 @@ import {
   type PanelAccessory,
   clearSection,
   createFrameDocument,
+  moveDivider,
   normalizeDocumentPanels,
   normalizeSlidingPanels,
   placeWindow,
   resizeFrame,
+  setPanelWidthMm,
   splitSection,
   syncCounter,
   updateFrameDetails,
@@ -56,6 +58,10 @@ interface FrameEditorState {
   dropDivider: (orient: 'v' | 'h', x: number, y: number, kind: 'coupler' | 'mullion') => void
   clearSelectedWindow: () => void
   patchWindow: (sectionId: number, patch: Record<string, unknown>) => void
+
+  /* Geometry editing. */
+  setPanelWidth: (sectionId: number, panelIdx: number, widthMm: number) => void
+  moveDividerTo: (dividerId: number, centerMm: number) => void
 
   /* Per-panel (sliding) editing. */
   setPanelDir: (sectionId: number, panelIdx: number, dir: PanelDir) => void
@@ -154,6 +160,28 @@ export const useFrameStore = create<FrameEditorState>((set, get) => ({
       past: [...state.past, state.doc],
       future: [],
       doc: updateWindowProps(state.doc, sectionId, patch),
+    })),
+
+  setPanelWidth: (sectionId, panelIdx, widthMm) =>
+    set((state) => {
+      const sec = state.doc.sections.find((s) => s.id === sectionId)
+      if (!sec?.window || sec.window.type !== 'sliding') return state
+      const props = { ...sec.window.props }
+      normalizeSlidingPanels(props)
+      const fracs = props.panelFractions as number[]
+      const next = setPanelWidthMm(fracs, panelIdx, widthMm, sec.sw)
+      return {
+        past: [...state.past, state.doc],
+        future: [],
+        doc: updateWindowProps(state.doc, sectionId, { panelFractions: next }),
+      }
+    }),
+
+  moveDividerTo: (dividerId, centerMm) =>
+    set((state) => ({
+      past: [...state.past, state.doc],
+      future: [],
+      doc: moveDivider(state.doc, dividerId, centerMm),
     })),
 
   setPanelDir: (sectionId, panelIdx, dir) =>

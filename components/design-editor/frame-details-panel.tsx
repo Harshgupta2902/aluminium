@@ -33,6 +33,8 @@ export const SECTION_ACCESSORY_KINDS: {
   kind: string
   label: string
   types: WindowTypeId[]
+  /** Only show when the section has mesh enabled. */
+  requiresMesh?: boolean
 }[] = [
   { kind: 'sash', label: 'Sash', types: ['sliding'] },
   { kind: 'interlock', label: 'Interlock', types: ['sliding'] },
@@ -40,14 +42,22 @@ export const SECTION_ACCESSORY_KINDS: {
   { kind: 'roller', label: 'Roller', types: ['sliding'] },
   { kind: 'lock', label: 'Lock', types: ['sliding', 'casement', 'double-casement', 'door-single', 'door-double'] },
   { kind: 'hinge', label: 'Hinge', types: ['casement', 'double-casement', 'tophung', 'awning', 'door-single', 'door-double'] },
-  { kind: 'mesh', label: 'Mesh', types: ['sliding', 'casement', 'mesh-screen', 'fly-screen'] },
+  { kind: 'friction_stay', label: 'Friction Stay / Hinges', types: ['casement', 'double-casement', 'tophung', 'awning', 'fixed-casement'] },
+  // Mesh hardware — only when the section has mesh on.
+  { kind: 'mesh_type', label: 'Mesh Type', types: ['casement', 'double-casement', 'mesh-screen', 'fly-screen'], requiresMesh: true },
+  { kind: 'mesh_sash', label: 'Mesh Sash', types: ['casement', 'double-casement', 'mesh-screen', 'fly-screen'], requiresMesh: true },
+  { kind: 'mesh_clip', label: 'Mesh Clip', types: ['casement', 'double-casement', 'mesh-screen', 'fly-screen'], requiresMesh: true },
+  { kind: 'mesh_handle', label: 'Mesh Handle', types: ['casement', 'double-casement', 'mesh-screen', 'fly-screen'], requiresMesh: true },
+  { kind: 'mesh_slim', label: 'Mesh Slim', types: ['casement', 'double-casement', 'mesh-screen', 'fly-screen'], requiresMesh: true },
 ]
 
 /** Shape stored on `section.window.props.accessories`. */
 export type SectionAccessories = Record<string, { id: string; name: string; price: number }>
 
-function kindsForType(type: WindowTypeId): typeof SECTION_ACCESSORY_KINDS {
-  return SECTION_ACCESSORY_KINDS.filter((k) => k.types.includes(type))
+function kindsForType(type: WindowTypeId, meshOn: boolean): typeof SECTION_ACCESSORY_KINDS {
+  return SECTION_ACCESSORY_KINDS.filter(
+    (k) => k.types.includes(type) && (!k.requiresMesh || meshOn)
+  )
 }
 
 export function FrameDetailsPanel({
@@ -145,6 +155,7 @@ export function FrameDetailsPanel({
                   />
                   <SectionAccessoryPanel
                     type={selected.window.type}
+                    meshOn={selected.window.props.mesh === true}
                     accessories={(selected.window.props.accessories as SectionAccessories) ?? {}}
                     options={lists.accessories}
                     set={(next) => patchWindow(selected.id, { accessories: next })}
@@ -231,6 +242,25 @@ export function FrameDetailsPanel({
               </Field>
               <Field label="Floor No">
                 <Input value={details.floorNo} onChange={(e) => patchDetails({ floorNo: e.target.value })} />
+              </Field>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Material">
+                <Select
+                  value={details.material ?? 'aluminium'}
+                  onChange={(e) => patchDetails({ material: e.target.value as 'aluminium' | 'upvc' })}
+                >
+                  <option value="aluminium">Aluminium</option>
+                  <option value="upvc">uPVC</option>
+                </Select>
+              </Field>
+              <Field label="Series" hint="optional">
+                <Input
+                  value={details.series ?? ''}
+                  placeholder="e.g. 2721"
+                  onChange={(e) => patchDetails({ series: e.target.value })}
+                />
               </Field>
             </div>
 
@@ -331,8 +361,9 @@ function SectionProps({
           {type === 'casement' && (
             <Pills label="Hinge Side" options={[['left', '⬅ Left'], ['right', 'Right ➡']]} val={(props.hingeSide as string) || 'left'} set={(v) => set({ hingeSide: v })} />
           )}
-          <Pills label="Opening" options={[['outward', '↗ Outward'], ['inward', '↙ Inward']]} val={(props.openDir as string) || 'outward'} set={(v) => set({ openDir: v })} />
+          <Pills label="Window Openable Type" options={[['outward', '↗ Outward'], ['inward', '↙ Inward']]} val={(props.openDir as string) || 'outward'} set={(v) => set({ openDir: v })} />
           <Pills label="Glazing Bar" options={[[false, 'None'], [true, 'Grid']]} val={props.glazingBar === true} set={(v) => set({ glazingBar: v })} />
+          <Pills label="Mesh" options={[[false, 'No Mesh'], [true, 'With Mesh']]} val={props.mesh === true} set={(v) => set({ mesh: v })} />
         </>
       )
     case 'fixed':
@@ -416,6 +447,12 @@ const SLIDING_PANEL_KINDS: { kind: string; label: string; required?: boolean }[]
   { kind: 'lock', label: 'Lock' },
 ]
 
+/** Extra accessory kinds shown only when the sliding window uses a slim profile. */
+const SLIM_PANEL_KINDS: { kind: string; label: string; required?: boolean }[] = [
+  { kind: 'slim_interlock', label: 'Slim Interlock', required: true },
+  { kind: 'reinforcement', label: 'Reinforcement' },
+]
+
 function SlidingPanelEditor({
   section,
   options,
@@ -445,6 +482,7 @@ function SlidingPanelEditor({
   const handle = handles[idx] ?? 'right'
   const panelAcc = acc[idx] ?? {}
   const isFixed = dir === 'fixed'
+  const isSlim = props.slimProfile === true
 
   const sashOptions = options.filter((o) => o.kind === 'sash')
 
@@ -524,16 +562,18 @@ function SlidingPanelEditor({
           <div className="border-b border-primary/30 pb-1 text-[11px] font-semibold uppercase tracking-wide text-primary">
             Accessories
           </div>
-          {SLIDING_PANEL_KINDS.map(({ kind, label, required }) => (
-            <PanelSelect
-              key={kind}
-              label={label}
-              required={required}
-              value={panelAcc[kind]?.id ?? ''}
-              options={options.filter((o) => o.kind === kind)}
-              onChange={(id) => chooseAccessory(kind, id)}
-            />
-          ))}
+          {[...SLIDING_PANEL_KINDS, ...(isSlim ? SLIM_PANEL_KINDS : [])].map(
+            ({ kind, label, required }) => (
+              <PanelSelect
+                key={kind}
+                label={label}
+                required={required}
+                value={panelAcc[kind]?.id ?? ''}
+                options={options.filter((o) => o.kind === kind)}
+                onChange={(id) => chooseAccessory(kind, id)}
+              />
+            )
+          )}
         </div>
       )}
 
@@ -664,16 +704,18 @@ function PanelSelect({
 
 function SectionAccessoryPanel({
   type,
+  meshOn,
   accessories,
   options,
   set,
 }: {
   type: WindowTypeId
+  meshOn: boolean
   accessories: SectionAccessories
   options: EditorLists['accessories']
   set: (next: SectionAccessories) => void
 }) {
-  const kinds = kindsForType(type)
+  const kinds = kindsForType(type, meshOn)
   if (kinds.length === 0) return null
 
   const update = (kind: string, id: string) => {

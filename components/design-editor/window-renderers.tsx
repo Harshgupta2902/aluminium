@@ -122,11 +122,13 @@ const renderSliding: Renderer = (win, { x, y, w, h }) => {
   const panels = Number(win.props.panels) || 2
   const dirs = (win.props.panelDirs as string[]) ?? []
   const handles = (win.props.panelHandles as string[]) ?? []
-  const pw = w / panels
+  const fracs = panelFractionsOf(win.props, panels)
+  const offsets = cumulativeOffsets(fracs, w)
   return (
     <g>
       {Array.from({ length: panels }, (_, i) => {
-        const px = x + pw * i
+        const px = x + offsets[i]
+        const pw = fracs[i] * w
         const dir = dirs[i]
         const isFixed = dir === 'fixed'
         const handleSide = handles[i] ?? (dir === 'right' ? 'right' : 'left')
@@ -165,9 +167,30 @@ const renderSliding: Renderer = (win, { x, y, w, h }) => {
           </g>
         )
       })}
-      {win.props.mesh ? <MeshOverlay x={x} y={y} w={pw} h={h} /> : null}
+      {win.props.mesh ? <MeshOverlay x={x} y={y} w={w} h={h} /> : null}
     </g>
   )
+}
+
+/** Read + normalise panel fractions to a panel count (sum = 1). */
+function panelFractionsOf(props: Record<string, unknown>, panels: number): number[] {
+  const raw = Array.isArray(props.panelFractions) ? (props.panelFractions as number[]) : []
+  if (raw.length === panels && raw.every((f) => Number.isFinite(f) && f > 0)) {
+    const total = raw.reduce((a, b) => a + b, 0)
+    return raw.map((f) => f / total)
+  }
+  return Array(panels).fill(1 / panels)
+}
+
+/** Pixel offset of each panel's left edge from the section origin. */
+function cumulativeOffsets(fracs: number[], w: number): number[] {
+  const out: number[] = []
+  let acc = 0
+  for (const f of fracs) {
+    out.push(acc)
+    acc += f * w
+  }
+  return out
 }
 
 const renderCasement: Renderer = (win, { x, y, w, h }) => {

@@ -15,16 +15,34 @@ export type AccessoryKind =
   | 'lock'
   | 'hinge'
   | 'mesh'
+  | 'mesh_type'
+  | 'mesh_sash'
+  | 'mesh_clip'
+  | 'mesh_handle'
+  | 'mesh_slim'
+  | 'reinforcement'
+  | 'slim_interlock'
+  | 'friction_stay'
 
-export const ACCESSORY_KINDS: { kind: AccessoryKind; label: string }[] = [
-  { kind: 'sash', label: 'Sash' },
-  { kind: 'interlock', label: 'Interlock' },
-  { kind: 'handle', label: 'Handle' },
-  { kind: 'roller', label: 'Roller' },
-  { kind: 'lock', label: 'Lock' },
-  { kind: 'hinge', label: 'Hinge' },
-  { kind: 'mesh', label: 'Mesh' },
+export const ACCESSORY_KINDS: { kind: AccessoryKind; label: string; group: string }[] = [
+  { kind: 'sash', label: 'Sash', group: 'Core' },
+  { kind: 'interlock', label: 'Interlock', group: 'Core' },
+  { kind: 'handle', label: 'Handle', group: 'Core' },
+  { kind: 'roller', label: 'Roller', group: 'Core' },
+  { kind: 'lock', label: 'Lock', group: 'Core' },
+  { kind: 'hinge', label: 'Hinge', group: 'Core' },
+  { kind: 'mesh', label: 'Mesh', group: 'Core' },
+  { kind: 'slim_interlock', label: 'Slim Interlock', group: 'Slim profile' },
+  { kind: 'reinforcement', label: 'Reinforcement', group: 'Slim profile' },
+  { kind: 'friction_stay', label: 'Friction Stay / Hinges', group: 'Casement' },
+  { kind: 'mesh_type', label: 'Mesh Type', group: 'Mesh' },
+  { kind: 'mesh_sash', label: 'Mesh Sash', group: 'Mesh' },
+  { kind: 'mesh_clip', label: 'Mesh Clip', group: 'Mesh' },
+  { kind: 'mesh_handle', label: 'Mesh Handle', group: 'Mesh' },
+  { kind: 'mesh_slim', label: 'Mesh Slim', group: 'Mesh' },
 ]
+
+const GROUP_ORDER = ['Core', 'Slim profile', 'Casement', 'Mesh'] as const
 
 interface AccessoryRow {
   id: string
@@ -132,19 +150,30 @@ export function AccessoriesManager() {
           {error}
         </div>
       )}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        {ACCESSORY_KINDS.map(({ kind, label }) => (
-          <KindCard
-            key={kind}
-            label={label}
-            rows={byKind.get(kind) ?? []}
-            onAdd={(name, code, price) => add(kind, name, code, price)}
-            onPatch={patch}
-            onRemove={remove}
-            onLocalChange={setRows}
-          />
-        ))}
-      </div>
+      {GROUP_ORDER.map((group) => {
+        const kinds = ACCESSORY_KINDS.filter((k) => k.group === group)
+        if (kinds.length === 0) return null
+        return (
+          <div key={group} className="space-y-3">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              {group}
+            </h3>
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              {kinds.map(({ kind, label }) => (
+                <KindCard
+                  key={kind}
+                  label={label}
+                  rows={byKind.get(kind) ?? []}
+                  onAdd={(name, code, price) => add(kind, name, code, price)}
+                  onPatch={patch}
+                  onRemove={remove}
+                  onLocalChange={setRows}
+                />
+              ))}
+            </div>
+          </div>
+        )
+      })}
     </div>
   )
 }

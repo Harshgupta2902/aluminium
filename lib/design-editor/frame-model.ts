@@ -69,6 +69,8 @@ const defaults: Record<WindowTypeId, () => Record<string, unknown>> = {
     // Per-panel accessory selections, index-aligned with panels.
     // Each entry: { sash?, interlock?, handle?, roller?, lock? } of {id,name,price}.
     panelAccessories: [],
+    // Per-panel width fractions of the section width (sum = 1).
+    panelFractions: [0.5, 0.5],
     direction: 'both',
     handleSide: 'center',
     mesh: false,
@@ -243,6 +245,9 @@ export interface FrameDetails {
   sash?: string
   interlock?: string
   lock?: string
+  /** Optional profile material + series (metadata; does not change pricing). */
+  material?: 'aluminium' | 'upvc'
+  series?: string
 }
 
 export interface FrameDocument {
@@ -549,6 +554,9 @@ export function normalizeSlidingPanels(
   const acc = Array.isArray(props.panelAccessories)
     ? [...(props.panelAccessories as PanelAccessories[])]
     : []
+  let fracs = Array.isArray(props.panelFractions)
+    ? [...(props.panelFractions as number[])]
+    : []
 
   for (let i = 0; i < panels; i++) {
     if (dirs[i] == null) dirs[i] = i % 2 === 0 ? 'right' : 'left'
@@ -559,10 +567,44 @@ export function normalizeSlidingPanels(
   handles.length = panels
   acc.length = panels
 
+  // Fractions: default to equal; renormalise to the panel count and sum=1.
+  if (fracs.length !== panels || fracs.some((f) => !Number.isFinite(f) || f <= 0)) {
+    fracs = Array(panels).fill(1 / panels)
+  } else {
+    const total = fracs.reduce((a, b) => a + b, 0)
+    fracs = total > 0 ? fracs.map((f) => f / total) : Array(panels).fill(1 / panels)
+  }
+
   props.panelDirs = dirs
   props.panelHandles = handles
   props.panelAccessories = acc
+  props.panelFractions = fracs
   return props
+}
+
+/**
+ * Set one sliding panel's width (mm) within a section of total width
+ * `sectionWidthMm`, keeping the sum constant by absorbing the delta from the
+ * other panels proportionally. Returns new fraction array.
+ */
+export function setPanelWidthMm(
+  fractions: number[],
+  panelIdx: number,
+  newWidthMm: number,
+  sectionWidthMm: number,
+  minMm = 100
+): number[] {
+  const n = fractions.length
+  if (n <= 1 || sectionWidthMm <= 0) return fractions
+  const clampedNew = Math.max(minMm, Math.min(sectionWidthMm - minMm * (n - 1), newWidthMm))
+  const newFrac = clampedNew / sectionWidthMm
+  const othersOld = fractions.reduce((sum, f, i) => (i === panelIdx ? sum : sum + f), 0)
+  const remaining = 1 - newFrac
+  const out = fractions.map((f, i) => {
+    if (i === panelIdx) return newFrac
+    return othersOld > 0 ? (f / othersOld) * remaining : remaining / (n - 1)
+  })
+  return out
 }
 
 /** Normalise every sliding section in a document (used on load). */
@@ -580,6 +622,68 @@ export function updateFrameDetails(
   const next = cloneDoc(doc)
   next.details = { ...next.details, ...patch }
   return next
+}
+
+/**
+ * Move a divider along its axis to a new centre position (mm) and resize the
+ * two sections immediately adjacent to it. Clamped so neither side drops below
+ * MIN_SECTION_MM. Only handles the two sections sharing the divider edge.
+ */
+export function moveDivider(
+  doc: FrameDocument,
+  dividerId: number,
+  newCenterMm: number
+): FrameDocument {
+  const next = cloneDoc(doc)
+  const d = next.dividers.find((x) => x.id === dividerId)
+  if (!d) return next
+
+  const half = d.cw / 2 // for 'v'; for 'h' use ch/2 below
+  if (d.orient === 'v') {
+    const edge = d.cx + d.cw / 2 // current centre x
+    // Section ending at the divider's left, and section starting at its right.
+    const left = next.sections.find(
+      (s) => Math.abs(s.sx + s.sw - (d.cx)) < 2 && overlapY(s, d)
+    )
+    const right = next.sections.find(
+      (s) => Math.abs(s.sx - (d.cx + d.cw)) < 2 && overlapY(s, d)
+    )
+    if (!left || !right) return next
+    const minX = left.sx + MIN_SECTION_MM + d.cw / 2
+    const maxX = right.sx + right.sw - MIN_SECTION_MM - d.cw / 2
+    const cx = Math.max(minX, Math.min(maxX, newCenterMm))
+    const dx = cx - edge
+    left.sw += dx
+    right.sx += dx
+    right.sw -= dx
+    d.cx += dx
+  } else {
+    const edge = d.cy + d.ch / 2
+    const top = next.sections.find(
+      (s) => Math.abs(s.sy + s.sh - d.cy) < 2 && overlapX(s, d)
+    )
+    const bottom = next.sections.find(
+      (s) => Math.abs(s.sy - (d.cy + d.ch)) < 2 && overlapX(s, d)
+    )
+    if (!top || !bottom) return next
+    const minY = top.sy + MIN_SECTION_MM + d.ch / 2
+    const maxY = bottom.sy + bottom.sh - MIN_SECTION_MM - d.ch / 2
+    const cy = Math.max(minY, Math.min(maxY, newCenterMm))
+    const dy = cy - edge
+    top.sh += dy
+    bottom.sy += dy
+    bottom.sh -= dy
+    d.cy += dy
+  }
+  void half
+  return next
+}
+
+function overlapY(s: FrameSection, d: Divider): boolean {
+  return s.sy < d.cy + d.ch && s.sy + s.sh > d.cy
+}
+function overlapX(s: FrameSection, d: Divider): boolean {
+  return s.sx < d.cx + d.cw && s.sx + s.sw > d.cx
 }
 
 export function resizeFrame(

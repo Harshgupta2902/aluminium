@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useFrameStore } from '@/store/frame-editor'
 import { renderWindow } from './window-renderers'
 import { FRAME_MM, type WindowTypeId } from '@/lib/design-editor/frame-model'
@@ -13,6 +13,16 @@ export interface DragPayload {
   type?: WindowTypeId
 }
 
+/** Normalise panel fractions to a panel count (sum = 1). */
+function fractionsOf(props: Record<string, unknown>, panels: number): number[] {
+  const raw = Array.isArray(props.panelFractions) ? (props.panelFractions as number[]) : []
+  if (raw.length === panels && raw.every((f) => Number.isFinite(f) && f > 0)) {
+    const total = raw.reduce((a, b) => a + b, 0)
+    return raw.map((f) => f / total)
+  }
+  return Array(panels).fill(1 / panels)
+}
+
 export function FrameCanvas() {
   const doc = useFrameStore((s) => s.doc)
   const zoom = useFrameStore((s) => s.zoom)
@@ -22,6 +32,9 @@ export function FrameCanvas() {
   const selectPanel = useFrameStore((s) => s.selectPanel)
   const dropWindow = useFrameStore((s) => s.dropWindow)
   const dropDivider = useFrameStore((s) => s.dropDivider)
+  const setFrameSize = useFrameStore((s) => s.setFrameSize)
+  const setPanelWidth = useFrameStore((s) => s.setPanelWidth)
+  const moveDividerTo = useFrameStore((s) => s.moveDividerTo)
 
   const svgRef = useRef<SVGSVGElement | null>(null)
   const scale = PX_PER_MM * zoom
@@ -34,13 +47,20 @@ export function FrameCanvas() {
   // mm -> px inside the frame (frame origin at PAD,PAD).
   const px = (mm: number) => PAD + mm * scale
 
-  function pointerToMm(e: React.DragEvent): { x: number; y: number } | null {
+  // Drag state for moving a divider.
+  const dragRef = useRef<{ id: number; orient: 'v' | 'h' } | null>(null)
+
+  function clientToMm(clientX: number, clientY: number): { x: number; y: number } | null {
     const svg = svgRef.current
     if (!svg) return null
     const rect = svg.getBoundingClientRect()
-    const sx = (e.clientX - rect.left) * (viewW / rect.width)
-    const sy = (e.clientY - rect.top) * (viewH / rect.height)
+    const sx = (clientX - rect.left) * (viewW / rect.width)
+    const sy = (clientY - rect.top) * (viewH / rect.height)
     return { x: (sx - PAD) / scale, y: (sy - PAD) / scale }
+  }
+
+  function pointerToMm(e: React.DragEvent): { x: number; y: number } | null {
+    return clientToMm(e.clientX, e.clientY)
   }
 
   function readPayload(e: React.DragEvent): DragPayload | null {
@@ -60,13 +80,10 @@ export function FrameCanvas() {
     if (!payload || !at) return
 
     if (payload.kind === 'coupler' || payload.kind === 'mullion') {
-      // Decide split orientation from drop position relative to section center.
       const sec = doc.sections.find(
         (s) => at.x > s.sx && at.x < s.sx + s.sw && at.y > s.sy && at.y < s.sy + s.sh
       )
       if (!sec) return
-      // Vertical coupler splits left/right; choose orientation by which axis has
-      // more room, biased by where in the section the user dropped.
       const relX = (at.x - sec.sx) / sec.sw
       const relY = (at.y - sec.sy) / sec.sh
       const orient: 'v' | 'h' =
@@ -80,8 +97,34 @@ export function FrameCanvas() {
     }
   }
 
+  // ---- divider dragging ----
+  const onDividerDown = (e: React.PointerEvent, id: number, orient: 'v' | 'h') => {
+    e.stopPropagation()
+    dragRef.current = { id, orient }
+    ;(e.target as Element).setPointerCapture?.(e.pointerId)
+  }
+  const onPointerMove = (e: React.PointerEvent) => {
+    const drag = dragRef.current
+    if (!drag) return
+    const at = clientToMm(e.clientX, e.clientY)
+    if (!at) return
+    moveDividerTo(drag.id, drag.orient === 'v' ? at.x : at.y)
+  }
+  const onPointerUp = () => {
+    dragRef.current = null
+  }
+
+  // ---- editable-dimension prompt helper ----
+  const promptMm = (current: number, label: string): number | null => {
+    const raw = window.prompt(`${label} (mm)`, String(Math.round(current)))
+    if (raw == null) return null
+    const n = Math.round(Number(raw))
+    if (!Number.isFinite(n) || n <= 0) return null
+    return n
+  }
+
   return (
-    <div className="relative h-full w-full overflow-auto bg-[#eef1f4]">
+    <div className="relative h-full w-full overflow-auto bg-[#eef1f4]" data-frame-canvas>
       <svg
         ref={svgRef}
         width={viewW}
@@ -90,6 +133,8 @@ export function FrameCanvas() {
         onDragOver={(e) => e.preventDefault()}
         onDrop={onDropCanvas}
         onPointerDown={() => selectSection(null)}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
       >
         <defs>
           <pattern id="wf-grid" width={24} height={24} patternUnits="userSpaceOnUse">
@@ -122,7 +167,14 @@ export function FrameCanvas() {
           const panelCount = isSliding
             ? Math.max(1, Number(sec.window!.props.panels) || 2)
             : 0
-          const panelW = panelCount ? sw / panelCount : 0
+          const fracs = isSliding ? fractionsOf(sec.window!.props, panelCount) : []
+          // Pixel left-offsets per panel.
+          const offs: number[] = []
+          let acc = 0
+          for (const f of fracs) {
+            offs.push(acc)
+            acc += f * sw
+          }
           return (
             <g
               key={sec.id}
@@ -140,9 +192,11 @@ export function FrameCanvas() {
 
               {/* Per-panel interactive overlay (sliding only) */}
               {isSliding &&
-                Array.from({ length: panelCount }, (_, i) => {
-                  const px = sx + panelW * i
+                fracs.map((f, i) => {
+                  const pxl = sx + offs[i]
+                  const pw = f * sw
                   const panelSelected = selected && selectedPanelIdx === i
+                  const panelWidthMm = Math.round(sec.sw * f)
                   return (
                     <g
                       key={`p${i}`}
@@ -154,9 +208,9 @@ export function FrameCanvas() {
                       className="cursor-pointer"
                     >
                       <rect
-                        x={px}
+                        x={pxl}
                         y={sy}
-                        width={panelW}
+                        width={pw}
                         height={sh}
                         fill={panelSelected ? '#2563eb' : 'transparent'}
                         fillOpacity={panelSelected ? 0.08 : 0}
@@ -164,12 +218,24 @@ export function FrameCanvas() {
                         strokeWidth={panelSelected ? 2 : 0}
                       />
                       {/* Panel badge S<sec>.<panel> */}
-                      <g>
-                        <circle cx={px + panelW / 2} cy={sy + 20} r={11} fill="#ffffff" stroke={panelSelected ? '#2563eb' : '#16a34a'} strokeWidth={1.25} />
-                        <text x={px + panelW / 2} y={sy + 20} textAnchor="middle" dominantBaseline="central" className={`text-[9px] font-bold ${panelSelected ? 'fill-blue-600' : 'fill-green-700'}`}>
+                      <g pointerEvents="none">
+                        <circle cx={pxl + pw / 2} cy={sy + 20} r={11} fill="#ffffff" stroke={panelSelected ? '#2563eb' : '#16a34a'} strokeWidth={1.25} />
+                        <text x={pxl + pw / 2} y={sy + 20} textAnchor="middle" dominantBaseline="central" className={`text-[9px] font-bold ${panelSelected ? 'fill-blue-600' : 'fill-green-700'}`}>
                           {sec.idx}.{i + 1}
                         </text>
                       </g>
+                      {/* Editable per-panel width pill at the bottom */}
+                      {panelCount > 1 && (
+                        <DimPill
+                          cx={pxl + pw / 2}
+                          cy={sy + sh - 16}
+                          label={`${panelWidthMm}`}
+                          onEdit={() => {
+                            const v = promptMm(panelWidthMm, `Panel ${sec.idx}.${i + 1} width`)
+                            if (v != null) setPanelWidth(sec.id, i, v)
+                          }}
+                        />
+                      )}
                     </g>
                   )
                 })}
@@ -203,53 +269,151 @@ export function FrameCanvas() {
           )
         })}
 
-        {/* Dividers (couplers + mullions) */}
-        {doc.dividers.map((d) => (
-          <rect
-            key={d.id}
-            x={px(d.cx)}
-            y={px(d.cy)}
-            width={d.cw * scale}
-            height={d.ch * scale}
-            fill={d.kind === 'coupler' ? '#64748b' : '#94a3b8'}
-            stroke="#475569"
-            strokeWidth={0.5}
-          />
-        ))}
+        {/* Dividers (couplers + mullions) — draggable */}
+        {doc.dividers.map((d) => {
+          const dw = d.cw * scale
+          const dh = d.ch * scale
+          const dx = px(d.cx)
+          const dy = px(d.cy)
+          // Widen the hit area for easier grabbing.
+          const hit = 8
+          return (
+            <g key={d.id}>
+              <rect
+                x={dx}
+                y={dy}
+                width={dw}
+                height={dh}
+                fill={d.kind === 'coupler' ? '#64748b' : '#94a3b8'}
+                stroke="#475569"
+                strokeWidth={0.5}
+              />
+              <rect
+                x={d.orient === 'v' ? dx - hit : dx}
+                y={d.orient === 'h' ? dy - hit : dy}
+                width={d.orient === 'v' ? dw + hit * 2 : dw}
+                height={d.orient === 'h' ? dh + hit * 2 : dh}
+                fill="transparent"
+                className={d.orient === 'v' ? 'cursor-ew-resize' : 'cursor-ns-resize'}
+                onPointerDown={(e) => onDividerDown(e, d.id, d.orient)}
+              />
+            </g>
+          )
+        })}
 
-        {/* Dimension labels */}
-        <WidthDim x1={px(0)} x2={px(doc.width)} y={px(doc.height) + 34} label={`${doc.width}`} />
-        <HeightDim y1={px(0)} y2={px(doc.height)} x={px(0) - FRAME_MM * scale - 34} label={`${doc.height}`} />
+        {/* Frame dimension labels (editable) */}
+        <WidthDim
+          x1={px(0)}
+          x2={px(doc.width)}
+          y={px(doc.height) + 34}
+          label={`${doc.width}`}
+          onEdit={() => {
+            const v = promptMm(doc.width, 'Frame width')
+            if (v != null) setFrameSize(v, doc.height)
+          }}
+        />
+        <HeightDim
+          y1={px(0)}
+          y2={px(doc.height)}
+          x={px(0) - FRAME_MM * scale - 34}
+          label={`${doc.height}`}
+          onEdit={() => {
+            const v = promptMm(doc.height, 'Frame height')
+            if (v != null) setFrameSize(doc.width, v)
+          }}
+        />
       </svg>
     </div>
   )
 }
 
-function WidthDim({ x1, x2, y, label }: { x1: number; x2: number; y: number; label: string }) {
+/** Small editable dimension chip. Click to edit via prompt. */
+function DimPill({
+  cx,
+  cy,
+  label,
+  onEdit,
+}: {
+  cx: number
+  cy: number
+  label: string
+  onEdit: () => void
+}) {
+  const [hover, setHover] = useState(false)
+  const w = 46
   return (
-    <g className="stroke-gray-500" strokeWidth={1}>
-      <line x1={x1} y1={y} x2={x2} y2={y} />
-      <line x1={x1} y1={y - 5} x2={x1} y2={y + 5} />
-      <line x1={x2} y1={y - 5} x2={x2} y2={y + 5} />
-      <rect x={(x1 + x2) / 2 - 26} y={y - 11} width={52} height={22} rx={3} className="fill-white stroke-gray-300" />
-      <text x={(x1 + x2) / 2} y={y} textAnchor="middle" dominantBaseline="central" className="fill-gray-800 text-xs font-semibold" stroke="none">
+    <g
+      className="cursor-pointer"
+      onPointerDown={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        e.stopPropagation()
+        onEdit()
+      }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <rect
+        x={cx - w / 2}
+        y={cy - 10}
+        width={w}
+        height={20}
+        rx={3}
+        className={hover ? 'fill-blue-50 stroke-blue-400' : 'fill-white stroke-gray-300'}
+      />
+      <text x={cx} y={cy} textAnchor="middle" dominantBaseline="central" className="fill-gray-800 text-[11px] font-semibold" stroke="none">
         {label}
       </text>
     </g>
   )
 }
 
-function HeightDim({ y1, y2, x, label }: { y1: number; y2: number; x: number; label: string }) {
+function WidthDim({
+  x1,
+  x2,
+  y,
+  label,
+  onEdit,
+}: {
+  x1: number
+  x2: number
+  y: number
+  label: string
+  onEdit: () => void
+}) {
   return (
-    <g className="stroke-gray-500" strokeWidth={1}>
-      <line x1={x} y1={y1} x2={x} y2={y2} />
-      <line x1={x - 5} y1={y1} x2={x + 5} y2={y1} />
-      <line x1={x - 5} y1={y2} x2={x + 5} y2={y2} />
+    <g>
+      <g className="stroke-gray-500" strokeWidth={1}>
+        <line x1={x1} y1={y} x2={x2} y2={y} />
+        <line x1={x1} y1={y - 5} x2={x1} y2={y + 5} />
+        <line x1={x2} y1={y - 5} x2={x2} y2={y + 5} />
+      </g>
+      <DimPill cx={(x1 + x2) / 2} cy={y} label={label} onEdit={onEdit} />
+    </g>
+  )
+}
+
+function HeightDim({
+  y1,
+  y2,
+  x,
+  label,
+  onEdit,
+}: {
+  y1: number
+  y2: number
+  x: number
+  label: string
+  onEdit: () => void
+}) {
+  return (
+    <g>
+      <g className="stroke-gray-500" strokeWidth={1}>
+        <line x1={x} y1={y1} x2={x} y2={y2} />
+        <line x1={x - 5} y1={y1} x2={x + 5} y2={y1} />
+        <line x1={x - 5} y1={y2} x2={x + 5} y2={y2} />
+      </g>
       <g transform={`rotate(-90 ${x} ${(y1 + y2) / 2})`}>
-        <rect x={x - 26} y={(y1 + y2) / 2 - 11} width={52} height={22} rx={3} className="fill-white stroke-gray-300" />
-        <text x={x} y={(y1 + y2) / 2} textAnchor="middle" dominantBaseline="central" className="fill-gray-800 text-xs font-semibold" stroke="none">
-          {label}
-        </text>
+        <DimPill cx={x} cy={(y1 + y2) / 2} label={label} onEdit={onEdit} />
       </g>
     </g>
   )
