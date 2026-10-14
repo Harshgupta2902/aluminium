@@ -3,7 +3,12 @@
 import { useRef, useState } from 'react'
 import { useFrameStore } from '@/store/frame-editor'
 import { renderWindow } from './window-renderers'
-import { FRAME_MM, type WindowTypeId } from '@/lib/design-editor/frame-model'
+import {
+  FRAME_MM,
+  WINDOW_PRESET_MAP,
+  type WindowTypeId,
+  type FrameShape,
+} from '@/lib/design-editor/frame-model'
 
 const PX_PER_MM = 0.3
 const PAD = 90
@@ -11,6 +16,75 @@ const PAD = 90
 export interface DragPayload {
   kind: 'window' | 'coupler' | 'mullion'
   type?: WindowTypeId
+  /** Preset id (window kind) to resolve type + prop overrides on drop. */
+  presetId?: string
+}
+
+/**
+ * Build the inner-opening SVG path (px) for a frame shape. `ox,oy` is the
+ * top-left of the opening in px, `w,h` its px size. Returns null for a plain
+ * rectangle (callers draw a simple rect instead).
+ */
+function innerShapePath(
+  shape: FrameShape | undefined,
+  ox: number,
+  oy: number,
+  w: number,
+  h: number,
+  scale: number
+): string | null {
+  if (!shape || shape.kind === 'rect') return null
+
+  if (shape.kind === 'arc') {
+    const rise = Math.min(shape.rise * scale, h - 1)
+    const rx = w / 2
+    // Arched top: start bottom-left, up the left, elliptical arc across the top,
+    // down the right, back along the bottom.
+    return [
+      `M ${ox} ${oy + h}`,
+      `L ${ox} ${oy + rise}`,
+      `A ${rx} ${rise} 0 0 1 ${ox + w} ${oy + rise}`,
+      `L ${ox + w} ${oy + h}`,
+      'Z',
+    ].join(' ')
+  }
+
+  if (shape.kind === 'u-shape') {
+    const lw = shape.leftW * scale
+    const rw = shape.rightW * scale
+    const drop = shape.wingDrop * scale
+    // Bay: tall left wing, dropped center, tall right wing.
+    return [
+      `M ${ox} ${oy}`,
+      `L ${ox + lw} ${oy}`,
+      `L ${ox + lw} ${oy + drop}`,
+      `L ${ox + w - rw} ${oy + drop}`,
+      `L ${ox + w - rw} ${oy}`,
+      `L ${ox + w} ${oy}`,
+      `L ${ox + w} ${oy + h}`,
+      `L ${ox} ${oy + h}`,
+      'Z',
+    ].join(' ')
+  }
+
+  // angular — cut one corner.
+  const cw = shape.cutW * scale
+  const ch = shape.cutH * scale
+  const L = ox
+  const R = ox + w
+  const T = oy
+  const B = oy + h
+  switch (shape.corner) {
+    case 'tr':
+      return `M ${L} ${T} L ${R - cw} ${T} L ${R - cw} ${T + ch} L ${R} ${T + ch} L ${R} ${B} L ${L} ${B} Z`
+    case 'tl':
+      return `M ${L + cw} ${T} L ${R} ${T} L ${R} ${B} L ${L} ${B} L ${L} ${T + ch} L ${L + cw} ${T + ch} Z`
+    case 'br':
+      return `M ${L} ${T} L ${R} ${T} L ${R} ${B - ch} L ${R - cw} ${B - ch} L ${R - cw} ${B} L ${L} ${B} Z`
+    case 'bl':
+    default:
+      return `M ${L} ${T} L ${R} ${T} L ${R} ${B} L ${L + cw} ${B} L ${L + cw} ${B - ch} L ${L} ${B - ch} Z`
+  }
 }
 
 /** Normalise panel fractions to a panel count (sum = 1). */
@@ -89,11 +163,17 @@ export function FrameCanvas() {
       const orient: 'v' | 'h' =
         Math.abs(relX - 0.5) <= Math.abs(relY - 0.5) ? 'v' : 'h'
       dropDivider(orient, at.x, at.y, payload.kind)
-    } else if (payload.kind === 'window' && payload.type) {
+    } else if (payload.kind === 'window') {
       const sec = doc.sections.find(
         (s) => at.x > s.sx && at.x < s.sx + s.sw && at.y > s.sy && at.y < s.sy + s.sh
       )
-      if (sec) dropWindow(sec.id, payload.type)
+      if (!sec) return
+      const preset = payload.presetId ? WINDOW_PRESET_MAP[payload.presetId] : null
+      if (preset) {
+        dropWindow(sec.id, preset.type, preset.props)
+      } else if (payload.type) {
+        dropWindow(sec.id, payload.type)
+      }
     }
   }
 

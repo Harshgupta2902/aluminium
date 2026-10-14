@@ -508,6 +508,76 @@ const renderFrostedFilm: Renderer = (win, { x, y, w, h }) => {
   )
 }
 
+/** Window AC: glass top strip + AC unit box with vents below. */
+const renderWindowAc: Renderer = (_win, { x, y, w, h }) => {
+  const glassH = h * 0.45
+  const unitY = y + glassH
+  const unitH = h - glassH
+  const vents = 5
+  return (
+    <g>
+      {glassRect(x, y, w, glassH)}
+      <rect x={x} y={unitY} width={w} height={unitH} fill="#eceff1" stroke="#1a3a5c" strokeWidth={1.5} />
+      {Array.from({ length: vents }, (_, i) => (
+        <line
+          key={i}
+          x1={x + 4}
+          y1={unitY + (unitH / (vents + 1)) * (i + 1)}
+          x2={x + w - 4}
+          y2={unitY + (unitH / (vents + 1)) * (i + 1)}
+          stroke="#90a4ae"
+          strokeWidth={1.5}
+        />
+      ))}
+      <rect x={x + w * 0.6} y={unitY + unitH * 0.25} width={w * 0.3} height={unitH * 0.5} fill="#cfd8dc" stroke="#607d8b" strokeWidth={1} />
+    </g>
+  )
+}
+
+/** Rectangle / custom frame: empty labelled frame opening. */
+const renderRectangle: Renderer = (win, { x, y, w, h }) => {
+  const label = (win.props.label as string) || ''
+  return (
+    <g>
+      <rect x={x} y={y} width={w} height={h} fill="#f8fafc" stroke="#64748b" strokeWidth={1.5} strokeDasharray="5 3" />
+      {label && (
+        <text x={x + w / 2} y={y + h / 2} textAnchor="middle" dominantBaseline="central" className="fill-gray-500 text-[11px]">
+          {label}
+        </text>
+      )}
+    </g>
+  )
+}
+
+/** Open-bottom door: glazed door leaf with an open vent at the bottom. */
+const renderOpenBottomDoor: Renderer = (win, { x, y, w, h }) => {
+  const hinge = ((win.props.hingeSide as string) || 'left') as 'left' | 'right'
+  const openH = h * 0.2
+  const leafH = h - openH
+  return (
+    <g>
+      <rect x={x} y={y} width={w} height={leafH} fill="#f3f4f6" stroke={FRAME} strokeWidth={1.5} />
+      {glassRect(x + 6, y + 6, w - 12, leafH - 12)}
+      {openingV(x, y, w, leafH, hinge, (win.props.openDir as string) === 'inward')}
+      {handle(hinge === 'left' ? x + w - 9 : x + 9, y + leafH / 2)}
+      {/* open vent at bottom */}
+      <rect x={x} y={y + leafH} width={w} height={openH} fill="#e2e8f0" stroke={SASH} strokeWidth={1} />
+      {openingH(x, y + leafH, w, openH, 'bottom')}
+    </g>
+  )
+}
+
+/** Custom image placeholder (an actual uploaded image isn't rendered here). */
+const renderCustomImage: Renderer = (_win, { x, y, w, h }) => (
+  <g>
+    <rect x={x} y={y} width={w} height={h} fill="#f1f5f9" stroke="#94a3b8" strokeWidth={1.5} />
+    <g stroke="#94a3b8" strokeWidth={1.5} fill="none">
+      <circle cx={x + w * 0.3} cy={y + h * 0.32} r={Math.min(w, h) * 0.08} />
+      <polyline points={`${x + w * 0.15},${y + h * 0.8} ${x + w * 0.42},${y + h * 0.5} ${x + w * 0.6},${y + h * 0.68} ${x + w * 0.78},${y + h * 0.45} ${x + w * 0.9},${y + h * 0.8}`} />
+    </g>
+  </g>
+)
+
 function renderGeneric(_win: SectionWindow, { x, y, w, h }: DrawCtx) {
   return glassRect(x, y, w, h)
 }
@@ -552,4 +622,8 @@ const RENDERERS: Partial<Record<WindowTypeId, Renderer>> = {
   'roller-blind': renderRollerBlind,
   'fly-screen': renderFlyScreen,
   'frosted-film': renderFrostedFilm,
+  'window-ac': renderWindowAc,
+  rectangle: renderRectangle,
+  'door-open-bottom': renderOpenBottomDoor,
+  'custom-image': renderCustomImage,
 }

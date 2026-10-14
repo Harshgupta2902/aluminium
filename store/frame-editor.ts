@@ -7,8 +7,11 @@ import {
   type WindowTypeId,
   type PanelDir,
   type PanelAccessory,
+  type FrameShape,
+  applyFrameShape,
   clearSection,
   createFrameDocument,
+  defaultShapeParams,
   moveDivider,
   normalizeDocumentPanels,
   normalizeSlidingPanels,
@@ -54,7 +57,7 @@ interface FrameEditorState {
   fitZoom: () => void
   flash: (text: string, kind: 'ok' | 'err') => void
 
-  dropWindow: (sectionId: number, type: WindowTypeId) => void
+  dropWindow: (sectionId: number, type: WindowTypeId, overrideProps?: Record<string, unknown>) => void
   dropDivider: (orient: 'v' | 'h', x: number, y: number, kind: 'coupler' | 'mullion') => void
   clearSelectedWindow: () => void
   patchWindow: (sectionId: number, patch: Record<string, unknown>) => void
@@ -62,6 +65,7 @@ interface FrameEditorState {
   /* Geometry editing. */
   setPanelWidth: (sectionId: number, panelIdx: number, widthMm: number) => void
   moveDividerTo: (dividerId: number, centerMm: number) => void
+  setFrameShape: (kind: FrameShape['kind']) => void
 
   /* Per-panel (sliding) editing. */
   setPanelDir: (sectionId: number, panelIdx: number, dir: PanelDir) => void
@@ -124,9 +128,9 @@ export const useFrameStore = create<FrameEditorState>((set, get) => ({
     }, 2200)
   },
 
-  dropWindow: (sectionId, type) =>
+  dropWindow: (sectionId, type, overrideProps) =>
     set((state) => {
-      const res = placeWindow(state.doc, sectionId, type)
+      const res = placeWindow(state.doc, sectionId, type, overrideProps)
       get().flash(res.msg, res.ok ? 'ok' : 'err')
       if (!res.ok || !res.doc) return state
       return {
@@ -183,6 +187,19 @@ export const useFrameStore = create<FrameEditorState>((set, get) => ({
       future: [],
       doc: moveDivider(state.doc, dividerId, centerMm),
     })),
+
+  setFrameShape: (kind) =>
+    set((state) => {
+      const shape = defaultShapeParams(kind, state.doc.width, state.doc.height)
+      const doc = applyFrameShape(state.doc, shape)
+      return {
+        past: [...state.past, state.doc],
+        future: [],
+        doc,
+        selectedSectionId: doc.sections[0]?.id ?? null,
+        selectedPanelIdx: null,
+      }
+    }),
 
   setPanelDir: (sectionId, panelIdx, dir) =>
     set((state) => {

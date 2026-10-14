@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react'
 import {
-  WINDOW_CATEGORIES,
-  type WindowTypeDef,
+  WINDOW_PRESET_GROUPS,
+  WINDOW_TYPE_MAP,
+  type WindowPreset,
 } from '@/lib/design-editor/frame-model'
+import { renderWindow } from './window-renderers'
 import type { DragPayload } from './frame-canvas'
 import {
   Columns,
@@ -13,36 +15,37 @@ import {
   DoorOpen,
   Wind,
   Sparkles,
-  SquareStack,
   Grid2x2,
+  SquareStack,
+  Blinds,
   SplitSquareHorizontal,
   type LucideIcon,
 } from 'lucide-react'
 
 /**
- * Slim, icon-only left rail (reference editor style). Each entry opens a
- * floating panel of draggable chips. "Dividers" is a built-in group; the
- * remaining groups come from the window-type categories.
+ * Slim, icon-only left rail (reference parity). Each entry opens a floating
+ * panel of draggable preset chips with a real mini SVG preview. "Dividers" is
+ * a built-in group; the rest come from WINDOW_PRESET_GROUPS.
  */
 
-const CATEGORY_ICONS: Record<string, LucideIcon> = {
+const GROUP_ICONS: Record<string, LucideIcon> = {
   Windows: PanelLeft,
+  'Casement Windows': SquareStack,
+  'Sliding Windows': Columns,
+  'Slim Windows': Rows,
   Doors: DoorOpen,
   Ventilation: Wind,
-  Special: Sparkles,
-  Screens: Grid2x2,
+  'Special Elements': Sparkles,
+  Screens: Blinds,
 }
 
 export function FrameToolRail() {
   const [open, setOpen] = useState<string | null>(null)
   const rootRef = useRef<HTMLDivElement | null>(null)
 
-  // Close the flyout on outside click / Escape.
   useEffect(() => {
     function onDown(e: MouseEvent) {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
-        setOpen(null)
-      }
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(null)
     }
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape') setOpen(null)
@@ -62,16 +65,18 @@ export function FrameToolRail() {
 
   const entries: { key: string; icon: LucideIcon }[] = [
     { key: 'Dividers', icon: SplitSquareHorizontal },
-    ...WINDOW_CATEGORIES.map((c) => ({
-      key: c.category,
-      icon: CATEGORY_ICONS[c.category] ?? SquareStack,
+    ...WINDOW_PRESET_GROUPS.map((g) => ({
+      key: g.group,
+      icon: GROUP_ICONS[g.group] ?? Grid2x2,
     })),
   ]
+
+  const activeGroup = WINDOW_PRESET_GROUPS.find((g) => g.group === open)
 
   return (
     <div ref={rootRef} className="relative z-20 flex shrink-0">
       {/* Slim icon rail */}
-      <div className="flex w-14 flex-col items-center gap-1 border-r border-gray-200 bg-white py-3">
+      <div className="flex w-14 flex-col items-center gap-1 overflow-y-auto border-r border-gray-200 bg-white py-3">
         {entries.map(({ key, icon: Icon }) => {
           const active = open === key
           return (
@@ -80,7 +85,7 @@ export function FrameToolRail() {
               type="button"
               title={key}
               onClick={() => setOpen((o) => (o === key ? null : key))}
-              className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors ${
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors ${
                 active
                   ? 'bg-primary text-white'
                   : 'text-gray-500 hover:bg-primary-soft/40 hover:text-primary'
@@ -94,7 +99,7 @@ export function FrameToolRail() {
 
       {/* Flyout panel */}
       {open && (
-        <div className="absolute left-14 top-2 w-64 rounded-xl border border-gray-200 bg-white p-3 shadow-xl">
+        <div className="absolute left-14 top-2 w-72 rounded-xl border border-gray-200 bg-white p-3 shadow-xl">
           <div className="mb-2 flex items-center justify-between">
             <h3 className="text-sm font-semibold text-gray-900">{open}</h3>
             <button
@@ -110,16 +115,8 @@ export function FrameToolRail() {
           {open === 'Dividers' ? (
             <>
               <div className="grid grid-cols-2 gap-2">
-                <DividerChip
-                  label="Coupler"
-                  icon={<Columns className="h-4 w-4" />}
-                  onDragStart={(e) => setDrag(e, { kind: 'coupler' })}
-                />
-                <DividerChip
-                  label="Mullion"
-                  icon={<Rows className="h-4 w-4" />}
-                  onDragStart={(e) => setDrag(e, { kind: 'mullion' })}
-                />
+                <DividerChip label="Coupler" icon={<Columns className="h-4 w-4" />} onDragStart={(e) => setDrag(e, { kind: 'coupler' })} />
+                <DividerChip label="Mullion" icon={<Rows className="h-4 w-4" />} onDragStart={(e) => setDrag(e, { kind: 'mullion' })} />
               </div>
               <p className="mt-2 text-[10px] leading-snug text-gray-400">
                 Coupler splits a section. Mullion adds a lighter divider inside
@@ -127,16 +124,14 @@ export function FrameToolRail() {
               </p>
             </>
           ) : (
-            <div className="grid max-h-[60vh] grid-cols-2 gap-2 overflow-y-auto">
-              {WINDOW_CATEGORIES.find((c) => c.category === open)?.types.map(
-                (def) => (
-                  <WindowChip
-                    key={def.id}
-                    def={def}
-                    onDragStart={(e) => setDrag(e, { kind: 'window', type: def.id })}
-                  />
-                )
-              )}
+            <div className="grid max-h-[64vh] grid-cols-2 gap-2 overflow-y-auto">
+              {activeGroup?.presets.map((p) => (
+                <PresetChip
+                  key={p.id}
+                  preset={p}
+                  onDragStart={(e) => setDrag(e, { kind: 'window', presetId: p.id, type: p.type })}
+                />
+              ))}
             </div>
           )}
 
@@ -147,30 +142,45 @@ export function FrameToolRail() {
   )
 }
 
-function WindowChip({
-  def,
+function PresetChip({
+  preset,
   onDragStart,
 }: {
-  def: WindowTypeDef
+  preset: WindowPreset
   onDragStart: (e: React.DragEvent) => void
 }) {
   return (
     <div
       draggable
       onDragStart={onDragStart}
-      className="flex cursor-grab flex-col items-center gap-1 rounded-lg border border-gray-200 p-2 transition-colors hover:border-primary hover:bg-primary-soft/40 active:cursor-grabbing"
-      title={def.label}
+      className="flex cursor-grab flex-col items-center gap-1.5 rounded-lg border border-gray-200 p-2 transition-colors hover:border-primary hover:bg-primary-soft/40 active:cursor-grabbing"
+      title={preset.label}
     >
-      <span
-        className="flex h-7 w-9 items-center justify-center rounded text-[10px] font-bold"
-        style={{ background: def.fill, color: def.stroke, border: `1px solid ${def.stroke}33` }}
-      >
-        {def.icon}
-      </span>
+      <div className="relative">
+        <PresetPreview preset={preset} />
+        <span className="absolute right-0.5 top-0.5 rounded bg-white/80 px-1 text-[8px] font-bold text-gray-500">
+          {preset.badge}
+        </span>
+      </div>
       <span className="line-clamp-2 text-center text-[10px] leading-tight text-gray-600">
-        {def.label}
+        {preset.label}
       </span>
     </div>
+  )
+}
+
+/** A tiny real SVG preview of a preset, using the canvas renderer. */
+function PresetPreview({ preset }: { preset: WindowPreset }) {
+  const W = 76
+  const H = 52
+  const pad = 4
+  const props = { ...(WINDOW_TYPE_MAP[preset.type]?.defaults() ?? {}), ...(preset.props ?? {}) }
+  const win = { type: preset.type, props } as Parameters<typeof renderWindow>[0]
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} className="rounded bg-white">
+      <rect x={0.5} y={0.5} width={W - 1} height={H - 1} rx={2} fill="#f8fafc" stroke="#e2e8f0" />
+      {renderWindow(win, { x: pad, y: pad, w: W - pad * 2, h: H - pad * 2, glass: '#dbeafe' })}
+    </svg>
   )
 }
 

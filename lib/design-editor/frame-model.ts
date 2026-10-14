@@ -37,6 +37,10 @@ export type WindowTypeId =
   | 'roller-blind'
   | 'fly-screen'
   | 'frosted-film'
+  | 'window-ac'
+  | 'rectangle'
+  | 'door-open-bottom'
+  | 'custom-image'
 
 export interface WindowTypeDef {
   id: WindowTypeId
@@ -134,6 +138,10 @@ const defaults: Record<WindowTypeId, () => Record<string, unknown>> = {
   'roller-blind': () => ({ slatCount: 8, position: 'closed', motorized: false }),
   'fly-screen': () => ({ meshSize: 'fine' }),
   'frosted-film': () => ({ opacity: 80, pattern: 'uniform' }),
+  'window-ac': () => ({ brand: '' }),
+  rectangle: () => ({ label: '' }),
+  'door-open-bottom': () => ({ hingeSide: 'left', openDir: 'inward', panelStyle: 'glass' }),
+  'custom-image': () => ({ src: '' }),
 }
 
 /** The full window-type catalog, mirroring the reference `ip`. */
@@ -161,6 +169,10 @@ export const WINDOW_TYPES: WindowTypeDef[] = [
   t('roller-blind', 'Roller Blind', 'RB', '#4a4030', '#fff8e1', 'Screens'),
   t('fly-screen', 'Fly Screen', 'FS', '#2a4040', '#e8f5e9', 'Screens'),
   t('frosted-film', 'Frosted Film', 'FF', '#455a64', '#f5f5f5', 'Screens'),
+  t('window-ac', 'Window AC', 'AC', '#1a3a5c', '#e3f2fd', 'Ventilation'),
+  t('rectangle', 'Rectangle Frame', 'R3', '#455a64', '#eef2f7', 'Special'),
+  t('door-open-bottom', 'Open Bottom Door', 'OB', '#2d3a4a', '#e8eaf6', 'Doors'),
+  t('custom-image', 'Custom Image', 'IMG', '#455a64', '#f5f5f5', 'Special'),
 ]
 
 function t(
@@ -196,6 +208,124 @@ export const WINDOW_CATEGORIES = Array.from(
 ).map(([category, types]) => ({ category, types }))
 
 /* ------------------------------------------------------------------ *
+ * Preset catalog (reference parity)
+ * ------------------------------------------------------------------ *
+ * The reference tool rail is a set of PRESETS grouped into panels. Most are
+ * just a base window type + override props (e.g. "Sliding 3T" = sliding with
+ * panels:3). We mirror that so the rail shows the same items without needing a
+ * unique renderer per label.
+ */
+
+export interface WindowPreset {
+  id: string
+  label: string
+  badge: string
+  /** Base renderer type. */
+  type: WindowTypeId
+  /** Props merged over the type defaults when placed. */
+  props?: Record<string, unknown>
+  /** Suggested size (used for standalone drops / previews). */
+  wmm?: number
+  hmm?: number
+}
+
+export interface PresetGroup {
+  group: string
+  presets: WindowPreset[]
+}
+
+export const WINDOW_PRESET_GROUPS: PresetGroup[] = [
+  {
+    group: 'Windows',
+    presets: [
+      { id: 'fixed', label: 'Fixed Window', badge: 'FX', type: 'fixed', wmm: 900, hmm: 1000 },
+      { id: 'sliding', label: 'Sliding Window', badge: 'SL', type: 'sliding', props: { panels: 2 }, wmm: 1200, hmm: 1000 },
+      { id: 'casement', label: 'Casement Window', badge: 'CS', type: 'casement', wmm: 600, hmm: 1200 },
+      { id: 'double-casement', label: 'Double Casement', badge: 'DC', type: 'double-casement', wmm: 1200, hmm: 1200 },
+      { id: 'fixed-casement', label: 'Fixed Casement', badge: 'FC', type: 'fixed-casement', wmm: 1200, hmm: 1200 },
+      { id: 'tophung', label: 'Top Hung Window', badge: 'TH', type: 'tophung', wmm: 900, hmm: 600 },
+      { id: 'louvered', label: 'Louvered Window', badge: 'LV', type: 'louvered', wmm: 800, hmm: 1200 },
+      { id: 'awning', label: 'Awning Window', badge: 'AW', type: 'awning', wmm: 900, hmm: 600 },
+    ],
+  },
+  {
+    group: 'Casement Windows',
+    presets: [
+      { id: 'cs-left', label: 'Left Window', badge: 'LW', type: 'casement', props: { hingeSide: 'left' }, wmm: 600, hmm: 1200 },
+      { id: 'cs-right', label: 'Right Window', badge: 'RW', type: 'casement', props: { hingeSide: 'right' }, wmm: 600, hmm: 1200 },
+      { id: 'french-window', label: 'French Window', badge: 'FW', type: 'double-casement', wmm: 1200, hmm: 1800 },
+      { id: 'tilt-turn', label: 'Tilt and Turn', badge: 'TT', type: 'casement', props: { handleType: 'tilt' }, wmm: 700, hmm: 1300 },
+      { id: 'bottom-hung', label: 'Bottom Hung', badge: 'BH', type: 'tophung', props: { openDir: 'inward' }, wmm: 900, hmm: 600 },
+      { id: 'fanlight', label: 'Fanlight', badge: 'FL', type: 'fixed', props: { grids: 'none' }, wmm: 900, hmm: 400 },
+    ],
+  },
+  {
+    group: 'Sliding Windows',
+    presets: [
+      { id: 'sliding-2t', label: 'Sliding 2T', badge: 'SL', type: 'sliding', props: { panels: 2 }, wmm: 1200, hmm: 1000 },
+      { id: 'sliding-3t', label: 'Sliding 3T', badge: 'S3', type: 'sliding', props: { panels: 3 }, wmm: 1800, hmm: 1000 },
+      { id: 'sliding-4t', label: 'Sliding 4T', badge: 'S4', type: 'sliding', props: { panels: 4 }, wmm: 2400, hmm: 1000 },
+      { id: 'sliding-5t', label: 'Sliding 5T', badge: 'S5', type: 'sliding', props: { panels: 5 }, wmm: 3000, hmm: 1000 },
+      { id: 'sliding-6t', label: 'Sliding 6T', badge: 'S6', type: 'sliding', props: { panels: 6 }, wmm: 3600, hmm: 1000 },
+    ],
+  },
+  {
+    group: 'Slim Windows',
+    presets: [
+      { id: 'slim-2t', label: 'Slim Sliding 2T', badge: 'SS', type: 'sliding', props: { panels: 2, slimProfile: true }, wmm: 1200, hmm: 1000 },
+      { id: 'slim-3t', label: 'Slim Sliding 3T', badge: 'SS', type: 'sliding', props: { panels: 3, slimProfile: true }, wmm: 1800, hmm: 1000 },
+      { id: 'slim-4t', label: 'Slim Sliding 4T', badge: 'SS', type: 'sliding', props: { panels: 4, slimProfile: true }, wmm: 2400, hmm: 1000 },
+    ],
+  },
+  {
+    group: 'Doors',
+    presets: [
+      { id: 'door-single', label: 'Single Door', badge: 'D1', type: 'door-single', wmm: 900, hmm: 2100 },
+      { id: 'door-double', label: 'Double Door', badge: 'D2', type: 'door-double', wmm: 1500, hmm: 2100 },
+      { id: 'louvered-door', label: 'Louvered Door', badge: 'LVD', type: 'louvered', props: { blades: 12 }, wmm: 900, hmm: 2100 },
+      { id: 'door-open-bottom', label: 'Open Bottom Door', badge: 'OB', type: 'door-open-bottom', wmm: 800, hmm: 2100 },
+    ],
+  },
+  {
+    group: 'Ventilation',
+    presets: [
+      { id: 'ventilator', label: 'Brick Ventilator', badge: 'BV', type: 'ventilator', wmm: 600, hmm: 450 },
+      { id: 'exhaust-fan', label: 'Exhaust Fan', badge: 'EF', type: 'exhaust-fan', wmm: 300, hmm: 300 },
+      { id: 'exhaust-fan-rect', label: 'Rectangle Exhaust', badge: 'RE', type: 'exhaust-fan-rect', wmm: 300, hmm: 300 },
+      { id: 'ac-sleeve', label: 'AC Sleeve', badge: 'AS', type: 'ac-sleeve', wmm: 800, hmm: 400 },
+      { id: 'window-ac', label: 'Window AC', badge: 'AC', type: 'window-ac', wmm: 660, hmm: 430 },
+    ],
+  },
+  {
+    group: 'Special Elements',
+    presets: [
+      { id: 'glass-block', label: 'Glass Block Wall', badge: 'GB', type: 'glass-block', wmm: 900, hmm: 1200 },
+      { id: 'georgian-bars', label: 'Georgian Bars', badge: 'GG', type: 'georgian-bars', wmm: 900, hmm: 1200 },
+      { id: 'roller-shutter', label: 'Roller Shutter', badge: 'RS', type: 'roller-shutter', wmm: 1200, hmm: 1500 },
+      { id: 'skylight', label: 'Skylight', badge: 'SK', type: 'skylight', wmm: 1000, hmm: 1000 },
+      { id: 'grille', label: 'Iron Grille', badge: 'IG', type: 'grille', wmm: 900, hmm: 1200 },
+      { id: 'rectangle', label: 'Rectangle Frame', badge: 'R3', type: 'rectangle', wmm: 500, hmm: 1000 },
+      { id: 'custom-image', label: 'Custom Image', badge: 'IMG', type: 'custom-image', wmm: 900, hmm: 1200 },
+    ],
+  },
+  {
+    group: 'Screens',
+    presets: [
+      { id: 'mesh-screen', label: 'Mesh Screen', badge: 'MS', type: 'mesh-screen', wmm: 900, hmm: 1200 },
+      { id: 'mosquito-mesh', label: 'Mosquito Mesh', badge: 'MS', type: 'mesh-screen', props: { meshSize: 'fine' }, wmm: 900, hmm: 1200 },
+      { id: 'fly-screen', label: 'Fly Screen', badge: 'FS', type: 'fly-screen', wmm: 900, hmm: 1200 },
+      { id: 'roller-blind', label: 'Roller Blind', badge: 'RB', type: 'roller-blind', wmm: 900, hmm: 1500 },
+      { id: 'frosted-film', label: 'Frosted Film', badge: 'FF', type: 'frosted-film', wmm: 900, hmm: 1200 },
+    ],
+  },
+]
+
+/** Flat preset lookup by id. */
+export const WINDOW_PRESET_MAP: Record<string, WindowPreset> = Object.fromEntries(
+  WINDOW_PRESET_GROUPS.flatMap((g) => g.presets).map((p) => [p.id, p])
+)
+
+/* ------------------------------------------------------------------ *
  * Document model
  * ------------------------------------------------------------------ */
 
@@ -216,6 +346,8 @@ export interface FrameSection {
   window: SectionWindow | null
   /** True when this section was produced by a mullion split (restricts drops). */
   createdByMullion?: boolean
+  /** Special band produced by a frame shape (e.g. the arched top of an arc). */
+  band?: 'arc'
 }
 
 export interface Divider {
@@ -250,6 +382,19 @@ export interface FrameDetails {
   series?: string
 }
 
+/**
+ * Non-rectangular frame outline. `rect` is the default. Others reshape the
+ * outer frame (and carve/trim sections) like the reference editor:
+ *  - angular : an L-shape with one corner cut out
+ *  - arc     : an arched (semi-elliptical) top band
+ *  - u-shape : a bay with raised left/right wings
+ */
+export type FrameShape =
+  | { kind: 'rect' }
+  | { kind: 'angular'; corner: 'tl' | 'tr' | 'bl' | 'br'; cutW: number; cutH: number }
+  | { kind: 'arc'; rise: number }
+  | { kind: 'u-shape'; leftW: number; rightW: number; wingDrop: number }
+
 export interface FrameDocument {
   id: string | null
   /** Schema marker so we can distinguish from the legacy shape model. */
@@ -257,6 +402,8 @@ export interface FrameDocument {
   /** Overall opening size in mm. */
   width: number
   height: number
+  /** Outer frame outline. Defaults to a plain rectangle. */
+  shape?: FrameShape
   details: FrameDetails
   sections: FrameSection[]
   dividers: Divider[]
@@ -470,7 +617,8 @@ function mkSection(
 export function placeWindow(
   doc: FrameDocument,
   sectionId: number,
-  type: WindowTypeId
+  type: WindowTypeId,
+  overrideProps?: Record<string, unknown>
 ): SplitResult {
   const target = doc.sections.find((s) => s.id === sectionId)
   if (!target) return { ok: false, msg: 'Section not found' }
@@ -482,7 +630,7 @@ export function placeWindow(
   }
   const next = cloneDoc(doc)
   const sec = next.sections.find((s) => s.id === sectionId)!
-  const props = WINDOW_TYPE_MAP[type].defaults()
+  const props = { ...WINDOW_TYPE_MAP[type].defaults(), ...(overrideProps ?? {}) }
   if (type === 'sliding') normalizeSlidingPanels(props)
   sec.window = { type, props }
   return { ok: true, msg: `${WINDOW_TYPE_MAP[type].label} placed`, doc: next }
@@ -684,6 +832,89 @@ function overlapY(s: FrameSection, d: Divider): boolean {
 }
 function overlapX(s: FrameSection, d: Divider): boolean {
   return s.sx < d.cx + d.cw && s.sx + s.sw > d.cx
+}
+
+/* ------------------------------------------------------------------ *
+ * Frame shapes (non-rectangular outlines)
+ * ------------------------------------------------------------------ */
+
+/** Default parameters for a shape at a given frame size. */
+export function defaultShapeParams(
+  kind: FrameShape['kind'],
+  width: number,
+  height: number
+): FrameShape {
+  switch (kind) {
+    case 'angular':
+      return { kind: 'angular', corner: 'tr', cutW: Math.round(width * 0.42), cutH: Math.round(height * 0.42) }
+    case 'arc':
+      return { kind: 'arc', rise: Math.round(Math.min(width / 2, height * 0.4)) }
+    case 'u-shape':
+      return {
+        kind: 'u-shape',
+        leftW: Math.round(width * 0.28),
+        rightW: Math.round(width * 0.28),
+        wingDrop: Math.round(height * 0.3),
+      }
+    default:
+      return { kind: 'rect' }
+  }
+}
+
+/**
+ * Apply a frame shape, rebuilding the section layout to fit it. This resets to
+ * a clean section set appropriate for the shape (like the reference, which
+ * rebuilds sections when a shape coupler is applied).
+ *
+ *  - rect     : single full-size section
+ *  - arc      : an arched top band section + a rectangular body section
+ *  - angular  : L-shape — body section plus the non-cut leg; the cut corner
+ *               is left empty (no section)
+ *  - u-shape  : three sections (left wing, center, right wing)
+ */
+export function applyFrameShape(doc: FrameDocument, shape: FrameShape): FrameDocument {
+  const next = cloneDoc(doc)
+  next.shape = shape
+  const W = next.width
+  const H = next.height
+
+  if (shape.kind === 'rect') {
+    next.sections = [{ id: nextId(), idx: 1, sx: 0, sy: 0, sw: W, sh: H, window: null }]
+  } else if (shape.kind === 'arc') {
+    const rise = Math.max(40, Math.min(shape.rise, H - MIN_SECTION_MM))
+    next.sections = [
+      { id: nextId(), idx: 1, sx: 0, sy: 0, sw: W, sh: rise, window: null, band: 'arc' },
+      { id: nextId(), idx: 2, sx: 0, sy: rise, sw: W, sh: H - rise, window: null },
+    ]
+  } else if (shape.kind === 'u-shape') {
+    const leftW = Math.max(MIN_SECTION_MM, Math.min(shape.leftW, W * 0.4))
+    const rightW = Math.max(MIN_SECTION_MM, Math.min(shape.rightW, W * 0.4))
+    const centerW = W - leftW - rightW
+    const drop = Math.max(0, Math.min(shape.wingDrop, H - MIN_SECTION_MM))
+    next.sections = [
+      { id: nextId(), idx: 1, sx: 0, sy: 0, sw: leftW, sh: H, window: null },
+      { id: nextId(), idx: 2, sx: leftW, sy: drop, sw: centerW, sh: H - drop, window: null },
+      { id: nextId(), idx: 3, sx: leftW + centerW, sy: 0, sw: rightW, sh: H, window: null },
+    ]
+  } else {
+    // angular — one corner removed; keep an L of two rectangles.
+    const cutW = Math.max(MIN_SECTION_MM, Math.min(shape.cutW, W - MIN_SECTION_MM))
+    const cutH = Math.max(MIN_SECTION_MM, Math.min(shape.cutH, H - MIN_SECTION_MM))
+    const bodyH = H - cutH
+    // Bottom full-width band + a top leg on the side opposite the cut.
+    const legOnLeft = shape.corner === 'tr' || shape.corner === 'br'
+    const topY = shape.corner === 'bl' || shape.corner === 'br' ? cutH : 0
+    const bottomY = shape.corner === 'bl' || shape.corner === 'br' ? 0 : cutH
+    const legX = legOnLeft ? 0 : W - (W - cutW)
+    next.sections = [
+      // Full-width band (the part with no cut).
+      { id: nextId(), idx: 1, sx: 0, sy: bottomY, sw: W, sh: bodyH, window: null },
+      // The leg beside the cut corner.
+      { id: nextId(), idx: 2, sx: legX, sy: topY, sw: W - cutW, sh: cutH, window: null },
+    ]
+  }
+  renumber(next)
+  return next
 }
 
 export function resizeFrame(
