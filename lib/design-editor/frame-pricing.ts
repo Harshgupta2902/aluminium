@@ -238,7 +238,11 @@ function round2(n: number): number {
 
 /**
  * The fields persisted on window_designs for quotation aggregation.
- * area_sqft is per-unit area * quantity; amount is the grand total.
+ *
+ * IMPORTANT: `amount` is now the PRE-TAX base (glass + accessories), per unit
+ * times quantity. GST and installation are applied once at the QUOTATION level
+ * (see lib/quotation-pricing), so we must not bake them into the design amount
+ * — that would double-tax. area_sqft is per-unit area * quantity.
  */
 export function framePersistedPricing(
   doc: FrameDocument,
@@ -246,9 +250,11 @@ export function framePersistedPricing(
 ): { areaSqft: number; ratePerSqft: number; amount: number } {
   const p = priceFrame(doc, config)
   const quantity = Math.max(1, doc.details.quantity || 1)
+  // Pre-tax base per unit = subtotal (glass + accessories).
+  const preTaxRate = p.areaSqft > 0 ? Math.round(p.subtotal / p.areaSqft) : 0
   return {
     areaSqft: round2(p.areaSqft * quantity),
-    ratePerSqft: p.blendedRatePerSqft,
-    amount: p.total,
+    ratePerSqft: preTaxRate,
+    amount: p.subtotal * quantity,
   }
 }

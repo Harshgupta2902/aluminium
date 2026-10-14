@@ -22,6 +22,22 @@ export interface QuotationPDFDesign {
   editor_document: DesignDocument | FrameDocument | null
 }
 
+export interface QuotationPDFPricing {
+  base: number
+  installation: number
+  labour: number
+  profit: number
+  wastage: number
+  customHeads: number
+  transport: number
+  discount: number
+  subtotal: number
+  cgst: number
+  sgst: number
+  igst: number
+  grandTotal: number
+}
+
 export interface QuotationPDFData {
   quotation_number: string
   client_name: string
@@ -32,6 +48,8 @@ export interface QuotationPDFData {
   designs: QuotationPDFDesign[]
   total_area?: number
   total_amount: number
+  /** Optional quotation-level price breakdown. */
+  pricing?: QuotationPDFPricing
   notes?: string
   company_name?: string
   company_address?: string
@@ -113,16 +131,41 @@ export function generateQuotationPDF(data: QuotationPDFData) {
   doc.setFont('helvetica', 'normal')
   doc.setTextColor(70, 70, 70)
   if (typeof data.total_area === 'number') {
-    doc.text(
-      `Total Area: ${data.total_area.toFixed(2)} Sqft`,
-      MARGIN,
-      y
-    )
+    doc.text(`Total Area: ${data.total_area.toFixed(2)} Sqft`, MARGIN, y)
   }
+
+  // Price breakdown (right-aligned column) when available.
+  const p = data.pricing
+  if (p) {
+    const labelX = PAGE_W - MARGIN - 70
+    const valX = PAGE_W - MARGIN
+    const line = (label: string, value: number, opts?: { bold?: boolean }) => {
+      doc.setFontSize(9)
+      doc.setFont('helvetica', opts?.bold ? 'bold' : 'normal')
+      doc.setTextColor(opts?.bold ? 40 : 90, opts?.bold ? 40 : 90, opts?.bold ? 40 : 90)
+      doc.text(label, labelX, y)
+      doc.text(formatCurrency(value), valX, y, { align: 'right' })
+      y += 5
+    }
+    line('Base Charge', p.base)
+    if (p.installation) line('Installation', p.installation)
+    if (p.labour) line('Labour', p.labour)
+    if (p.profit) line('Profit', p.profit)
+    if (p.wastage) line('Wastage', p.wastage)
+    if (p.customHeads) line('Other Charges', p.customHeads)
+    if (p.transport) line('Transportation', p.transport)
+    if (p.discount) line('Discount', -p.discount)
+    line('Sub Total', p.subtotal, { bold: true })
+    if (p.cgst) line('CGST', p.cgst)
+    if (p.sgst) line('SGST', p.sgst)
+    if (p.igst) line('IGST', p.igst)
+    y += 1
+  }
+
   doc.setFontSize(13)
   doc.setFont('helvetica', 'bold')
   doc.setTextColor(...BRAND)
-  doc.text('GRAND TOTAL', PAGE_W - MARGIN - 55, y)
+  doc.text('GRAND TOTAL', PAGE_W - MARGIN - 70, y)
   doc.text(formatCurrency(data.total_amount), PAGE_W - MARGIN, y, {
     align: 'right',
   })

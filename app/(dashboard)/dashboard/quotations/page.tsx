@@ -85,7 +85,12 @@ export default async function QuotationsPage() {
               <tbody>
                 {quotations.map((quotation) => {
                   const totals = totalsByQuotation.get(quotation.id)
-                  const amount = totals?.amount ?? quotation.total_amount
+                  // Prefer the persisted grand total (GST + overheads applied on
+                  // the Pricing page); fall back to the pre-tax design sum.
+                  const amount =
+                    Number(quotation.grand_total) > 0
+                      ? Number(quotation.grand_total)
+                      : (totals?.amount ?? quotation.total_amount)
                   const area = totals?.area ?? 0
                   return (
                   <tr

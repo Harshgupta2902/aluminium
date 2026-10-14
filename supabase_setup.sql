@@ -332,10 +332,41 @@ CREATE TABLE public.quotations (
   items JSONB DEFAULT '[]'::JSONB,
   notes TEXT,
   valid_until DATE,
+  -- Quotation-level cost overheads (GST + charges applied once per quotation;
+  -- design amounts are pre-tax). See lib/quotation-pricing.ts.
+  profit_percentage NUMERIC NOT NULL DEFAULT 0,
+  installation_charge NUMERIC NOT NULL DEFAULT 0,   -- Rs / Sqft
+  labour_charge NUMERIC NOT NULL DEFAULT 0,          -- Rs / Sqft
+  profile_wastage NUMERIC NOT NULL DEFAULT 0,        -- %
+  glass_wastage NUMERIC NOT NULL DEFAULT 0,          -- %
+  transport_charge NUMERIC NOT NULL DEFAULT 0,       -- Rs flat
+  discount NUMERIC NOT NULL DEFAULT 0,
+  discount_type TEXT NOT NULL DEFAULT 'percentage'
+    CHECK (discount_type IN ('percentage','fixed')),
+  cgst NUMERIC NOT NULL DEFAULT 9,                   -- %
+  sgst NUMERIC NOT NULL DEFAULT 9,                   -- %
+  igst NUMERIC NOT NULL DEFAULT 0,                   -- %
+  gst_mode TEXT NOT NULL DEFAULT 'cgst_sgst'
+    CHECK (gst_mode IN ('cgst_sgst','igst','none')),
+  grand_total NUMERIC NOT NULL DEFAULT 0,
   created_by UUID REFERENCES public.profiles(id),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
 );
+
+-- Arbitrary custom cost-head line items for a quotation (Pricing page).
+CREATE TABLE public.quotation_cost_heads (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  quotation_id UUID NOT NULL REFERENCES public.quotations(id) ON DELETE CASCADE,
+  label TEXT NOT NULL,
+  amount NUMERIC NOT NULL DEFAULT 0,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS quotation_cost_heads_quotation_idx
+  ON public.quotation_cost_heads (quotation_id);
 
 -- Now that quotations exists, link window_designs.quotation_id to it.
 ALTER TABLE public.window_designs
@@ -378,6 +409,7 @@ ALTER TABLE public.profiles_inventory ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.glass_inventory ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.accessories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.quotations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.quotation_cost_heads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.invoices ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.calculation_formulas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.design_glasses ENABLE ROW LEVEL SECURITY;
@@ -482,6 +514,16 @@ CREATE POLICY "aluminium_cost_settings_insert" ON public.aluminium_cost_settings
   FOR INSERT WITH CHECK (user_id = auth.uid() OR public.is_superadmin());
 CREATE POLICY "aluminium_cost_settings_update" ON public.aluminium_cost_settings
   FOR UPDATE USING (user_id = auth.uid() OR public.is_superadmin());
+
+-- Quotation custom cost heads: owner (created_by) or superadmin.
+CREATE POLICY "quotation_cost_heads_select" ON public.quotation_cost_heads
+  FOR SELECT USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "quotation_cost_heads_insert" ON public.quotation_cost_heads
+  FOR INSERT WITH CHECK (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "quotation_cost_heads_update" ON public.quotation_cost_heads
+  FOR UPDATE USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "quotation_cost_heads_delete" ON public.quotation_cost_heads
+  FOR DELETE USING (created_by = auth.uid() OR public.is_superadmin());
 
 -- Design editor lists: all authenticated users read; only superadmin writes.
 DO $$

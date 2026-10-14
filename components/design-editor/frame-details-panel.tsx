@@ -283,20 +283,22 @@ export function FrameDetailsPanel({
           </>
         )}
 
-        {/* Live pricing */}
+        {/* Live pricing (pre-tax base; GST + install are applied on the
+            quotation's Pricing page, not per design). */}
         <div className="space-y-1 rounded-lg bg-gray-900 p-3 text-white">
           <Row label="Area" value={`${price.areaSqft.toFixed(2)} Sqft`} />
           {price.accessoriesTotal > 0 && (
             <Row label="Accessories" value={formatCurrency(price.accessoriesTotal)} />
           )}
-          <Row label="Subtotal" value={formatCurrency(price.subtotal)} />
-          <Row label={`GST (${lists.pricing.gstPercentage}%)`} value={formatCurrency(price.gst)} />
-          <Row label={`Install (${lists.pricing.installPercentage}%)`} value={formatCurrency(price.install)} />
+          <Row label="Base (per unit)" value={formatCurrency(price.subtotal)} />
           {price.quantity > 1 && <Row label="Qty" value={`× ${price.quantity}`} />}
           <div className="mt-1 flex items-center justify-between border-t border-white/20 pt-1 text-sm font-bold">
-            <span>Total</span>
-            <span>{formatCurrency(price.total)}</span>
+            <span>Base Total</span>
+            <span>{formatCurrency(price.subtotal * price.quantity)}</span>
           </div>
+          <p className="pt-0.5 text-[10px] leading-snug text-white/50">
+            GST, installation &amp; other charges are applied on the quotation&apos;s Pricing page.
+          </p>
         </div>
       </div>
 

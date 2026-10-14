@@ -1,24 +1,10 @@
-import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { ArrowLeft, Pencil } from 'lucide-react'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { DownloadPDFButton } from '@/components/quotations/download-pdf-button'
-import { SendWhatsAppButton } from '@/components/quotations/send-whatsapp-button'
+import { createClient } from '@/lib/supabase/server'
 import { DesignPreview } from '@/components/design-editor/design-preview'
 import type { DesignDocument } from '@/lib/design-editor/model'
-
-const statusStyles: Record<string, string> = {
-  draft:
-    'bg-secondary text-secondary-foreground ring-1 ring-inset ring-border-strong',
-  sent: 'bg-primary-soft text-primary ring-1 ring-inset ring-primary/20',
-  approved:
-    'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20',
-  rejected:
-    'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20',
-}
+import { computeQuotationPrice, type QuotationOverheads } from '@/lib/quotation-pricing'
 
 interface DesignRow {
   id: string
@@ -56,51 +42,23 @@ export default async function QuotationDetailPage({
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: true })
 
+  const { data: headRows } = await supabase
+    .from('quotation_cost_heads')
+    .select('label, amount')
+    .eq('quotation_id', id)
+    .order('sort_order', { ascending: true })
+
   const designs: DesignRow[] = (designRows as DesignRow[]) ?? []
   const totalArea = designs.reduce((sum, d) => sum + (Number(d.area_sqft) || 0), 0)
-  const grandTotal = designs.reduce((sum, d) => sum + (Number(d.amount) || 0), 0)
-  const status = quotation.status as string
+
+  const price = computeQuotationPrice(
+    designs,
+    quotation as Partial<QuotationOverheads>,
+    headRows ?? []
+  )
 
   return (
-    <div className="mx-auto max-w-5xl space-y-4">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <Link href="/dashboard/quotations">
-            <Button variant="ghost" size="icon" className="h-9 w-9">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-          <div>
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-xl font-bold leading-tight text-heading">
-                {quotation.quotation_number}
-              </h1>
-              <span
-                className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                  statusStyles[status] ?? statusStyles.draft
-                }`}
-              >
-                {status.toUpperCase()}
-              </span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Created on {formatDate(quotation.created_at)}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link href={`/dashboard/quotations/new?edit=${quotation.id}`}>
-            <Button variant="outline" size="sm">
-              <Pencil className="h-4 w-4" />
-              Edit
-            </Button>
-          </Link>
-          <DownloadPDFButton quotation={quotation} />
-          <SendWhatsAppButton quotation={quotation} />
-        </div>
-      </div>
-
+    <div className="space-y-4">
       {/* Client Information */}
       <Card>
         <CardHeader>
@@ -151,11 +109,9 @@ export default async function QuotationDetailPage({
                 </div>
                 <div className="flex flex-1 flex-col justify-between gap-3">
                   <div className="flex items-start justify-between">
-                    <div>
-                      <h4 className="text-sm font-semibold text-heading">
-                        {index + 1}. {design.name || 'Untitled design'}
-                      </h4>
-                    </div>
+                    <h4 className="text-sm font-semibold text-heading">
+                      {index + 1}. {design.name || 'Untitled design'}
+                    </h4>
                     <p className="text-lg font-bold text-primary">
                       {formatCurrency(design.amount)}
                     </p>
@@ -169,10 +125,7 @@ export default async function QuotationDetailPage({
                       label="Rate/Sqft"
                       value={formatCurrency(design.rate_per_sqft)}
                     />
-                    <Field
-                      label="Glass"
-                      value={design.glass_type || '—'}
-                    />
+                    <Field label="Glass" value={design.glass_type || '—'} />
                     <Field label="Color" value={design.color || '—'} capitalize />
                   </div>
                 </div>
@@ -214,7 +167,7 @@ export default async function QuotationDetailPage({
           <div className="text-right">
             <p className="text-xs text-muted-foreground">Grand Total</p>
             <p className="text-2xl font-bold text-primary">
-              {formatCurrency(grandTotal)}
+              {formatCurrency(price.grandTotal)}
             </p>
           </div>
         </CardContent>
@@ -241,5 +194,3 @@ function Field({
     </div>
   )
 }
-
-

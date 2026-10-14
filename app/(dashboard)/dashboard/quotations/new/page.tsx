@@ -745,9 +745,13 @@ export default function NewQuotationPage() {
               </span>
             </div>
             <div className="flex items-center justify-between border-t border-border pt-3 text-lg font-bold text-primary">
-              <span>Grand Total</span>
+              <span>Base (pre-tax)</span>
               <span>{formatCurrency(grandTotal)}</span>
             </div>
+            <p className="text-xs text-muted-foreground">
+              GST, installation, discount &amp; other charges are set on the
+              quotation&apos;s Pricing tab.
+            </p>
           </div>
         </CardContent>
       </Card>
