@@ -1,0 +1,255 @@
+'use client'
+
+import { useEffect, useMemo, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Loader2, Plus, Trash2, Check } from 'lucide-react'
+import { formatCurrency } from '@/lib/utils'
+
+export type AccessoryKind =
+  | 'sash'
+  | 'interlock'
+  | 'handle'
+  | 'roller'
+  | 'lock'
+  | 'hinge'
+  | 'mesh'
+
+export const ACCESSORY_KINDS: { kind: AccessoryKind; label: string }[] = [
+  { kind: 'sash', label: 'Sash' },
+  { kind: 'interlock', label: 'Interlock' },
+  { kind: 'handle', label: 'Handle' },
+  { kind: 'roller', label: 'Roller' },
+  { kind: 'lock', label: 'Lock' },
+  { kind: 'hinge', label: 'Hinge' },
+  { kind: 'mesh', label: 'Mesh' },
+]
+
+interface AccessoryRow {
+  id: string
+  kind: AccessoryKind
+  name: string
+  code: string | null
+  price: number
+  is_active: boolean
+  is_default: boolean
+  sort_order: number
+}
+
+/**
+ * Manage the user's typed accessories (sash/interlock/handle/roller/lock/
+ * hinge/mesh). Grouped by kind; add / rename / set price+code / default /
+ * delete. Writes set created_by so per-user RLS is satisfied.
+ */
+export function AccessoriesManager() {
+  const supabase = createClient()
+  const [rows, setRows] = useState<AccessoryRow[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [userId, setUserId] = useState<string | null>(null)
+
+  useEffect(() => {
+    let active = true
+    void (async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!active) return
+      setUserId(user?.id ?? null)
+      const { data, error: err } = await supabase
+        .from('design_accessories')
+        .select('*')
+        .order('kind', { ascending: true })
+        .order('sort_order', { ascending: true })
+      if (!active) return
+      if (err) setError(err.message)
+      setRows((data as AccessoryRow[]) ?? [])
+      setLoading(false)
+    })()
+    return () => {
+      active = false
+    }
+  }, [supabase])
+
+  const refresh = async () => {
+    const { data } = await supabase
+      .from('design_accessories')
+      .select('*')
+      .order('kind', { ascending: true })
+      .order('sort_order', { ascending: true })
+    setRows((data as AccessoryRow[]) ?? [])
+  }
+
+  const byKind = useMemo(() => {
+    const map = new Map<AccessoryKind, AccessoryRow[]>()
+    for (const { kind } of ACCESSORY_KINDS) map.set(kind, [])
+    for (const r of rows) map.get(r.kind)?.push(r)
+    return map
+  }, [rows])
+
+  const patch = async (id: string, p: Partial<AccessoryRow>) => {
+    const { error: err } = await supabase.from('design_accessories').update(p).eq('id', id)
+    if (err) setError(err.message)
+    await refresh()
+  }
+
+  const remove = async (id: string) => {
+    const { error: err } = await supabase.from('design_accessories').delete().eq('id', id)
+    if (err) setError(err.message)
+    await refresh()
+  }
+
+  const add = async (kind: AccessoryKind, name: string, code: string, price: string) => {
+    if (!name.trim()) return
+    setError(null)
+    const { error: err } = await supabase.from('design_accessories').insert([
+      {
+        kind,
+        name: name.trim(),
+        code: code.trim() || null,
+        price: Number(price) || 0,
+        sort_order: (byKind.get(kind)?.length ?? 0) + 1,
+        created_by: userId,
+      },
+    ])
+    if (err) setError(err.message)
+    await refresh()
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-2 py-6 text-sm text-muted-foreground">
+        <Loader2 className="h-4 w-4 animate-spin" /> Loading accessories...
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-4">
+      {error && (
+        <div className="rounded-lg bg-rose-50 p-3 text-sm text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20">
+          {error}
+        </div>
+      )}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        {ACCESSORY_KINDS.map(({ kind, label }) => (
+          <KindCard
+            key={kind}
+            label={label}
+            rows={byKind.get(kind) ?? []}
+            onAdd={(name, code, price) => add(kind, name, code, price)}
+            onPatch={patch}
+            onRemove={remove}
+            onLocalChange={setRows}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function KindCard({
+  label,
+  rows,
+  onAdd,
+  onPatch,
+  onRemove,
+  onLocalChange,
+}: {
+  label: string
+  rows: AccessoryRow[]
+  onAdd: (name: string, code: string, price: string) => void
+  onPatch: (id: string, p: Partial<AccessoryRow>) => void
+  onRemove: (id: string) => void
+  onLocalChange: React.Dispatch<React.SetStateAction<AccessoryRow[]>>
+}) {
+  const [name, setName] = useState('')
+  const [code, setCode] = useState('')
+  const [price, setPrice] = useState('')
+
+  const submit = () => {
+    onAdd(name, code, price)
+    setName('')
+    setCode('')
+    setPrice('')
+  }
+
+  return (
+    <div className="rounded-lg border border-border bg-card p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-sm font-semibold text-heading">{label}</h3>
+        <span className="text-xs text-muted-foreground">{rows.length}</span>
+      </div>
+
+      <div className="space-y-1.5">
+        {rows.length === 0 && (
+          <p className="py-2 text-xs text-muted-foreground">No {label.toLowerCase()} options yet.</p>
+        )}
+        {rows.map((r) => (
+          <div key={r.id} className="flex items-center gap-2 rounded-md border border-border/60 px-2 py-1.5">
+            <Input
+              value={r.name}
+              onChange={(e) =>
+                onLocalChange((prev) => prev.map((x) => (x.id === r.id ? { ...x, name: e.target.value } : x)))
+              }
+              onBlur={(e) => onPatch(r.id, { name: e.target.value })}
+              className="h-8 flex-1"
+            />
+            <Input
+              value={r.code ?? ''}
+              placeholder="Code"
+              onChange={(e) =>
+                onLocalChange((prev) => prev.map((x) => (x.id === r.id ? { ...x, code: e.target.value } : x)))
+              }
+              onBlur={(e) => onPatch(r.id, { code: e.target.value })}
+              className="h-8 w-20"
+            />
+            <Input
+              type="number"
+              value={r.price}
+              title="Price (₹)"
+              onChange={(e) =>
+                onLocalChange((prev) => prev.map((x) => (x.id === r.id ? { ...x, price: Number(e.target.value) } : x)))
+              }
+              onBlur={(e) => onPatch(r.id, { price: Number(e.target.value) })}
+              className="h-8 w-20"
+            />
+            <button
+              type="button"
+              title={r.is_default ? 'Default' : 'Set default'}
+              onClick={() => onPatch(r.id, { is_default: !r.is_default })}
+              className={`flex h-7 shrink-0 items-center gap-1 rounded px-2 text-xs ${
+                r.is_default ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' : 'bg-muted text-muted-foreground'
+              }`}
+            >
+              <Check className="h-3 w-3" />
+            </button>
+            <button
+              type="button"
+              onClick={() => onRemove(r.id)}
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-3 flex items-center gap-2 border-t border-border/60 pt-3">
+        <Input value={name} placeholder={`Add ${label.toLowerCase()}…`} onChange={(e) => setName(e.target.value)} className="h-8 flex-1" />
+        <Input value={code} placeholder="Code" onChange={(e) => setCode(e.target.value)} className="h-8 w-20" />
+        <Input type="number" value={price} placeholder="₹" onChange={(e) => setPrice(e.target.value)} className="h-8 w-20" />
+        <Button size="sm" onClick={submit} disabled={!name.trim()}>
+          <Plus className="h-4 w-4" />
+        </Button>
+      </div>
+
+      {rows.some((r) => r.price > 0) && (
+        <p className="mt-2 text-[11px] text-muted-foreground">
+          e.g. {rows.find((r) => r.price > 0)!.name}: {formatCurrency(rows.find((r) => r.price > 0)!.price)}
+        </p>
+      )}
+    </div>
+  )
+}

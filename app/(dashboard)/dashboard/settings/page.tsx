@@ -1,58 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 export default function SettingsPage() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-600 mt-1">
-          Configure your application preferences
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Company Information</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-500">Company details and branding</p>
-          </CardContent>
-        </Card>
-
-        <Link href="/dashboard/settings/design-catalog" className="block">
-          <Card className="h-full transition-colors hover:border-primary hover:bg-primary-soft/30">
-            <CardHeader>
-              <CardTitle>Design Catalog &amp; Pricing</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-500">
-                Glass, colours, GI hardware and per-type base rates, GST &amp;
-                install used by the design editor
-              </p>
-            </CardContent>
-          </Card>
-        </Link>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>User Management</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-500">Manage users and roles</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Integrations</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-500">WhatsApp and other integrations</p>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  )
+  // Settings is a nested-nav section; land on the first panel.
+  redirect('/dashboard/settings/aluminium')
 }
