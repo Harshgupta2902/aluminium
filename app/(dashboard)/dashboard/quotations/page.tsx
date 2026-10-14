@@ -6,13 +6,6 @@ import Link from 'next/link'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { DownloadPDFButton } from '@/components/quotations/download-pdf-button'
 
-const statusColors = {
-  draft: 'bg-secondary text-secondary-foreground ring-1 ring-inset ring-border-strong',
-  sent: 'bg-primary-soft text-primary ring-1 ring-inset ring-primary/20',
-  approved: 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20',
-  rejected: 'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20',
-}
-
 export default async function QuotationsPage() {
   const supabase = await createClient()
 
@@ -75,7 +68,6 @@ export default async function QuotationsPage() {
                 <tr className="border-b border-border bg-muted/40 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   <th className="px-4 py-3">Quotation #</th>
                   <th className="px-4 py-3">Client</th>
-                  <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3">Created</th>
                   <th className="px-4 py-3 text-right">Area (Sqft)</th>
                   <th className="px-4 py-3 text-right">Amount</th>
@@ -108,15 +100,6 @@ export default async function QuotationsPage() {
                         {quotation.client_phone}
                         {quotation.client_email ? ` · ${quotation.client_email}` : ''}
                       </div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          statusColors[quotation.status as keyof typeof statusColors]
-                        }`}
-                      >
-                        {quotation.status.toUpperCase()}
-                      </span>
                     </td>
                     <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                       {formatDate(quotation.created_at)}

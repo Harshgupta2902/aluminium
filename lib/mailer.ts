@@ -134,3 +134,91 @@ export async function sendUserCredentialsEmail(params: {
 
   console.log('[mailer] Credentials email sent:', info.messageId, '→', params.email)
 }
+
+/* ------------------------------------------------------------------ *
+ * Quotation email
+ * ------------------------------------------------------------------ */
+
+function quotationTemplate(params: {
+  appUrl: string
+  clientName: string
+  quotationNumber: string
+  grandTotal: string
+  message?: string
+  quotationUrl: string
+}): string {
+  const safeName = escapeHtml(params.clientName)
+  const safeNumber = escapeHtml(params.quotationNumber)
+  const extra = params.message?.trim()
+
+  const bodyHtml = `
+    ${emailHeading('Your quotation is ready')}
+    ${emailParagraph(`Hi ${safeName},`)}
+    ${emailParagraph(`Please find attached your quotation <strong>${safeNumber}</strong>.`)}
+    <table cellspacing="0" cellpadding="0" border="0" role="presentation" style="width:100%;margin:20px 0;border:1px solid ${EMAIL.outlineLight};border-radius:12px;background-color:${EMAIL.surfaceContainer};">
+      <tr>
+        <td style="padding:18px 20px;">
+          ${emailDetailRow('Quotation:', params.quotationNumber)}
+          <p style="margin:0;font-family:${EMAIL.fontSans};font-size:16px;line-height:1.6;color:${EMAIL.onSurfaceVariant};">
+            <strong style="color:${EMAIL.onSurface};">Grand total:</strong>
+            <span style="font-weight:700;color:${EMAIL.brand};">${escapeHtml(params.grandTotal)}</span>
+          </p>
+        </td>
+      </tr>
+    </table>
+    ${extra ? emailParagraph(escapeHtml(extra)) : ''}
+    ${emailParagraph('The full proposal is attached as a PDF. Please review and reply to this email with any questions.')}
+  `
+
+  return buildEmailShell({
+    appUrl: params.appUrl,
+    bodyHtml,
+    footerHtml: `<p style="margin:0;font-family:${EMAIL.fontSans};font-size:12px;line-height:1.6;color:${EMAIL.muted};text-align:center;">
+      This quotation was sent to you by SoftWindow.
+    </p>`,
+  })
+}
+
+/**
+ * Email a quotation proposal (PDF attached) to a client. `pdfBase64` is a
+ * data-URI string (as produced by getQuotationPDFBase64); the data portion is
+ * attached as the PDF. Throws on configuration / send failure.
+ */
+export async function sendQuotationEmail(params: {
+  to: string
+  clientName: string
+  quotationNumber: string
+  grandTotal: string
+  pdfBase64: string
+  message?: string
+}): Promise<void> {
+  const t = getTransporter()
+  const appUrl = await getSiteUrl()
+  const safeName = params.clientName.trim() || 'there'
+
+  // Strip the data-URI prefix to get raw base64 for the attachment.
+  const base64 = params.pdfBase64.replace(/^data:application\/pdf(;filename=.*?)?;base64,/, '')
+
+  const info = await t.sendMail({
+    from: getFromAddress(),
+    to: params.to,
+    subject: `Quotation ${params.quotationNumber}`,
+    html: quotationTemplate({
+      appUrl,
+      clientName: safeName,
+      quotationNumber: params.quotationNumber,
+      grandTotal: params.grandTotal,
+      message: params.message,
+      quotationUrl: `${appUrl}/dashboard/quotations`,
+    }),
+    attachments: [
+      {
+        filename: `${params.quotationNumber}.pdf`,
+        content: Buffer.from(base64, 'base64'),
+        contentType: 'application/pdf',
+      },
+    ],
+  })
+
+  console.log('[mailer] Quotation email sent:', info.messageId, '→', params.to)
+}
