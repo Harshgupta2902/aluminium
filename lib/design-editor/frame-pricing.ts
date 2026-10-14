@@ -194,7 +194,9 @@ function priceSection(
   config: PricingConfig,
   manualRate: number | null
 ): SectionPrice {
-  const areaSqft = round2(rectAreaSqft(section.sw, section.sh))
+  // Arc band is a half-ellipse (~π/4 of its bounding box), not a full rect.
+  const bandFactor = section.band === 'arc' ? Math.PI / 4 : 1
+  const areaSqft = round2(rectAreaSqft(section.sw, section.sh) * bandFactor)
   const type = section.window?.type ?? null
 
   if (!type) {

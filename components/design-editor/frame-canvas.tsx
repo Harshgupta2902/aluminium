@@ -121,6 +121,9 @@ export function FrameCanvas() {
   // mm -> px inside the frame (frame origin at PAD,PAD).
   const px = (mm: number) => PAD + mm * scale
 
+  // Shaped-frame opening path (null for a plain rectangle).
+  const innerPath = innerShapePath(doc.shape, px(0), px(0), frameW, frameH, scale)
+
   // Drag state for moving a divider.
   const dragRef = useRef<{ id: number; orient: 'v' | 'h' } | null>(null)
 
@@ -220,23 +223,39 @@ export function FrameCanvas() {
           <pattern id="wf-grid" width={24} height={24} patternUnits="userSpaceOnUse">
             <circle cx={1} cy={1} r={1} className="fill-gray-300" />
           </pattern>
+          {innerPath && (
+            <clipPath id="wf-shape-clip">
+              <path d={innerPath} />
+            </clipPath>
+          )}
         </defs>
         <rect width={viewW} height={viewH} fill="url(#wf-grid)" />
 
-        {/* Outer frame band */}
-        <rect
-          x={px(0) - FRAME_MM * scale}
-          y={px(0) - FRAME_MM * scale}
-          width={frameW + FRAME_MM * scale * 2}
-          height={frameH + FRAME_MM * scale * 2}
-          fill="#cbd5e1"
-          stroke="#64748b"
-          strokeWidth={2}
-          rx={3}
-        />
-        <rect x={px(0)} y={px(0)} width={frameW} height={frameH} fill="#ffffff" />
+        {/* Outer frame band + inner opening (shape-aware) */}
+        {innerPath ? (
+          <>
+            {/* Band = inner path stroked thickly to suggest the frame. */}
+            <path d={innerPath} fill="#ffffff" stroke="#64748b" strokeWidth={FRAME_MM * scale} strokeLinejoin="round" />
+            <path d={innerPath} fill="#ffffff" stroke="#334155" strokeWidth={1.5} strokeLinejoin="round" />
+          </>
+        ) : (
+          <>
+            <rect
+              x={px(0) - FRAME_MM * scale}
+              y={px(0) - FRAME_MM * scale}
+              width={frameW + FRAME_MM * scale * 2}
+              height={frameH + FRAME_MM * scale * 2}
+              fill="#cbd5e1"
+              stroke="#64748b"
+              strokeWidth={2}
+              rx={3}
+            />
+            <rect x={px(0)} y={px(0)} width={frameW} height={frameH} fill="#ffffff" />
+          </>
+        )}
 
-        {/* Sections */}
+        {/* Sections (clipped to the shaped opening when non-rect) */}
+        <g clipPath={innerPath ? 'url(#wf-shape-clip)' : undefined}>
         {doc.sections.map((sec) => {
           const sx = px(sec.sx)
           const sy = px(sec.sy)
@@ -266,6 +285,13 @@ export function FrameCanvas() {
             >
               {sec.window ? (
                 renderWindow(sec.window, { x: sx, y: sy, w: sw, h: sh, glass: '#dbeafe' })
+              ) : sec.band === 'arc' ? (
+                <path
+                  d={`M ${sx} ${sy + sh} L ${sx} ${sy + Math.min(6, sh)} A ${sw / 2} ${sh} 0 0 1 ${sx + sw} ${sy + Math.min(6, sh)} L ${sx + sw} ${sy + sh} Z`}
+                  fill="#eaf2fb"
+                  stroke="#93c5fd"
+                  strokeWidth={1}
+                />
               ) : (
                 <rect x={sx} y={sy} width={sw} height={sh} fill="#f8fafc" stroke="#cbd5e1" strokeDasharray="4 3" strokeWidth={1} />
               )}
@@ -348,6 +374,7 @@ export function FrameCanvas() {
             </g>
           )
         })}
+        </g>
 
         {/* Dividers (couplers + mullions) — draggable */}
         {doc.dividers.map((d) => {

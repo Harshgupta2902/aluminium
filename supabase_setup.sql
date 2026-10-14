@@ -203,7 +203,9 @@ CREATE TABLE public.design_pricing_config (
 CREATE TABLE public.design_accessories (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   kind TEXT NOT NULL CHECK (kind IN (
-    'sash','interlock','handle','roller','lock','hinge','mesh'
+    'sash','interlock','handle','roller','lock','hinge','mesh',
+    'mesh_type','mesh_sash','mesh_clip','mesh_handle','mesh_slim',
+    'reinforcement','slim_interlock','friction_stay'
   )),
   name TEXT NOT NULL,
   code TEXT,

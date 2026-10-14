@@ -5,7 +5,9 @@ import {
   WINDOW_PRESET_GROUPS,
   WINDOW_TYPE_MAP,
   type WindowPreset,
+  type FrameShape,
 } from '@/lib/design-editor/frame-model'
+import { useFrameStore } from '@/store/frame-editor'
 import { renderWindow } from './window-renderers'
 import type { DragPayload } from './frame-canvas'
 import {
@@ -18,6 +20,10 @@ import {
   Grid2x2,
   SquareStack,
   Blinds,
+  Shapes,
+  Square,
+  Triangle,
+  Spline,
   SplitSquareHorizontal,
   type LucideIcon,
 } from 'lucide-react'
@@ -39,9 +45,17 @@ const GROUP_ICONS: Record<string, LucideIcon> = {
   Screens: Blinds,
 }
 
+const FRAME_SHAPES: { kind: FrameShape['kind']; label: string; icon: LucideIcon }[] = [
+  { kind: 'rect', label: 'Rectangle', icon: Square },
+  { kind: 'arc', label: 'Arch Top', icon: Spline },
+  { kind: 'angular', label: 'Angular (L)', icon: Triangle },
+  { kind: 'u-shape', label: 'U-Shape Bay', icon: Shapes },
+]
+
 export function FrameToolRail() {
   const [open, setOpen] = useState<string | null>(null)
   const rootRef = useRef<HTMLDivElement | null>(null)
+  const setFrameShape = useFrameStore((s) => s.setFrameShape)
 
   useEffect(() => {
     function onDown(e: MouseEvent) {
@@ -64,6 +78,7 @@ export function FrameToolRail() {
   }
 
   const entries: { key: string; icon: LucideIcon }[] = [
+    { key: 'Shapes', icon: Shapes },
     { key: 'Dividers', icon: SplitSquareHorizontal },
     ...WINDOW_PRESET_GROUPS.map((g) => ({
       key: g.group,
@@ -112,7 +127,29 @@ export function FrameToolRail() {
             </button>
           </div>
 
-          {open === 'Dividers' ? (
+          {open === 'Shapes' ? (
+            <>
+              <div className="grid grid-cols-2 gap-2">
+                {FRAME_SHAPES.map(({ kind, label, icon: Icon }) => (
+                  <button
+                    key={kind}
+                    type="button"
+                    onClick={() => {
+                      setFrameShape(kind)
+                      setOpen(null)
+                    }}
+                    className="flex flex-col items-center gap-1.5 rounded-lg border border-gray-200 p-2.5 text-gray-600 transition-colors hover:border-primary hover:bg-primary-soft/40"
+                  >
+                    <Icon className="h-6 w-6" />
+                    <span className="text-[10px] font-medium">{label}</span>
+                  </button>
+                ))}
+              </div>
+              <p className="mt-2 text-[10px] leading-snug text-gray-400">
+                Applies to the whole frame and rebuilds its sections.
+              </p>
+            </>
+          ) : open === 'Dividers' ? (
             <>
               <div className="grid grid-cols-2 gap-2">
                 <DividerChip label="Coupler" icon={<Columns className="h-4 w-4" />} onDragStart={(e) => setDrag(e, { kind: 'coupler' })} />
