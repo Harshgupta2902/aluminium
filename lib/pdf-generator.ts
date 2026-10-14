@@ -58,12 +58,12 @@ export interface QuotationPDFData {
 }
 
 // A4 in jsPDF default units (mm).
-const PAGE_W = 210
-const PAGE_H = 297
-const MARGIN = 15
-const CONTENT_W = PAGE_W - MARGIN * 2
+export const PAGE_W = 210
+export const PAGE_H = 297
+export const MARGIN = 15
+export const CONTENT_W = PAGE_W - MARGIN * 2
 
-const BRAND: [number, number, number] = [41, 128, 185]
+export const BRAND: [number, number, number] = [41, 128, 185]
 
 export function generateQuotationPDF(data: QuotationPDFData) {
   const doc = new jsPDF({ unit: 'mm', format: 'a4' })
@@ -287,7 +287,7 @@ function drawDesignBlock(
  * Render a design's window shapes into a jsPDF box using the same geometry the
  * on-screen canvas uses, scaled to fit (x, y, w, h) in mm.
  */
-function drawDesignGeometry(
+export function drawDesignGeometry(
   doc: jsPDF,
   document: DesignDocument | FrameDocument | null,
   x: number,

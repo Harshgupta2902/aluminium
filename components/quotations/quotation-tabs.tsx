@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Tags, PencilRuler } from 'lucide-react'
+import { Tags, PencilRuler, BarChart3 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 /** Pricing / Overview sub-nav for a quotation, mirroring the reference tabs. */
@@ -13,6 +13,7 @@ export function QuotationTabs({ quotationId }: { quotationId: string }) {
   const tabs = [
     { href: base, label: 'Overview', icon: PencilRuler, exact: true },
     { href: `${base}/pricing`, label: 'Pricing', icon: Tags, exact: false },
+    { href: `${base}/reports`, label: 'Reports', icon: BarChart3, exact: false },
   ]
 
   return (
