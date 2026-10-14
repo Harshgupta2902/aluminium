@@ -28,6 +28,7 @@ interface FrameEditorState {
   load: (doc: FrameDocument) => void
   selectSection: (id: number | null) => void
   setZoom: (z: number) => void
+  fitZoom: () => void
   flash: (text: string, kind: 'ok' | 'err') => void
 
   dropWindow: (sectionId: number, type: WindowTypeId) => void
@@ -44,8 +45,8 @@ interface FrameEditorState {
   canRedo: () => boolean
 }
 
-const MIN_ZOOM = 0.3
-const MAX_ZOOM = 2.5
+export const MIN_ZOOM = 0.3
+export const MAX_ZOOM = 2.5
 
 export const useFrameStore = create<FrameEditorState>((set, get) => ({
   doc: createFrameDocument(),
@@ -69,6 +70,7 @@ export const useFrameStore = create<FrameEditorState>((set, get) => ({
 
   selectSection: (id) => set({ selectedSectionId: id }),
   setZoom: (z) => set({ zoom: Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z)) }),
+  fitZoom: () => set({ zoom: 1 }),
   flash: (text, kind) => {
     set({ message: { text, kind } })
     setTimeout(() => {

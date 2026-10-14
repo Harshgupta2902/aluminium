@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { AlertCircle, Minus, Plus, Trash2, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -59,6 +60,7 @@ export function FrameDetailsPanel({
   const details = doc.details
   const selected = doc.sections.find((s) => s.id === selectedId) ?? null
   const price = priceFrame(doc, lists.pricing)
+  const selectSection = useFrameStore((s) => s.selectSection)
 
   const issues: string[] = []
   if (!details.designRef.trim()) issues.push('Design Ref is required')
@@ -66,10 +68,29 @@ export function FrameDetailsPanel({
 
   const hasSliding = doc.sections.some((s) => s.window?.type === 'sliding')
 
+  // Which panel view is shown. `auto` follows selection (section when one is
+  // selected, else design); an explicit click pins it until selection changes.
+  const [override, setOverride] = useState<{ id: number | null; tab: 'section' | 'design' } | null>(null)
+  const pinned = override && override.id === selectedId ? override.tab : null
+  const tab: 'section' | 'design' = pinned ?? (selected ? 'section' : 'design')
+  const setTab = (t: 'section' | 'design') => setOverride({ id: selectedId, tab: t })
+
+  const showSection = tab === 'section' && selected
+
   return (
-    <div className="flex h-full w-80 shrink-0 flex-col border-r border-gray-200 bg-white">
+    <div className="flex h-full w-80 shrink-0 flex-col border-l border-gray-200 bg-white">
+      {/* Header: tabs + close */}
       <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
-        <h2 className="text-base font-semibold text-gray-900">Design Details</h2>
+        <div className="flex items-center gap-1.5">
+          {selected && (
+            <TabPill active={tab === 'section'} onClick={() => setTab('section')}>
+              {`S${selected.idx}`}
+            </TabPill>
+          )}
+          <TabPill active={tab === 'design'} onClick={() => setTab('design')}>
+            Details
+          </TabPill>
+        </div>
         {onClose && (
           <button
             type="button"
@@ -83,104 +104,29 @@ export function FrameDetailsPanel({
       </div>
 
       <div className="flex-1 space-y-5 overflow-y-auto p-4">
-        {/* Design-level */}
-        <div className="grid grid-cols-2 gap-3">
-          <Field label="Design Ref" required>
-            <Input value={details.designRef} onChange={(e) => patchDetails({ designRef: e.target.value })} />
-          </Field>
-          <Field label="Design Name">
-            <Input value={details.designName} placeholder="e.g. Living Room" onChange={(e) => patchDetails({ designName: e.target.value })} />
-          </Field>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <Field label="Width (mm)">
-            <Input type="number" min={300} value={doc.width} onChange={(e) => useFrameStore.getState().setFrameSize(Math.max(300, Number(e.target.value) || 0), doc.height)} />
-          </Field>
-          <Field label="Height (mm)">
-            <Input type="number" min={300} value={doc.height} onChange={(e) => useFrameStore.getState().setFrameSize(doc.width, Math.max(300, Number(e.target.value) || 0))} />
-          </Field>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <Field label="Rate / Sqft (₹)" hint="blank = auto">
-            <Input
-              type="number"
-              min={0}
-              placeholder="auto"
-              value={details.ratePerSqft ?? ''}
-              onChange={(e) =>
-                patchDetails({ ratePerSqft: e.target.value === '' ? null : Number(e.target.value) })
-              }
-            />
-          </Field>
-          <Field label="Quantity">
-            <div className="flex items-center gap-1">
-              <IconStep icon={Minus} onClick={() => patchDetails({ quantity: Math.max(1, details.quantity - 1) })} />
-              <Input type="number" min={1} value={details.quantity} className="text-center" onChange={(e) => patchDetails({ quantity: Math.max(1, Number(e.target.value) || 1) })} />
-              <IconStep icon={Plus} onClick={() => patchDetails({ quantity: details.quantity + 1 })} />
-            </div>
-          </Field>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <Field label="Colour">
-            <Select value={details.colour} onChange={(e) => patchDetails({ colour: e.target.value })}>
-              {lists.colors.map((c) => (
-                <option key={c.name} value={c.name}>{c.name}</option>
-              ))}
-            </Select>
-          </Field>
-          <Field label="Glass Type" required>
-            <Select value={details.glassType} onChange={(e) => patchDetails({ glassType: e.target.value })}>
-              <option value="">Select glass...</option>
-              {lists.glasses.map((g) => (
-                <option key={g.name} value={g.name}>{g.name}</option>
-              ))}
-            </Select>
-          </Field>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <Field label="Location">
-            <Input value={details.location} onChange={(e) => patchDetails({ location: e.target.value })} />
-          </Field>
-          <Field label="Floor No">
-            <Input value={details.floorNo} onChange={(e) => patchDetails({ floorNo: e.target.value })} />
-          </Field>
-        </div>
-
-        {/* GI hardware — only relevant when a sliding window is present */}
-        {hasSliding && (
-          <div className="space-y-3 rounded-lg border border-gray-200 bg-gray-50/60 p-3">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
-              GI Hardware (sliding)
-            </p>
-            <GiSelect label="Outer (Track)" value={details.track} options={lists.tracks} onChange={(v) => patchDetails({ track: v })} />
-            <GiSelect label="Sash" value={details.sash} options={lists.sashes} onChange={(v) => patchDetails({ sash: v })} />
-            <GiSelect label="Interlock" value={details.interlock} options={lists.interlocks} onChange={(v) => patchDetails({ interlock: v })} />
-            <GiSelect label="Lock" value={details.lock} options={lists.locks} onChange={(v) => patchDetails({ lock: v })} />
-          </div>
-        )}
-
-        {/* Selected-section properties */}
-        {selected && (
-          <div className="space-y-3 rounded-lg border border-blue-200 bg-blue-50/40 p-3">
+        {showSection ? (
+          /* ---------------- SECTION VIEW (reference style) ---------------- */
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-blue-700">
-                Section {selected.idx}
-                {selected.window ? ` · ${WINDOW_TYPE_MAP[selected.window.type]?.label}` : ''}
-              </p>
+              <h2 className="text-lg font-semibold text-gray-900">
+                S{selected.idx}
+                {selected.window && (
+                  <span className="ml-2 text-xs font-normal text-gray-400">
+                    {WINDOW_TYPE_MAP[selected.window.type]?.label}
+                  </span>
+                )}
+              </h2>
               {selected.window && (
                 <button
                   type="button"
                   onClick={clearSelectedWindow}
-                  className="flex items-center gap-1 text-[11px] text-rose-600 hover:underline"
+                  className="flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-rose-600 hover:bg-rose-50"
                 >
                   <Trash2 className="h-3 w-3" /> Clear
                 </button>
               )}
             </div>
+
             {selected.window ? (
               <>
                 <SectionProps
@@ -196,14 +142,106 @@ export function FrameDetailsPanel({
                 />
               </>
             ) : (
-              <p className="text-xs text-blue-700/70">Drop a window into this section.</p>
+              <p className="rounded-lg border border-dashed border-gray-200 bg-gray-50 px-3 py-6 text-center text-xs text-gray-400">
+                Drop a window from the left rail onto this section.
+              </p>
             )}
-          </div>
-        )}
 
-        <Field label="Message">
-          <Textarea value={details.message} rows={3} onChange={(e) => patchDetails({ message: e.target.value })} />
-        </Field>
+            <button
+              type="button"
+              onClick={() => selectSection(null)}
+              className="w-full rounded-md border border-gray-200 py-2 text-xs font-medium text-gray-500 hover:bg-gray-50"
+            >
+              Back to design details
+            </button>
+          </div>
+        ) : (
+          /* ---------------- DESIGN VIEW ---------------- */
+          <>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Design Ref" required>
+                <Input value={details.designRef} onChange={(e) => patchDetails({ designRef: e.target.value })} />
+              </Field>
+              <Field label="Design Name">
+                <Input value={details.designName} placeholder="e.g. Living Room" onChange={(e) => patchDetails({ designName: e.target.value })} />
+              </Field>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Width (mm)">
+                <Input type="number" min={300} value={doc.width} onChange={(e) => useFrameStore.getState().setFrameSize(Math.max(300, Number(e.target.value) || 0), doc.height)} />
+              </Field>
+              <Field label="Height (mm)">
+                <Input type="number" min={300} value={doc.height} onChange={(e) => useFrameStore.getState().setFrameSize(doc.width, Math.max(300, Number(e.target.value) || 0))} />
+              </Field>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Rate / Sqft (₹)" hint="blank = auto">
+                <Input
+                  type="number"
+                  min={0}
+                  placeholder="auto"
+                  value={details.ratePerSqft ?? ''}
+                  onChange={(e) =>
+                    patchDetails({ ratePerSqft: e.target.value === '' ? null : Number(e.target.value) })
+                  }
+                />
+              </Field>
+              <Field label="Quantity">
+                <div className="flex items-center gap-1">
+                  <IconStep icon={Minus} onClick={() => patchDetails({ quantity: Math.max(1, details.quantity - 1) })} />
+                  <Input type="number" min={1} value={details.quantity} className="text-center" onChange={(e) => patchDetails({ quantity: Math.max(1, Number(e.target.value) || 1) })} />
+                  <IconStep icon={Plus} onClick={() => patchDetails({ quantity: details.quantity + 1 })} />
+                </div>
+              </Field>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Colour">
+                <Select value={details.colour} onChange={(e) => patchDetails({ colour: e.target.value })}>
+                  {lists.colors.map((c) => (
+                    <option key={c.name} value={c.name}>{c.name}</option>
+                  ))}
+                </Select>
+              </Field>
+              <Field label="Glass Type" required>
+                <Select value={details.glassType} onChange={(e) => patchDetails({ glassType: e.target.value })}>
+                  <option value="">Select glass...</option>
+                  {lists.glasses.map((g) => (
+                    <option key={g.name} value={g.name}>{g.name}</option>
+                  ))}
+                </Select>
+              </Field>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Location">
+                <Input value={details.location} onChange={(e) => patchDetails({ location: e.target.value })} />
+              </Field>
+              <Field label="Floor No">
+                <Input value={details.floorNo} onChange={(e) => patchDetails({ floorNo: e.target.value })} />
+              </Field>
+            </div>
+
+            {/* GI hardware — only relevant when a sliding window is present */}
+            {hasSliding && (
+              <div className="space-y-3 rounded-lg border border-gray-200 bg-gray-50/60 p-3">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
+                  GI Hardware (sliding)
+                </p>
+                <GiSelect label="Outer (Track)" value={details.track} options={lists.tracks} onChange={(v) => patchDetails({ track: v })} />
+                <GiSelect label="Sash" value={details.sash} options={lists.sashes} onChange={(v) => patchDetails({ sash: v })} />
+                <GiSelect label="Interlock" value={details.interlock} options={lists.interlocks} onChange={(v) => patchDetails({ interlock: v })} />
+                <GiSelect label="Lock" value={details.lock} options={lists.locks} onChange={(v) => patchDetails({ lock: v })} />
+              </div>
+            )}
+
+            <Field label="Message">
+              <Textarea value={details.message} rows={3} onChange={(e) => patchDetails({ message: e.target.value })} />
+            </Field>
+          </>
+        )}
 
         {/* Live pricing */}
         <div className="space-y-1 rounded-lg bg-gray-900 p-3 text-white">
@@ -231,6 +269,28 @@ export function FrameDetailsPanel({
         )}
       </div>
     </div>
+  )
+}
+
+function TabPill({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+        active ? 'bg-primary text-white' : 'text-gray-500 hover:bg-gray-100'
+      }`}
+    >
+      {children}
+    </button>
   )
 }
 

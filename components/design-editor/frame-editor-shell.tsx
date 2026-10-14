@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Save, Loader2, Undo2, Redo2, Trash2 } from 'lucide-react'
+import { Save, Loader2 } from 'lucide-react'
 import { useFrameStore } from '@/store/frame-editor'
 import { type FrameDocument } from '@/lib/design-editor/frame-model'
 import { framePersistedPricing, DEFAULT_PRICING, type PricingConfig } from '@/lib/design-editor/frame-pricing'
 import { FrameToolRail } from './frame-tool-rail'
 import { FrameCanvas } from './frame-canvas'
+import { FrameToolbar } from './frame-toolbar'
 import { FrameDetailsPanel, type EditorLists } from './frame-details-panel'
 
 const FALLBACK_LISTS: EditorLists = {
@@ -45,9 +46,6 @@ export function FrameEditorShell({
   const supabase = createClient()
 
   const load = useFrameStore((s) => s.load)
-  const undo = useFrameStore((s) => s.undo)
-  const redo = useFrameStore((s) => s.redo)
-  const clearAll = useFrameStore((s) => s.clearAll)
   const doc = useFrameStore((s) => s.doc)
   const message = useFrameStore((s) => s.message)
   const details = doc.details
@@ -195,6 +193,7 @@ export function FrameEditorShell({
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-gray-100">
+      {/* Top app bar */}
       <header className="flex h-14 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-gray-800 to-gray-900 text-lg font-bold text-white shadow-sm">
@@ -208,9 +207,6 @@ export function FrameEditorShell({
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <IconBtn title="Undo" onClick={undo}><Undo2 className="h-4 w-4" /></IconBtn>
-          <IconBtn title="Redo" onClick={redo}><Redo2 className="h-4 w-4" /></IconBtn>
-          <IconBtn title="Clear" onClick={clearAll}><Trash2 className="h-4 w-4" /></IconBtn>
           {error && (
             <span className="rounded-md bg-red-50 px-2.5 py-1 text-sm text-red-600">{error}</span>
           )}
@@ -221,35 +217,26 @@ export function FrameEditorShell({
         </div>
       </header>
 
+      {/* Workspace: slim rail | (toolbar + canvas) | right section panel */}
       <div className="flex flex-1 overflow-hidden">
         <FrameToolRail />
-        <FrameDetailsPanel lists={lists} />
-        <div className="relative flex-1 overflow-hidden">
-          <FrameCanvas />
-          {message && (
-            <div
-              className={`pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 rounded-md px-3 py-1.5 text-sm shadow ${
-                message.kind === 'ok' ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'
-              }`}
-            >
-              {message.text}
-            </div>
-          )}
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <FrameToolbar />
+          <div className="relative flex-1 overflow-hidden">
+            <FrameCanvas />
+            {message && (
+              <div
+                className={`pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 rounded-md px-3 py-1.5 text-sm shadow ${
+                  message.kind === 'ok' ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'
+                }`}
+              >
+                {message.text}
+              </div>
+            )}
+          </div>
         </div>
+        <FrameDetailsPanel lists={lists} />
       </div>
     </div>
-  )
-}
-
-function IconBtn({ title, onClick, children }: { title: string; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      type="button"
-      title={title}
-      onClick={onClick}
-      className="flex h-9 w-9 items-center justify-center rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50"
-    >
-      {children}
-    </button>
   )
 }
