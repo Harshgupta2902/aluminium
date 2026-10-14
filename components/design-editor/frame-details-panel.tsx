@@ -6,8 +6,14 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { useFrameStore } from '@/store/frame-editor'
-import { WINDOW_TYPE_MAP, type WindowTypeId } from '@/lib/design-editor/frame-model'
+import { useFrameStore, type SavedPanel } from '@/store/frame-editor'
+import {
+  WINDOW_TYPE_MAP,
+  type WindowTypeId,
+  type FrameSection,
+  type PanelDir,
+  type PanelAccessory,
+} from '@/lib/design-editor/frame-model'
 import { priceFrame, type PricingConfig } from '@/lib/design-editor/frame-pricing'
 import { formatCurrency } from '@/lib/utils'
 
@@ -128,19 +134,23 @@ export function FrameDetailsPanel({
             </div>
 
             {selected.window ? (
-              <>
-                <SectionProps
-                  type={selected.window.type}
-                  props={selected.window.props}
-                  set={(patch) => patchWindow(selected.id, patch)}
-                />
-                <SectionAccessoryPanel
-                  type={selected.window.type}
-                  accessories={(selected.window.props.accessories as SectionAccessories) ?? {}}
-                  options={lists.accessories}
-                  set={(next) => patchWindow(selected.id, { accessories: next })}
-                />
-              </>
+              selected.window.type === 'sliding' ? (
+                <SlidingPanelEditor section={selected} options={lists.accessories} />
+              ) : (
+                <>
+                  <SectionProps
+                    type={selected.window.type}
+                    props={selected.window.props}
+                    set={(patch) => patchWindow(selected.id, patch)}
+                  />
+                  <SectionAccessoryPanel
+                    type={selected.window.type}
+                    accessories={(selected.window.props.accessories as SectionAccessories) ?? {}}
+                    options={lists.accessories}
+                    set={(next) => patchWindow(selected.id, { accessories: next })}
+                  />
+                </>
+              )
             ) : (
               <p className="rounded-lg border border-dashed border-gray-200 bg-gray-50 px-3 py-6 text-center text-xs text-gray-400">
                 Drop a window from the left rail onto this section.
@@ -394,6 +404,260 @@ function SectionProps({
     default:
       return <p className="text-xs text-gray-500">No extra options.</p>
   }
+}
+
+/* ---------- per-panel (palla) editor for sliding windows ---------- */
+
+/** Accessory kinds shown for a sliding panel (reference parity). */
+const SLIDING_PANEL_KINDS: { kind: string; label: string; required?: boolean }[] = [
+  { kind: 'interlock', label: 'Interlock', required: true },
+  { kind: 'handle', label: 'Handle', required: true },
+  { kind: 'roller', label: 'Roller', required: true },
+  { kind: 'lock', label: 'Lock' },
+]
+
+function SlidingPanelEditor({
+  section,
+  options,
+}: {
+  section: FrameSection
+  options: EditorLists['accessories']
+}) {
+  const selectedPanelIdx = useFrameStore((s) => s.selectedPanelIdx)
+  const selectPanel = useFrameStore((s) => s.selectPanel)
+  const setPanelDir = useFrameStore((s) => s.setPanelDir)
+  const setPanelHandle = useFrameStore((s) => s.setPanelHandle)
+  const patchPanelAccessory = useFrameStore((s) => s.patchPanelAccessory)
+  const saveCurrentPanel = useFrameStore((s) => s.saveCurrentPanel)
+  const applySavedPanel = useFrameStore((s) => s.applySavedPanel)
+  const removeSavedPanel = useFrameStore((s) => s.removeSavedPanel)
+  const savedPanels = useFrameStore((s) => s.savedPanels)
+
+  const props = section.window!.props
+  const panels = Math.max(1, Number(props.panels) || 2)
+  const dirs = (props.panelDirs as PanelDir[]) ?? []
+  const handles = (props.panelHandles as ('left' | 'right')[]) ?? []
+  const acc = (props.panelAccessories as Partial<Record<string, PanelAccessory>>[]) ?? []
+
+  // Fall back to the first panel if none is explicitly selected yet.
+  const idx = selectedPanelIdx != null && selectedPanelIdx < panels ? selectedPanelIdx : 0
+  const dir = dirs[idx] ?? 'right'
+  const handle = handles[idx] ?? 'right'
+  const panelAcc = acc[idx] ?? {}
+  const isFixed = dir === 'fixed'
+
+  const sashOptions = options.filter((o) => o.kind === 'sash')
+
+  const chooseAccessory = (kind: string, id: string) => {
+    if (!id) {
+      patchPanelAccessory(section.id, idx, kind, null)
+      return
+    }
+    const opt = options.find((o) => o.id === id && o.kind === kind)
+    if (opt) patchPanelAccessory(section.id, idx, kind, { id: opt.id, name: opt.name, price: opt.price })
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Panel chooser row */}
+      {panels > 1 && (
+        <div className="flex flex-wrap gap-1.5">
+          {Array.from({ length: panels }, (_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => selectPanel(i)}
+              className={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+                i === idx
+                  ? 'border-primary bg-primary text-white'
+                  : 'border-gray-200 bg-white text-gray-600 hover:border-primary/50'
+              }`}
+            >
+              S{section.idx}.{i + 1}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* PANEL TYPE */}
+      <div className="space-y-1.5">
+        <Label className="text-[11px] uppercase tracking-wide text-gray-500">Panel Type</Label>
+        <div className="grid grid-cols-2 gap-2">
+          <TypeButton
+            active={!isFixed}
+            label="🔄 Sliding"
+            tone="sliding"
+            onClick={() => setPanelDir(section.id, idx, 'right')}
+          />
+          <TypeButton
+            active={isFixed}
+            label="🪟 Fixed"
+            tone="fixed"
+            onClick={() => setPanelDir(section.id, idx, 'fixed')}
+          />
+        </div>
+      </div>
+
+      {/* HANDLE POSITION — sliding only */}
+      {!isFixed && (
+        <div className="space-y-1.5">
+          <Label className="text-[11px] uppercase tracking-wide text-gray-500">Handle Position</Label>
+          <div className="grid grid-cols-2 gap-2">
+            <TypeButton active={handle === 'left'} label="◀ Left" tone="neutral" onClick={() => setPanelHandle(section.id, idx, 'left')} />
+            <TypeButton active={handle === 'right'} label="Right ▶" tone="neutral" onClick={() => setPanelHandle(section.id, idx, 'right')} />
+          </div>
+        </div>
+      )}
+
+      {/* SASH — always */}
+      <PanelSelect
+        label="Sash"
+        required
+        value={panelAcc.sash?.id ?? ''}
+        options={sashOptions}
+        onChange={(id) => chooseAccessory('sash', id)}
+      />
+
+      {/* ACCESSORIES — sliding only */}
+      {!isFixed && (
+        <div className="space-y-3">
+          <div className="border-b border-primary/30 pb-1 text-[11px] font-semibold uppercase tracking-wide text-primary">
+            Accessories
+          </div>
+          {SLIDING_PANEL_KINDS.map(({ kind, label, required }) => (
+            <PanelSelect
+              key={kind}
+              label={label}
+              required={required}
+              value={panelAcc[kind]?.id ?? ''}
+              options={options.filter((o) => o.kind === kind)}
+              onChange={(id) => chooseAccessory(kind, id)}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Save this panel */}
+      <button
+        type="button"
+        onClick={saveCurrentPanel}
+        className="w-full rounded-md border border-primary/40 bg-primary-soft/40 py-2 text-xs font-semibold text-primary hover:bg-primary-soft/70"
+      >
+        Save this panel
+      </button>
+
+      {/* SAVED PANELS */}
+      {savedPanels.length > 0 && (
+        <div className="space-y-2 rounded-lg border border-gray-200 bg-gray-50/70 p-3">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-emerald-600">
+            Saved Panels ({savedPanels.length})
+          </p>
+          <div className="space-y-1.5">
+            {savedPanels.map((p, i) => (
+              <SavedPanelRow
+                key={`${p.sectionLabel}-${i}`}
+                panel={p}
+                onApply={() => applySavedPanel(p)}
+                onRemove={() => removeSavedPanel(i)}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function SavedPanelRow({
+  panel,
+  onApply,
+  onRemove,
+}: {
+  panel: SavedPanel
+  onApply: () => void
+  onRemove: () => void
+}) {
+  return (
+    <div className="flex items-center gap-2 rounded-md border border-gray-200 bg-white px-2.5 py-1.5">
+      <button type="button" onClick={onApply} className="text-xs font-semibold text-primary hover:underline">
+        {panel.sectionLabel}
+      </button>
+      <span className="flex-1 truncate text-[11px] text-gray-500">
+        {panel.widthMm}×{panel.heightMm}mm{panel.sash ? ` · ${panel.sash}` : ''}
+      </span>
+      <button
+        type="button"
+        onClick={onRemove}
+        className="rounded p-0.5 text-gray-400 hover:bg-rose-50 hover:text-rose-600"
+        aria-label="Remove saved panel"
+      >
+        <X className="h-3 w-3" />
+      </button>
+    </div>
+  )
+}
+
+function TypeButton({
+  active,
+  label,
+  tone,
+  onClick,
+}: {
+  active: boolean
+  label: string
+  tone: 'sliding' | 'fixed' | 'neutral'
+  onClick: () => void
+}) {
+  const activeCls =
+    tone === 'sliding'
+      ? 'border-violet-500 bg-violet-50 text-violet-700'
+      : tone === 'fixed'
+        ? 'border-sky-500 bg-sky-50 text-sky-700'
+        : 'border-primary bg-primary-soft/50 text-primary'
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-lg border-2 py-2.5 text-xs font-bold transition-colors ${
+        active ? activeCls : 'border-gray-200 bg-gray-50 text-gray-400 hover:border-gray-300'
+      }`}
+    >
+      {label}
+    </button>
+  )
+}
+
+function PanelSelect({
+  label,
+  required,
+  value,
+  options,
+  onChange,
+}: {
+  label: string
+  required?: boolean
+  value: string
+  options: EditorLists['accessories']
+  onChange: (id: string) => void
+}) {
+  return (
+    <div className="space-y-1">
+      <Label className="text-[11px] uppercase tracking-wide text-gray-500">
+        {label} {required && <span className="text-rose-500">*</span>}
+      </Label>
+      <Select value={value} onChange={(e) => onChange(e.target.value)}>
+        <option value="">
+          {options.length ? `— Select ${label.toLowerCase()} —` : `No ${label.toLowerCase()} configured`}
+        </option>
+        {options.map((o) => (
+          <option key={o.id} value={o.id}>
+            {o.name}
+            {o.price ? ` — ${formatCurrency(o.price)}` : ''}
+          </option>
+        ))}
+      </Select>
+    </div>
+  )
 }
 
 /* ---------- per-section accessories ---------- */

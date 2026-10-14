@@ -121,30 +121,47 @@ const renderFixed: Renderer = (win, { x, y, w, h }) => {
 const renderSliding: Renderer = (win, { x, y, w, h }) => {
   const panels = Number(win.props.panels) || 2
   const dirs = (win.props.panelDirs as string[]) ?? []
+  const handles = (win.props.panelHandles as string[]) ?? []
   const pw = w / panels
   return (
     <g>
       {Array.from({ length: panels }, (_, i) => {
         const px = x + pw * i
         const dir = dirs[i]
+        const isFixed = dir === 'fixed'
+        const handleSide = handles[i] ?? (dir === 'right' ? 'right' : 'left')
         return (
           <g key={i}>
-            {glassRect(px, y, pw, h)}
+            {glassRect(px, y, pw, h, isFixed ? '#eef2f7' : GLASS)}
             {sashBorder(px, y, pw, h)}
-            {/* slide arrow */}
-            {dir && (
-              <g stroke={META} strokeWidth={1.2} fill="none">
-                <line x1={px + pw * 0.3} y1={y + h / 2} x2={px + pw * 0.7} y2={y + h / 2} />
-                <polyline
-                  points={
-                    dir === 'right'
-                      ? `${px + pw * 0.6},${y + h / 2 - 4} ${px + pw * 0.7},${y + h / 2} ${px + pw * 0.6},${y + h / 2 + 4}`
-                      : `${px + pw * 0.4},${y + h / 2 - 4} ${px + pw * 0.3},${y + h / 2} ${px + pw * 0.4},${y + h / 2 + 4}`
-                  }
-                />
-              </g>
+            {isFixed ? (
+              // Fixed panel: no slide arrow or handle; mark with an "F".
+              <text
+                x={px + pw / 2}
+                y={y + h - 10}
+                textAnchor="middle"
+                className="fill-slate-400 text-[9px] font-semibold"
+              >
+                FIXED
+              </text>
+            ) : (
+              <>
+                {/* slide arrow */}
+                {dir && (
+                  <g stroke={META} strokeWidth={1.2} fill="none">
+                    <line x1={px + pw * 0.3} y1={y + h / 2} x2={px + pw * 0.7} y2={y + h / 2} />
+                    <polyline
+                      points={
+                        dir === 'right'
+                          ? `${px + pw * 0.6},${y + h / 2 - 4} ${px + pw * 0.7},${y + h / 2} ${px + pw * 0.6},${y + h / 2 + 4}`
+                          : `${px + pw * 0.4},${y + h / 2 - 4} ${px + pw * 0.3},${y + h / 2} ${px + pw * 0.4},${y + h / 2 + 4}`
+                      }
+                    />
+                  </g>
+                )}
+                {handle(handleSide === 'right' ? px + pw - 7 : px + 7, y + h / 2)}
+              </>
             )}
-            {handle(dir === 'right' ? px + 7 : px + pw - 7, y + h / 2)}
           </g>
         )
       })}

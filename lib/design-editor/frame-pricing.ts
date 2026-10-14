@@ -98,16 +98,33 @@ export interface SectionPrice {
   amount: number
 }
 
-/** Sum the price of accessories configured on a section window. */
-function sectionAccessoriesAmount(section: FrameSection): number {
-  const acc = section.window?.props?.accessories as
-    | Record<string, { price?: number } | null>
-    | undefined
+/** Sum a flat accessory map ({ kind: { price } }). */
+function sumAccessoryMap(acc: unknown): number {
   if (!acc || typeof acc !== 'object') return 0
   let sum = 0
-  for (const entry of Object.values(acc)) {
+  for (const entry of Object.values(acc as Record<string, { price?: number } | null>)) {
     const price = Number(entry?.price)
     if (Number.isFinite(price) && price > 0) sum += price
+  }
+  return sum
+}
+
+/**
+ * Sum the price of accessories configured on a section window.
+ * Sliding windows carry per-panel accessories (panelAccessories[]); other
+ * types carry a single section-level accessories map.
+ */
+function sectionAccessoriesAmount(section: FrameSection): number {
+  const props = section.window?.props
+  if (!props) return 0
+
+  let sum = 0
+  // Section-level accessories (non-sliding, or legacy).
+  sum += sumAccessoryMap(props.accessories)
+  // Per-panel accessories (sliding).
+  const panelAcc = props.panelAccessories
+  if (Array.isArray(panelAcc)) {
+    for (const panel of panelAcc) sum += sumAccessoryMap(panel)
   }
   return Math.round(sum)
 }

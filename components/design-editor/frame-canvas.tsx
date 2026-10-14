@@ -17,7 +17,9 @@ export function FrameCanvas() {
   const doc = useFrameStore((s) => s.doc)
   const zoom = useFrameStore((s) => s.zoom)
   const selectedId = useFrameStore((s) => s.selectedSectionId)
+  const selectedPanelIdx = useFrameStore((s) => s.selectedPanelIdx)
   const selectSection = useFrameStore((s) => s.selectSection)
+  const selectPanel = useFrameStore((s) => s.selectPanel)
   const dropWindow = useFrameStore((s) => s.dropWindow)
   const dropDivider = useFrameStore((s) => s.dropDivider)
 
@@ -116,6 +118,11 @@ export function FrameCanvas() {
           const sw = sec.sw * scale
           const sh = sec.sh * scale
           const selected = sec.id === selectedId
+          const isSliding = sec.window?.type === 'sliding'
+          const panelCount = isSliding
+            ? Math.max(1, Number(sec.window!.props.panels) || 2)
+            : 0
+          const panelW = panelCount ? sw / panelCount : 0
           return (
             <g
               key={sec.id}
@@ -130,25 +137,65 @@ export function FrameCanvas() {
               ) : (
                 <rect x={sx} y={sy} width={sw} height={sh} fill="#f8fafc" stroke="#cbd5e1" strokeDasharray="4 3" strokeWidth={1} />
               )}
-              {/* Selection outline */}
+
+              {/* Per-panel interactive overlay (sliding only) */}
+              {isSliding &&
+                Array.from({ length: panelCount }, (_, i) => {
+                  const px = sx + panelW * i
+                  const panelSelected = selected && selectedPanelIdx === i
+                  return (
+                    <g
+                      key={`p${i}`}
+                      onPointerDown={(e) => {
+                        e.stopPropagation()
+                        selectSection(sec.id)
+                        selectPanel(i)
+                      }}
+                      className="cursor-pointer"
+                    >
+                      <rect
+                        x={px}
+                        y={sy}
+                        width={panelW}
+                        height={sh}
+                        fill={panelSelected ? '#2563eb' : 'transparent'}
+                        fillOpacity={panelSelected ? 0.08 : 0}
+                        stroke={panelSelected ? '#2563eb' : 'transparent'}
+                        strokeWidth={panelSelected ? 2 : 0}
+                      />
+                      {/* Panel badge S<sec>.<panel> */}
+                      <g>
+                        <circle cx={px + panelW / 2} cy={sy + 20} r={11} fill="#ffffff" stroke={panelSelected ? '#2563eb' : '#16a34a'} strokeWidth={1.25} />
+                        <text x={px + panelW / 2} y={sy + 20} textAnchor="middle" dominantBaseline="central" className={`text-[9px] font-bold ${panelSelected ? 'fill-blue-600' : 'fill-green-700'}`}>
+                          {sec.idx}.{i + 1}
+                        </text>
+                      </g>
+                    </g>
+                  )
+                })}
+
+              {/* Section selection outline (hidden when a panel is highlighted) */}
               <rect
                 x={sx}
                 y={sy}
                 width={sw}
                 height={sh}
                 fill="transparent"
-                stroke={selected ? '#2563eb' : 'transparent'}
-                strokeWidth={selected ? 2.5 : 0}
+                stroke={selected && selectedPanelIdx == null ? '#2563eb' : 'transparent'}
+                strokeWidth={selected && selectedPanelIdx == null ? 2.5 : 0}
+                pointerEvents="none"
               />
-              {/* Section index badge */}
-              <g>
-                <circle cx={sx + 13} cy={sy + 13} r={9} fill="#ffffff" stroke="#16a34a" strokeWidth={1.25} />
-                <text x={sx + 13} y={sy + 13} textAnchor="middle" dominantBaseline="central" className="fill-green-700 text-[10px] font-bold">
-                  {sec.idx}
-                </text>
-              </g>
+              {/* Section index badge (non-sliding) */}
+              {!isSliding && (
+                <g pointerEvents="none">
+                  <circle cx={sx + 13} cy={sy + 13} r={9} fill="#ffffff" stroke="#16a34a" strokeWidth={1.25} />
+                  <text x={sx + 13} y={sy + 13} textAnchor="middle" dominantBaseline="central" className="fill-green-700 text-[10px] font-bold">
+                    {sec.idx}
+                  </text>
+                </g>
+              )}
               {!sec.window && (
-                <text x={sx + sw / 2} y={sy + sh / 2} textAnchor="middle" dominantBaseline="central" className="fill-gray-400 text-[11px]">
+                <text x={sx + sw / 2} y={sy + sh / 2} textAnchor="middle" dominantBaseline="central" className="fill-gray-400 text-[11px]" pointerEvents="none">
                   Drop a window
                 </text>
               )}

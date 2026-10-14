@@ -62,7 +62,13 @@ const defaults: Record<WindowTypeId, () => Record<string, unknown>> = {
   }),
   sliding: () => ({
     panels: 2,
+    // Per-panel direction: 'left' | 'right' (sliding) or 'fixed' (non-opening).
     panelDirs: ['right', 'left'],
+    // Per-panel handle position for sliding panels: 'left' | 'right'.
+    panelHandles: ['right', 'left'],
+    // Per-panel accessory selections, index-aligned with panels.
+    // Each entry: { sash?, interlock?, handle?, roller?, lock? } of {id,name,price}.
+    panelAccessories: [],
     direction: 'both',
     handleSide: 'center',
     mesh: false,
@@ -471,7 +477,9 @@ export function placeWindow(
   }
   const next = cloneDoc(doc)
   const sec = next.sections.find((s) => s.id === sectionId)!
-  sec.window = { type, props: WINDOW_TYPE_MAP[type].defaults() }
+  const props = WINDOW_TYPE_MAP[type].defaults()
+  if (type === 'sliding') normalizeSlidingPanels(props)
+  sec.window = { type, props }
   return { ok: true, msg: `${WINDOW_TYPE_MAP[type].label} placed`, doc: next }
 }
 
@@ -496,6 +504,73 @@ export function updateWindowProps(
   const sec = next.sections.find((s) => s.id === sectionId)
   if (sec?.window) sec.window.props = { ...sec.window.props, ...patch }
   return next
+}
+
+/* ------------------------------------------------------------------ *
+ * Per-panel (palla) model for sliding windows
+ * ------------------------------------------------------------------ */
+
+/** Direction/mode of a single sliding panel. */
+export type PanelDir = 'left' | 'right' | 'fixed'
+
+/** A single accessory choice stored on a panel. */
+export interface PanelAccessory {
+  id: string
+  name: string
+  price: number
+}
+
+/** Per-panel accessory map (index-aligned with panels). */
+export type PanelAccessories = Partial<Record<string, PanelAccessory>>
+
+/** Accessory kinds a sliding panel can carry. */
+export const PANEL_ACCESSORY_KINDS = [
+  'sash',
+  'interlock',
+  'handle',
+  'roller',
+  'lock',
+] as const
+export type PanelAccessoryKind = (typeof PANEL_ACCESSORY_KINDS)[number]
+
+/**
+ * Normalise a sliding window's per-panel arrays so they always match the panel
+ * count. Mutates and returns the same props object. Safe to call repeatedly.
+ */
+export function normalizeSlidingPanels(
+  props: Record<string, unknown>
+): Record<string, unknown> {
+  const panels = Math.max(1, Number(props.panels) || 2)
+
+  const dirs = Array.isArray(props.panelDirs) ? [...(props.panelDirs as PanelDir[])] : []
+  const handles = Array.isArray(props.panelHandles)
+    ? [...(props.panelHandles as ('left' | 'right')[])]
+    : []
+  const acc = Array.isArray(props.panelAccessories)
+    ? [...(props.panelAccessories as PanelAccessories[])]
+    : []
+
+  for (let i = 0; i < panels; i++) {
+    if (dirs[i] == null) dirs[i] = i % 2 === 0 ? 'right' : 'left'
+    if (handles[i] == null) handles[i] = i % 2 === 0 ? 'right' : 'left'
+    if (acc[i] == null) acc[i] = {}
+  }
+  dirs.length = panels
+  handles.length = panels
+  acc.length = panels
+
+  props.panelDirs = dirs
+  props.panelHandles = handles
+  props.panelAccessories = acc
+  return props
+}
+
+/** Normalise every sliding section in a document (used on load). */
+export function normalizeDocumentPanels(doc: FrameDocument): FrameDocument {
+  for (const s of doc.sections) {
+    if (s.window?.type === 'sliding') normalizeSlidingPanels(s.window.props)
+  }
+  return doc
 }
 
 export function updateFrameDetails(

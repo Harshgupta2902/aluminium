@@ -5,8 +5,12 @@ import {
   type FrameDocument,
   type FrameDetails,
   type WindowTypeId,
+  type PanelDir,
+  type PanelAccessory,
   clearSection,
   createFrameDocument,
+  normalizeDocumentPanels,
+  normalizeSlidingPanels,
   placeWindow,
   resizeFrame,
   splitSection,
@@ -15,9 +19,25 @@ import {
   updateWindowProps,
 } from '@/lib/design-editor/frame-model'
 
+export interface SavedPanel {
+  /** Label like "S1" at the time it was saved. */
+  sectionLabel: string
+  widthMm: number
+  heightMm: number
+  /** Sash accessory name, if chosen. */
+  sash: string
+  /** Full per-panel accessory snapshot to reuse. */
+  accessories: Partial<Record<string, PanelAccessory>>
+  dir: PanelDir
+  handle: 'left' | 'right'
+}
+
 interface FrameEditorState {
   doc: FrameDocument
   selectedSectionId: number | null
+  /** Index of the selected panel within the selected sliding section. */
+  selectedPanelIdx: number | null
+  savedPanels: SavedPanel[]
   zoom: number
   /** Transient status/toast message for drop feedback. */
   message: { text: string; kind: 'ok' | 'err' } | null
@@ -27,6 +47,7 @@ interface FrameEditorState {
 
   load: (doc: FrameDocument) => void
   selectSection: (id: number | null) => void
+  selectPanel: (idx: number | null) => void
   setZoom: (z: number) => void
   fitZoom: () => void
   flash: (text: string, kind: 'ok' | 'err') => void
@@ -35,6 +56,19 @@ interface FrameEditorState {
   dropDivider: (orient: 'v' | 'h', x: number, y: number, kind: 'coupler' | 'mullion') => void
   clearSelectedWindow: () => void
   patchWindow: (sectionId: number, patch: Record<string, unknown>) => void
+
+  /* Per-panel (sliding) editing. */
+  setPanelDir: (sectionId: number, panelIdx: number, dir: PanelDir) => void
+  setPanelHandle: (sectionId: number, panelIdx: number, pos: 'left' | 'right') => void
+  patchPanelAccessory: (
+    sectionId: number,
+    panelIdx: number,
+    kind: string,
+    value: PanelAccessory | null
+  ) => void
+  saveCurrentPanel: () => void
+  applySavedPanel: (saved: SavedPanel) => void
+  removeSavedPanel: (index: number) => void
   patchDetails: (patch: Partial<FrameDetails>) => void
   setFrameSize: (w: number, h: number) => void
   clearAll: () => void
@@ -51,6 +85,8 @@ export const MAX_ZOOM = 2.5
 export const useFrameStore = create<FrameEditorState>((set, get) => ({
   doc: createFrameDocument(),
   selectedSectionId: null,
+  selectedPanelIdx: null,
+  savedPanels: [],
   zoom: 1,
   message: null,
   past: [],
@@ -58,9 +94,12 @@ export const useFrameStore = create<FrameEditorState>((set, get) => ({
 
   load: (doc) => {
     syncCounter(doc)
+    normalizeDocumentPanels(doc)
     set({
       doc,
       selectedSectionId: doc.sections[0]?.id ?? null,
+      selectedPanelIdx: null,
+      savedPanels: [],
       zoom: 1,
       past: [],
       future: [],
@@ -68,7 +107,8 @@ export const useFrameStore = create<FrameEditorState>((set, get) => ({
     })
   },
 
-  selectSection: (id) => set({ selectedSectionId: id }),
+  selectSection: (id) => set({ selectedSectionId: id, selectedPanelIdx: null }),
+  selectPanel: (idx) => set({ selectedPanelIdx: idx }),
   setZoom: (z) => set({ zoom: Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z)) }),
   fitZoom: () => set({ zoom: 1 }),
   flash: (text, kind) => {
@@ -114,6 +154,121 @@ export const useFrameStore = create<FrameEditorState>((set, get) => ({
       past: [...state.past, state.doc],
       future: [],
       doc: updateWindowProps(state.doc, sectionId, patch),
+    })),
+
+  setPanelDir: (sectionId, panelIdx, dir) =>
+    set((state) => {
+      const win = state.doc.sections.find((s) => s.id === sectionId)?.window
+      if (!win || win.type !== 'sliding') return state
+      const props = { ...win.props }
+      normalizeSlidingPanels(props)
+      const dirs = [...(props.panelDirs as PanelDir[])]
+      dirs[panelIdx] = dir
+      props.panelDirs = dirs
+      return {
+        past: [...state.past, state.doc],
+        future: [],
+        doc: updateWindowProps(state.doc, sectionId, {
+          panelDirs: dirs,
+          panelHandles: props.panelHandles,
+          panelAccessories: props.panelAccessories,
+        }),
+      }
+    }),
+
+  setPanelHandle: (sectionId, panelIdx, pos) =>
+    set((state) => {
+      const win = state.doc.sections.find((s) => s.id === sectionId)?.window
+      if (!win || win.type !== 'sliding') return state
+      const props = { ...win.props }
+      normalizeSlidingPanels(props)
+      const handles = [...(props.panelHandles as ('left' | 'right')[])]
+      handles[panelIdx] = pos
+      return {
+        past: [...state.past, state.doc],
+        future: [],
+        doc: updateWindowProps(state.doc, sectionId, { panelHandles: handles }),
+      }
+    }),
+
+  patchPanelAccessory: (sectionId, panelIdx, kind, value) =>
+    set((state) => {
+      const win = state.doc.sections.find((s) => s.id === sectionId)?.window
+      if (!win || win.type !== 'sliding') return state
+      const props = { ...win.props }
+      normalizeSlidingPanels(props)
+      const acc = (props.panelAccessories as Partial<Record<string, PanelAccessory>>[]).map(
+        (a) => ({ ...a })
+      )
+      const entry = { ...(acc[panelIdx] ?? {}) }
+      if (value) entry[kind] = value
+      else delete entry[kind]
+      acc[panelIdx] = entry
+      return {
+        past: [...state.past, state.doc],
+        future: [],
+        doc: updateWindowProps(state.doc, sectionId, { panelAccessories: acc }),
+      }
+    }),
+
+  saveCurrentPanel: () =>
+    set((state) => {
+      const sec = state.doc.sections.find((s) => s.id === state.selectedSectionId)
+      const idx = state.selectedPanelIdx
+      if (!sec?.window || sec.window.type !== 'sliding' || idx == null) return state
+      const props = { ...sec.window.props }
+      normalizeSlidingPanels(props)
+      const panels = Math.max(1, Number(props.panels) || 2)
+      const dirs = props.panelDirs as PanelDir[]
+      const handles = props.panelHandles as ('left' | 'right')[]
+      const acc = props.panelAccessories as Partial<Record<string, PanelAccessory>>[]
+      const label = `S${sec.idx}.${idx + 1}`
+      const widthMm = Math.round(sec.sw / panels)
+      const entry: SavedPanel = {
+        sectionLabel: label,
+        widthMm,
+        heightMm: Math.round(sec.sh),
+        sash: acc[idx]?.sash?.name ?? '',
+        accessories: { ...(acc[idx] ?? {}) },
+        dir: dirs[idx] ?? 'right',
+        handle: handles[idx] ?? 'right',
+      }
+      // De-dup by label (replace an existing snapshot for the same panel).
+      const rest = state.savedPanels.filter((p) => p.sectionLabel !== label)
+      get().flash('Panel saved', 'ok')
+      return { savedPanels: [...rest, entry] }
+    }),
+
+  applySavedPanel: (saved) =>
+    set((state) => {
+      const sec = state.doc.sections.find((s) => s.id === state.selectedSectionId)
+      const idx = state.selectedPanelIdx
+      if (!sec?.window || sec.window.type !== 'sliding' || idx == null) return state
+      const props = { ...sec.window.props }
+      normalizeSlidingPanels(props)
+      const dirs = [...(props.panelDirs as PanelDir[])]
+      const handles = [...(props.panelHandles as ('left' | 'right')[])]
+      const acc = (props.panelAccessories as Partial<Record<string, PanelAccessory>>[]).map(
+        (a) => ({ ...a })
+      )
+      dirs[idx] = saved.dir
+      handles[idx] = saved.handle
+      acc[idx] = { ...saved.accessories }
+      get().flash('Saved panel applied', 'ok')
+      return {
+        past: [...state.past, state.doc],
+        future: [],
+        doc: updateWindowProps(state.doc, sec.id, {
+          panelDirs: dirs,
+          panelHandles: handles,
+          panelAccessories: acc,
+        }),
+      }
+    }),
+
+  removeSavedPanel: (index) =>
+    set((state) => ({
+      savedPanels: state.savedPanels.filter((_, i) => i !== index),
     })),
 
   patchDetails: (patch) =>
