@@ -90,14 +90,35 @@ export interface SectionPrice {
   type: WindowTypeId | null
   areaSqft: number
   ratePerSqft: number
+  /** Glass/profile cost (area × rate). */
+  glassAmount: number
+  /** Summed price of configured accessories on this section. */
+  accessoriesAmount: number
+  /** glassAmount + accessoriesAmount. */
   amount: number
+}
+
+/** Sum the price of accessories configured on a section window. */
+function sectionAccessoriesAmount(section: FrameSection): number {
+  const acc = section.window?.props?.accessories as
+    | Record<string, { price?: number } | null>
+    | undefined
+  if (!acc || typeof acc !== 'object') return 0
+  let sum = 0
+  for (const entry of Object.values(acc)) {
+    const price = Number(entry?.price)
+    if (Number.isFinite(price) && price > 0) sum += price
+  }
+  return Math.round(sum)
 }
 
 export interface FramePrice {
   sections: SectionPrice[]
   /** Total glass/opening area across sections (sq ft), per unit. */
   areaSqft: number
-  /** Subtotal before GST + install. */
+  /** Total accessory cost across sections, per unit. */
+  accessoriesTotal: number
+  /** Subtotal before GST + install (glass + accessories). */
   subtotal: number
   gst: number
   install: number
@@ -128,6 +149,7 @@ export function priceFrame(
   const sections: SectionPrice[] = doc.sections.map((s) => priceSection(s, config, useManual ? manualRate! : null))
 
   const areaSqft = round2(sections.reduce((sum, s) => sum + s.areaSqft, 0))
+  const accessoriesTotal = Math.round(sections.reduce((sum, s) => sum + s.accessoriesAmount, 0))
   const subtotal = Math.round(sections.reduce((sum, s) => sum + s.amount, 0))
   const gst = Math.round((subtotal * config.gstPercentage) / 100)
   const install = Math.round((subtotal * config.installPercentage) / 100)
@@ -139,6 +161,7 @@ export function priceFrame(
   return {
     sections,
     areaSqft,
+    accessoriesTotal,
     subtotal,
     gst,
     install,
@@ -158,7 +181,15 @@ function priceSection(
   const type = section.window?.type ?? null
 
   if (!type) {
-    return { sectionId: section.id, type: null, areaSqft, ratePerSqft: 0, amount: 0 }
+    return {
+      sectionId: section.id,
+      type: null,
+      areaSqft,
+      ratePerSqft: 0,
+      glassAmount: 0,
+      accessoriesAmount: 0,
+      amount: 0,
+    }
   }
 
   let ratePerSqft: number
@@ -168,8 +199,18 @@ function priceSection(
     const base = config.typeRates[type] ?? DEFAULT_PRICING.typeRates[type] ?? 800
     ratePerSqft = Math.round(base * sizeMultiplier(section.sw, section.sh))
   }
-  const amount = Math.round(areaSqft * ratePerSqft)
-  return { sectionId: section.id, type, areaSqft, ratePerSqft, amount }
+  const glassAmount = Math.round(areaSqft * ratePerSqft)
+  const accessoriesAmount = sectionAccessoriesAmount(section)
+  const amount = glassAmount + accessoriesAmount
+  return {
+    sectionId: section.id,
+    type,
+    areaSqft,
+    ratePerSqft,
+    glassAmount,
+    accessoriesAmount,
+    amount,
+  }
 }
 
 function round2(n: number): number {

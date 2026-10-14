@@ -30,6 +30,7 @@ const FALLBACK_LISTS: EditorLists = {
   sashes: [{ name: 'Standard Sash' }, { name: 'Slim Sash' }],
   interlocks: [{ name: 'Standard Interlock' }, { name: 'Slim Interlock' }],
   locks: [{ name: 'SLD TOUCH LOCK LEFT' }, { name: 'SLD TOUCH LOCK RIGHT' }, { name: 'Mortise Lock' }],
+  accessories: [],
   pricing: DEFAULT_PRICING,
 }
 
@@ -66,7 +67,7 @@ export function FrameEditorShell({
     let active = true
     async function fetchLists() {
       try {
-        const [glasses, colors, tracks, sashes, interlocks, locks, rates, cfg] =
+        const [glasses, colors, tracks, sashes, interlocks, locks, rates, cfg, accessories] =
           await Promise.all([
             supabase.from('design_glasses').select('name').eq('is_active', true).order('sort_order'),
             supabase.from('design_colors').select('name').eq('is_active', true).order('sort_order'),
@@ -76,6 +77,11 @@ export function FrameEditorShell({
             supabase.from('gi_locks').select('name').eq('is_active', true).order('sort_order'),
             supabase.from('design_type_rates').select('window_type, base_rate'),
             supabase.from('design_pricing_config').select('*').eq('id', 1).maybeSingle(),
+            supabase
+              .from('design_accessories')
+              .select('id, kind, name, price')
+              .eq('is_active', true)
+              .order('sort_order'),
           ])
         if (!active) return
 
@@ -97,6 +103,7 @@ export function FrameEditorShell({
           sashes: sashes.data?.length ? sashes.data : FALLBACK_LISTS.sashes,
           interlocks: interlocks.data?.length ? interlocks.data : FALLBACK_LISTS.interlocks,
           locks: locks.data?.length ? locks.data : FALLBACK_LISTS.locks,
+          accessories: (accessories.data as EditorLists['accessories']) ?? [],
           pricing,
         })
       } catch {

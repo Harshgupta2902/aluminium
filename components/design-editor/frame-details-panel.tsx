@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useFrameStore } from '@/store/frame-editor'
-import { WINDOW_TYPE_MAP } from '@/lib/design-editor/frame-model'
+import { WINDOW_TYPE_MAP, type WindowTypeId } from '@/lib/design-editor/frame-model'
 import { priceFrame, type PricingConfig } from '@/lib/design-editor/frame-pricing'
 import { formatCurrency } from '@/lib/utils'
 
@@ -17,7 +17,30 @@ export interface EditorLists {
   sashes: { name: string }[]
   interlocks: { name: string }[]
   locks: { name: string }[]
+  accessories: { id: string; kind: string; name: string; price: number }[]
   pricing: PricingConfig
+}
+
+/** Accessory kinds a section may configure, and which window types show them. */
+export const SECTION_ACCESSORY_KINDS: {
+  kind: string
+  label: string
+  types: WindowTypeId[]
+}[] = [
+  { kind: 'sash', label: 'Sash', types: ['sliding'] },
+  { kind: 'interlock', label: 'Interlock', types: ['sliding'] },
+  { kind: 'handle', label: 'Handle', types: ['sliding', 'casement', 'double-casement', 'door-single', 'door-double'] },
+  { kind: 'roller', label: 'Roller', types: ['sliding'] },
+  { kind: 'lock', label: 'Lock', types: ['sliding', 'casement', 'double-casement', 'door-single', 'door-double'] },
+  { kind: 'hinge', label: 'Hinge', types: ['casement', 'double-casement', 'tophung', 'awning', 'door-single', 'door-double'] },
+  { kind: 'mesh', label: 'Mesh', types: ['sliding', 'casement', 'mesh-screen', 'fly-screen'] },
+]
+
+/** Shape stored on `section.window.props.accessories`. */
+export type SectionAccessories = Record<string, { id: string; name: string; price: number }>
+
+function kindsForType(type: WindowTypeId): typeof SECTION_ACCESSORY_KINDS {
+  return SECTION_ACCESSORY_KINDS.filter((k) => k.types.includes(type))
 }
 
 export function FrameDetailsPanel({
@@ -159,11 +182,19 @@ export function FrameDetailsPanel({
               )}
             </div>
             {selected.window ? (
-              <SectionProps
-                type={selected.window.type}
-                props={selected.window.props}
-                set={(patch) => patchWindow(selected.id, patch)}
-              />
+              <>
+                <SectionProps
+                  type={selected.window.type}
+                  props={selected.window.props}
+                  set={(patch) => patchWindow(selected.id, patch)}
+                />
+                <SectionAccessoryPanel
+                  type={selected.window.type}
+                  accessories={(selected.window.props.accessories as SectionAccessories) ?? {}}
+                  options={lists.accessories}
+                  set={(next) => patchWindow(selected.id, { accessories: next })}
+                />
+              </>
             ) : (
               <p className="text-xs text-blue-700/70">Drop a window into this section.</p>
             )}
@@ -177,6 +208,9 @@ export function FrameDetailsPanel({
         {/* Live pricing */}
         <div className="space-y-1 rounded-lg bg-gray-900 p-3 text-white">
           <Row label="Area" value={`${price.areaSqft.toFixed(2)} Sqft`} />
+          {price.accessoriesTotal > 0 && (
+            <Row label="Accessories" value={formatCurrency(price.accessoriesTotal)} />
+          )}
           <Row label="Subtotal" value={formatCurrency(price.subtotal)} />
           <Row label={`GST (${lists.pricing.gstPercentage}%)`} value={formatCurrency(price.gst)} />
           <Row label={`Install (${lists.pricing.installPercentage}%)`} value={formatCurrency(price.install)} />
@@ -300,6 +334,68 @@ function SectionProps({
     default:
       return <p className="text-xs text-gray-500">No extra options.</p>
   }
+}
+
+/* ---------- per-section accessories ---------- */
+
+function SectionAccessoryPanel({
+  type,
+  accessories,
+  options,
+  set,
+}: {
+  type: WindowTypeId
+  accessories: SectionAccessories
+  options: EditorLists['accessories']
+  set: (next: SectionAccessories) => void
+}) {
+  const kinds = kindsForType(type)
+  if (kinds.length === 0) return null
+
+  const update = (kind: string, id: string) => {
+    const next: SectionAccessories = { ...accessories }
+    if (!id) {
+      delete next[kind]
+    } else {
+      const opt = options.find((o) => o.id === id && o.kind === kind)
+      if (opt) next[kind] = { id: opt.id, name: opt.name, price: opt.price }
+    }
+    set(next)
+  }
+
+  const total = Object.values(accessories).reduce((sum, a) => sum + (a?.price ?? 0), 0)
+
+  return (
+    <div className="space-y-2 rounded-md border border-blue-200/70 bg-white/70 p-2.5">
+      <p className="text-[11px] font-semibold uppercase tracking-wide text-blue-700">Accessories</p>
+      {kinds.map(({ kind, label }) => {
+        const opts = options.filter((o) => o.kind === kind)
+        const current = accessories[kind]?.id ?? ''
+        return (
+          <div key={kind} className="space-y-1">
+            <Label className="text-[11px] uppercase tracking-wide text-gray-500">{label}</Label>
+            <Select value={current} onChange={(e) => update(kind, e.target.value)}>
+              <option value="">
+                {opts.length ? `Select ${label.toLowerCase()}...` : `No ${label.toLowerCase()} configured`}
+              </option>
+              {opts.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.name}
+                  {o.price ? ` — ${formatCurrency(o.price)}` : ''}
+                </option>
+              ))}
+            </Select>
+          </div>
+        )
+      })}
+      {total > 0 && (
+        <div className="flex items-center justify-between pt-0.5 text-[11px] font-medium text-blue-700">
+          <span>Accessories total</span>
+          <span>{formatCurrency(total)}</span>
+        </div>
+      )}
+    </div>
+  )
 }
 
 /* ---------- small controls ---------- */
