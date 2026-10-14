@@ -1,12 +1,12 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { Loader2, Plus, Trash2 } from 'lucide-react'
+import { Loader2, Plus, Trash2, Check } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import {
   computeQuotationPrice,
@@ -35,9 +35,8 @@ export function QuotationPricing({
 
   const [o, setO] = useState<QuotationOverheads>(initialOverheads)
   const [heads, setHeads] = useState<CostHead[]>(initialCostHeads)
-  const [saving, setSaving] = useState(false)
+  const [autoStatus, setAutoStatus] = useState<'idle' | 'saving' | 'saved'>('idle')
   const [error, setError] = useState<string | null>(null)
-  const [savedAt, setSavedAt] = useState<Date | null>(null)
 
   const price = useMemo(
     () => computeQuotationPrice(designs, o, heads),
@@ -56,8 +55,12 @@ export function QuotationPricing({
 
   const removeHead = (id: string) => setHeads((prev) => prev.filter((h) => h.id !== id))
 
-  const updateAll = async () => {
-    setSaving(true)
+  const save = async (
+    oo: QuotationOverheads,
+    hh: CostHead[],
+    grandTotal: number
+  ) => {
+    setAutoStatus('saving')
     setError(null)
     try {
       const {
@@ -65,6 +68,7 @@ export function QuotationPricing({
       } = await supabase.auth.getUser()
       if (!user) {
         setError('You must be logged in.')
+        setAutoStatus('idle')
         return
       }
 
@@ -72,27 +76,27 @@ export function QuotationPricing({
       const { error: upErr } = await supabase
         .from('quotations')
         .update({
-          profit_percentage: o.profit_percentage,
-          installation_charge: o.installation_charge,
-          labour_charge: o.labour_charge,
-          profile_wastage: o.profile_wastage,
-          glass_wastage: o.glass_wastage,
-          transport_charge: o.transport_charge,
-          discount: o.discount,
-          discount_type: o.discount_type,
-          cgst: o.cgst,
-          sgst: o.sgst,
-          igst: o.igst,
-          gst_mode: o.gst_mode,
-          grand_total: price.grandTotal,
-          total_amount: price.grandTotal,
+          profit_percentage: oo.profit_percentage,
+          installation_charge: oo.installation_charge,
+          labour_charge: oo.labour_charge,
+          profile_wastage: oo.profile_wastage,
+          glass_wastage: oo.glass_wastage,
+          transport_charge: oo.transport_charge,
+          discount: oo.discount,
+          discount_type: oo.discount_type,
+          cgst: oo.cgst,
+          sgst: oo.sgst,
+          igst: oo.igst,
+          gst_mode: oo.gst_mode,
+          grand_total: grandTotal,
+          total_amount: grandTotal,
         })
         .eq('id', quotationId)
       if (upErr) throw upErr
 
       // Replace the custom cost heads (simple + reliable).
       await supabase.from('quotation_cost_heads').delete().eq('quotation_id', quotationId)
-      const valid = heads.filter((h) => h.label.trim())
+      const valid = hh.filter((h) => h.label.trim())
       if (valid.length > 0) {
         const { error: insErr } = await supabase.from('quotation_cost_heads').insert(
           valid.map((h, i) => ({
@@ -106,14 +110,28 @@ export function QuotationPricing({
         if (insErr) throw insErr
       }
 
-      setSavedAt(new Date())
+      setAutoStatus('saved')
+      setTimeout(() => setAutoStatus('idle'), 1500)
       router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to save pricing')
-    } finally {
-      setSaving(false)
+      setAutoStatus('idle')
     }
   }
+
+  // Debounced autosave whenever overheads or cost heads change (skip first render).
+  const firstRender = useRef(true)
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false
+      return
+    }
+    const t = setTimeout(() => {
+      void save(o, heads, price.grandTotal)
+    }, 800)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [o, heads, price.grandTotal])
 
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.4fr_1fr]">
@@ -124,14 +142,18 @@ export function QuotationPricing({
             <h2 className="text-base font-bold text-heading">Cost Overheads</h2>
             <p className="text-xs text-muted-foreground">Manage project cost parameters</p>
           </div>
-          <div className="flex items-center gap-2">
-            {savedAt && !error && (
-              <span className="text-xs text-muted-foreground">Saved</span>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            {autoStatus === 'saving' && (
+              <>
+                <Loader2 className="h-3.5 w-3.5 animate-spin" /> Saving…
+              </>
             )}
-            <Button size="sm" onClick={updateAll} disabled={saving}>
-              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-              Update All
-            </Button>
+            {autoStatus === 'saved' && (
+              <>
+                <Check className="h-3.5 w-3.5 text-emerald-600" /> Saved
+              </>
+            )}
+            {autoStatus === 'idle' && <span>Changes save automatically</span>}
           </div>
         </div>
 
