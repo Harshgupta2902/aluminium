@@ -163,6 +163,51 @@ CREATE TABLE public.gi_locks (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
 );
 
+-- Profile Company + Series registry.
+-- Replicates the original "Aluminium Coating" (Company | Series) and
+-- "Aluminium StockLength" (Company | Series | Available Length) settings pages,
+-- which are really ONE registry of profile companies + series. Feeds the
+-- designer's series/track selection and the per-panel BOM costing.
+CREATE TABLE public.aluminium_series (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  company TEXT NOT NULL,
+  series_name TEXT NOT NULL,
+  available_length TEXT,                 -- e.g. '16 Ft' (free text, as in original)
+  external_id TEXT,                      -- designer API series id (links profiles)
+  material TEXT NOT NULL DEFAULT 'aluminium',
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  is_default BOOLEAN NOT NULL DEFAULT FALSE,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS aluminium_series_owner_idx
+  ON public.aluminium_series (created_by);
+
+-- Series-scoped aluminium profiles (tracks, sashes, mesh sashes, interlocks,
+-- clips, mullions, slim interlocks...) each with a profile_code (e.g. V-2714)
+-- and thickness. Scraped from the designer API. Feeds the per-panel BOM costing.
+CREATE TABLE public.series_profiles (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  series_id UUID NOT NULL REFERENCES public.aluminium_series(id) ON DELETE CASCADE,
+  profile_group TEXT NOT NULL,           -- track | sash | mesh_sash | interlock | clip | mesh_clip | mullion | slim_interlock | slim_huricane | outer_top | outer_left
+  profile_code TEXT,
+  name TEXT NOT NULL,
+  thickness NUMERIC,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS series_profiles_series_group_idx
+  ON public.series_profiles (series_id, profile_group);
+CREATE INDEX IF NOT EXISTS series_profiles_owner_idx
+  ON public.series_profiles (created_by);
+
 -- Per-window-type base rate.
 CREATE TABLE public.design_type_rates (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -191,7 +236,7 @@ CREATE TABLE public.design_accessories (
   kind TEXT NOT NULL CHECK (kind IN (
     'sash','interlock','handle','roller','lock','hinge','mesh',
     'mesh_type','mesh_sash','mesh_clip','mesh_handle','mesh_slim',
-    'reinforcement','slim_interlock','friction_stay'
+    'reinforcement','slim_interlock','friction_stay','common'
   )),
   name TEXT NOT NULL,
   code TEXT,
@@ -351,6 +396,8 @@ ALTER TABLE public.gi_tracks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.gi_sashes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.gi_interlocks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.gi_locks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.aluminium_series ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.series_profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.design_type_rates ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.design_pricing_config ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.billing_periods ENABLE ROW LEVEL SECURITY;
@@ -423,6 +470,26 @@ CREATE POLICY "design_accessories_insert" ON public.design_accessories
 CREATE POLICY "design_accessories_update" ON public.design_accessories
   FOR UPDATE USING (created_by = auth.uid() OR public.is_superadmin());
 CREATE POLICY "design_accessories_delete" ON public.design_accessories
+  FOR DELETE USING (created_by = auth.uid() OR public.is_superadmin());
+
+-- Per-user profile series registry: owner reads/writes own rows; superadmin all.
+CREATE POLICY "aluminium_series_select" ON public.aluminium_series
+  FOR SELECT USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "aluminium_series_insert" ON public.aluminium_series
+  FOR INSERT WITH CHECK (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "aluminium_series_update" ON public.aluminium_series
+  FOR UPDATE USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "aluminium_series_delete" ON public.aluminium_series
+  FOR DELETE USING (created_by = auth.uid() OR public.is_superadmin());
+
+-- Series-scoped profiles: owner reads/writes own rows; superadmin all.
+CREATE POLICY "series_profiles_select" ON public.series_profiles
+  FOR SELECT USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "series_profiles_insert" ON public.series_profiles
+  FOR INSERT WITH CHECK (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "series_profiles_update" ON public.series_profiles
+  FOR UPDATE USING (created_by = auth.uid() OR public.is_superadmin());
+CREATE POLICY "series_profiles_delete" ON public.series_profiles
   FOR DELETE USING (created_by = auth.uid() OR public.is_superadmin());
 
 -- Per-user aluminium cost settings: owner reads/writes own row; superadmin all.
@@ -579,15 +646,9 @@ ON CONFLICT (id) DO UPDATE SET role = 'superadmin', is_active = TRUE;
 
 -- Design editor seed data -----------------------------------------------------
 
--- Glasses.
-INSERT INTO public.design_glasses (name, is_default, sort_order) VALUES
-  ('4MM CLEAR GLASS', FALSE, 1),
-  ('5MM CLEAR GLASS', TRUE, 2),
-  ('5MM CLEAR TOUGHENED GLASS', FALSE, 3),
-  ('6MM TINTED GLASS', FALSE, 4),
-  ('6MM TOUGHENED GLASS', FALSE, 5),
-  ('8MM TOUGHENED GLASS', FALSE, 6),
-  ('DOUBLE GLAZED UNIT', FALSE, 7);
+-- Glasses: no default seed. The real catalog is loaded per-user via seed.sql
+-- (scraped from the original). Removed the generic defaults so fresh setups
+-- don't create unowned (created_by = NULL) rows that RLS hides anyway.
 
 -- Colours.
 INSERT INTO public.design_colors (name, hex, is_default, sort_order) VALUES
