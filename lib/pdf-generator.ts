@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf'
-import { formatCurrency, formatDate } from './utils'
+import { formatCurrencyPdf as formatCurrency, formatDate } from './utils'
 import {
   computeShapeGeometry,
   type DesignDocument,
@@ -106,9 +106,9 @@ export function generateQuotationPDF(data: QuotationPDFData) {
   doc.line(MARGIN, y, PAGE_W - MARGIN, y)
   y += 8
 
-  // One block per design.
+  // One block per design. Box is 66mm tall; reserve it + a little gap.
   data.designs.forEach((design, index) => {
-    const blockHeight = 72
+    const blockHeight = 66
     if (y + blockHeight > PAGE_H - 20) {
       doc.addPage()
       y = MARGIN + 5
@@ -117,25 +117,43 @@ export function generateQuotationPDF(data: QuotationPDFData) {
     y += 6
   })
 
-  // Totals.
-  if (y + 30 > PAGE_H - 20) {
+  // Totals. Estimate the space the whole block needs so it never splits across
+  // the page footer, and move to a fresh page if it won't fit.
+  const p = data.pricing
+  const breakdownRows = p
+    ? 1 /* base */ +
+      (p.installation ? 1 : 0) +
+      (p.labour ? 1 : 0) +
+      (p.profit ? 1 : 0) +
+      (p.wastage ? 1 : 0) +
+      (p.customHeads ? 1 : 0) +
+      (p.transport ? 1 : 0) +
+      (p.discount ? 1 : 0) +
+      1 /* subtotal */ +
+      (p.cgst ? 1 : 0) +
+      (p.sgst ? 1 : 0) +
+      (p.igst ? 1 : 0)
+    : 0
+  const totalsHeight = 16 + breakdownRows * 5 + 14 // divider + rows + grand total
+  if (y + totalsHeight > PAGE_H - 20) {
     doc.addPage()
     y = MARGIN + 5
   }
+
   y += 2
   doc.setDrawColor(200, 200, 200)
   doc.line(MARGIN, y, PAGE_W - MARGIN, y)
   y += 8
 
-  doc.setFontSize(10)
-  doc.setFont('helvetica', 'normal')
-  doc.setTextColor(70, 70, 70)
+  // Left: total area (aligned to the top of the breakdown column).
   if (typeof data.total_area === 'number') {
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(70, 70, 70)
     doc.text(`Total Area: ${data.total_area.toFixed(2)} Sqft`, MARGIN, y)
   }
 
   // Price breakdown (right-aligned column) when available.
-  const p = data.pricing
   if (p) {
     const labelX = PAGE_W - MARGIN - 70
     const valX = PAGE_W - MARGIN
@@ -155,17 +173,26 @@ export function generateQuotationPDF(data: QuotationPDFData) {
     if (p.customHeads) line('Other Charges', p.customHeads)
     if (p.transport) line('Transportation', p.transport)
     if (p.discount) line('Discount', -p.discount)
+    // Separator above subtotal.
+    doc.setDrawColor(225, 225, 225)
+    doc.line(labelX, y - 2, valX, y - 2)
     line('Sub Total', p.subtotal, { bold: true })
     if (p.cgst) line('CGST', p.cgst)
     if (p.sgst) line('SGST', p.sgst)
     if (p.igst) line('IGST', p.igst)
-    y += 1
+    y += 2
   }
 
-  doc.setFontSize(13)
+  // Grand total band (right-aligned, in a subtle highlight).
+  const gtLabelX = PAGE_W - MARGIN - 70
+  doc.setDrawColor(...BRAND)
+  doc.setLineWidth(0.4)
+  doc.line(gtLabelX, y - 1, PAGE_W - MARGIN, y - 1)
+  y += 4
+  doc.setFontSize(12)
   doc.setFont('helvetica', 'bold')
   doc.setTextColor(...BRAND)
-  doc.text('GRAND TOTAL', PAGE_W - MARGIN - 70, y)
+  doc.text('GRAND TOTAL', gtLabelX, y)
   doc.text(formatCurrency(data.total_amount), PAGE_W - MARGIN, y, {
     align: 'right',
   })
@@ -417,18 +444,58 @@ function drawFrameSection(
   doc.setLineWidth(0.3)
 
   const line = (x1: number, y1: number, x2: number, y2: number) => doc.line(x1, y1, x2, y2)
+  // A sash frame inset inside a rectangle (the opening sash edge).
+  const sash = (rx: number, ry: number, rw: number, rh: number, inset = 1.4) => {
+    doc.setDrawColor(120, 128, 140)
+    doc.setLineWidth(0.5)
+    doc.rect(rx + inset, ry + inset, Math.max(0, rw - inset * 2), Math.max(0, rh - inset * 2))
+    doc.setDrawColor(107, 114, 128)
+    doc.setLineWidth(0.3)
+  }
+  // A small handle mark (filled bar).
+  const handle = (hx: number, hy: number) => {
+    doc.setFillColor(55, 65, 81)
+    doc.rect(hx - 0.5, hy - 2, 1, 4, 'F')
+  }
+  // A horizontal slide arrow centred in a panel.
+  const slideArrow = (px0: number, py0: number, pw0: number, dir: 'left' | 'right') => {
+    const cy = py0
+    const x1 = px0 + pw0 * 0.32
+    const x2 = px0 + pw0 * 0.68
+    doc.setDrawColor(130, 140, 150)
+    doc.setLineWidth(0.4)
+    doc.line(x1, cy, x2, cy)
+    const tip = dir === 'right' ? x2 : x1
+    const back = dir === 'right' ? x2 - 1.4 : x1 + 1.4
+    doc.line(tip, cy, back, cy - 1.2)
+    doc.line(tip, cy, back, cy + 1.2)
+    doc.setDrawColor(107, 114, 128)
+    doc.setLineWidth(0.3)
+  }
 
   switch (type) {
     case 'sliding': {
       const panels = Number(sec.window!.props.panels) || 2
+      const dirs = (sec.window!.props.panelDirs as string[]) ?? []
       const pw = w / panels
-      for (let i = 1; i < panels; i++) line(x + pw * i, y, x + pw * i, y + h)
+      for (let i = 0; i < panels; i++) {
+        const pxl = x + pw * i
+        if (i > 0) line(pxl, y, pxl, y + h)
+        sash(pxl, y, pw, h)
+        const dir = dirs[i]
+        if (dir === 'fixed') continue
+        const side: 'left' | 'right' = dir === 'left' ? 'left' : 'right'
+        slideArrow(pxl, y + h / 2, pw, side)
+        handle(side === 'right' ? pxl + pw - 2.5 : pxl + 2.5, y + h / 2)
+      }
       break
     }
     case 'casement':
     case 'fixed-casement': {
+      sash(x, y, w, h)
       line(x, y, x + w, y + h / 2)
       line(x, y + h, x + w, y + h / 2)
+      handle(x + w - 2.5, y + h / 2)
       break
     }
     case 'double-casement': {

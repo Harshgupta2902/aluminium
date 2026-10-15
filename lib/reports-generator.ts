@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf'
-import { formatCurrency } from './utils'
+import { formatCurrencyPdf as formatCurrency } from './utils'
 import {
   PAGE_W,
   PAGE_H,
@@ -156,10 +156,10 @@ function buildDrawingsReport(
   let col = 0
 
   data.designs.forEach((d, i) => {
-    if (y + cardH > PAGE_H - 18) {
+    // Only break at the start of a row so a row never splits across pages.
+    if (col === 0 && y + cardH > PAGE_H - 18) {
       doc.addPage()
       y = reportHeader(doc, data, REPORT_TITLES[kind])
-      col = 0
     }
     const x = MARGIN + col * (half + 6)
     doc.setDrawColor(225, 225, 225)
