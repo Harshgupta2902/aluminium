@@ -1,0 +1,6268 @@
+{
+  "company": "Vitco",
+  "glasses": {
+    "5MM CLEAR TOUGHENED GLASS": "682375eab1da4021d60fb2ab",
+    "8MM CLEAR TOUGHNED GLASS": "682375fa69990ef69904ddc2",
+    "5+10MM Argon Gas+5T": "6823765e9faddd722a0e5e9e",
+    "5MM FROSTED GLASS": "68237672b1da4021d60fb2ac",
+    "5mm Frosted Toughend": "6823768169990ef69904ddc3",
+    "6mm clear toughend Glass": "682376909faddd722a0e5e9f",
+    "5mm brown tinted toughened glass": "682376a1b1da4021d60fb2ad",
+    "12mm clear toughend Glass": "682376b169990ef69904ddc4",
+    "5+1.52 PVB+5T LAM": "682376bf9faddd722a0e5ea0",
+    "6MM+15ARGON+6MMT": "682376d2b1da4021d60fb2ae",
+    "8MM TOUGHEND BLACK TINTED": "68237747b1da4021d60fb2af",
+    "mesh only": "6823775869990ef69904ddc6",
+    "6MM+10 ARGON+6MMT": "6823779a9faddd722a0e5ea1",
+    "S167-5+10MM ARGON+5 BLACK": "682377b1b1da4021d60fb2b0",
+    "6 MM CERAMIC TOUGHEND": "682377c169990ef69904ddc7",
+    "5mm Frosted Glass TOUGHEND": "682377d09faddd722a0e5ea2",
+    "22 MM DGU WITH TOUGHENED GLASS": "682377dfb1da4021d60fb2b1",
+    "5mm Laminated Glass": "682377ee69990ef69904ddc8",
+    "5+1.52+5 BLACK LAMINATED": "682377fc9faddd722a0e5ea3",
+    "5mm Plain Toughned Glass": "68237811b1da4021d60fb2b2",
+    "5mm Plain Frosted Glass": "6823782a69990ef69904ddc9",
+    "6mm Toughened Glass": "6823783f9faddd722a0e5ea4",
+    "6mm Clear Glass": "68237861b1da4021d60fb2b3",
+    "6mm Reflective Glass": "6823787769990ef69904ddca",
+    "6mm Frosted Glass": "682378859faddd722a0e5ea5",
+    "6mm Tinted Glass": "68237899b1da4021d60fb2b4",
+    "6mm Laminated Glass": "682378aa69990ef69904ddcb",
+    "6mm Plain Glass": "682378d19faddd722a0e5ea6",
+    "6mm Plain Toughned Glass": "682378fbb1da4021d60fb2b5",
+    "6mm Plain Frosted Glass": "6823790d69990ef69904ddcc",
+    "8mm  Black Toughened Glass": "6823791c9faddd722a0e5ea7",
+    "8mm Clear Glass": "68237932b1da4021d60fb2b6",
+    "8mm Reflective Glass": "6823794a69990ef69904ddcd",
+    "8mm Frosted Glass": "6823799cb1da4021d60fb2b8",
+    "8mm Tinted Glass": "682379de9faddd722a0e5eaa",
+    "8mm Laminated Glass": "6823797a69990ef69904ddce",
+    "8mm Frosted Toughened Glass": "682379899faddd722a0e5ea9",
+    "8+1.52+8T Laminated": "682379f2b1da4021d60fb2b9",
+    "4 mm acp partition sheet white": "68237a1169990ef69904ddcf",
+    "8mm Plain Toughned Glass": "68237a209faddd722a0e5eab",
+    "8mm Plain Frosted Glass": "68237a2fb1da4021d60fb2ba",
+    "10mm Toughened Glass": "68237a4069990ef69904ddd0",
+    "10mm Clear Glass": "68237a509faddd722a0e5eac",
+    "10mm Reflective Glass": "68237a5fb1da4021d60fb2bb",
+    "5mm Frosted Glass": "6a0968a650d1648ffe0ceeaa",
+    "10mm Tinted Glass": "68237abf9faddd722a0e5eae",
+    "10mm Laminated Glass": "68237a9db1da4021d60fb2bc",
+    "10mm Frosted Glass": "68237aae69990ef69904ddd2",
+    "10mm Plain Glass": "68237aed9faddd722a0e5eaf",
+    "10mm Plain Toughned Glass": "68237afdb1da4021d60fb2be",
+    "12mm Frosted Toughened Glass": "68237b1169990ef69904ddd3",
+    "Security Glass 5+1.5+5": "68237b209faddd722a0e5eb0",
+    "DGU Glass 6+10+6": "68237b2db1da4021d60fb2bf",
+    "UPVC PANEL 20 MM": "68237b3b69990ef69904ddd4",
+    "DGU glass -5+10+5  T": "684a9153fa7da2257d0ce78a",
+    "DGU Glass -6+12+6 T": "684a9183fa7da2257d0ce78b",
+    "DGU glass -8+12+8 T": "684a9190d6c9a322900d07c3",
+    "Security Glass -6+1.52+6 T": "684a91a0d6c9a322900d07c4",
+    "Security glass -5+1.52+5 T": "684a91b32a02cd9c7c087ab3",
+    "Security glass 8+2.25+8 T": "684a91c12a02cd9c7c087ab4",
+    "LM +Dg(6 St167+1.52+6)13.52 mm + 8 Arg+ 5 T)": "693edbad44561047120519a4",
+    "6 mm ST 167": "693edbdf91c9fdf75c02af06",
+    "(6+1.52+6) 13.52 mm Security Glass": "693edc2891c9fdf75c02af07",
+    "4mm Clear Tuff": "695362cc0cb6371d090fc1e0",
+    "6mm Clear Toughened glass": "695362edca4dfaafaf09a207",
+    "8mm Clear Tuff": "695362fd0cb6371d090fc1e1",
+    "10mm Clear Tuff": "6953636b0cb6371d090fc1e2",
+    "12mm Clear glass": "6953637ca5972dca410969cc",
+    "5mm Cl. Tuff+1.52 Pvb+5mm Cl Tuff": "6953638dca4dfaafaf09a208",
+    "6mm Cl. Tuff+1.52 Pvb+6mm Cl Tuff": "6953639e0cb6371d090fc1e3",
+    "5mm Cl. Tuff+1.52 Pvb+4mm Cl Tuff": "695363aca5972dca410969cd",
+    "6mm Cl. Tuff+1.52 Pvb+4mm Cl Tuff": "695363baca4dfaafaf09a209",
+    "5mm Cl. Tuff+12mm Air gap With Argon+5mm Cl Tuff": "695363ca0cb6371d090fc1e4",
+    "5mm Cl. Tuff+10mm Air gap With Argon+5mm Cl Tuff": "695363d6a5972dca410969ce",
+    "6mm Cl. Tuff+10mm Air gap With Organ+6mm Cl Tuff": "695363e5ca4dfaafaf09a20a",
+    "6mm Cl. Tuff+12mm Air gap With Argon+6mm Cl Tuff": "695363f40cb6371d090fc1e5",
+    "5mm Forest Green Glass": "697b396071c5926a75044518",
+    "5mm Brown reflective glass": "6983193fa520f36b4a0c86b2",
+    "12mm toughened glass": "69833be7e29b49471c08f4a4",
+    "5mm Black Reflective Glass toughened glass": "69957a16aea1dd4a7b029075",
+    "12mm Toughened Glass": "69b272b507c2c9a0ee0c5bfe",
+    "5MM CLEAR REFLECTIVE TOUGHENED GLASS": "69e20c242685f9f5be0a8ea7",
+    "5mm Black Reflective Glass": "69e3299848b6326ad5019b75",
+    "5mm Clear Glass": "69f0a4bf10301d66c207d44a",
+    "5mm testing glass": "69fb05ad6a1a20e57c0b7741",
+    "5mm Black Reflective Raw Glass": "6a04326ba2104d7fd10740a9",
+    "5mm Clear Toughened Glass": "6a096df3ec24ce8ad0051799",
+    "4mm Pinhead Glass": "6a0bffb77226d635330a869c",
+    "5+1.52+5+10air+5 LAMINATION DGU": "6a0c6bdf680d9872460a3dc6",
+    "5mm black dimond": "6a0d9f207a35b34c480c5a04",
+    "3.5MM CLEAR GLASS": "6a0ef480f59de47b2e0e5792",
+    "4mm CLEAR GLASS-MBG": "6a0fdf93f02b13b4800c61da",
+    "4MM ONE WAY GLASS-MBG": "6a0fdfaf6961de63fd06f8ac",
+    "DUG GLASS (5+10+5) Toughened": "6a116fe0a749117ef60508e0",
+    "5MM MILKY GLASS-MBG": "6a13ce4dd3de1d07a30ce30b",
+    "5MM AQUA BLUE REFLECTIVE TOUGHNED GLASS": "6a15423bce16a2e1c70e1004",
+    "5+1.5+5 Lamination Glass": "6a167ce2b9e1cee0f9048d94",
+    "6+1.52 PVB+6T LAM": "6a167d2eb9e1cee0f9048d96",
+    "UPVC Louvers": "6a1696d751a53963c90f8419",
+    "5mm Black Reflective Toughened Glass": "6a198aca1ae45741fd0707ca",
+    "6 MM Etching Design TOUGHENED GLASS": "6a1ab7ba27d91055830a4615",
+    "Without GLASS": "6a846139b0cfb1f7d6054796"
+  },
+  "colors": [
+    {
+      "color_name": "Anthracite Grey (RAL 7016)",
+      "color_code": "anthracite_grey",
+      "system_color": "#373F43",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Golden Oak",
+      "color_code": "golden_oak",
+      "system_color": "#9C6B30",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Slate Grey (Closest RAL: RAL 7015)",
+      "color_code": "slate_grey",
+      "system_color": "#6C6E68",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Black (Generic Black, closest RAL: RAL 9005)",
+      "color_code": "generic_black",
+      "system_color": "#0A0A0A",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Jet Black (RAL 9005)",
+      "color_code": "jet_black",
+      "system_color": "#0A0A0A",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Silver Metallic (RAL 9006)",
+      "color_code": "metallic_silver",
+      "system_color": "#A5A5A5",
+      "is_selected": 0
+    },
+    {
+      "color_name": "ELECTRIC GRAY",
+      "color_code": "electric_gray",
+      "system_color": "#666D70",
+      "is_selected": 0
+    },
+    {
+      "color_name": "MAGIC GRAY",
+      "color_code": "magic_grey",
+      "system_color": "#A3A3A3",
+      "is_selected": 0
+    },
+    {
+      "color_name": "IVORY",
+      "color_code": "ivory",
+      "system_color": "#FFFFF0",
+      "is_selected": 0
+    },
+    {
+      "color_name": "WOODEN",
+      "color_code": "wooden",
+      "system_color": "#C19A6B",
+      "is_selected": 0
+    },
+    {
+      "color_name": "BROWN",
+      "color_code": "brown",
+      "system_color": "#A52A2A",
+      "is_selected": 0
+    },
+    {
+      "color_name": "CHAMPAGNE",
+      "color_code": "champagne",
+      "system_color": "#F7E7CE",
+      "is_selected": 0
+    },
+    {
+      "color_name": "SILVER",
+      "color_code": "silver",
+      "system_color": "#C0C0C0",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Walnut",
+      "color_code": "walnut",
+      "system_color": "#5C3A21",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Mahogany",
+      "color_code": "mahogany",
+      "system_color": "#C04000",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Rustik Oak",
+      "color_code": "rustik_oak",
+      "system_color": "#7E5C3C",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Authracite Gray",
+      "color_code": "authracite_grey",
+      "system_color": "#8B8C89",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Smooth Grey",
+      "color_code": "smooth_grey",
+      "system_color": "#B0B0B0",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Black Smooth",
+      "color_code": "black_smooth",
+      "system_color": "#000000",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Flemish Gold",
+      "color_code": "flemish_gold",
+      "system_color": "#D6AF36",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Dark Oak",
+      "color_code": "dark_oak",
+      "system_color": "#654321",
+      "is_selected": 0
+    },
+    {
+      "color_name": "White",
+      "color_code": "white",
+      "system_color": "#FDFDFD",
+      "is_selected": 1
+    },
+    {
+      "color_name": "BLACK",
+      "color_code": "black",
+      "system_color": "#000000",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Dark Gray",
+      "color_code": "dark_gray",
+      "system_color": "#A9A9A9",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Stable Blue",
+      "color_code": "stable_blue",
+      "system_color": "#2F5D9F",
+      "is_selected": 0
+    },
+    {
+      "color_name": "AZTRECK GREY",
+      "color_code": "aztreck_grey",
+      "system_color": "#6B6F73",
+      "is_selected": 0
+    },
+    {
+      "color_name": "WOODEN COTTING",
+      "color_code": "wooden_cotting",
+      "system_color": "#8B6A4E",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Grey",
+      "color_code": "grey",
+      "system_color": "#555555",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Light Grey",
+      "color_code": "light_grey",
+      "system_color": "#A0A0A0",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Pristine White",
+      "color_code": "pristine_white",
+      "system_color": "#ffffff",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Mettalic Grey",
+      "color_code": "mettalic_grey",
+      "system_color": "#555555",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Coal Grey",
+      "color_code": "coal_grey",
+      "system_color": "#36454F",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Black Walnut",
+      "color_code": "black_walnut",
+      "system_color": "#4A2C1D",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Matte Black",
+      "color_code": "matte_black",
+      "system_color": "#28282B",
+      "is_selected": 0
+    },
+    {
+      "color_name": "Brown Oak",
+      "color_code": "brown_oak",
+      "system_color": "#7C5F35",
+      "is_selected": 0
+    }
+  ],
+  "series": [
+    {
+      "id": "696f2cc3d7af8761430bdf05",
+      "name": "25mm window gulf series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "6a048036f32414e4600b151d",
+            "profile_code": "VG-2511",
+            "name": "VG-2511",
+            "category": null,
+            "width": 25.5,
+            "thickness": 63,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b151e",
+            "profile_code": "VG-2512",
+            "name": "VG-2512",
+            "category": null,
+            "width": 25.6,
+            "thickness": 63,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1521",
+            "profile_code": "VG-2518",
+            "name": "VG-2518",
+            "category": null,
+            "width": 21.5,
+            "thickness": 47.24,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1522",
+            "profile_code": "VG-2515",
+            "name": "VG-2515",
+            "category": null,
+            "width": 22.3,
+            "thickness": 54,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1523",
+            "profile_code": "VG-2523",
+            "name": "VG-2523",
+            "category": null,
+            "width": 20,
+            "thickness": 35.5,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "6a048036f32414e4600b151d",
+            "profile_code": "VG-2511",
+            "name": "VG-2511",
+            "category": null,
+            "width": 25.5,
+            "thickness": 63,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b151e",
+            "profile_code": "VG-2512",
+            "name": "VG-2512",
+            "category": null,
+            "width": 25.6,
+            "thickness": 63,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b151f",
+            "profile_code": "VG-2513",
+            "name": "VG-2513",
+            "category": null,
+            "width": 25.5,
+            "thickness": 63,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1520",
+            "profile_code": "VG-2517",
+            "name": "VG-2517",
+            "category": null,
+            "width": 25.5,
+            "thickness": 63,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1521",
+            "profile_code": "VG-2518",
+            "name": "VG-2518",
+            "category": null,
+            "width": 21.5,
+            "thickness": 47.24,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1522",
+            "profile_code": "VG-2515",
+            "name": "VG-2515",
+            "category": null,
+            "width": 22.3,
+            "thickness": 54,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1523",
+            "profile_code": "VG-2523",
+            "name": "VG-2523",
+            "category": null,
+            "width": 20,
+            "thickness": 35.5,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1529",
+            "profile_code": "VG-2516",
+            "name": "VG-2516",
+            "category": null,
+            "width": 25.3,
+            "thickness": 35.5,
+            "is_selected": 1
+          }
+        ],
+        "interlock": [
+          {
+            "id": "6a048036f32414e4600b152b",
+            "profile_code": "VG-2521",
+            "name": "VG-2521",
+            "category": null,
+            "width": 40,
+            "thickness": 35,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "6a048036f32414e4600b151c",
+            "profile_code": "V-5016",
+            "name": "V-5016",
+            "category": null,
+            "width": 25.61,
+            "thickness": 20.1,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b152c",
+            "profile_code": "VG-2520",
+            "name": "VG-2520",
+            "category": null,
+            "width": 37,
+            "thickness": 13.2,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b152d",
+            "profile_code": "VG-2526",
+            "name": "VG-2526",
+            "category": null,
+            "width": 22.5,
+            "thickness": 11.5,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b152f",
+            "profile_code": "VG-2532",
+            "name": "VG-2532",
+            "category": null,
+            "width": 13,
+            "thickness": 17.5,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1530",
+            "profile_code": "VG-2531",
+            "name": "VG-2531",
+            "category": null,
+            "width": 13,
+            "thickness": 16.4,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "6a048036f32414e4600b152a",
+            "profile_code": "VG-2514",
+            "name": "VG-2514",
+            "category": null,
+            "width": 16,
+            "thickness": 12.8,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b152e",
+            "profile_code": "VG-2524",
+            "name": "VG-2524",
+            "category": null,
+            "width": 12.2,
+            "thickness": 10.3,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1531",
+            "profile_code": "VG-2550",
+            "name": "VG-2550",
+            "category": null,
+            "width": 19.45,
+            "thickness": 3.48,
+            "is_selected": 1
+          }
+        ],
+        "outer_top": [
+          {
+            "id": "6a048036f32414e4600b1511",
+            "profile_code": "V-2545",
+            "name": "V-2545",
+            "category": null,
+            "width": 71.9,
+            "thickness": 27.3,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1512",
+            "profile_code": "V-2541",
+            "name": "V-2541",
+            "category": null,
+            "width": 108.6,
+            "thickness": 27.3,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1514",
+            "profile_code": "V-2536",
+            "name": "V-2536",
+            "category": null,
+            "width": 71.9,
+            "thickness": 29.72,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1515",
+            "profile_code": "V-2537",
+            "name": "V-2537",
+            "category": null,
+            "width": 108.6,
+            "thickness": 29.72,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b151a",
+            "profile_code": "V-2547",
+            "name": "V-2547",
+            "category": null,
+            "width": 145.3,
+            "thickness": 27.3,
+            "is_selected": 1
+          }
+        ],
+        "outer_left": [
+          {
+            "id": "6a048036f32414e4600b1513",
+            "profile_code": "V-2546",
+            "name": "V-2546",
+            "category": null,
+            "width": 75.7,
+            "thickness": 13,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1516",
+            "profile_code": "V-2542",
+            "name": "V-2542",
+            "category": null,
+            "width": 112.4,
+            "thickness": 13,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1517",
+            "profile_code": "V-2938",
+            "name": "V-2938",
+            "category": null,
+            "width": 75.7,
+            "thickness": 25.1,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1518",
+            "profile_code": "V-2939",
+            "name": "V-2939",
+            "category": null,
+            "width": 112.4,
+            "thickness": 25.1,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1519",
+            "profile_code": "V-2548",
+            "name": "V-2548",
+            "category": null,
+            "width": 149.14,
+            "thickness": 13,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "6a048036f32414e4600b1526",
+            "profile_code": "VG-2528",
+            "name": "VG-2528",
+            "category": null,
+            "width": 35.5,
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "6a048036f32414e4600b1524",
+            "profile_code": "VG-2527",
+            "name": "VG-2527",
+            "category": null,
+            "width": 80,
+            "thickness": 20,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1525",
+            "profile_code": "VG-2522",
+            "name": "VG-2522",
+            "category": null,
+            "width": 70,
+            "thickness": 20,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1527",
+            "profile_code": "VG-2530",
+            "name": "VG-2530",
+            "category": null,
+            "width": 80,
+            "thickness": 20,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1528",
+            "profile_code": "VG-2529",
+            "name": "VG-2529",
+            "category": null,
+            "width": 70,
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f2cdad7af8761430bdf06",
+      "name": "25mm window series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "696f335bd7af8761430bdf2e",
+            "profile_code": "V-2511",
+            "name": "V-2511",
+            "category": null,
+            "width": "",
+            "thickness": 63,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf2f",
+            "profile_code": "V-2512",
+            "name": "V-2512",
+            "category": null,
+            "width": "",
+            "thickness": 63,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf32",
+            "profile_code": "V-2518",
+            "name": "V-2518",
+            "category": null,
+            "width": "",
+            "thickness": 47.24,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf33",
+            "profile_code": "V-2515",
+            "name": "V-2515",
+            "category": null,
+            "width": "",
+            "thickness": 54,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf34",
+            "profile_code": "V-2523",
+            "name": "V-2523",
+            "category": null,
+            "width": "",
+            "thickness": 35.5,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "696f335bd7af8761430bdf2e",
+            "profile_code": "V-2511",
+            "name": "V-2511",
+            "category": null,
+            "width": "",
+            "thickness": 63,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf2f",
+            "profile_code": "V-2512",
+            "name": "V-2512",
+            "category": null,
+            "width": "",
+            "thickness": 63,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf30",
+            "profile_code": "V-2513",
+            "name": "V-2513",
+            "category": null,
+            "width": "",
+            "thickness": 63,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf31",
+            "profile_code": "V-2517",
+            "name": "V-2517",
+            "category": null,
+            "width": "",
+            "thickness": 63,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf32",
+            "profile_code": "V-2518",
+            "name": "V-2518",
+            "category": null,
+            "width": "",
+            "thickness": 47.24,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf33",
+            "profile_code": "V-2515",
+            "name": "V-2515",
+            "category": null,
+            "width": "",
+            "thickness": 54,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf34",
+            "profile_code": "V-2523",
+            "name": "V-2523",
+            "category": null,
+            "width": "",
+            "thickness": 35.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf3a",
+            "profile_code": "V-2516",
+            "name": "V-2516",
+            "category": null,
+            "width": "",
+            "thickness": 35.5,
+            "is_selected": 1
+          }
+        ],
+        "interlock": [
+          {
+            "id": "696f335bd7af8761430bdf3d",
+            "profile_code": "V-2521",
+            "name": "V-2521",
+            "category": null,
+            "width": "",
+            "thickness": 35,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "696f335bd7af8761430bdf3e",
+            "profile_code": "V-2520",
+            "name": "V-2520",
+            "category": null,
+            "width": "",
+            "thickness": 13.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf3f",
+            "profile_code": "V-2526",
+            "name": "V-2526",
+            "category": null,
+            "width": "",
+            "thickness": 11.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf41",
+            "profile_code": "V-2532",
+            "name": "V-2532",
+            "category": null,
+            "width": "",
+            "thickness": 17.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf42",
+            "profile_code": "V-2531",
+            "name": "V-2531",
+            "category": null,
+            "width": "",
+            "thickness": 16.4,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "696f335bd7af8761430bdf3b",
+            "profile_code": "V-2514",
+            "name": "V-2514",
+            "category": null,
+            "width": "",
+            "thickness": 16,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf40",
+            "profile_code": "V-2524",
+            "name": "V-2524",
+            "category": null,
+            "width": "",
+            "thickness": 10.3,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf43",
+            "profile_code": "V-2550",
+            "name": "V-2550",
+            "category": null,
+            "width": "",
+            "thickness": 3.48,
+            "is_selected": 1
+          }
+        ],
+        "track": [
+          {
+            "id": "696f335bd7af8761430bdf27",
+            "profile_code": "V-2562",
+            "name": "V-2562",
+            "category": null,
+            "width": "",
+            "thickness": 37.8,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf28",
+            "profile_code": "V-2563",
+            "name": "V-2563",
+            "category": null,
+            "width": "",
+            "thickness": 37.8,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf29",
+            "profile_code": "V-2501",
+            "name": "V-2501",
+            "category": null,
+            "width": "",
+            "thickness": 40,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf2a",
+            "profile_code": "V-2502",
+            "name": "V-2502",
+            "category": null,
+            "width": "",
+            "thickness": 40,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf2b",
+            "profile_code": "V-2503",
+            "name": "V-2503",
+            "category": null,
+            "width": "",
+            "thickness": 43,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf2c",
+            "profile_code": "V-2504",
+            "name": "V-2504",
+            "category": null,
+            "width": "",
+            "thickness": 43,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf2d",
+            "profile_code": "V-2509",
+            "name": "V-2509",
+            "category": null,
+            "width": "",
+            "thickness": 43,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf3c",
+            "profile_code": "V-2510",
+            "name": "V-2510",
+            "category": null,
+            "width": "",
+            "thickness": 23.1,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "696f335bd7af8761430bdf37",
+            "profile_code": "V-2528",
+            "name": "V-2528",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "696f335bd7af8761430bdf35",
+            "profile_code": "V-2527",
+            "name": "V-2527",
+            "category": null,
+            "width": "",
+            "thickness": 80,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf36",
+            "profile_code": "V-2522",
+            "name": "V-2522",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf38",
+            "profile_code": "V-2530",
+            "name": "V-2530",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf39",
+            "profile_code": "V-2529",
+            "name": "V-2529",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f2cf5d7af8761430bdf07",
+      "name": "27mm window gulf series",
+      "profiles": {
+        "clip": [
+          {
+            "id": "696f335bd7af8761430bdf51",
+            "profile_code": "V-2735",
+            "name": "V-2735",
+            "category": null,
+            "width": "",
+            "thickness": 28.67,
+            "is_selected": 1
+          }
+        ],
+        "outer_top": [
+          {
+            "id": "696f335bd7af8761430bdf44",
+            "profile_code": "V-2755",
+            "name": "V-2755",
+            "category": null,
+            "width": "",
+            "thickness": 27.3,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf45",
+            "profile_code": "V-2751",
+            "name": "V-2751",
+            "category": null,
+            "width": "",
+            "thickness": 27.3,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf47",
+            "profile_code": "V-2736",
+            "name": "V-2736",
+            "category": null,
+            "width": "",
+            "thickness": 29.72,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf48",
+            "profile_code": "V-2737",
+            "name": "V-2737",
+            "category": null,
+            "width": "",
+            "thickness": 29.72,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf4d",
+            "profile_code": "V-2757",
+            "name": "V-2757",
+            "category": null,
+            "width": "",
+            "thickness": 27.3,
+            "is_selected": 1
+          }
+        ],
+        "outer_left": [
+          {
+            "id": "696f335bd7af8761430bdf46",
+            "profile_code": "V-2756",
+            "name": "V-2756",
+            "category": null,
+            "width": "",
+            "thickness": 13,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf49",
+            "profile_code": "V-2752",
+            "name": "V-2752",
+            "category": null,
+            "width": "",
+            "thickness": 13,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf4a",
+            "profile_code": "V-2938",
+            "name": "V-2938",
+            "category": null,
+            "width": "",
+            "thickness": 25.1,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf4b",
+            "profile_code": "V-2939",
+            "name": "V-2939",
+            "category": null,
+            "width": "",
+            "thickness": 25.1,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf4c",
+            "profile_code": "V-2758",
+            "name": "V-2758",
+            "category": null,
+            "width": "",
+            "thickness": 13,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "696f335bd7af8761430bdf4f",
+            "profile_code": "V-2733",
+            "name": "V-2733",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "696f335bd7af8761430bdf50",
+            "profile_code": "V-2734",
+            "name": "V-2734",
+            "category": null,
+            "width": "",
+            "thickness": 14.27,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f2d3e0109f1308c0e7427",
+      "name": "27mm high-end window series",
+      "profiles": {
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f2d990109f1308c0e7428",
+      "name": "27mm window series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "696f335bd7af8761430bdf5a",
+            "profile_code": "V-2721",
+            "name": "V-2721",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf5b",
+            "profile_code": "V-2722",
+            "name": "V-2722",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf5c",
+            "profile_code": "V-2723",
+            "name": "V-2723",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf5d",
+            "profile_code": "V-2724",
+            "name": "V-2724",
+            "category": null,
+            "width": "",
+            "thickness": 65.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf5e",
+            "profile_code": "V-2724L",
+            "name": "V-2724L",
+            "category": null,
+            "width": "",
+            "thickness": 65.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf5f",
+            "profile_code": "V-2730",
+            "name": "V-2730",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf6d",
+            "profile_code": "V-2726",
+            "name": "V-2726",
+            "category": null,
+            "width": "",
+            "thickness": 65.2,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "696f335bd7af8761430bdf5a",
+            "profile_code": "V-2721",
+            "name": "V-2721",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf5b",
+            "profile_code": "V-2722",
+            "name": "V-2722",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf5c",
+            "profile_code": "V-2723",
+            "name": "V-2723",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf5d",
+            "profile_code": "V-2724",
+            "name": "V-2724",
+            "category": null,
+            "width": "",
+            "thickness": 65.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf5e",
+            "profile_code": "V-2724L",
+            "name": "V-2724L",
+            "category": null,
+            "width": "",
+            "thickness": 65.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf5f",
+            "profile_code": "V-2730",
+            "name": "V-2730",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf60",
+            "profile_code": "V-2725",
+            "name": "V-2725",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf6d",
+            "profile_code": "V-2726",
+            "name": "V-2726",
+            "category": null,
+            "width": "",
+            "thickness": 65.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf6e",
+            "profile_code": "V-2727",
+            "name": "V-2727",
+            "category": null,
+            "width": "",
+            "thickness": 66.4,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf6f",
+            "profile_code": "V-4010a",
+            "name": "V-4010a",
+            "category": null,
+            "width": "",
+            "thickness": 50.25,
+            "is_selected": 1
+          }
+        ],
+        "interlock": [
+          {
+            "id": "696f335bd7af8761430bdf62",
+            "profile_code": "V-2731",
+            "name": "V-2731",
+            "category": null,
+            "width": "",
+            "thickness": 28.4,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "696f335bd7af8761430bdf72",
+            "profile_code": "V-2524",
+            "name": "V-2524",
+            "category": null,
+            "width": "",
+            "thickness": 10.3,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "696f335bd7af8761430bdf61",
+            "profile_code": "V-2514",
+            "name": "V-2514",
+            "category": null,
+            "width": "",
+            "thickness": 16,
+            "is_selected": 1
+          }
+        ],
+        "track": [
+          {
+            "id": "696f335bd7af8761430bdf64",
+            "profile_code": "V-2720",
+            "name": "V-2720",
+            "category": null,
+            "width": "",
+            "thickness": 50,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf65",
+            "profile_code": "V-2719",
+            "name": "V-2719",
+            "category": null,
+            "width": "",
+            "thickness": 49,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf66",
+            "profile_code": "V-2703",
+            "name": "V-2703",
+            "category": null,
+            "width": "",
+            "thickness": 45,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf67",
+            "profile_code": "V-2713",
+            "name": "V-2713",
+            "category": null,
+            "width": "",
+            "thickness": 45,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf68",
+            "profile_code": "V-2715",
+            "name": "V-2715",
+            "category": null,
+            "width": "",
+            "thickness": 45,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf69",
+            "profile_code": "V-2714",
+            "name": "V-2714",
+            "category": null,
+            "width": "",
+            "thickness": 45,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf6a",
+            "profile_code": "V-2718",
+            "name": "V-2718",
+            "category": null,
+            "width": "",
+            "thickness": 45,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf6b",
+            "profile_code": "V-2706",
+            "name": "V-2706",
+            "category": null,
+            "width": "",
+            "thickness": 45,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf6c",
+            "profile_code": "V-2716",
+            "name": "V-2716",
+            "category": null,
+            "width": "",
+            "thickness": 45,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf70",
+            "profile_code": "V-2741",
+            "name": "V-2741",
+            "category": null,
+            "width": "",
+            "thickness": 45,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf71",
+            "profile_code": "V-2742",
+            "name": "V-2742",
+            "category": null,
+            "width": "",
+            "thickness": 45,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "696f335bd7af8761430bdf63",
+            "profile_code": "V-2732",
+            "name": "V-2732",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "6aae5cb03469ae1c1d0d3977",
+            "profile_code": "2786a",
+            "name": "2786a",
+            "category": null,
+            "width": 76.6,
+            "thickness": "",
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f2dd9d7af8761430bdf0b",
+      "name": "27mm window pro series",
+      "profiles": {
+        "outer_top": [
+          {
+            "id": "696f335bd7af8761430bdf75",
+            "profile_code": "V-2784",
+            "name": "V-2784",
+            "category": null,
+            "width": "",
+            "thickness": 56,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "696f335bd7af8761430bdf76",
+            "profile_code": "V-2785",
+            "name": "V-2785",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "696f335bd7af8761430bdf77",
+            "profile_code": "V-2786",
+            "name": "V-2786",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f2dfe049cbc8ba6046a81",
+      "name": "29mm window gulf series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "6a76a900b1767ffc5c06c023",
+            "profile_code": "V-2911A",
+            "name": "V-2911A",
+            "category": null,
+            "width": 29,
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "6a76a97cdd6b9e726a09b4a5",
+            "profile_code": "V-2920A",
+            "name": "V-2920A",
+            "category": null,
+            "width": 29,
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "6a76a9dbb1767ffc5c06c024",
+            "profile_code": "V-2912A",
+            "name": "V-2912A",
+            "category": null,
+            "width": 29,
+            "thickness": 64,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "6a76a900b1767ffc5c06c023",
+            "profile_code": "V-2911A",
+            "name": "V-2911A",
+            "category": null,
+            "width": 29,
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "6a76a97cdd6b9e726a09b4a5",
+            "profile_code": "V-2920A",
+            "name": "V-2920A",
+            "category": null,
+            "width": 29,
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "6a76a9dbb1767ffc5c06c024",
+            "profile_code": "V-2912A",
+            "name": "V-2912A",
+            "category": null,
+            "width": 29,
+            "thickness": 64,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "696f335bd7af8761430bdf85",
+            "profile_code": "V-5016",
+            "name": "V-5016",
+            "category": null,
+            "width": "",
+            "thickness": 20.1,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "6aa3ec56246155b76a042e22",
+            "profile_code": "V-2514a",
+            "name": "V-2514a",
+            "category": null,
+            "width": 12.8,
+            "thickness": 16,
+            "is_selected": 1
+          }
+        ],
+        "outer_top": [
+          {
+            "id": "696f335bd7af8761430bdf78",
+            "profile_code": "V-2940",
+            "name": "V-2940",
+            "category": null,
+            "width": "",
+            "thickness": 27.3,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf79",
+            "profile_code": "V-2942",
+            "name": "V-2942",
+            "category": null,
+            "width": "",
+            "thickness": 27.3,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf7b",
+            "profile_code": "V-2969",
+            "name": "V-2969",
+            "category": null,
+            "width": "",
+            "thickness": 29.72,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf7c",
+            "profile_code": "V-2970",
+            "name": "V-2970",
+            "category": null,
+            "width": "",
+            "thickness": 29.72,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf80",
+            "profile_code": "V-2944",
+            "name": "V-2944",
+            "category": null,
+            "width": "",
+            "thickness": 27.3,
+            "is_selected": 1
+          }
+        ],
+        "outer_left": [
+          {
+            "id": "696f335bd7af8761430bdf7a",
+            "profile_code": "V-2941",
+            "name": "V-2941",
+            "category": null,
+            "width": "",
+            "thickness": 13,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf7d",
+            "profile_code": "V-2943",
+            "name": "V-2943",
+            "category": null,
+            "width": "",
+            "thickness": 13,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf7e",
+            "profile_code": "V-2938",
+            "name": "V-2938",
+            "category": null,
+            "width": "",
+            "thickness": 25.1,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf7f",
+            "profile_code": "V-2939",
+            "name": "V-2939",
+            "category": null,
+            "width": "",
+            "thickness": 25.1,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf81",
+            "profile_code": "V-2945",
+            "name": "V-2945",
+            "category": null,
+            "width": "",
+            "thickness": 13,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf83",
+            "profile_code": "V-2990",
+            "name": "V-2990",
+            "category": null,
+            "width": "",
+            "thickness": 16.58,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "696f335bd7af8761430bdf86",
+            "profile_code": "V-2961",
+            "name": "V-2961",
+            "category": null,
+            "width": "",
+            "thickness": 18.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf88",
+            "profile_code": "V-2963",
+            "name": "V-2963",
+            "category": null,
+            "width": "",
+            "thickness": 18.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf8a",
+            "profile_code": "V-2960",
+            "name": "V-2960",
+            "category": null,
+            "width": "",
+            "thickness": 18,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "696f335bd7af8761430bdf87",
+            "profile_code": "V-2962",
+            "name": "V-2962",
+            "category": null,
+            "width": "",
+            "thickness": 18.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf89",
+            "profile_code": "V-2964",
+            "name": "V-2964",
+            "category": null,
+            "width": "",
+            "thickness": 18.2,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f30420109f1308c0e7431",
+      "name": "29mm monorail window series",
+      "profiles": {
+        "clip": [
+          {
+            "id": "696f335bd7af8761430bdf91",
+            "profile_code": "Mono-04",
+            "name": "Mono-04",
+            "category": null,
+            "width": "",
+            "thickness": 13.2,
+            "is_selected": 1
+          }
+        ],
+        "track": [
+          {
+            "id": "696f335bd7af8761430bdf8d",
+            "profile_code": "Mono-01",
+            "name": "Mono-01",
+            "category": null,
+            "width": "",
+            "thickness": 27.3,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf8e",
+            "profile_code": "Mono-11",
+            "name": "Mono-11",
+            "category": null,
+            "width": "",
+            "thickness": 27.3,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "696f335bd7af8761430bdf8f",
+            "profile_code": "Mono-12",
+            "name": "Mono-12",
+            "category": null,
+            "width": "",
+            "thickness": 18.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf90",
+            "profile_code": "Mono-02",
+            "name": "Mono-02",
+            "category": null,
+            "width": "",
+            "thickness": 18.2,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f3217d7af8761430bdf14",
+      "name": "29mm high-end window series",
+      "profiles": {
+        "track": [
+          {
+            "id": "696f335bd7af8761430bdf8b",
+            "profile_code": "V-2971",
+            "name": "V-2971",
+            "category": null,
+            "width": "",
+            "thickness": 37.8,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf8c",
+            "profile_code": "V-2972",
+            "name": "V-2972",
+            "category": null,
+            "width": "",
+            "thickness": 37.8,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f322d049cbc8ba6046a88",
+      "name": "29mm window suoer slim series",
+      "profiles": {
+        "track": [
+          {
+            "id": "696f335bd7af8761430bdf92",
+            "profile_code": "V-2951",
+            "name": "V-2951",
+            "category": null,
+            "width": "",
+            "thickness": 36.8,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf93",
+            "profile_code": "V-2953",
+            "name": "V-2953",
+            "category": null,
+            "width": "",
+            "thickness": 36.8,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf94",
+            "profile_code": "V-2952",
+            "name": "V-2952",
+            "category": null,
+            "width": "",
+            "thickness": 39.8,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf95",
+            "profile_code": "V-2954",
+            "name": "V-2954",
+            "category": null,
+            "width": "",
+            "thickness": 39.8,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf96",
+            "profile_code": "V-2955",
+            "name": "V-2955",
+            "category": null,
+            "width": "",
+            "thickness": 36.8,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf97",
+            "profile_code": "V-2956",
+            "name": "V-2956",
+            "category": null,
+            "width": "",
+            "thickness": 39.8,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f3241049cbc8ba6046a89",
+      "name": "29mm window series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "696f335bd7af8761430bdfa2",
+            "profile_code": "V-2911",
+            "name": "V-2911",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfa3",
+            "profile_code": "V-2920",
+            "name": "V-2920",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfa4",
+            "profile_code": "V-2912",
+            "name": "V-2912",
+            "category": null,
+            "width": "",
+            "thickness": 64,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfaa",
+            "profile_code": "V-2936",
+            "name": "V-2936",
+            "category": null,
+            "width": "",
+            "thickness": 58.95,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "696f335bd7af8761430bdfa2",
+            "profile_code": "V-2911",
+            "name": "V-2911",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfa3",
+            "profile_code": "V-2920",
+            "name": "V-2920",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfa4",
+            "profile_code": "V-2912",
+            "name": "V-2912",
+            "category": null,
+            "width": "",
+            "thickness": 64,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfa5",
+            "profile_code": "V-2913",
+            "name": "V-2913",
+            "category": null,
+            "width": "",
+            "thickness": 66.7,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfa6",
+            "profile_code": "V-2914",
+            "name": "V-2914",
+            "category": null,
+            "width": "",
+            "thickness": 66.7,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfa9",
+            "profile_code": "V-2966",
+            "name": "V-2966",
+            "category": null,
+            "width": "",
+            "thickness": 66.7,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfaa",
+            "profile_code": "V-2936",
+            "name": "V-2936",
+            "category": null,
+            "width": "",
+            "thickness": 58.95,
+            "is_selected": 1
+          }
+        ],
+        "mullion": [
+          {
+            "id": "696f335bd7af8761430bdfbe",
+            "profile_code": "V-2925",
+            "name": "V-2925",
+            "category": null,
+            "width": "",
+            "thickness": 40,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfbf",
+            "profile_code": "V-2928",
+            "name": "V-2928",
+            "category": null,
+            "width": "",
+            "thickness": 28.83,
+            "is_selected": 1
+          }
+        ],
+        "interlock": [
+          {
+            "id": "696f335bd7af8761430bdfbc",
+            "profile_code": "V-2921",
+            "name": "V-2921",
+            "category": null,
+            "width": "",
+            "thickness": 33.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfbd",
+            "profile_code": "V-2922",
+            "name": "V-2922",
+            "category": null,
+            "width": "",
+            "thickness": 38.4,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "696f335bd7af8761430bdfa7",
+            "profile_code": "V-2915",
+            "name": "V-2915",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfa8",
+            "profile_code": "V-2917",
+            "name": "V-2917",
+            "category": null,
+            "width": "",
+            "thickness": 76,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfc0",
+            "profile_code": "V-2532",
+            "name": "V-2532",
+            "category": null,
+            "width": "",
+            "thickness": 17.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfc1",
+            "profile_code": "V-2531",
+            "name": "V-2531",
+            "category": null,
+            "width": "",
+            "thickness": 16.4,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "696f335bd7af8761430bdfb7",
+            "profile_code": "V-2514",
+            "name": "V-2514",
+            "category": null,
+            "width": "",
+            "thickness": 16,
+            "is_selected": 1
+          }
+        ],
+        "track": [
+          {
+            "id": "696f335bd7af8761430bdf98",
+            "profile_code": "V-2903",
+            "name": "V-2903",
+            "category": null,
+            "width": "",
+            "thickness": 48,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf99",
+            "profile_code": "V-2902",
+            "name": "V-2902",
+            "category": null,
+            "width": "",
+            "thickness": 48,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf9a",
+            "profile_code": "V-2901",
+            "name": "V-2901",
+            "category": null,
+            "width": "",
+            "thickness": 50.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf9b",
+            "profile_code": "V-2950",
+            "name": "V-2950",
+            "category": null,
+            "width": "",
+            "thickness": "",
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf9c",
+            "profile_code": "V-2905",
+            "name": "V-2905",
+            "category": null,
+            "width": "",
+            "thickness": 48,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf9d",
+            "profile_code": "V-2904",
+            "name": "V-2904",
+            "category": null,
+            "width": "",
+            "thickness": 48,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf9e",
+            "profile_code": "V-2910",
+            "name": "V-2910",
+            "category": null,
+            "width": "",
+            "thickness": 48,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdf9f",
+            "profile_code": "V-2906",
+            "name": "V-2906",
+            "category": null,
+            "width": "",
+            "thickness": 50.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfa0",
+            "profile_code": "V-2907",
+            "name": "V-2907",
+            "category": null,
+            "width": "",
+            "thickness": 50.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfa1",
+            "profile_code": "V-2908",
+            "name": "V-2908",
+            "category": null,
+            "width": "",
+            "thickness": 50.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfab",
+            "profile_code": "V-2909",
+            "name": "V-2909",
+            "category": null,
+            "width": "",
+            "thickness": 48,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfbb",
+            "profile_code": "V-4027",
+            "name": "V-4027",
+            "category": null,
+            "width": "",
+            "thickness": 25.5,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "696f335bd7af8761430bdfac",
+            "profile_code": "V-2919",
+            "name": "V-2919",
+            "category": null,
+            "width": "",
+            "thickness": 28,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfae",
+            "profile_code": "V-2924",
+            "name": "V-2924",
+            "category": null,
+            "width": "",
+            "thickness": 28,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfb0",
+            "profile_code": "V-2946",
+            "name": "V-2946",
+            "category": null,
+            "width": "",
+            "thickness": 18,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfb2",
+            "profile_code": "V-2948",
+            "name": "V-2948",
+            "category": null,
+            "width": "",
+            "thickness": 18,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfb4",
+            "profile_code": "V-2987",
+            "name": "V-2987",
+            "category": null,
+            "width": "",
+            "thickness": 22.4,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfb6",
+            "profile_code": "V-2989",
+            "name": "V-2989",
+            "category": null,
+            "width": "",
+            "thickness": 33.68,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfb8",
+            "profile_code": "V-2965",
+            "name": "V-2965",
+            "category": null,
+            "width": "",
+            "thickness": 36.02,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfb9",
+            "profile_code": "V-2929",
+            "name": "V-2929",
+            "category": null,
+            "width": "",
+            "thickness": 22.4,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "696f335bd7af8761430bdfad",
+            "profile_code": "V-2957",
+            "name": "V-2957",
+            "category": null,
+            "width": "",
+            "thickness": 28,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfaf",
+            "profile_code": "V-2927",
+            "name": "V-2927",
+            "category": null,
+            "width": "",
+            "thickness": 28,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfb1",
+            "profile_code": "V-2947",
+            "name": "V-2947",
+            "category": null,
+            "width": "",
+            "thickness": 18,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfb3",
+            "profile_code": "V-2949",
+            "name": "V-2949",
+            "category": null,
+            "width": "",
+            "thickness": 18,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfb5",
+            "profile_code": "V-2988",
+            "name": "V-2988",
+            "category": null,
+            "width": "",
+            "thickness": 22.4,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335bd7af8761430bdfba",
+            "profile_code": "V-2930",
+            "name": "V-2930",
+            "category": null,
+            "width": "",
+            "thickness": 22.4,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f32560109f1308c0e7435",
+      "name": "31mm window gulf series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "6a36967c833b4d18af0da964",
+            "profile_code": "V-3131",
+            "name": "V-3131",
+            "category": null,
+            "width": "",
+            "thickness": 59,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "696f335cd7af8761430bdfc8",
+            "profile_code": "V-3135",
+            "name": "V-3135",
+            "category": null,
+            "width": "",
+            "thickness": 26,
+            "is_selected": 1
+          },
+          {
+            "id": "6a36967c833b4d18af0da964",
+            "profile_code": "V-3131",
+            "name": "V-3131",
+            "category": null,
+            "width": "",
+            "thickness": 59,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "696f335cd7af8761430bdfcd",
+            "profile_code": "V-3126",
+            "name": "V-3126",
+            "category": null,
+            "width": "",
+            "thickness": 12.79,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfd4",
+            "profile_code": "V-2532",
+            "name": "V-2532",
+            "category": null,
+            "width": "",
+            "thickness": 17.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfd5",
+            "profile_code": "V-2531",
+            "name": "V-2531",
+            "category": null,
+            "width": "",
+            "thickness": 16.4,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "696f335cd7af8761430bdfcc",
+            "profile_code": "V-3124",
+            "name": "V-3124",
+            "category": null,
+            "width": "",
+            "thickness": "",
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfd6",
+            "profile_code": "V-2524",
+            "name": "V-2524",
+            "category": null,
+            "width": "",
+            "thickness": 10.3,
+            "is_selected": 1
+          }
+        ],
+        "outer_top": [
+          {
+            "id": "696f335cd7af8761430bdfc2",
+            "profile_code": "V-3146",
+            "name": "V-3146",
+            "category": null,
+            "width": "",
+            "thickness": 40,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfc4",
+            "profile_code": "V-3148",
+            "name": "V-3148",
+            "category": null,
+            "width": "",
+            "thickness": 42,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfc6",
+            "profile_code": "V-3134",
+            "name": "V-3134",
+            "category": null,
+            "width": "",
+            "thickness": 65.55,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfc7",
+            "profile_code": "V-3133",
+            "name": "V-3133",
+            "category": null,
+            "width": "",
+            "thickness": 65.55,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfce",
+            "profile_code": "V-3112",
+            "name": "V-3112",
+            "category": null,
+            "width": "",
+            "thickness": 65.55,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfcf",
+            "profile_code": "V-3116",
+            "name": "V-3116",
+            "category": null,
+            "width": "",
+            "thickness": 65.55,
+            "is_selected": 1
+          }
+        ],
+        "outer_left": [
+          {
+            "id": "696f335cd7af8761430bdfc3",
+            "profile_code": "V-3147",
+            "name": "V-3147",
+            "category": null,
+            "width": "",
+            "thickness": 27.89,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfc5",
+            "profile_code": "V-3149",
+            "name": "V-3149",
+            "category": null,
+            "width": "",
+            "thickness": 27.89,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "696f335cd7af8761430bdfca",
+            "profile_code": "V-3137",
+            "name": "V-3137",
+            "category": null,
+            "width": "",
+            "thickness": 26,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfd0",
+            "profile_code": "V-3121",
+            "name": "V-3121",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfd2",
+            "profile_code": "V-3117",
+            "name": "V-3117",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "696f335cd7af8761430bdfc9",
+            "profile_code": "V-3136",
+            "name": "V-3136",
+            "category": null,
+            "width": "",
+            "thickness": 26,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfcb",
+            "profile_code": "V-3138",
+            "name": "V-3138",
+            "category": null,
+            "width": "",
+            "thickness": 26,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfd1",
+            "profile_code": "V-3122",
+            "name": "V-3122",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfd3",
+            "profile_code": "V-3118",
+            "name": "V-3118",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f32680109f1308c0e7436",
+      "name": "32mm window gulf series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "6a3bc7fae94156b728064245",
+            "profile_code": "V-3247",
+            "name": "V-3247",
+            "category": null,
+            "width": 32,
+            "thickness": 51.17,
+            "is_selected": 1
+          },
+          {
+            "id": "6a3bc895c47909b1e306c8cc",
+            "profile_code": "V-3248",
+            "name": "V-3248",
+            "category": null,
+            "width": 28,
+            "thickness": 49,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "6a3bc7fae94156b728064245",
+            "profile_code": "V-3247",
+            "name": "V-3247",
+            "category": null,
+            "width": 32,
+            "thickness": 51.17,
+            "is_selected": 1
+          },
+          {
+            "id": "6a3bc895c47909b1e306c8cc",
+            "profile_code": "V-3248",
+            "name": "V-3248",
+            "category": null,
+            "width": 28,
+            "thickness": 49,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "696f335cd7af8761430bdfdf",
+            "profile_code": "V-3249",
+            "name": "V-3249",
+            "category": null,
+            "width": "",
+            "thickness": 16,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfe0",
+            "profile_code": "V-3250",
+            "name": "V-3250",
+            "category": null,
+            "width": "",
+            "thickness": 16,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "696f335cd7af8761430bdfe1",
+            "profile_code": "V-3257",
+            "name": "V-3257",
+            "category": null,
+            "width": "",
+            "thickness": 15.75,
+            "is_selected": 1
+          }
+        ],
+        "outer_top": [
+          {
+            "id": "696f335cd7af8761430bdfd7",
+            "profile_code": "V-3241",
+            "name": "V-3241",
+            "category": null,
+            "width": "",
+            "thickness": 27.3,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfd8",
+            "profile_code": "V-3243",
+            "name": "V-3243",
+            "category": null,
+            "width": "",
+            "thickness": 27.3,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfdb",
+            "profile_code": "V-2544",
+            "name": "V-2544",
+            "category": null,
+            "width": "",
+            "thickness": 14.96,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfdc",
+            "profile_code": "V-3248",
+            "name": "V-3248",
+            "category": null,
+            "width": "",
+            "thickness": 49,
+            "is_selected": 1
+          }
+        ],
+        "outer_left": [
+          {
+            "id": "696f335cd7af8761430bdfd9",
+            "profile_code": "V-3242",
+            "name": "V-3242",
+            "category": null,
+            "width": "",
+            "thickness": 13,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfda",
+            "profile_code": "V-3244",
+            "name": "V-3244",
+            "category": null,
+            "width": "",
+            "thickness": 13,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "696f335cd7af8761430bdfdd",
+            "profile_code": "V-3251",
+            "name": "V-3251",
+            "category": null,
+            "width": "",
+            "thickness": 25.16,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "696f335cd7af8761430bdfde",
+            "profile_code": "V-3252",
+            "name": "V-3252",
+            "category": null,
+            "width": "",
+            "thickness": 25.16,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f3277d7af8761430bdf15",
+      "name": "32mm window series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "696f335cd7af8761430bdfe8",
+            "profile_code": "V-3211",
+            "name": "V-3211",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfe9",
+            "profile_code": "V-3220",
+            "name": "V-3220",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfea",
+            "profile_code": "V-3212",
+            "name": "V-3212",
+            "category": null,
+            "width": "",
+            "thickness": 65.25,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "696f335cd7af8761430bdfe8",
+            "profile_code": "V-3211",
+            "name": "V-3211",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfe9",
+            "profile_code": "V-3220",
+            "name": "V-3220",
+            "category": null,
+            "width": "",
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfea",
+            "profile_code": "V-3212",
+            "name": "V-3212",
+            "category": null,
+            "width": "",
+            "thickness": 65.25,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfeb",
+            "profile_code": "V-3213",
+            "name": "V-3213",
+            "category": null,
+            "width": "",
+            "thickness": 66.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdff2",
+            "profile_code": "V-3216",
+            "name": "V-3216",
+            "category": null,
+            "width": "",
+            "thickness": 39.3,
+            "is_selected": 1
+          }
+        ],
+        "interlock": [
+          {
+            "id": "696f335cd7af8761430bdfee",
+            "profile_code": "V-3221",
+            "name": "V-3221",
+            "category": null,
+            "width": "",
+            "thickness": 35.7,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "696f335cd7af8761430bdff3",
+            "profile_code": "V-3226",
+            "name": "V-3226",
+            "category": null,
+            "width": "",
+            "thickness": 15.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdff4",
+            "profile_code": "V-3229",
+            "name": "V-3229",
+            "category": null,
+            "width": "",
+            "thickness": 15.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdff6",
+            "profile_code": "V-2532",
+            "name": "V-2532",
+            "category": null,
+            "width": "",
+            "thickness": 17.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdff7",
+            "profile_code": "V-2531",
+            "name": "V-2531",
+            "category": null,
+            "width": "",
+            "thickness": 16.4,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "696f335cd7af8761430bdff5",
+            "profile_code": "V-2514",
+            "name": "V-2514",
+            "category": null,
+            "width": "",
+            "thickness": 16,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdff8",
+            "profile_code": "V-2524",
+            "name": "V-2524",
+            "category": null,
+            "width": "",
+            "thickness": 10.3,
+            "is_selected": 1
+          }
+        ],
+        "track": [
+          {
+            "id": "696f335cd7af8761430bdfe2",
+            "profile_code": "V-3201",
+            "name": "V-3201",
+            "category": null,
+            "width": "",
+            "thickness": 47,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfe3",
+            "profile_code": "V-3202",
+            "name": "V-3202",
+            "category": null,
+            "width": "",
+            "thickness": 47,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfe4",
+            "profile_code": "V-3203",
+            "name": "V-3203",
+            "category": null,
+            "width": "",
+            "thickness": 50,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfe5",
+            "profile_code": "V-3204",
+            "name": "V-3204",
+            "category": null,
+            "width": "",
+            "thickness": 50,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfe6",
+            "profile_code": "V-3207",
+            "name": "V-3207",
+            "category": null,
+            "width": "",
+            "thickness": 50,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfe7",
+            "profile_code": "V-3206",
+            "name": "V-3206",
+            "category": null,
+            "width": "",
+            "thickness": 50.75,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "696f335cd7af8761430bdfec",
+            "profile_code": "V-3224",
+            "name": "V-3224",
+            "category": null,
+            "width": "",
+            "thickness": 30.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdfef",
+            "profile_code": "V-3223",
+            "name": "V-3223",
+            "category": null,
+            "width": "",
+            "thickness": 32.4,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "696f335cd7af8761430bdfed",
+            "profile_code": "V-3228",
+            "name": "V-3228",
+            "category": null,
+            "width": "",
+            "thickness": 30.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdff0",
+            "profile_code": "V-3227",
+            "name": "V-3227",
+            "category": null,
+            "width": "",
+            "thickness": 30.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430bdff1",
+            "profile_code": "V-3222",
+            "name": "V-3222",
+            "category": null,
+            "width": "",
+            "thickness": 30.2,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f328ad7af8761430bdf16",
+      "name": "35mm window gulf series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "6a048036f32414e4600b154d",
+            "profile_code": "VG-3561",
+            "name": "VG-3561",
+            "category": null,
+            "width": 35,
+            "thickness": 75,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b154e",
+            "profile_code": "VG-3562",
+            "name": "VG-3562",
+            "category": null,
+            "width": 35,
+            "thickness": 75,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1551",
+            "profile_code": "VG-3566",
+            "name": "VG-3566",
+            "category": null,
+            "width": 35,
+            "thickness": 74.7,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "6a048036f32414e4600b154d",
+            "profile_code": "VG-3561",
+            "name": "VG-3561",
+            "category": null,
+            "width": 35,
+            "thickness": 75,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b154e",
+            "profile_code": "VG-3562",
+            "name": "VG-3562",
+            "category": null,
+            "width": 35,
+            "thickness": 75,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b154f",
+            "profile_code": "VG-3563",
+            "name": "VG-3563",
+            "category": null,
+            "width": 35,
+            "thickness": 75,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1551",
+            "profile_code": "VG-3566",
+            "name": "VG-3566",
+            "category": null,
+            "width": 35,
+            "thickness": 74.7,
+            "is_selected": 1
+          }
+        ],
+        "interlock": [
+          {
+            "id": "6a048036f32414e4600b1542",
+            "profile_code": "V-3528",
+            "name": "V-3528",
+            "category": null,
+            "width": 58.4,
+            "thickness": 27.2,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "6a048036f32414e4600b154a",
+            "profile_code": "V-3522",
+            "name": "V-3522",
+            "category": null,
+            "width": 31.4,
+            "thickness": 15.25,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b154b",
+            "profile_code": "V-2532",
+            "name": "V-2532",
+            "category": null,
+            "width": 13,
+            "thickness": 17.5,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b154c",
+            "profile_code": "V-2531",
+            "name": "V-2531",
+            "category": null,
+            "width": 13,
+            "thickness": 16.4,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1550",
+            "profile_code": "VG-3571",
+            "name": "VG-3571",
+            "category": null,
+            "width": 41.7,
+            "thickness": 39.2,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1552",
+            "profile_code": "VG-3565",
+            "name": "VG-3565",
+            "category": null,
+            "width": 31.4,
+            "thickness": 19.25,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "6a048036f32414e4600b1549",
+            "profile_code": "V-3583",
+            "name": "V-3583",
+            "category": null,
+            "width": 12.5,
+            "thickness": 19.55,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1553",
+            "profile_code": "VG-2514",
+            "name": "VG-2514",
+            "category": null,
+            "width": 12.8,
+            "thickness": 16,
+            "is_selected": 1
+          },
+          {
+            "id": "6aa3f3d9c099de22fb021ac1",
+            "profile_code": "V-3524",
+            "name": "V-3524",
+            "category": null,
+            "width": 25,
+            "thickness": 14.45,
+            "is_selected": 1
+          }
+        ],
+        "outer_top": [
+          {
+            "id": "6a048036f32414e4600b1533",
+            "profile_code": "V-3502",
+            "name": "V-3502",
+            "category": null,
+            "width": 95.3,
+            "thickness": 31.2,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1535",
+            "profile_code": "V-3505",
+            "name": "V-3505",
+            "category": null,
+            "width": 145.2,
+            "thickness": 31,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1536",
+            "profile_code": "V-3591",
+            "name": "V-3591",
+            "category": null,
+            "width": 145.2,
+            "thickness": 31,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1538",
+            "profile_code": "V-3592",
+            "name": "V-3592",
+            "category": null,
+            "width": 145.2,
+            "thickness": 31,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b153b",
+            "profile_code": "V-3529-3",
+            "name": "V-3529-3",
+            "category": null,
+            "width": 31.5,
+            "thickness": 58,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b153c",
+            "profile_code": "V-3529-2",
+            "name": "V-3529-2",
+            "category": null,
+            "width": 31.5,
+            "thickness": 58,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b153d",
+            "profile_code": "V-3512-1",
+            "name": "V-3512-1",
+            "category": null,
+            "width": 31.5,
+            "thickness": 58,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b153e",
+            "profile_code": "V-3512",
+            "name": "V-3512",
+            "category": null,
+            "width": 31.5,
+            "thickness": 58,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b153f",
+            "profile_code": "V-3548",
+            "name": "V-3548",
+            "category": null,
+            "width": 31,
+            "thickness": 57.5,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1546",
+            "profile_code": "V-3588",
+            "name": "V-3588",
+            "category": null,
+            "width": 31.5,
+            "thickness": 58,
+            "is_selected": 1
+          }
+        ],
+        "outer_left": [
+          {
+            "id": "6a048036f32414e4600b1532",
+            "profile_code": "V-3501",
+            "name": "V-3501",
+            "category": null,
+            "width": 100,
+            "thickness": 32.8,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1534",
+            "profile_code": "V-3503",
+            "name": "V-3503",
+            "category": null,
+            "width": 150,
+            "thickness": 32.8,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1537",
+            "profile_code": "V-3510",
+            "name": "V-3510",
+            "category": null,
+            "width": 150,
+            "thickness": 32.8,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1539",
+            "profile_code": "V-3520",
+            "name": "V-3520",
+            "category": null,
+            "width": 150,
+            "thickness": 25,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "6a048036f32414e4600b1540",
+            "profile_code": "V-3515",
+            "name": "V-3515",
+            "category": null,
+            "width": 27.2,
+            "thickness": 27.2,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1541",
+            "profile_code": "V-3526",
+            "name": "V-3526",
+            "category": null,
+            "width": 46.7,
+            "thickness": 27.2,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1547",
+            "profile_code": "V-3589",
+            "name": "V-3589",
+            "category": null,
+            "width": 46.7,
+            "thickness": 27.2,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "6a048036f32414e4600b1543",
+            "profile_code": "V-3516",
+            "name": "V-3516",
+            "category": null,
+            "width": 96,
+            "thickness": 27.2,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1544",
+            "profile_code": "V-3527",
+            "name": "V-3527",
+            "category": null,
+            "width": 96,
+            "thickness": 27.2,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1545",
+            "profile_code": "V-3517",
+            "name": "V-3517",
+            "category": null,
+            "width": 86,
+            "thickness": 27.2,
+            "is_selected": 1
+          },
+          {
+            "id": "6a048036f32414e4600b1548",
+            "profile_code": "V-3590",
+            "name": "V-3590",
+            "category": null,
+            "width": 96,
+            "thickness": 27.2,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f32a0d7af8761430bdf17",
+      "name": "35mm hign-end window series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "6a4cc34ac50927c8660cde57",
+            "profile_code": "V-3538",
+            "name": "V-3538",
+            "category": null,
+            "width": 34.5,
+            "thickness": 68,
+            "is_selected": 1
+          },
+          {
+            "id": "6a4cc3a9aa60dcb19d0985da",
+            "profile_code": "V-3539",
+            "name": "V-3539",
+            "category": null,
+            "width": 31,
+            "thickness": 57.5,
+            "is_selected": 1
+          },
+          {
+            "id": "6a4cc3f0aa60dcb19d0985db",
+            "profile_code": "V-3536",
+            "name": "V-3536",
+            "category": null,
+            "width": 34.5,
+            "thickness": 68,
+            "is_selected": 1
+          },
+          {
+            "id": "6a4cc45054843d914102fb2d",
+            "profile_code": "V-3537",
+            "name": "V-3537",
+            "category": null,
+            "width": 31,
+            "thickness": 57.5,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "6a4cc34ac50927c8660cde57",
+            "profile_code": "V-3538",
+            "name": "V-3538",
+            "category": null,
+            "width": 34.5,
+            "thickness": 68,
+            "is_selected": 1
+          },
+          {
+            "id": "6a4cc3a9aa60dcb19d0985da",
+            "profile_code": "V-3539",
+            "name": "V-3539",
+            "category": null,
+            "width": 31,
+            "thickness": 57.5,
+            "is_selected": 1
+          },
+          {
+            "id": "6a4cc3f0aa60dcb19d0985db",
+            "profile_code": "V-3536",
+            "name": "V-3536",
+            "category": null,
+            "width": 34.5,
+            "thickness": 68,
+            "is_selected": 1
+          },
+          {
+            "id": "6a4cc45054843d914102fb2d",
+            "profile_code": "V-3537",
+            "name": "V-3537",
+            "category": null,
+            "width": 31,
+            "thickness": 57.5,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "696f335cd7af8761430be024",
+            "profile_code": "V-3543",
+            "name": "V-3543",
+            "category": null,
+            "width": "",
+            "thickness": 31,
+            "is_selected": 1
+          }
+        ],
+        "track": [
+          {
+            "id": "696f335cd7af8761430be014",
+            "profile_code": "V-3531",
+            "name": "V-3531",
+            "category": null,
+            "width": "",
+            "thickness": 40,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be015",
+            "profile_code": "V-3532",
+            "name": "V-3532",
+            "category": null,
+            "width": "",
+            "thickness": 40,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be016",
+            "profile_code": "V-3533",
+            "name": "V-3533",
+            "category": null,
+            "width": "",
+            "thickness": 40,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be017",
+            "profile_code": "V-3534",
+            "name": "V-3534",
+            "category": null,
+            "width": "",
+            "thickness": 40,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "696f335cd7af8761430be019",
+            "profile_code": "V-3544",
+            "name": "V-3544",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be01c",
+            "profile_code": "V-3541",
+            "name": "V-3541",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be01f",
+            "profile_code": "V-3549",
+            "name": "V-3549",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be023",
+            "profile_code": "V-3546",
+            "name": "V-3546",
+            "category": null,
+            "width": "",
+            "thickness": 41.2,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "696f335cd7af8761430be01a",
+            "profile_code": "V-3545",
+            "name": "V-3545",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be01d",
+            "profile_code": "V-3542",
+            "name": "V-3542",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be020",
+            "profile_code": "V-3550",
+            "name": "V-3550",
+            "category": null,
+            "width": "",
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f32b50109f1308c0e7437",
+      "name": "35*75mm window series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "696f335cd7af8761430be02a",
+            "profile_code": "V-3561",
+            "name": "V-3561",
+            "category": null,
+            "width": "",
+            "thickness": 75,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be02b",
+            "profile_code": "V-3562",
+            "name": "V-3562",
+            "category": null,
+            "width": "",
+            "thickness": 75,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be02e",
+            "profile_code": "V-3566",
+            "name": "V-3566",
+            "category": null,
+            "width": "",
+            "thickness": 74.7,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "696f335cd7af8761430be02a",
+            "profile_code": "V-3561",
+            "name": "V-3561",
+            "category": null,
+            "width": "",
+            "thickness": 75,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be02b",
+            "profile_code": "V-3562",
+            "name": "V-3562",
+            "category": null,
+            "width": "",
+            "thickness": 75,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be02c",
+            "profile_code": "V-3563",
+            "name": "V-3563",
+            "category": null,
+            "width": "",
+            "thickness": 75,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be02e",
+            "profile_code": "V-3566",
+            "name": "V-3566",
+            "category": null,
+            "width": "",
+            "thickness": 74.7,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "696f335cd7af8761430be02d",
+            "profile_code": "V-3571",
+            "name": "V-3571",
+            "category": null,
+            "width": "",
+            "thickness": 39.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be02f",
+            "profile_code": "V-3565",
+            "name": "V-3565",
+            "category": null,
+            "width": "",
+            "thickness": 19.25,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "696f335cd7af8761430be030",
+            "profile_code": "V-2514",
+            "name": "V-2514",
+            "category": null,
+            "width": "",
+            "thickness": 16,
+            "is_selected": 1
+          }
+        ],
+        "track": [
+          {
+            "id": "696f335cd7af8761430be025",
+            "profile_code": "V-3551",
+            "name": "V-3551",
+            "category": null,
+            "width": "",
+            "thickness": 46.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be026",
+            "profile_code": "V-3552",
+            "name": "V-3552",
+            "category": null,
+            "width": "",
+            "thickness": 49.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be027",
+            "profile_code": "V-3560",
+            "name": "V-3560",
+            "category": null,
+            "width": "",
+            "thickness": 49.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be028",
+            "profile_code": "V-3555",
+            "name": "V-3555",
+            "category": null,
+            "width": "",
+            "thickness": 46.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be029",
+            "profile_code": "V-3556",
+            "name": "V-3556",
+            "category": null,
+            "width": "",
+            "thickness": 49.2,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f32c5049cbc8ba6046a8f",
+      "name": "37mm window series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "696f335cd7af8761430be035",
+            "profile_code": "V-3711",
+            "name": "V-3711",
+            "category": null,
+            "width": "",
+            "thickness": 83,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be036",
+            "profile_code": "V-3712",
+            "name": "V-3712",
+            "category": null,
+            "width": "",
+            "thickness": 83,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "696f335cd7af8761430be035",
+            "profile_code": "V-3711",
+            "name": "V-3711",
+            "category": null,
+            "width": "",
+            "thickness": 83,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be036",
+            "profile_code": "V-3712",
+            "name": "V-3712",
+            "category": null,
+            "width": "",
+            "thickness": 83,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "696f335cd7af8761430be038",
+            "profile_code": "V-3771",
+            "name": "V-3771",
+            "category": null,
+            "width": "",
+            "thickness": 45.55,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be03d",
+            "profile_code": "V-3732",
+            "name": "V-3732",
+            "category": null,
+            "width": "",
+            "thickness": 22.6,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "696f335cd7af8761430be037",
+            "profile_code": "V-3713",
+            "name": "V-3713",
+            "category": null,
+            "width": "",
+            "thickness": 83,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "696f335cd7af8761430be039",
+            "profile_code": "V-3722",
+            "name": "V-3722",
+            "category": null,
+            "width": "",
+            "thickness": 23.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be03b",
+            "profile_code": "V-3724",
+            "name": "V-3724",
+            "category": null,
+            "width": "",
+            "thickness": 32,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "696f335cd7af8761430be03a",
+            "profile_code": "V-3723",
+            "name": "V-3723",
+            "category": null,
+            "width": "",
+            "thickness": 23.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be03c",
+            "profile_code": "V-3725",
+            "name": "V-3725",
+            "category": null,
+            "width": "",
+            "thickness": 32,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f32da0109f1308c0e7438",
+      "name": "40mm window series",
+      "profiles": {
+        "track": [
+          {
+            "id": "6a01d86a25861465760d474b",
+            "profile_code": "V-4001",
+            "name": "V-4001",
+            "category": null,
+            "width": 40,
+            "thickness": 39,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d474c",
+            "profile_code": "V-4032",
+            "name": "V-4032",
+            "category": null,
+            "width": 40.2,
+            "thickness": 41.5,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d474f",
+            "profile_code": "V-4026",
+            "name": "V-4026",
+            "category": null,
+            "width": 40.2,
+            "thickness": 55.1,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d4756",
+            "profile_code": "V-4030",
+            "name": "V-4030",
+            "category": null,
+            "width": 80,
+            "thickness": 39,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d4757",
+            "profile_code": "V-4033",
+            "name": "V-4033",
+            "category": null,
+            "width": 80,
+            "thickness": 39,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d4759",
+            "profile_code": "V-4023",
+            "name": "V-4023",
+            "category": null,
+            "width": 80,
+            "thickness": 39,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d475b",
+            "profile_code": "V-4027",
+            "name": "V-4027",
+            "category": null,
+            "width": 40,
+            "thickness": 25.5,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d475d",
+            "profile_code": "V-4002",
+            "name": "V-4002",
+            "category": null,
+            "width": 114.7,
+            "thickness": 48.3,
+            "is_selected": 1
+          }
+        ],
+        "sash": [
+          {
+            "id": "6a01d86a25861465760d474e",
+            "profile_code": "V-4009",
+            "name": "V-4009",
+            "category": null,
+            "width": 40.2,
+            "thickness": 51.4,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d4750",
+            "profile_code": "V-4031",
+            "name": "V-4031",
+            "category": null,
+            "width": 40,
+            "thickness": 70.1,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d4751",
+            "profile_code": "V-4004",
+            "name": "V-4004",
+            "category": null,
+            "width": 40,
+            "thickness": 70,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d4752",
+            "profile_code": "V-4008",
+            "name": "V-4008",
+            "category": null,
+            "width": 40.2,
+            "thickness": 65,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d4753",
+            "profile_code": "V-4007",
+            "name": "V-4007",
+            "category": null,
+            "width": 40,
+            "thickness": 75,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d475a",
+            "profile_code": "V-4010",
+            "name": "V-4010",
+            "category": null,
+            "width": 23.5,
+            "thickness": 50.25,
+            "is_selected": 1
+          }
+        ],
+        "mullion": [
+          {
+            "id": "6a01d86a25861465760d474d",
+            "profile_code": "V-4003",
+            "name": "V-4003",
+            "category": null,
+            "width": 40,
+            "thickness": 54,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d4758",
+            "profile_code": "V-4034",
+            "name": "V-4034",
+            "category": null,
+            "width": 80,
+            "thickness": 54,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d475c",
+            "profile_code": "V-4005",
+            "name": "V-4005",
+            "category": null,
+            "width": 92.1,
+            "thickness": 71,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d475e",
+            "profile_code": "V-4028",
+            "name": "V-4028",
+            "category": null,
+            "width": 79.65,
+            "thickness": 70,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "6a01d86a25861465760d4746",
+            "profile_code": "V-2532",
+            "name": "V-2532",
+            "category": null,
+            "width": 13,
+            "thickness": 17.5,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d474a",
+            "profile_code": "V-4160",
+            "name": "V-4160",
+            "category": null,
+            "width": 31.21,
+            "thickness": 12.82,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d475f",
+            "profile_code": "V-4012",
+            "name": "V-4012",
+            "category": null,
+            "width": 18,
+            "thickness": 32.57,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d4760",
+            "profile_code": "V-4036",
+            "name": "V-4036",
+            "category": null,
+            "width": 17.27,
+            "thickness": 32.57,
+            "is_selected": 1
+          },
+          {
+            "id": "6a01d86a25861465760d4761",
+            "profile_code": "V-4013",
+            "name": "V-4013",
+            "category": null,
+            "width": 17.3,
+            "thickness": 31.6,
+            "is_selected": 1
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f32fd0109f1308c0e7439",
+      "name": "28mm casement window series",
+      "profiles": {
+        "track": [
+          {
+            "id": "696f335cd7af8761430be047",
+            "profile_code": "V-2801",
+            "name": "V-2801",
+            "category": null,
+            "width": "",
+            "thickness": 39.35,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be04a",
+            "profile_code": "V-2805",
+            "name": "V-2805",
+            "category": null,
+            "width": "",
+            "thickness": 39,
+            "is_selected": 1
+          }
+        ],
+        "sash": [
+          {
+            "id": "696f335cd7af8761430be048",
+            "profile_code": "V-2802",
+            "name": "V-2802",
+            "category": null,
+            "width": "",
+            "thickness": 44.13,
+            "is_selected": 1
+          }
+        ],
+        "mullion": [
+          {
+            "id": "696f335cd7af8761430be049",
+            "profile_code": "V-2806",
+            "name": "V-2806",
+            "category": null,
+            "width": "",
+            "thickness": 53.39,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "696f335cd7af8761430be04b",
+            "profile_code": "V-2811",
+            "name": "V-2811",
+            "category": null,
+            "width": "",
+            "thickness": 19.27,
+            "is_selected": 1
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f3315049cbc8ba6046a91",
+      "name": "50mm Door & window series",
+      "profiles": {
+        "track": [
+          {
+            "id": "696f335cd7af8761430be063",
+            "profile_code": "V-5101",
+            "name": "V-5101",
+            "category": null,
+            "width": "",
+            "thickness": 46,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be064",
+            "profile_code": "V-5021",
+            "name": "V-5021",
+            "category": null,
+            "width": "",
+            "thickness": 46,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be06b",
+            "profile_code": "V-5001",
+            "name": "V-5001",
+            "category": null,
+            "width": "",
+            "thickness": 73.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be06c",
+            "profile_code": "V-5121",
+            "name": "V-5121",
+            "category": null,
+            "width": "",
+            "thickness": 73.2,
+            "is_selected": 1
+          }
+        ],
+        "sash": [
+          {
+            "id": "696f335cd7af8761430be065",
+            "profile_code": "V-5102",
+            "name": "V-5102",
+            "category": null,
+            "width": "",
+            "thickness": 58,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be068",
+            "profile_code": "V-5111",
+            "name": "V-5111",
+            "category": null,
+            "width": "",
+            "thickness": 68.8,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be06f",
+            "profile_code": "V-5002",
+            "name": "V-5002",
+            "category": null,
+            "width": "",
+            "thickness": 95.9,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be070",
+            "profile_code": "V-5003",
+            "name": "V-5003",
+            "category": null,
+            "width": "",
+            "thickness": 92.5,
+            "is_selected": 1
+          }
+        ],
+        "mullion": [
+          {
+            "id": "696f335cd7af8761430be066",
+            "profile_code": "V-5103",
+            "name": "V-5103",
+            "category": null,
+            "width": "",
+            "thickness": 50,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be067",
+            "profile_code": "V-5106",
+            "name": "V-5106",
+            "category": null,
+            "width": "",
+            "thickness": 66,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be06d",
+            "profile_code": "V-5004",
+            "name": "V-5004",
+            "category": null,
+            "width": "",
+            "thickness": 90.2,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be06e",
+            "profile_code": "V-5122",
+            "name": "V-5122",
+            "category": null,
+            "width": "",
+            "thickness": 90.2,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "696f335cd7af8761430be073",
+            "profile_code": "V-5009",
+            "name": "V-5009",
+            "category": null,
+            "width": "",
+            "thickness": 25.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be074",
+            "profile_code": "V-5011",
+            "name": "V-5011",
+            "category": null,
+            "width": "",
+            "thickness": 25.8,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be075",
+            "profile_code": "V-5008",
+            "name": "V-5008",
+            "category": null,
+            "width": "",
+            "thickness": 25.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be076",
+            "profile_code": "V-5015",
+            "name": "V-5015",
+            "category": null,
+            "width": "",
+            "thickness": 17.7,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be077",
+            "profile_code": "V-5014",
+            "name": "V-5014",
+            "category": null,
+            "width": "",
+            "thickness": 25.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be078",
+            "profile_code": "V-5013",
+            "name": "V-5013",
+            "category": null,
+            "width": "",
+            "thickness": 25.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be079",
+            "profile_code": "V-5016",
+            "name": "V-5016",
+            "category": null,
+            "width": "",
+            "thickness": 25.61,
+            "is_selected": 1
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "696f3323d7af8761430bdf1a",
+      "name": "50mm Sliding & Folding Series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "696f335cd7af8761430be07b",
+            "profile_code": "V-5207",
+            "name": "V-5207",
+            "category": null,
+            "width": "",
+            "thickness": 52.6,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be07c",
+            "profile_code": "V-5202",
+            "name": "V-5202",
+            "category": null,
+            "width": "",
+            "thickness": 73.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be07d",
+            "profile_code": "V-5209",
+            "name": "V-5209",
+            "category": null,
+            "width": "",
+            "thickness": 75.5,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "696f335cd7af8761430be07b",
+            "profile_code": "V-5207",
+            "name": "V-5207",
+            "category": null,
+            "width": "",
+            "thickness": 52.6,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be07c",
+            "profile_code": "V-5202",
+            "name": "V-5202",
+            "category": null,
+            "width": "",
+            "thickness": 73.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be07d",
+            "profile_code": "V-5209",
+            "name": "V-5209",
+            "category": null,
+            "width": "",
+            "thickness": 75.5,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "696f335cd7af8761430be07e",
+            "profile_code": "V-5009",
+            "name": "V-5009",
+            "category": null,
+            "width": "",
+            "thickness": 25.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be07f",
+            "profile_code": "V-5011",
+            "name": "V-5011",
+            "category": null,
+            "width": "",
+            "thickness": 25.8,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be080",
+            "profile_code": "V-5008",
+            "name": "V-5008",
+            "category": null,
+            "width": "",
+            "thickness": 25.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be081",
+            "profile_code": "V-5015",
+            "name": "V-5015",
+            "category": null,
+            "width": "",
+            "thickness": 25.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be082",
+            "profile_code": "V-5014",
+            "name": "V-5014",
+            "category": null,
+            "width": "",
+            "thickness": 25.5,
+            "is_selected": 1
+          },
+          {
+            "id": "696f335cd7af8761430be083",
+            "profile_code": "V-5013",
+            "name": "V-5013",
+            "category": null,
+            "width": "",
+            "thickness": 25.5,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "6a9fcb5c3f4a43e13204b888",
+      "name": "19mm Uma Window Series",
+      "profiles": {
+        "sash": [
+          {
+            "id": "6a9fe74cacadeaf21a0b0b83",
+            "profile_code": "UMA-11",
+            "name": "UMA-11",
+            "category": null,
+            "width": 19,
+            "thickness": 45,
+            "is_selected": 1
+          },
+          {
+            "id": "6a9fe74cacadeaf21a0b0b84",
+            "profile_code": "UMA-12",
+            "name": "UMA-12",
+            "category": null,
+            "width": 16,
+            "thickness": 52,
+            "is_selected": 1
+          },
+          {
+            "id": "6a9fe74cacadeaf21a0b0b8c",
+            "profile_code": "UMA-21",
+            "name": "UMA-21",
+            "category": null,
+            "width": 19,
+            "thickness": 55,
+            "is_selected": 1
+          }
+        ],
+        "mesh_sash": [
+          {
+            "id": "6a9fe74cacadeaf21a0b0b83",
+            "profile_code": "UMA-11",
+            "name": "UMA-11",
+            "category": null,
+            "width": 19,
+            "thickness": 45,
+            "is_selected": 1
+          },
+          {
+            "id": "6a9fe74cacadeaf21a0b0b84",
+            "profile_code": "UMA-12",
+            "name": "UMA-12",
+            "category": null,
+            "width": 16,
+            "thickness": 52,
+            "is_selected": 1
+          },
+          {
+            "id": "6a9fe74cacadeaf21a0b0b8a",
+            "profile_code": "UMA-18",
+            "name": "UMA-18",
+            "category": null,
+            "width": 55,
+            "thickness": 18,
+            "is_selected": 1
+          },
+          {
+            "id": "6a9fe74cacadeaf21a0b0b8c",
+            "profile_code": "UMA-21",
+            "name": "UMA-21",
+            "category": null,
+            "width": 19,
+            "thickness": 55,
+            "is_selected": 1
+          }
+        ],
+        "interlock": [
+          {
+            "id": "6a9fe74cacadeaf21a0b0b8d",
+            "profile_code": "UMA-22",
+            "name": "UMA-22",
+            "category": null,
+            "width": 35.9,
+            "thickness": 23.53,
+            "is_selected": 1
+          }
+        ],
+        "clip": [
+          {
+            "id": "6a9fe74cacadeaf21a0b0b8b",
+            "profile_code": "UMA-19",
+            "name": "UMA-19",
+            "category": null,
+            "width": 7.5,
+            "thickness": 10.5,
+            "is_selected": 1
+          }
+        ],
+        "mesh_clip": [
+          {
+            "id": "6a9fe74cacadeaf21a0b0b87",
+            "profile_code": "UMA-15",
+            "name": "UMA-15",
+            "category": null,
+            "width": 12,
+            "thickness": 16.25,
+            "is_selected": 1
+          }
+        ],
+        "track": [
+          {
+            "id": "6a9fe74cacadeaf21a0b0b81",
+            "profile_code": "UMA-01",
+            "name": "UMA-01",
+            "category": null,
+            "width": 50,
+            "thickness": 34,
+            "is_selected": 1
+          },
+          {
+            "id": "6a9fe74cacadeaf21a0b0b82",
+            "profile_code": "UMA-02",
+            "name": "UMA-02",
+            "category": null,
+            "width": 80,
+            "thickness": 34,
+            "is_selected": 1
+          }
+        ],
+        "slim_interlock": [
+          {
+            "id": "6a9fe74cacadeaf21a0b0b85",
+            "profile_code": "UMA-13",
+            "name": "UMA-13",
+            "category": null,
+            "width": 26.1,
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slim_huricane": [
+          {
+            "id": "6a9fe74cacadeaf21a0b0b86",
+            "profile_code": "UMA-14",
+            "name": "UMA-14",
+            "category": null,
+            "width": 53.6,
+            "thickness": 20,
+            "is_selected": 1
+          }
+        ],
+        "slider_type": [
+          {
+            "name": "Domal",
+            "code": "domal",
+            "acc_type": "category",
+            "is_selected": 1,
+            "acc_image": "default.png"
+          },
+          {
+            "name": "Slim",
+            "code": "slim",
+            "acc_type": "category",
+            "is_selected": 0,
+            "acc_image": "default.png"
+          }
+        ],
+        "meshes": [
+          {
+            "name": "BOTH SIDE PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "CENTER OPENING PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH BLACK",
+            "is_selected": 0
+          },
+          {
+            "name": "FIBRE MESH GREY",
+            "is_selected": 0
+          },
+          {
+            "name": "LEFT TO RIGHT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "PULL DOWN MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "RIGHT TO LEFT PLEATED MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS SECURITY MESH",
+            "is_selected": 0
+          },
+          {
+            "name": "SS Mesh",
+            "is_selected": 1
+          },
+          {
+            "name": "Nylone Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Aluminium Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "6 MM CLEAR GLASS",
+            "is_selected": 0
+          },
+          {
+            "name": "PVC Mesh",
+            "is_selected": 0
+          },
+          {
+            "name": "12MM PANNEL",
+            "is_selected": 0
+          }
+        ]
+      }
+    }
+  ]
+}

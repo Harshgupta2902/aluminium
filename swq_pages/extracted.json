@@ -1,0 +1,1760 @@
+{
+  "aluminium_setting": [
+    {
+      "label": "",
+      "name": "submit",
+      "value": "Update All",
+      "unit": "",
+      "checkbox": null
+    },
+    {
+      "label": "Aluminium (RS)",
+      "name": "aluminium",
+      "value": "500",
+      "unit": "KG",
+      "checkbox": null
+    },
+    {
+      "label": "Profit Percentage",
+      "name": "profit_percentage",
+      "value": "",
+      "unit": "%",
+      "checkbox": null
+    },
+    {
+      "label": "Corner Cleat (RS)",
+      "name": "clit",
+      "value": "30",
+      "unit": "Quantity",
+      "checkbox": null
+    },
+    {
+      "label": "Wheather Strip (RS)",
+      "name": "wheater_strip",
+      "value": "50",
+      "unit": "Meter",
+      "checkbox": null
+    },
+    {
+      "label": "SS Corner Con (RS)",
+      "name": "ss_corner_con",
+      "value": "50",
+      "unit": "Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "Screw (RS)",
+      "name": "screw",
+      "value": "2",
+      "unit": "Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "Coating (RS)",
+      "name": "coating_selected",
+      "value": "1",
+      "unit": "Rs/Kg",
+      "checkbox": false
+    },
+    {
+      "label": "Labour Charge (RS)",
+      "name": "labour_charge",
+      "value": "40",
+      "unit": "Sqft",
+      "checkbox": null
+    },
+    {
+      "label": "Dustpad(RS)",
+      "name": "dustpad",
+      "value": "10",
+      "unit": "Meter",
+      "checkbox": null
+    },
+    {
+      "label": "Outer Clit(RS)",
+      "name": "outer_clit",
+      "value": "30",
+      "unit": "Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "Shutter Clit(RS)",
+      "name": "sash_clit",
+      "value": "30",
+      "unit": "Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "L Pati(RS)",
+      "name": "l_pati",
+      "value": "6",
+      "unit": "Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "Lockguid cap(RS)",
+      "name": "lockguide_cap",
+      "value": "10",
+      "unit": "Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "Interlock Cap(RS)",
+      "name": "interlock_cap",
+      "value": "15",
+      "unit": "Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "Rail (RS)",
+      "name": "rail",
+      "value": "100",
+      "unit": "Per Meter",
+      "checkbox": null
+    },
+    {
+      "label": "Fastner(RS)",
+      "name": "fastner",
+      "value": "5",
+      "unit": "Rs/Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "Bubstopper (RS)",
+      "name": "bubstopper",
+      "value": "25",
+      "unit": "Rs/Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "Ugid (RS)",
+      "name": "ugid",
+      "value": "8",
+      "unit": "Rs/Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "Lockguid (RS)",
+      "name": "lockguid",
+      "value": "8",
+      "unit": "Rs/Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "Water Drainage",
+      "name": "water_drainage",
+      "value": "10",
+      "unit": "Rs/Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "Brush Rubber (RS)",
+      "name": "brassrubber",
+      "value": "6",
+      "unit": "Rs/Meter",
+      "checkbox": null
+    },
+    {
+      "label": "Suit Bolt",
+      "name": "suitbelt",
+      "value": "",
+      "unit": "Rs/Pieces",
+      "checkbox": null
+    },
+    {
+      "label": "Slider Width Overlap",
+      "name": "slidr_width_overlap",
+      "value": "25",
+      "unit": "MM",
+      "checkbox": null
+    },
+    {
+      "label": "Slider Height Overlap",
+      "name": "slider_height_overlap",
+      "value": "18",
+      "unit": "MM",
+      "checkbox": null
+    },
+    {
+      "label": "Slider Glass Overlap",
+      "name": "slider_glass_overlap",
+      "value": "16",
+      "unit": "MM",
+      "checkbox": null
+    },
+    {
+      "label": "Casement Width Overlap",
+      "name": "casement_width_overlap",
+      "value": "12",
+      "unit": "MM",
+      "checkbox": null
+    },
+    {
+      "label": "Casement Height Overlap",
+      "name": "casement_height_overlap",
+      "value": "12",
+      "unit": "MM",
+      "checkbox": null
+    },
+    {
+      "label": "Casement Glass Overlap",
+      "name": "casement_glass_overlap",
+      "value": "20",
+      "unit": "MM",
+      "checkbox": null
+    },
+    {
+      "label": "Slim Width Overlap",
+      "name": "slim_width_overlap",
+      "value": "",
+      "unit": "MM",
+      "checkbox": null
+    }
+  ],
+  "aluminium_accessories": {
+    "headers": [
+      "Type",
+      "Name",
+      "Code",
+      "Price"
+    ],
+    "rows": [
+      [
+        "lock",
+        "Cylinder Lock",
+        "",
+        "560"
+      ],
+      [
+        "lock",
+        "Multi-Point Gear Lock",
+        "",
+        "480"
+      ],
+      [
+        "lock",
+        "Tilt-Turn Multipoint lock",
+        "",
+        "420"
+      ],
+      [
+        "lock",
+        "Multi-point Lock",
+        "",
+        "120"
+      ],
+      [
+        "lock",
+        "Centre Lock",
+        "",
+        "350"
+      ],
+      [
+        "lock",
+        "Pop-up Lock",
+        "",
+        "320"
+      ],
+      [
+        "aluminium_handle",
+        "D Handle",
+        "222",
+        "2500"
+      ],
+      [
+        "aluminium_handle",
+        "L Handle",
+        "344",
+        "2500"
+      ],
+      [
+        "aluminium_handle",
+        "Multipoint lock cum handle",
+        "",
+        "1200"
+      ],
+      [
+        "aluminium_handle",
+        "Automatic Handle",
+        "PH283/195",
+        "1000"
+      ],
+      [
+        "aluminium_handle",
+        "Openable Handle With Key",
+        "PSH003/013/ 002/006/ 500",
+        "1500"
+      ],
+      [
+        "aluminium_handle",
+        "Openable handle without key",
+        "",
+        "1200"
+      ],
+      [
+        "aluminium_hinges",
+        "Door Hing",
+        "dr001",
+        "120"
+      ],
+      [
+        "aluminium_hinges",
+        "Window Hings",
+        "whg01",
+        "170"
+      ],
+      [
+        "aluminium_hinges",
+        "3d Hings",
+        "3dh",
+        "457"
+      ],
+      [
+        "aluminium_hinges",
+        "Flat Hing",
+        "fh01",
+        "100"
+      ],
+      [
+        "aluminium_hinges",
+        "Concealed",
+        "cs01",
+        "100"
+      ],
+      [
+        "aluminium_hinges",
+        "But Hing",
+        "but_hing01",
+        "55"
+      ],
+      [
+        "aluminium_mesh_component",
+        "Fiber",
+        "fb001",
+        "112"
+      ],
+      [
+        "aluminium_mesh_component",
+        "SS Mesh",
+        "ss_mesh",
+        "100"
+      ],
+      [
+        "aluminium_mesh_component",
+        "Lylone mesh",
+        "ss_mesh",
+        "100"
+      ],
+      [
+        "aluminium_roller",
+        "Single Roller",
+        "sr001",
+        "25"
+      ],
+      [
+        "aluminium_roller",
+        "Doble Roller",
+        "dr001",
+        "30"
+      ],
+      [
+        "aluminium_roller",
+        "Adjustable Double Rolller",
+        "dr001",
+        "120"
+      ],
+      [
+        "aluminium_hinges",
+        "EURO HINGE",
+        "IEBH-0",
+        "18"
+      ],
+      [
+        "aluminium_hinges",
+        "DOMAL HINGE",
+        "IDBH-02",
+        "20"
+      ],
+      [
+        "aluminium_hinges",
+        "EURO HINGE (50MM SERIES)",
+        "euro_hinges",
+        "15"
+      ],
+      [
+        "aluminium_hinges",
+        "UNIVERSAL HINGE",
+        "IUHDH-02",
+        "20"
+      ],
+      [
+        "aluminium_roller",
+        "ADJUSTABLE FOUR WHEEL ROLLER METAL (15*24) - U GROOVE -200KG",
+        "IASR-12",
+        "250"
+      ],
+      [
+        "aluminium_roller",
+        "ADJUSTABLE TWO WHEEL ROLLER METAL (15*24) - U GROOVE - 100KG",
+        "IASR-1",
+        "150"
+      ],
+      [
+        "aluminium_roller",
+        "ADJUSTABLE TWO WHEEL ROLLER (27MM/29MM/32MM SERIES) - V-GROOVE- 120KG",
+        "IASR-2A",
+        "180"
+      ],
+      [
+        "aluminium_roller",
+        "ADJUSTABLETWO WHEEL ROLLER (37MM SERIES) - V GROOVE - 120KG",
+        "IASR-05",
+        "300"
+      ],
+      [
+        "aluminium_roller",
+        "TWO WHEEL ROLLER (27MM/29MM) - V GROOVE - 60KG CAPACITY 2X4",
+        "IASR -02",
+        "100"
+      ],
+      [
+        "aluminium_roller",
+        "TWO WHEEL ROLLER (37MM) - V GROOVE - 60KG CAPACITY 2X4",
+        "IASR-04",
+        "150"
+      ],
+      [
+        "aluminium_roller",
+        "TWO WHEEL ROLLER (27MM/29MM) - V GROOVE - 40KG CAPACITY 2X2",
+        "IASR-01A",
+        "100"
+      ],
+      [
+        "aluminium_roller",
+        "SINGLE WHEEL ROLLER (27MM/29MM) - V GROOVE - 30KG CAPACITY",
+        "IASR-03",
+        "90"
+      ],
+      [
+        "aluminium_handle",
+        "STANDARD COCKSPUR HANDLE",
+        "IASPH",
+        "170"
+      ],
+      [
+        "aluminium_handle",
+        "STANDARD-01 COCKSPUR HANDLE",
+        "IASPH-01",
+        "185"
+      ],
+      [
+        "aluminium_handle",
+        "ARROW COCKSPUR HANDLE",
+        "IASPH",
+        "170"
+      ],
+      [
+        "aluminium_handle",
+        "PB COCKSPUR HANDLE WITH PUSH BUTTON",
+        "IASPH-PB",
+        "160"
+      ],
+      [
+        "aluminium_handle",
+        "ECO-01 COCKSPUR HANDLE",
+        "IASPH-ECO-01",
+        "195"
+      ],
+      [
+        "aluminium_handle",
+        "01 KEY COCKSPUR HANDLE WITH KEY",
+        "IASPH-01-KEY",
+        "180"
+      ],
+      [
+        "aluminium_handle",
+        "MULTIPOINT LOCKING HANDLE WITH TWO FORK",
+        "IAMTF-01",
+        "190"
+      ],
+      [
+        "aluminium_handle",
+        "MULTIPOINT LOCKING HANDLE WITH SINGLE FORK",
+        "IASF-01",
+        "200"
+      ],
+      [
+        "aluminium_handle",
+        "MULTIPOINT LOCKING HANDLE SINGLE FORK WITH KEY",
+        "IAMSFK-02",
+        "210"
+      ],
+      [
+        "aluminium_handle",
+        "MULTIPOINT LOCKING HANDLE WITH SINGLE FORK DETACHABLE",
+        "IASFD-03",
+        "200"
+      ],
+      [
+        "aluminium_handle",
+        "DOOR HANDLE SET",
+        "IAMH-02",
+        "100"
+      ],
+      [
+        "aluminium_handle",
+        "DOOR HANDLE WITH CYLINDER HOLE SET",
+        "IAMH-04",
+        "220"
+      ],
+      [
+        "aluminium_handle",
+        "DOOR HANDLE WITH ONE SIDE SHORT NECK SET",
+        "IAMH-05",
+        "290"
+      ],
+      [
+        "aluminium_handle",
+        "SLIDING DOOR HANDLE WITH CONCEALED BUTTON",
+        "ISHS-01",
+        "180"
+      ],
+      [
+        "aluminium_handle",
+        "SLIDING WINDOW HANDLE",
+        "ISHS-02",
+        "100"
+      ],
+      [
+        "aluminium_handle",
+        "SLIDING WINDOW HANDLE",
+        "ISHS-02A",
+        "100"
+      ],
+      [
+        "aluminium_handle",
+        "SLIDING DOOR HANDLE",
+        "ISHS-03",
+        "100"
+      ],
+      [
+        "aluminium_handle",
+        "SLIDING DOOR HANDLE WITH SCREW (NEW)",
+        "ISHS-03S",
+        "195"
+      ],
+      [
+        "aluminium_handle",
+        "SLIDING DOOR LOCK WITH MANUAL OPERATION",
+        "ISHS-03A",
+        "200"
+      ],
+      [
+        "aluminium_handle",
+        "SLIDING DOOR LOCK WITH KEY",
+        "ISHS-03L",
+        "210"
+      ],
+      [
+        "aluminium_handle",
+        "CENTRAL LOCKING HANDLE",
+        "ISHS-05",
+        "150"
+      ],
+      [
+        "aluminium_handle",
+        "METRO HANDLE",
+        "ISHS-07",
+        "1200"
+      ],
+      [
+        "aluminium_handle",
+        "METRO HANDLE WITH KEY",
+        "ISHS-07L",
+        "1500"
+      ],
+      [
+        "aluminium_handle",
+        "SLIDING SHORT NECK HANDLE WITH FORK",
+        "ISHS-08",
+        "156"
+      ],
+      [
+        "aluminium_handle",
+        "SHORT NECK TILT HANDLE WITHOUT KEY WITH SPINDLE",
+        "IUSLNH28L/R",
+        "170"
+      ],
+      [
+        "aluminium_handle",
+        "SHORT NECK TILT HANDLE WITH KEY & SPINDLE",
+        "IUSLNHK28L/R",
+        "160"
+      ],
+      [
+        "aluminium_handle",
+        "SLIDING DOOR HANDLE LONG NECK WITH SPINDLE",
+        "IUSHWOK25",
+        "70"
+      ],
+      [
+        "aluminium_friction",
+        "FRICTION STAY 8\" BAR THICKNESS 2MM",
+        "IUFSL2008",
+        ""
+      ],
+      [
+        "aluminium_friction",
+        "FRICTION STAY 10\" BAR THICKNESS 2MM",
+        "IUFSL2010",
+        ""
+      ],
+      [
+        "aluminium_friction",
+        "FRICTION STAY 12\" BAR THICKNESS 2MM",
+        "IUFSL2012",
+        ""
+      ],
+      [
+        "aluminium_friction",
+        "FRICTION STAY 14\" BAR THICKNESS 2MM",
+        "IUFSL2014",
+        ""
+      ],
+      [
+        "aluminium_friction",
+        "FRICTION STAY 16\" BAR THICKNESS 2MM",
+        "IUFSL2016",
+        ""
+      ],
+      [
+        "aluminium_friction",
+        "FRICTION STAY 18\" BAR THICKNESS 2MM",
+        "IUFSL2018",
+        ""
+      ],
+      [
+        "common",
+        "CAVITY BLOCK",
+        "",
+        "0"
+      ],
+      [
+        "common",
+        "INERTIA BLOCK",
+        "",
+        "1.25"
+      ],
+      [
+        "common",
+        "SPACER BLOCK",
+        "",
+        "13"
+      ],
+      [
+        "common",
+        "PRESSURE BLOCK",
+        "",
+        "13"
+      ],
+      [
+        "common",
+        "BUMP STOPPER",
+        "",
+        "32"
+      ],
+      [
+        "common",
+        "DRAINAGE CAP",
+        "",
+        "2.5"
+      ],
+      [
+        "common",
+        "FASTNER CAPS",
+        "",
+        "3.75"
+      ],
+      [
+        "common",
+        "MULLION CONNECTOR",
+        "",
+        "7.5"
+      ],
+      [
+        "common",
+        "CMT ESPAG STRIKER",
+        "",
+        "8.75"
+      ],
+      [
+        "common",
+        "GEORGIAN BAR TAPE",
+        "",
+        "1.25"
+      ],
+      [
+        "common",
+        "UPVC GBAR CRUCI CLIP",
+        "",
+        "10"
+      ],
+      [
+        "common",
+        "UPVC GBAR INTERMEDIATE CLIP",
+        "",
+        "10"
+      ],
+      [
+        "common",
+        "UPVC GBAR U CLIP",
+        "",
+        "10"
+      ],
+      [
+        "common",
+        "TILT & TURN HARDWARE SET",
+        "",
+        "250"
+      ],
+      [
+        "common",
+        "STAR TYPE GASKET",
+        "",
+        "18.75"
+      ],
+      [
+        "common",
+        "SILICONE",
+        "",
+        "113"
+      ],
+      [
+        "common",
+        "RESTRICTOR ARM",
+        "",
+        "100"
+      ],
+      [
+        "common",
+        "RESTRICTOR ARM 10",
+        "",
+        "0"
+      ],
+      [
+        "common",
+        "RESTRICTOR ARM 12",
+        "",
+        "0"
+      ],
+      [
+        "common",
+        "RESTRICTOR ARM SCREW",
+        "",
+        "1.25"
+      ],
+      [
+        "common",
+        "DUST ARESTER",
+        "",
+        "1.25"
+      ],
+      [
+        "common",
+        "SEALING BRIDGE",
+        "",
+        "6.25"
+      ],
+      [
+        "common",
+        "FM SEALING BRIDGE",
+        "",
+        "6.5"
+      ],
+      [
+        "common",
+        "GLASS PACKER 1MM",
+        "",
+        "3"
+      ],
+      [
+        "common",
+        "GLASS PACKER 2MM",
+        "",
+        "6"
+      ],
+      [
+        "common",
+        "GLASS PACKER 3MM",
+        "",
+        "6"
+      ],
+      [
+        "common",
+        "GLASS PACKER 4MM",
+        "",
+        "6"
+      ],
+      [
+        "common",
+        "GLASS PACKER 5 MM",
+        "",
+        "6"
+      ],
+      [
+        "common",
+        "PROFILE PACKER 1MM",
+        "",
+        "6"
+      ],
+      [
+        "common",
+        "PROFILE PACKER 2MM",
+        "",
+        "6"
+      ],
+      [
+        "common",
+        "PROFILE PACKER 3MM",
+        "",
+        "6"
+      ],
+      [
+        "common",
+        "CASEMENT 15MM BS ESPAG",
+        "",
+        "150"
+      ],
+      [
+        "common",
+        "CASEMENT 30MM BS ESPAG",
+        "",
+        "1125"
+      ],
+      [
+        "common",
+        "SLD 7.5MM BS ESPAG",
+        "",
+        "135"
+      ],
+      [
+        "common",
+        "SLD 15MM BS ESPAG",
+        "",
+        "137"
+      ],
+      [
+        "common",
+        "SLD DOOR ESPAG WITH CYLINDER",
+        "",
+        "268"
+      ],
+      [
+        "common",
+        "CYLINDER",
+        "",
+        "477"
+      ],
+      [
+        "common",
+        "CYLINDER COVER",
+        "",
+        "100"
+      ],
+      [
+        "common",
+        "MORTISE LOCK",
+        "",
+        "0"
+      ],
+      [
+        "common",
+        "MORTISE LOCK SCREW",
+        "",
+        "1.25"
+      ],
+      [
+        "common",
+        "SINGLE POINT LOCK STRIKER",
+        "",
+        "13"
+      ],
+      [
+        "common",
+        "Fastner Cap222",
+        "fst",
+        "0"
+      ],
+      [
+        "common",
+        "gaskit",
+        "0",
+        "15"
+      ],
+      [
+        "common",
+        "Fastner Cap",
+        "Fstnercap",
+        "2"
+      ],
+      [
+        "common",
+        "SLD TOUCH LOCK STRIKER",
+        "STS01",
+        "25"
+      ],
+      [
+        "aluminium_handle",
+        "Touch Lock",
+        "TL01",
+        "200"
+      ],
+      [
+        "common",
+        "SLD SASH WOOL PILE",
+        "SLD001",
+        "20"
+      ],
+      [
+        "common",
+        "SHOOT BOLT",
+        "",
+        "0"
+      ],
+      [
+        "common",
+        "FLY MULLION CAP",
+        "",
+        "0"
+      ],
+      [
+        "common",
+        "CAVITY BLOCK",
+        "",
+        "0"
+      ],
+      [
+        "common",
+        "LOUVER CLIP",
+        "",
+        "0"
+      ],
+      [
+        "common",
+        "GLASS PACKER 5MM",
+        "",
+        "0"
+      ],
+      [
+        "aluminium_handle",
+        "Casement Door Handle",
+        "cdh11",
+        "150"
+      ],
+      [
+        "aluminium_hinges",
+        "Friction Stay",
+        "fs101",
+        "333"
+      ],
+      [
+        "common",
+        "COCKSPUR HANDLE WEDGE",
+        "CHW1",
+        "0"
+      ]
+    ]
+  },
+  "coatings": {
+    "headers": [
+      "Company",
+      "Series",
+      "Action"
+    ],
+    "rows": [
+      [
+        "Vitco",
+        "25mm window gulf series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "25mm window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "27mm window gulf series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "27mm high-end window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "27mm window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "27mm window pro series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "29mm window gulf series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "29mm monorail window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "29mm high-end window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "29mm window suoer slim series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "29mm window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "31mm window gulf series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "32mm window gulf series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "32mm window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "35mm window gulf series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "35mm hign-end window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "35*75mm window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "37mm window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "40mm window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "28mm casement window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "50mm Door & window series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "50mm Sliding & Folding Series",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "19mm Uma Window Series",
+        "Edit"
+      ]
+    ]
+  },
+  "aluminium_stock": {
+    "headers": [
+      "Company",
+      "Series",
+      "Available Length",
+      "Action"
+    ],
+    "rows": [
+      [
+        "Vitco",
+        "25mm window gulf series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "25mm window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "27mm window gulf series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "27mm high-end window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "27mm window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "27mm window pro series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "29mm window gulf series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "29mm monorail window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "29mm high-end window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "29mm window suoer slim series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "29mm window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "31mm window gulf series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "32mm window gulf series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "32mm window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "35mm window gulf series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "35mm hign-end window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "35*75mm window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "37mm window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "40mm window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "28mm casement window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "50mm Door & window series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "50mm Sliding & Folding Series",
+        "16 Ft",
+        "Edit"
+      ],
+      [
+        "Vitco",
+        "19mm Uma Window Series",
+        "16 Ft",
+        "Edit"
+      ]
+    ]
+  },
+  "glass": {
+    "headers": [
+      "Name",
+      "Price"
+    ],
+    "rows": [
+      [
+        "5MM CLEAR TOUGHENED GLASS",
+        "90"
+      ],
+      [
+        "8MM CLEAR TOUGHNED GLASS",
+        "150"
+      ],
+      [
+        "5+10MM Argon Gas+5T",
+        "650"
+      ],
+      [
+        "5MM FROSTED GLASS",
+        "0"
+      ],
+      [
+        "5mm Frosted Toughend",
+        "140"
+      ],
+      [
+        "6mm clear toughend Glass",
+        "110"
+      ],
+      [
+        "5mm brown tinted toughened glass",
+        "120"
+      ],
+      [
+        "12mm clear toughend Glass",
+        "190"
+      ],
+      [
+        "5+1.52 PVB+5T LAM",
+        "650"
+      ],
+      [
+        "6MM+15ARGON+6MMT",
+        "700"
+      ],
+      [
+        "8MM TOUGHEND BLACK TINTED",
+        "180"
+      ],
+      [
+        "mesh only",
+        "20"
+      ],
+      [
+        "6MM+10 ARGON+6MMT",
+        "700"
+      ],
+      [
+        "S167-5+10MM ARGON+5 BLACK",
+        "750"
+      ],
+      [
+        "6 MM CERAMIC TOUGHEND",
+        "170"
+      ],
+      [
+        "5mm Frosted Glass TOUGHEND",
+        "150"
+      ],
+      [
+        "22 MM DGU WITH TOUGHENED GLASS",
+        "575"
+      ],
+      [
+        "5mm Laminated Glass",
+        "650"
+      ],
+      [
+        "5+1.52+5 BLACK LAMINATED",
+        "700"
+      ],
+      [
+        "5mm Plain Toughned Glass",
+        "90"
+      ],
+      [
+        "5mm Plain Frosted Glass",
+        "85"
+      ],
+      [
+        "6mm Toughened Glass",
+        "110"
+      ],
+      [
+        "6mm Clear Glass",
+        "75"
+      ],
+      [
+        "6mm Reflective Glass",
+        "180"
+      ],
+      [
+        "6mm Frosted Glass",
+        "180"
+      ],
+      [
+        "6mm Tinted Glass",
+        "180"
+      ],
+      [
+        "6mm Laminated Glass",
+        "700"
+      ],
+      [
+        "6mm Plain Glass",
+        "75"
+      ],
+      [
+        "6mm Plain Toughned Glass",
+        "110"
+      ],
+      [
+        "6mm Plain Frosted Glass",
+        "110"
+      ],
+      [
+        "8mm Black Toughened Glass",
+        "140"
+      ],
+      [
+        "8mm Clear Glass",
+        "275"
+      ],
+      [
+        "8mm Reflective Glass",
+        "190"
+      ],
+      [
+        "8mm Frosted Glass",
+        "150"
+      ],
+      [
+        "8mm Tinted Glass",
+        "180"
+      ],
+      [
+        "8mm Laminated Glass",
+        "750"
+      ],
+      [
+        "8mm Frosted Toughened Glass",
+        "185"
+      ],
+      [
+        "8mm Frosted Glass",
+        "150"
+      ],
+      [
+        "8mm Tinted Glass",
+        "180"
+      ],
+      [
+        "8+1.52+8T Laminated",
+        "120"
+      ],
+      [
+        "4 mm acp partition sheet white",
+        "80"
+      ],
+      [
+        "8mm Plain Toughned Glass",
+        "140"
+      ],
+      [
+        "8mm Plain Frosted Glass",
+        "180"
+      ],
+      [
+        "10mm Toughened Glass",
+        "170"
+      ],
+      [
+        "10mm Clear Glass",
+        "100"
+      ],
+      [
+        "10mm Reflective Glass",
+        "180"
+      ],
+      [
+        "5mm Frosted Glass",
+        "0"
+      ],
+      [
+        "10mm Tinted Glass",
+        "185"
+      ],
+      [
+        "10mm Laminated Glass",
+        "420"
+      ],
+      [
+        "10mm Frosted Glass",
+        "190"
+      ],
+      [
+        "10mm Tinted Glass",
+        "185"
+      ],
+      [
+        "10mm Plain Glass",
+        "150"
+      ],
+      [
+        "10mm Plain Glass",
+        "150"
+      ],
+      [
+        "10mm Plain Toughned Glass",
+        "170"
+      ],
+      [
+        "12mm Frosted Toughened Glass",
+        "180"
+      ],
+      [
+        "Security Glass 5+1.5+5",
+        "50"
+      ],
+      [
+        "DGU Glass 6+10+6",
+        "500"
+      ],
+      [
+        "UPVC PANEL 20 MM",
+        "50"
+      ],
+      [
+        "DGU glass -5+10+5 T",
+        "0"
+      ],
+      [
+        "DGU Glass -6+12+6 T",
+        "500"
+      ],
+      [
+        "DGU glass -8+12+8 T",
+        "500"
+      ],
+      [
+        "Security Glass -6+1.52+6 T",
+        "60"
+      ],
+      [
+        "Security glass -5+1.52+5 T",
+        "50"
+      ],
+      [
+        "Security glass 8+2.25+8 T",
+        "80"
+      ],
+      [
+        "12mm Glass",
+        "0"
+      ],
+      [
+        "LM +Dg(6 St167+1.52+6)13.52 mm + 8 Arg+ 5 T)",
+        "80"
+      ],
+      [
+        "6 mm ST 167",
+        "60"
+      ],
+      [
+        "(6+1.52+6) 13.52 mm Security Glass",
+        "60"
+      ],
+      [
+        "4mm Clear Tuff",
+        "130"
+      ],
+      [
+        "5mm Clear Toughened glass",
+        "0"
+      ],
+      [
+        "6mm Clear Toughened glass",
+        "110"
+      ],
+      [
+        "8mm Clear Tuff",
+        "140"
+      ],
+      [
+        "10mm Clear Tuff",
+        "170"
+      ],
+      [
+        "12mm Clear glass",
+        "0"
+      ],
+      [
+        "5mm Cl. Tuff+1.52 Pvb+5mm Cl Tuff",
+        "130"
+      ],
+      [
+        "6mm Cl. Tuff+1.52 Pvb+6mm Cl Tuff",
+        "110"
+      ],
+      [
+        "5mm Cl. Tuff+1.52 Pvb+4mm Cl Tuff",
+        "130"
+      ],
+      [
+        "6mm Cl. Tuff+1.52 Pvb+4mm Cl Tuff",
+        "110"
+      ],
+      [
+        "5mm Cl. Tuff+12mm Air gap With Argon+5mm Cl Tuff",
+        "220"
+      ],
+      [
+        "5mm Cl. Tuff+10mm Air gap With Argon+5mm Cl Tuff",
+        "170"
+      ],
+      [
+        "6mm Cl. Tuff+10mm Air gap With Organ+6mm Cl Tuff",
+        "170"
+      ],
+      [
+        "6mm Cl. Tuff+12mm Air gap With Argon+6mm Cl Tuff",
+        "220"
+      ],
+      [
+        "5mm Forest Green Glass",
+        "150"
+      ],
+      [
+        "5mm Forest Green Glass",
+        "150"
+      ],
+      [
+        "5mm Brown reflective glass",
+        "180"
+      ],
+      [
+        "12mm toughened glass",
+        "150"
+      ],
+      [
+        "5mm Black Reflective Glass toughened glass",
+        "180"
+      ],
+      [
+        "12mm Toughened Glass",
+        "150"
+      ],
+      [
+        "BOTH SIDE PLEATED MESH",
+        "352.91"
+      ],
+      [
+        "CENTER OPENING PLEATED MESH",
+        "352.91"
+      ],
+      [
+        "FIBRE MESH BLACK",
+        "4.68"
+      ],
+      [
+        "FIBRE MESH GREY",
+        "4.68"
+      ],
+      [
+        "LEFT TO RIGHT PLEATED MESH",
+        "353.01"
+      ],
+      [
+        "PULL DOWN MESH",
+        "352.91"
+      ],
+      [
+        "RIGHT TO LEFT PLEATED MESH",
+        "352.91"
+      ],
+      [
+        "SS SECURITY MESH",
+        "28.11"
+      ],
+      [
+        "SS Mesh",
+        "28.11"
+      ],
+      [
+        "5MM CLEAR REFLECTIVE TOUGHENED GLASS",
+        "170"
+      ],
+      [
+        "5mm Black Reflective Glass",
+        "170"
+      ],
+      [
+        "5MM CLEAR REFLECTIVE TOUGHENED GLASS",
+        "170"
+      ],
+      [
+        "5mm Black Reflective Glass",
+        "170"
+      ],
+      [
+        "5mm Clear Glass",
+        "0"
+      ],
+      [
+        "Nylone Mesh",
+        "70"
+      ],
+      [
+        "Aluminium Mesh",
+        "90"
+      ],
+      [
+        "5mm testing glass",
+        "100"
+      ],
+      [
+        "5mm testing glass",
+        "100"
+      ],
+      [
+        "5mm Black Reflective Raw Glass",
+        "0"
+      ],
+      [
+        "5mm Frosted Glass",
+        "0"
+      ],
+      [
+        "5mm Clear Toughened Glass",
+        "0"
+      ],
+      [
+        "4mm Pinhead Glass",
+        "85"
+      ],
+      [
+        "5+1.52+5+10air+5 LAMINATION DGU",
+        "0"
+      ],
+      [
+        "5mm black dimond",
+        "0"
+      ],
+      [
+        "3.5MM CLEAR GLASS",
+        "0"
+      ],
+      [
+        "4mm CLEAR GLASS-MBG",
+        "0"
+      ],
+      [
+        "4MM ONE WAY GLASS-MBG",
+        "0"
+      ],
+      [
+        "DUG GLASS (5+10+5) Toughened",
+        "0"
+      ],
+      [
+        "5MM MILKY GLASS-MBG",
+        "0"
+      ],
+      [
+        "5MM AQUA BLUE REFLECTIVE TOUGHNED GLASS",
+        "0"
+      ],
+      [
+        "5+1.5+5 Lamination Glass",
+        "0"
+      ],
+      [
+        "6+1.52 PVB+6T LAM",
+        "0"
+      ],
+      [
+        "UPVC Louvers",
+        "0"
+      ],
+      [
+        "5mm Black Reflective Toughened Glass",
+        "120"
+      ],
+      [
+        "6 MM Etching Design TOUGHENED GLASS",
+        "0"
+      ],
+      [
+        "PVC Mesh",
+        "0"
+      ],
+      [
+        "Without GLASS",
+        "0"
+      ],
+      [
+        "8MM BLACK FLUTED GLASS TOUGHENE",
+        "325"
+      ],
+      [
+        "FLUTED 8MM TOUGHENE",
+        "275"
+      ],
+      [
+        "MANUAL DGU BLIND",
+        "1200"
+      ]
+    ]
+  }
+}
