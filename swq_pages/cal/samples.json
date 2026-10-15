@@ -1,0 +1,1792 @@
+[
+  {
+    "design": "R40 CASEMENT",
+    "type": "casement",
+    "width": 508,
+    "height": 914,
+    "area_sqft": 5,
+    "window_price": 729.73,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 2264,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "STANDARD-01 COCKSPUR HANDLE",
+        "roller": "",
+        "w": 508,
+        "h": 914,
+        "cost": 2264
+      }
+    ]
+  },
+  {
+    "design": "R40 FIX",
+    "type": "casement",
+    "width": 3300,
+    "height": 2150,
+    "area_sqft": 76.37,
+    "window_price": 313.51,
+    "track": "V-4001",
+    "series": null,
+    "glass": "10mm Toughened Glass",
+    "panels": 1,
+    "panel_cost_total": 21914,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "",
+        "interlock": "",
+        "handle": "",
+        "roller": "",
+        "w": 3300,
+        "h": 2150,
+        "cost": 21914
+      }
+    ]
+  },
+  {
+    "design": "Default Design",
+    "type": "casement",
+    "width": 3400,
+    "height": 2450,
+    "area_sqft": 89.66,
+    "window_price": 352.83,
+    "track": "V-4001",
+    "series": null,
+    "glass": "10mm Toughened Glass",
+    "panels": 1,
+    "panel_cost_total": 11248,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "STANDARD-01 COCKSPUR HANDLE",
+        "roller": "",
+        "w": 915,
+        "h": 2450,
+        "cost": 11248
+      }
+    ]
+  },
+  {
+    "design": "R40 FIX",
+    "type": "casement",
+    "width": 1760,
+    "height": 2660,
+    "area_sqft": 50.39,
+    "window_price": 323.41,
+    "track": "V-4001",
+    "series": null,
+    "glass": "10mm Toughened Glass",
+    "panels": 1,
+    "panel_cost_total": 14364,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "",
+        "interlock": "",
+        "handle": "",
+        "roller": "",
+        "w": 1760,
+        "h": 2660,
+        "cost": 14364
+      }
+    ]
+  },
+  {
+    "design": "Default Design",
+    "type": "casement",
+    "width": 2350,
+    "height": 2660,
+    "area_sqft": 67.29,
+    "window_price": 314.45,
+    "track": "V-4001",
+    "series": null,
+    "glass": "10mm Toughened Glass",
+    "panels": 1,
+    "panel_cost_total": 19440,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "",
+        "interlock": "",
+        "handle": "",
+        "roller": "",
+        "w": 2350,
+        "h": 2660,
+        "cost": 19440
+      }
+    ]
+  },
+  {
+    "design": "16*45 DOOR",
+    "type": "casement",
+    "width": 820,
+    "height": 2420,
+    "area_sqft": 21.36,
+    "window_price": 689.75,
+    "track": "V-4001",
+    "series": null,
+    "glass": "8mm Clear Glass",
+    "panels": 1,
+    "panel_cost_total": 10337,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "L Handle",
+        "roller": "",
+        "w": 820,
+        "h": 2420,
+        "cost": 10337
+      }
+    ]
+  },
+  {
+    "design": "27MM DOMAL 3TRACK SLIDER",
+    "type": "sliding",
+    "width": 1016,
+    "height": 2134,
+    "area_sqft": 23.34,
+    "window_price": 861.73,
+    "track": "V-2714",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 14937,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2714",
+        "sash": "V-2721",
+        "interlock": "V-2731",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 1016,
+        "h": 2134,
+        "cost": 14937
+      }
+    ]
+  },
+  {
+    "design": "27MM DOMAL 3TRACK SLIDER",
+    "type": "sliding",
+    "width": 3251,
+    "height": 3251,
+    "area_sqft": 113.76,
+    "window_price": 514.77,
+    "track": "V-2720",
+    "series": null,
+    "glass": "8MM CLEAR TOUGHNED GLASS",
+    "panels": 1,
+    "panel_cost_total": 50505,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2720",
+        "sash": "V-2721",
+        "interlock": "V-2731",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 3251,
+        "h": 3251,
+        "cost": 50505
+      }
+    ]
+  },
+  {
+    "design": "R40 CASEMENT",
+    "type": "casement",
+    "width": 660,
+    "height": 2210,
+    "area_sqft": 15.7,
+    "window_price": 486.89,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 6021,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "STANDARD-01 COCKSPUR HANDLE",
+        "roller": "",
+        "w": 660,
+        "h": 2210,
+        "cost": 6021
+      }
+    ]
+  },
+  {
+    "design": "27MM DOMAL 3TRACK SLIDER",
+    "type": "sliding",
+    "width": 1702,
+    "height": 1473,
+    "area_sqft": 26.99,
+    "window_price": 701.43,
+    "track": "V-2714",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 15640,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2714",
+        "sash": "V-2721",
+        "interlock": "V-2731",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 1702,
+        "h": 1473,
+        "cost": 15640
+      }
+    ]
+  },
+  {
+    "design": "R40 CASEMENT",
+    "type": "casement",
+    "width": 610,
+    "height": 1473,
+    "area_sqft": 9.67,
+    "window_price": 552.67,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 4050,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "STANDARD-01 COCKSPUR HANDLE",
+        "roller": "",
+        "w": 610,
+        "h": 1473,
+        "cost": 4050
+      }
+    ]
+  },
+  {
+    "design": "27MM DOMAL 3TRACK SLIDER",
+    "type": "sliding",
+    "width": 1372,
+    "height": 914,
+    "area_sqft": 13.5,
+    "window_price": 982.71,
+    "track": "V-2714",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 10279,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2714",
+        "sash": "V-2721",
+        "interlock": "V-2731",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 1372,
+        "h": 914,
+        "cost": 10279
+      }
+    ]
+  },
+  {
+    "design": "R40 CASEMENT",
+    "type": "casement",
+    "width": 660,
+    "height": 2210,
+    "area_sqft": 15.7,
+    "window_price": 486.89,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 6021,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "STANDARD-01 COCKSPUR HANDLE",
+        "roller": "",
+        "w": 660,
+        "h": 2210,
+        "cost": 6021
+      }
+    ]
+  },
+  {
+    "design": "27MM DOMAL 3TRACK SLIDER",
+    "type": "sliding",
+    "width": 1245,
+    "height": 2108,
+    "area_sqft": 28.25,
+    "window_price": 845.45,
+    "track": "V-2714",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 18405,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2714",
+        "sash": "V-2721",
+        "interlock": "V-2731",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 1245,
+        "h": 2108,
+        "cost": 18405
+      }
+    ]
+  },
+  {
+    "design": "27MM DOMAL 3TRACK SLIDER",
+    "type": "sliding",
+    "width": 1295,
+    "height": 2134,
+    "area_sqft": 29.75,
+    "window_price": 752.52,
+    "track": "V-2714",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 18991,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2714",
+        "sash": "V-2721",
+        "interlock": "V-2731",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 1295,
+        "h": 2134,
+        "cost": 18991
+      }
+    ]
+  },
+  {
+    "design": "R40 CASEMENT",
+    "type": "casement",
+    "width": 660,
+    "height": 2210,
+    "area_sqft": 15.7,
+    "window_price": 498.61,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 6021,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "STANDARD-01 COCKSPUR HANDLE",
+        "roller": "",
+        "w": 660,
+        "h": 2210,
+        "cost": 6021
+      }
+    ]
+  },
+  {
+    "design": "R40 CASEMENT",
+    "type": "casement",
+    "width": 610,
+    "height": 1473,
+    "area_sqft": 9.67,
+    "window_price": 566.42,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 4050,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "STANDARD-01 COCKSPUR HANDLE",
+        "roller": "",
+        "w": 610,
+        "h": 1473,
+        "cost": 4050
+      }
+    ]
+  },
+  {
+    "design": "R40 CASEMENT",
+    "type": "casement",
+    "width": 660,
+    "height": 2210,
+    "area_sqft": 15.7,
+    "window_price": 498.61,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 6021,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "STANDARD-01 COCKSPUR HANDLE",
+        "roller": "",
+        "w": 660,
+        "h": 2210,
+        "cost": 6021
+      }
+    ]
+  },
+  {
+    "design": "29MM SLIM SERIES",
+    "type": "sliding",
+    "width": 1016,
+    "height": 2134,
+    "area_sqft": 23.34,
+    "window_price": 907.09,
+    "track": "V-2904",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 17370,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 1016,
+        "h": 2134,
+        "cost": 17370
+      }
+    ]
+  },
+  {
+    "design": "29MM SLIM SERIES",
+    "type": "sliding",
+    "width": 3251,
+    "height": 3251,
+    "area_sqft": 113.76,
+    "window_price": 507.29,
+    "track": "V-2906",
+    "series": null,
+    "glass": "8MM CLEAR TOUGHNED GLASS",
+    "panels": 1,
+    "panel_cost_total": 48821,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2906",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 3251,
+        "h": 3251,
+        "cost": 48821
+      }
+    ]
+  },
+  {
+    "design": "29MM SLIM SERIES",
+    "type": "sliding",
+    "width": 1702,
+    "height": 1473,
+    "area_sqft": 26.99,
+    "window_price": 875.04,
+    "track": "V-2904",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 17295,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "D Handle",
+        "roller": "Single Roller",
+        "w": 1702,
+        "h": 1473,
+        "cost": 17295
+      }
+    ]
+  },
+  {
+    "design": "29MM SLIM SERIES",
+    "type": "sliding",
+    "width": 1372,
+    "height": 914,
+    "area_sqft": 13.5,
+    "window_price": 1109.9,
+    "track": "V-2904",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 10903,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 1372,
+        "h": 914,
+        "cost": 10903
+      }
+    ]
+  },
+  {
+    "design": "29MM SLIM SERIES",
+    "type": "sliding",
+    "width": 1245,
+    "height": 2108,
+    "area_sqft": 28.25,
+    "window_price": 834.86,
+    "track": "V-2904",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 19065,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 1245,
+        "h": 2108,
+        "cost": 19065
+      }
+    ]
+  },
+  {
+    "design": "29MM SLIM SERIES",
+    "type": "sliding",
+    "width": 1295,
+    "height": 2134,
+    "area_sqft": 29.75,
+    "window_price": 818.32,
+    "track": "V-2904",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 19592,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 1295,
+        "h": 2134,
+        "cost": 19592
+      }
+    ]
+  },
+  {
+    "design": "R40 CASEMENT",
+    "type": "casement",
+    "width": 635,
+    "height": 1422,
+    "area_sqft": 9.72,
+    "window_price": 629.88,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 4477,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "STANDARD-01 COCKSPUR HANDLE",
+        "roller": "",
+        "w": 635,
+        "h": 1422,
+        "cost": 4477
+      }
+    ]
+  },
+  {
+    "design": "29MM SLIM SERIES",
+    "type": "sliding",
+    "width": 1778,
+    "height": 1448,
+    "area_sqft": 27.71,
+    "window_price": 792.38,
+    "track": "V-2910",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 16458,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2910",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 1778,
+        "h": 1448,
+        "cost": 16458
+      }
+    ]
+  },
+  {
+    "design": "R40 VENT",
+    "type": "casement",
+    "width": 559,
+    "height": 559,
+    "area_sqft": 3.36,
+    "window_price": 592.09,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 1,
+    "panel_cost_total": 1445,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "",
+        "interlock": "",
+        "handle": "",
+        "roller": "",
+        "w": 559,
+        "h": 559,
+        "cost": 1445
+      }
+    ]
+  },
+  {
+    "design": "29MM SLIM SERIES WITH GRILL",
+    "type": "sliding",
+    "width": 1778,
+    "height": 1600,
+    "area_sqft": 30.62,
+    "window_price": 787.17,
+    "track": "V-2906",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 0,
+    "panel_cost_total": 0,
+    "panel_details": []
+  },
+  {
+    "design": "29MM SLIM SERIES WITH GRILL",
+    "type": "sliding",
+    "width": 2362,
+    "height": 1956,
+    "area_sqft": 49.73,
+    "window_price": 685.1,
+    "track": "V-2906",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 29457,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2906",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 2362,
+        "h": 1956,
+        "cost": 29457
+      }
+    ]
+  },
+  {
+    "design": "R40 VENT",
+    "type": "casement",
+    "width": 889,
+    "height": 508,
+    "area_sqft": 4.86,
+    "window_price": 545.07,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 1,
+    "panel_cost_total": 1913,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "",
+        "interlock": "",
+        "handle": "",
+        "roller": "",
+        "w": 889,
+        "h": 508,
+        "cost": 1913
+      }
+    ]
+  },
+  {
+    "design": "29MM SLIM SERIES",
+    "type": "sliding",
+    "width": 1778,
+    "height": 1473,
+    "area_sqft": 28.19,
+    "window_price": 773.88,
+    "track": "V-2910",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 16189,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2910",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 1778,
+        "h": 1473,
+        "cost": 16189
+      }
+    ]
+  },
+  {
+    "design": "29MM SLIM SERIES",
+    "type": "sliding",
+    "width": 2083,
+    "height": 1499,
+    "area_sqft": 33.61,
+    "window_price": 733.41,
+    "track": "V-2910",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 18661,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2910",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 2083,
+        "h": 1499,
+        "cost": 18661
+      }
+    ]
+  },
+  {
+    "design": "R40 VENT",
+    "type": "casement",
+    "width": 711,
+    "height": 533,
+    "area_sqft": 4.08,
+    "window_price": 579.95,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 1,
+    "panel_cost_total": 1666,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "",
+        "interlock": "",
+        "handle": "",
+        "roller": "",
+        "w": 711,
+        "h": 533,
+        "cost": 1666
+      }
+    ]
+  },
+  {
+    "design": "29MM SLIM SERIES",
+    "type": "sliding",
+    "width": 1499,
+    "height": 1778,
+    "area_sqft": 28.69,
+    "window_price": 797.55,
+    "track": "V-2910",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 17240,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2910",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 1499,
+        "h": 1778,
+        "cost": 17240
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 2083,
+    "height": 2667,
+    "area_sqft": 59.8,
+    "window_price": 630.29,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 36501,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 2083,
+        "h": 2667,
+        "cost": 36501
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 1168,
+    "height": 1600,
+    "area_sqft": 20.12,
+    "window_price": 984.72,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 22439,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 1168,
+        "h": 1600,
+        "cost": 22439
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 1041,
+    "height": 1930,
+    "area_sqft": 21.63,
+    "window_price": 979.67,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 22831,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 1041,
+        "h": 1930,
+        "cost": 22831
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 1194,
+    "height": 1905,
+    "area_sqft": 24.48,
+    "window_price": 907.11,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 23495,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 1194,
+        "h": 1905,
+        "cost": 23495
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 2057,
+    "height": 2616,
+    "area_sqft": 57.92,
+    "window_price": 624.19,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 34559,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 2057,
+        "h": 2616,
+        "cost": 34559
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 1041,
+    "height": 1651,
+    "area_sqft": 18.5,
+    "window_price": 1033.23,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 22024,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 1041,
+        "h": 1651,
+        "cost": 22024
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 1041,
+    "height": 1930,
+    "area_sqft": 21.63,
+    "window_price": 979.67,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 22831,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 1041,
+        "h": 1930,
+        "cost": 22831
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 4445,
+    "height": 2083,
+    "area_sqft": 99.66,
+    "window_price": 625.85,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 58855,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 4445,
+        "h": 2083,
+        "cost": 58855
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 1499,
+    "height": 2718,
+    "area_sqft": 43.86,
+    "window_price": 714.16,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 31108,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 1499,
+        "h": 2718,
+        "cost": 31108
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 2057,
+    "height": 2616,
+    "area_sqft": 57.92,
+    "window_price": 624.19,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 34559,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 2057,
+        "h": 2616,
+        "cost": 34559
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 2972,
+    "height": 2057,
+    "area_sqft": 65.8,
+    "window_price": 586.77,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 37962,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 2972,
+        "h": 2057,
+        "cost": 37962
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 1143,
+    "height": 2083,
+    "area_sqft": 25.63,
+    "window_price": 922.79,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 26276,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 1143,
+        "h": 2083,
+        "cost": 26276
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 1143,
+    "height": 2083,
+    "area_sqft": 25.63,
+    "window_price": 898.21,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 23978,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 1143,
+        "h": 2083,
+        "cost": 23978
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 1473,
+    "height": 2718,
+    "area_sqft": 43.09,
+    "window_price": 721.47,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 30955,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 1473,
+        "h": 2718,
+        "cost": 30955
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 1499,
+    "height": 1702,
+    "area_sqft": 27.46,
+    "window_price": 836.94,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 24184,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 1499,
+        "h": 1702,
+        "cost": 24184
+      }
+    ]
+  },
+  {
+    "design": "SYSTEM SERIES 3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 1473,
+    "height": 1727,
+    "area_sqft": 27.38,
+    "window_price": 839.2,
+    "track": "V-2904",
+    "series": null,
+    "glass": "6mm clear toughend Glass",
+    "panels": 1,
+    "panel_cost_total": 24168,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2904",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 1473,
+        "h": 1727,
+        "cost": 24168
+      }
+    ]
+  },
+  {
+    "design": "R40 CASEMENT + FIX",
+    "type": "casement",
+    "width": 610,
+    "height": 1422,
+    "area_sqft": 9.34,
+    "window_price": 783.52,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 0,
+    "panel_cost_total": 0,
+    "panel_details": []
+  },
+  {
+    "design": "R40 CASEMENT + FIX",
+    "type": "casement",
+    "width": 635,
+    "height": 1524,
+    "area_sqft": 10.42,
+    "window_price": 738.94,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 0,
+    "panel_cost_total": 0,
+    "panel_details": []
+  },
+  {
+    "design": "R40 CASEMENT + FIX",
+    "type": "casement",
+    "width": 940,
+    "height": 1397,
+    "area_sqft": 14.13,
+    "window_price": 642.83,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 0,
+    "panel_cost_total": 0,
+    "panel_details": []
+  },
+  {
+    "design": "R40 CASEMENT + FIX",
+    "type": "casement",
+    "width": 686,
+    "height": 1473,
+    "area_sqft": 10.88,
+    "window_price": 721.37,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 0,
+    "panel_cost_total": 0,
+    "panel_details": []
+  },
+  {
+    "design": "R40 CASEMENT + FIX",
+    "type": "casement",
+    "width": 787,
+    "height": 1626,
+    "area_sqft": 13.77,
+    "window_price": 650.34,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 0,
+    "panel_cost_total": 0,
+    "panel_details": []
+  },
+  {
+    "design": "R40 CASEMENT + FIX",
+    "type": "casement",
+    "width": 787,
+    "height": 1549,
+    "area_sqft": 13.12,
+    "window_price": 665.03,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 0,
+    "panel_cost_total": 0,
+    "panel_details": []
+  },
+  {
+    "design": "R40 CASEMENT",
+    "type": "casement",
+    "width": 711,
+    "height": 1651,
+    "area_sqft": 12.64,
+    "window_price": 569.03,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 5238,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "STANDARD-01 COCKSPUR HANDLE",
+        "roller": "",
+        "w": 711,
+        "h": 1651,
+        "cost": 5238
+      }
+    ]
+  },
+  {
+    "design": "R40 CASEMENT",
+    "type": "casement",
+    "width": 686,
+    "height": 1295,
+    "area_sqft": 9.56,
+    "window_price": 603.79,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 4732,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "STANDARD-01 COCKSPUR HANDLE",
+        "roller": "",
+        "w": 686,
+        "h": 1295,
+        "cost": 4732
+      }
+    ]
+  },
+  {
+    "design": "R40 CASEMENT",
+    "type": "casement",
+    "width": 660,
+    "height": 1321,
+    "area_sqft": 9.38,
+    "window_price": 612.39,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 4700,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "STANDARD-01 COCKSPUR HANDLE",
+        "roller": "",
+        "w": 660,
+        "h": 1321,
+        "cost": 4700
+      }
+    ]
+  },
+  {
+    "design": "R40 CASEMENT + FIX",
+    "type": "casement",
+    "width": 635,
+    "height": 1524,
+    "area_sqft": 10.42,
+    "window_price": 738.94,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 0,
+    "panel_cost_total": 0,
+    "panel_details": []
+  },
+  {
+    "design": "R40 CASEMENT + FIX",
+    "type": "casement",
+    "width": 762,
+    "height": 1219,
+    "area_sqft": 10,
+    "window_price": 752.77,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 0,
+    "panel_cost_total": 0,
+    "panel_details": []
+  },
+  {
+    "design": "R40 FIX",
+    "type": "casement",
+    "width": 889,
+    "height": 1727,
+    "area_sqft": 16.53,
+    "window_price": 1181.64,
+    "track": "V-4001",
+    "series": null,
+    "glass": "MANUAL DGU BLIND",
+    "panels": 1,
+    "panel_cost_total": 19950,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "",
+        "interlock": "",
+        "handle": "",
+        "roller": "",
+        "w": 889,
+        "h": 1727,
+        "cost": 19950
+      }
+    ]
+  },
+  {
+    "design": "3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 2184,
+    "height": 2591,
+    "area_sqft": 60.91,
+    "window_price": 557.86,
+    "track": "V-2714",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 26968,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2714",
+        "sash": "V-2721",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 2184,
+        "h": 2591,
+        "cost": 26968
+      }
+    ]
+  },
+  {
+    "design": "3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 1219,
+    "height": 1245,
+    "area_sqft": 16.34,
+    "window_price": 858.75,
+    "track": "V-2714",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 10630,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2714",
+        "sash": "V-2721",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Doble Roller",
+        "w": 1219,
+        "h": 1245,
+        "cost": 10630
+      }
+    ]
+  },
+  {
+    "design": "Default Design",
+    "type": "sliding",
+    "width": 762,
+    "height": 1245,
+    "area_sqft": 10.21,
+    "window_price": 1083.43,
+    "track": "V-2714",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 8309,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2714",
+        "sash": "V-2721",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Doble Roller",
+        "w": 762,
+        "h": 1245,
+        "cost": 8309
+      }
+    ]
+  },
+  {
+    "design": "Default Design",
+    "type": "sliding",
+    "width": 4343,
+    "height": 2083,
+    "area_sqft": 97.38,
+    "window_price": 470.01,
+    "track": "V-2714",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 34087,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2714",
+        "sash": "V-2721",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Adjustable Double Rolller",
+        "w": 4343,
+        "h": 2083,
+        "cost": 34087
+      }
+    ]
+  },
+  {
+    "design": "3 TRACK SLIDER",
+    "type": "sliding",
+    "width": 2057,
+    "height": 2591,
+    "area_sqft": 57.37,
+    "window_price": 572.46,
+    "track": "V-2714",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 25994,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2714",
+        "sash": "V-2721",
+        "interlock": "",
+        "handle": "METRO HANDLE",
+        "roller": "Adjustable Double Rolller",
+        "w": 2057,
+        "h": 2591,
+        "cost": 25994
+      }
+    ]
+  },
+  {
+    "design": "3 TRACK SLIDER WITH GRILL",
+    "type": "sliding",
+    "width": 1219,
+    "height": 1397,
+    "area_sqft": 18.33,
+    "window_price": 919.98,
+    "track": "V-2720",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 13362,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2720",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Doble Roller",
+        "w": 1219,
+        "h": 1397,
+        "cost": 13362
+      }
+    ]
+  },
+  {
+    "design": "3 TRACK SLIDER WITH GRILL",
+    "type": "sliding",
+    "width": 991,
+    "height": 1397,
+    "area_sqft": 14.9,
+    "window_price": 1034.75,
+    "track": "V-2720",
+    "series": null,
+    "glass": "5MM CLEAR TOUGHENED GLASS",
+    "panels": 1,
+    "panel_cost_total": 12027,
+    "panel_details": [
+      {
+        "cat": "sliding window",
+        "track": "V-2720",
+        "sash": "V-2911",
+        "interlock": "",
+        "handle": "Touch Lock",
+        "roller": "Doble Roller",
+        "w": 991,
+        "h": 1397,
+        "cost": 12027
+      }
+    ]
+  },
+  {
+    "design": "25*50 VENT",
+    "type": "casement",
+    "width": 610,
+    "height": 533,
+    "area_sqft": 3.5,
+    "window_price": 918.53,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 1,
+    "panel_cost_total": 575,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "",
+        "interlock": "",
+        "handle": "",
+        "roller": "",
+        "w": 250,
+        "h": 283,
+        "cost": 575
+      }
+    ]
+  },
+  {
+    "design": "25*50 VENT",
+    "type": "casement",
+    "width": 610,
+    "height": 406,
+    "area_sqft": 2.66,
+    "window_price": 1089.37,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 1,
+    "panel_cost_total": 441,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "",
+        "interlock": "",
+        "handle": "",
+        "roller": "",
+        "w": 250,
+        "h": 156,
+        "cost": 441
+      }
+    ]
+  },
+  {
+    "design": "25*50 VENT",
+    "type": "casement",
+    "width": 610,
+    "height": 533,
+    "area_sqft": 3.5,
+    "window_price": 918.53,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 1,
+    "panel_cost_total": 575,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "",
+        "interlock": "",
+        "handle": "",
+        "roller": "",
+        "w": 250,
+        "h": 283,
+        "cost": 575
+      }
+    ]
+  },
+  {
+    "design": "25*50 door series openable",
+    "type": "casement",
+    "width": 889,
+    "height": 940,
+    "area_sqft": 8.99,
+    "window_price": 933.83,
+    "track": "V-4001",
+    "series": null,
+    "glass": "5mm Frosted Toughend",
+    "panels": 1,
+    "panel_cost_total": 4151,
+    "panel_details": [
+      {
+        "cat": "casement",
+        "track": "V-4001",
+        "sash": "V-4009",
+        "interlock": "",
+        "handle": "D Handle",
+        "roller": "",
+        "w": 889,
+        "h": 940,
+        "cost": 4151
+      }
+    ]
+  }
+]
