@@ -26,30 +26,31 @@ Ordered by priority. Details for each are in the sections below. Check off as do
   (`/api/aluminium/getProfiles`) and seeded into `series_profiles`
   (423 rows across 23 series, each with `profile_code` + `thickness`). The flat
   `gi_*` tables are superseded for BOM costing. See §6.1.
-  - [ ] **T0.1a** Repoint the designer at `series_profiles` (it still reads the
-    empty `gi_*` tables → falls back to hardcoded defaults). Overlaps with T1.x.
-  - [ ] **T0.1b** Decide the fate of `gi_tracks/gi_sashes/gi_interlocks/gi_locks`
-    (retire + drop, or keep as a non-series fallback). Remove their `ListManager`
-    cards from `design-catalog` if retired.
-- [ ] **T0.2** Surface the series + profiles data (currently in DB, no UI/reader).
-  - [ ] **T0.2a** Build a Settings page "Aluminium Series" listing
-    `aluminium_series` (Company / Series / Available Length), add/edit/delete.
-  - [ ] **T0.2b** On that page, drill into a series to list/edit its
-    `series_profiles` grouped by `profile_group` (track/sash/mesh_sash/…).
-  - [ ] **T0.2c** Add the page to the Settings nav (`settings/layout.tsx`).
+  - [x] **T0.1a** Designer now reads `series_profiles` via the Series selector
+    (done with Phase 1 T1.1). `gi_*` kept only as a non-series fallback.
+  - [x] **T0.1b** Decision: `gi_*` tables **kept as fallback** (not dropped) —
+    harmless when empty; the series path supersedes them for pricing.
+- [x] **T0.2** Series + profiles data surfaced in the app.
+  - [x] **T0.2a** Settings → **Aluminium Coating** lists `aluminium_series`
+    (Company / Series / Available Length) with add/edit/delete.
+  - [x] **T0.2b** Expand a series to list/edit its `series_profiles` grouped by
+    `profile_group`, incl. editable `weight_per_meter`.
+  - [x] **T0.2c** Added to the Settings sidebar dropdown.
 - [x] **T0.3** Added a `common` accessory kind (DB CHECK + seed). The 52
   consumables now seed as `kind='common'`. See §6.3.
-  - [ ] **T0.3a** Add a "Common / Consumables" group to `ACCESSORY_KINDS` +
-    `GROUP_ORDER` in `components/settings/accessories-manager.tsx` so the 52
-    rows render under their own heading instead of hidden/ungrouped.
-- [ ] **T0.4** Full aluminium cost sheet (currently 16 of ~30 heads).
-  - [ ] **T0.4a** Add columns to `aluminium_cost_settings` (via `updates.sql`):
-    `dustpad, outer_clit, sash_clit, l_pati, lockguide_cap, interlock_cap,
-    bubstopper, ugid, lockguid, water_drainage, brassrubber, suitbelt,
-    slim_width_overlap`.
-  - [ ] **T0.4b** Add them to `COST_FIELDS`/`OVERLAP_FIELDS` +
-    `CostSettings`/`DEFAULTS` in `components/settings/aluminium-cost-manager.tsx`.
-  - [ ] **T0.4c** Extend `gen-seed.js` cost-head mapping + reseed so values load.
+  - [x] **T0.3a** "Common / Consumables" group added to `ACCESSORY_KINDS` +
+    `GROUP_ORDER` in `accessories-manager.tsx`.
+- [x] **T0.4** Full aluminium cost sheet (all ~30 heads).
+  - [x] **T0.4a** 13 columns added to `aluminium_cost_settings` (dustpad,
+    outer_clit, sash_clit, l_pati, lockguide_cap, interlock_cap, bubstopper,
+    ugid, lockguid, water_drainage, brassrubber, suitbelt, slim_width_overlap).
+  - [x] **T0.4b** Added to `COST_FIELDS`/`OVERLAP_FIELDS` + `CostSettings`.
+  - [x] **T0.4c** `gen-seed.js` extended + reseeded; values load.
+
+**Phase 0 + Phase 1 are complete.** Settings restructured into SWQ-parity pages
+(Aluminium Setting / Hardware / Coating / Glass + internal Catalog & Pricing),
+collapsible sidebar dropdown, 20/page pagination + search, and the weight-based
+BOM costing engine calibrated against 73 real panels.
 
 ### Phase 1 — close the costing gap (biggest correctness issue)
 - [x] **T1.1** Company+Series profile catalog wired into the designer: real
