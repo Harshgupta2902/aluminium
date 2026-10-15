@@ -52,24 +52,10 @@ CREATE TABLE public.clients (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
 );
 
--- Window Templates Table
-CREATE TABLE public.window_templates (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  name TEXT NOT NULL,
-  category TEXT NOT NULL,
-  window_type TEXT CHECK (window_type IN ('sliding', 'casement', 'fixed', 'door', 'combination')) NOT NULL,
-  default_width NUMERIC NOT NULL,
-  default_height NUMERIC NOT NULL,
-  image_url TEXT,
-  description TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
-);
-
 -- Window Designs Table
 CREATE TABLE public.window_designs (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   name TEXT NOT NULL,
-  template_id UUID REFERENCES public.window_templates(id),
   window_type TEXT NOT NULL,
   width NUMERIC NOT NULL,
   height NUMERIC NOT NULL,
@@ -283,42 +269,6 @@ RETURNS BOOLEAN AS $$
   );
 $$ LANGUAGE sql SECURITY DEFINER STABLE;
 
--- Profiles (Aluminium/UPVC) Table
-CREATE TABLE public.profiles_inventory (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  name TEXT NOT NULL,
-  type TEXT CHECK (type IN ('aluminium', 'upvc')) NOT NULL,
-  weight_per_meter NUMERIC NOT NULL,
-  cost_per_kg NUMERIC NOT NULL,
-  cost_per_meter NUMERIC NOT NULL,
-  stock_quantity NUMERIC DEFAULT 0,
-  unit TEXT DEFAULT 'meters',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
-);
-
--- Glass Inventory Table
-CREATE TABLE public.glass_inventory (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  type TEXT NOT NULL,
-  thickness NUMERIC NOT NULL,
-  cost_per_sqft NUMERIC NOT NULL,
-  stock_quantity NUMERIC DEFAULT 0,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
-);
-
--- Accessories Table
-CREATE TABLE public.accessories (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  name TEXT NOT NULL,
-  category TEXT NOT NULL,
-  cost NUMERIC NOT NULL,
-  stock_quantity INTEGER DEFAULT 0,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
-);
-
 -- Quotations Table
 CREATE TABLE public.quotations (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -388,30 +338,13 @@ CREATE TABLE public.invoices (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
 );
 
--- Calculation Formulas Table
-CREATE TABLE public.calculation_formulas (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  profile_weight_formula TEXT,
-  glass_area_formula TEXT,
-  labour_cost_per_sqft NUMERIC DEFAULT 0,
-  markup_percentage NUMERIC DEFAULT 0,
-  created_by UUID REFERENCES public.profiles(id),
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
-);
-
 -- Row Level Security (RLS) Policies
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.clients ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.window_templates ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.window_designs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.profiles_inventory ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.glass_inventory ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.accessories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.quotations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.quotation_cost_heads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.invoices ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.calculation_formulas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.design_glasses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.design_colors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.gi_tracks ENABLE ROW LEVEL SECURITY;
@@ -445,10 +378,6 @@ CREATE POLICY "clients_update" ON public.clients
 CREATE POLICY "clients_delete" ON public.clients
   FOR DELETE USING (created_by = auth.uid() OR public.is_superadmin());
 
--- Window templates (public read).
-CREATE POLICY "Anyone can view window templates" ON public.window_templates
-  FOR SELECT USING (true);
-
 -- Window designs.
 CREATE POLICY "designs_select" ON public.window_designs
   FOR SELECT USING (created_by = auth.uid() OR public.is_superadmin());
@@ -458,16 +387,6 @@ CREATE POLICY "designs_update" ON public.window_designs
   FOR UPDATE USING (created_by = auth.uid() OR public.is_superadmin());
 CREATE POLICY "designs_delete" ON public.window_designs
   FOR DELETE USING (created_by = auth.uid() OR public.is_superadmin());
-
--- Inventory policies
-CREATE POLICY "Authenticated users can view profiles inventory" ON public.profiles_inventory
-  FOR SELECT USING (auth.role() = 'authenticated');
-
-CREATE POLICY "Authenticated users can view glass inventory" ON public.glass_inventory
-  FOR SELECT USING (auth.role() = 'authenticated');
-
-CREATE POLICY "Authenticated users can view accessories" ON public.accessories
-  FOR SELECT USING (auth.role() = 'authenticated');
 
 -- Quotations.
 CREATE POLICY "quotations_select" ON public.quotations
@@ -657,16 +576,6 @@ FROM auth.users u
 LEFT JOIN public.profiles p ON p.id = u.id
 WHERE u.email = 'admin@gmail.com' AND p.id IS NULL
 ON CONFLICT (id) DO UPDATE SET role = 'superadmin', is_active = TRUE;
-
--- Insert sample window templates
-INSERT INTO public.window_templates (name, category, window_type, default_width, default_height, description) VALUES
-  ('Standard Sliding Window', 'Sliding', 'sliding', 1200, 1200, '2 track sliding window with standard dimensions'),
-  ('Large Sliding Door', 'Sliding', 'sliding', 2400, 2100, '3 track sliding door for balcony'),
-  ('Single Casement Window', 'Casement', 'casement', 900, 1200, 'Single opening casement window'),
-  ('Double Casement Window', 'Casement', 'casement', 1800, 1200, 'Double opening casement window'),
-  ('Fixed Window', 'Fixed', 'fixed', 1200, 900, 'Non-opening fixed window'),
-  ('Main Entry Door', 'Door', 'door', 900, 2100, 'Single panel entry door'),
-  ('Double Entry Door', 'Door', 'door', 1800, 2100, 'Double panel entry door');
 
 -- Design editor seed data -----------------------------------------------------
 

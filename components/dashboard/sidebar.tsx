@@ -7,7 +7,6 @@ import {
   LayoutDashboard,
   FileText,
   Palette,
-  Package,
   Receipt,
   Users,
   Settings,
@@ -31,7 +30,6 @@ interface NavItem {
 const USER_NAV: NavItem[] = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Quotations', href: '/dashboard/quotations', icon: FileText },
-  { name: 'Inventory', href: '/dashboard/inventory', icon: Package, gate: 'inventory' },
   { name: 'Billing', href: '/dashboard/billing', icon: Receipt, gate: 'billing' },
   { name: 'Clients', href: '/dashboard/clients', icon: Users },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
