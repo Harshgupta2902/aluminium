@@ -31,7 +31,6 @@ interface NavItem {
 const USER_NAV: NavItem[] = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Quotations', href: '/dashboard/quotations', icon: FileText },
-  { name: 'Designs', href: '/dashboard/designs', icon: Palette, gate: 'designs' },
   { name: 'Inventory', href: '/dashboard/inventory', icon: Package, gate: 'inventory' },
   { name: 'Billing', href: '/dashboard/billing', icon: Receipt, gate: 'billing' },
   { name: 'Clients', href: '/dashboard/clients', icon: Users },
