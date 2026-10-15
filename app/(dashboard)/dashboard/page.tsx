@@ -1,9 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { StatCard } from '@/components/dashboard/stat-card'
-import { RecentQuotations } from '@/components/dashboard/recent-quotations'
 import { QuotationChart } from '@/components/dashboard/quotation-chart'
 import { PageHeader } from '@/components/dashboard/page-header'
-import { FileText, IndianRupee, Palette, Send } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { FileText, IndianRupee, FileStack, Users, Plus, UserPlus } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -71,18 +71,29 @@ export default async function DashboardPage() {
   const revenueChange = lastMonthTotal ? 
     Math.round((revenueMTD - lastMonthTotal) / lastMonthTotal * 100) : 0
 
-  // Fetch designs created this month
-  const { count: designsCount } = await supabase
-    .from('window_designs')
-    .select('*', { count: 'exact', head: true })
-    .gte('created_at', startOfMonth.toISOString())
-
-  // Fetch recent quotations
-  const { data: recentQuotations } = await supabase
+  // Totals.
+  const { count: totalQuotations } = await supabase
     .from('quotations')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(5)
+    .select('*', { count: 'exact', head: true })
+
+  const { count: totalClients } = await supabase
+    .from('clients')
+    .select('*', { count: 'exact', head: true })
+
+  // This month: quote count + pipeline value (all quotes, not just approved).
+  const { data: monthQuotes } = await supabase
+    .from('quotations')
+    .select('total_amount, grand_total')
+    .gte('created_at', startOfMonth.toISOString())
+    .lte('created_at', endOfMonth.toISOString())
+
+  const monthCount = monthQuotes?.length ?? 0
+  const pipelineMTD =
+    monthQuotes?.reduce(
+      (sum, q) => sum + (Number(q.grand_total) || Number(q.total_amount) || 0),
+      0
+    ) || 0
+  const avgQuote = monthCount > 0 ? Math.round(pipelineMTD / monthCount) : 0
 
   // Generate chart data (last 7 months)
   const chartData = []
@@ -114,12 +125,6 @@ export default async function DashboardPage() {
             New Quotation
           </Button>
         </Link>
-        <Link href="/design/new">
-          <Button variant="outline">
-            <Palette className="h-4 w-4" />
-            New Design
-          </Button>
-        </Link>
       </PageHeader>
 
       {/* Stats Grid */}
@@ -139,24 +144,49 @@ export default async function DashboardPage() {
           trend={revenueChange >= 0 ? 'up' : 'down'}
         />
         <StatCard
-          title="Designs Created"
-          value={designsCount || 0}
-          changeLabel="This month"
-          icon={Palette}
+          title="Total Quotations"
+          value={totalQuotations || 0}
+          changeLabel="All time"
+          icon={FileStack}
         />
         <StatCard
-          title="PDF Sent via WA"
-          value={todayCount || 0}
-          changeLabel="Today"
-          icon={Send}
+          title="Total Clients"
+          value={totalClients || 0}
+          changeLabel="All time"
+          icon={Users}
         />
       </div>
 
-      {/* Chart */}
-      <QuotationChart data={chartData} />
+      {/* Chart + side panels */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <QuotationChart data={chartData} />
+        </div>
 
-      {/* Recent Quotations */}
-      <RecentQuotations quotations={recentQuotations || []} />
+        <div className="space-y-4">
+          {/* This month summary */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">This Month</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 pt-0">
+              <SummaryRow label="Quotations created" value={String(monthCount)} />
+              <SummaryRow label="Pipeline value" value={formatCurrency(pipelineMTD)} />
+              <SummaryRow label="Avg. quote value" value={formatCurrency(avgQuote)} />
+              <SummaryRow label="Approved revenue" value={formatCurrency(revenueMTD)} />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SummaryRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className="text-sm font-semibold text-heading">{value}</span>
     </div>
   )
 }
