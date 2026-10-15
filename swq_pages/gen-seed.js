@@ -100,6 +100,11 @@ L.push('');
 // Only real profile groups (skip meshes/slider_type — those are pick-lists
 // already covered by glass/accessories).
 const PROFILE_GROUPS = ['track', 'sash', 'mesh_sash', 'interlock', 'clip', 'mesh_clip', 'mullion', 'slim_interlock', 'slim_huricane', 'outer_top', 'outer_left'];
+// Industry-standard weight per metre (kg/m) by profile group; editable later.
+const GROUP_WEIGHT = {
+  track: 1.0, sash: 0.75, mesh_sash: 0.55, interlock: 0.6, slim_interlock: 0.45,
+  slim_huricane: 0.5, mullion: 1.1, clip: 0.3, mesh_clip: 0.25, outer_top: 1.0, outer_left: 1.0,
+};
 L.push('  -- ---- Series-scoped profiles (series_profiles) ----');
 L.push('  -- Each row attaches to its series by looking up external_id for this owner.');
 let profCount = 0;
@@ -115,9 +120,10 @@ catalog.series.forEach((s) => {
       const name = p.name || p.profile_code || grp;
       const thickness = Number(p.thickness);
       const thVal = Number.isFinite(thickness) && thickness > 0 ? thickness : 'NULL';
+      const wpm = GROUP_WEIGHT[grp] ?? 0.6;
       L.push(
-        `  INSERT INTO public.series_profiles (series_id, profile_group, profile_code, name, thickness, sort_order, created_by) ` +
-        `SELECT id, ${q(grp)}, ${code}, ${q(name)}, ${thVal}, ${order}, owner FROM public.aluminium_series WHERE external_id = ${q(s.id)} AND created_by = owner;`
+        `  INSERT INTO public.series_profiles (series_id, profile_group, profile_code, name, thickness, weight_per_meter, sort_order, created_by) ` +
+        `SELECT id, ${q(grp)}, ${code}, ${q(name)}, ${thVal}, ${wpm}, ${order}, owner FROM public.aluminium_series WHERE external_id = ${q(s.id)} AND created_by = owner;`
       );
     }
   }

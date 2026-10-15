@@ -196,6 +196,7 @@ CREATE TABLE public.series_profiles (
   profile_code TEXT,
   name TEXT NOT NULL,
   thickness NUMERIC,
+  weight_per_meter NUMERIC NOT NULL DEFAULT 0,  -- kg/m; drives the weight-based BOM cost
   is_active BOOLEAN NOT NULL DEFAULT TRUE,
   sort_order INTEGER NOT NULL DEFAULT 0,
   created_by UUID REFERENCES public.profiles(id),
