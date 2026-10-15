@@ -779,12 +779,16 @@ BEGIN
   INSERT INTO public.aluminium_cost_settings (
     user_id, aluminium_rate, profit_percentage, labour_charge, coating,
     corner_cleat, weather_strip, ss_corner_con, screw, rail, fastner,
-    slider_width_overlap, slider_height_overlap, slider_glass_overlap,
+    dustpad, outer_clit, sash_clit, l_pati, lockguide_cap, interlock_cap,
+    bubstopper, ugid, lockguid, water_drainage, brassrubber, suitbelt,
+    slider_width_overlap, slider_height_overlap, slider_glass_overlap, slim_width_overlap,
     casement_width_overlap, casement_height_overlap, casement_glass_overlap
   ) VALUES (
     owner, 500, 0, 40, 0,
     30, 50, 50, 2, 100, 5,
-    25, 18, 16,
+    10, 30, 30, 6, 10, 15,
+    25, 8, 8, 10, 6, 0,
+    25, 18, 16, 25,
     12, 12, 20
   )
   ON CONFLICT (user_id) DO UPDATE SET
@@ -797,7 +801,20 @@ BEGIN
     ss_corner_con = EXCLUDED.ss_corner_con,
     screw = EXCLUDED.screw,
     rail = EXCLUDED.rail,
-    fastner = EXCLUDED.fastner;
+    fastner = EXCLUDED.fastner,
+    dustpad = EXCLUDED.dustpad,
+    outer_clit = EXCLUDED.outer_clit,
+    sash_clit = EXCLUDED.sash_clit,
+    l_pati = EXCLUDED.l_pati,
+    lockguide_cap = EXCLUDED.lockguide_cap,
+    interlock_cap = EXCLUDED.interlock_cap,
+    bubstopper = EXCLUDED.bubstopper,
+    ugid = EXCLUDED.ugid,
+    lockguid = EXCLUDED.lockguid,
+    water_drainage = EXCLUDED.water_drainage,
+    brassrubber = EXCLUDED.brassrubber,
+    suitbelt = EXCLUDED.suitbelt,
+    slim_width_overlap = EXCLUDED.slim_width_overlap;
 
   RAISE NOTICE 'Seed complete for owner %', owner;
 END $$;

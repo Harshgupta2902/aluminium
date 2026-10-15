@@ -23,6 +23,7 @@ export type AccessoryKind =
   | 'reinforcement'
   | 'slim_interlock'
   | 'friction_stay'
+  | 'common'
 
 export const ACCESSORY_KINDS: { kind: AccessoryKind; label: string; group: string }[] = [
   { kind: 'sash', label: 'Sash', group: 'Core' },
@@ -40,9 +41,10 @@ export const ACCESSORY_KINDS: { kind: AccessoryKind; label: string; group: strin
   { kind: 'mesh_clip', label: 'Mesh Clip', group: 'Mesh' },
   { kind: 'mesh_handle', label: 'Mesh Handle', group: 'Mesh' },
   { kind: 'mesh_slim', label: 'Mesh Slim', group: 'Mesh' },
+  { kind: 'common', label: 'Common / Consumables', group: 'Common' },
 ]
 
-const GROUP_ORDER = ['Core', 'Slim profile', 'Casement', 'Mesh'] as const
+const GROUP_ORDER = ['Core', 'Slim profile', 'Casement', 'Mesh', 'Common'] as const
 
 interface AccessoryRow {
   id: string

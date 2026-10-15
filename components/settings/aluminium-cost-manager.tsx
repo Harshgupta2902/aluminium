@@ -18,12 +18,25 @@ interface CostSettings {
   screw: number
   rail: number
   fastner: number
+  dustpad: number
+  outer_clit: number
+  sash_clit: number
+  l_pati: number
+  lockguide_cap: number
+  interlock_cap: number
+  bubstopper: number
+  ugid: number
+  lockguid: number
+  water_drainage: number
+  brassrubber: number
+  suitbelt: number
   slider_width_overlap: number
   slider_height_overlap: number
   slider_glass_overlap: number
   casement_width_overlap: number
   casement_height_overlap: number
   casement_glass_overlap: number
+  slim_width_overlap: number
 }
 
 const DEFAULTS: CostSettings = {
@@ -37,12 +50,25 @@ const DEFAULTS: CostSettings = {
   screw: 0,
   rail: 0,
   fastner: 0,
+  dustpad: 0,
+  outer_clit: 0,
+  sash_clit: 0,
+  l_pati: 0,
+  lockguide_cap: 0,
+  interlock_cap: 0,
+  bubstopper: 0,
+  ugid: 0,
+  lockguid: 0,
+  water_drainage: 0,
+  brassrubber: 0,
+  suitbelt: 0,
   slider_width_overlap: 25,
   slider_height_overlap: 18,
   slider_glass_overlap: 16,
   casement_width_overlap: 12,
   casement_height_overlap: 12,
   casement_glass_overlap: 20,
+  slim_width_overlap: 25,
 }
 
 const COST_FIELDS: { key: keyof CostSettings; label: string; unit: string }[] = [
@@ -56,12 +82,25 @@ const COST_FIELDS: { key: keyof CostSettings; label: string; unit: string }[] = 
   { key: 'screw', label: 'Screw', unit: 'Rs / Piece' },
   { key: 'rail', label: 'Rail', unit: 'Rs / Meter' },
   { key: 'fastner', label: 'Fastener', unit: 'Rs / Piece' },
+  { key: 'dustpad', label: 'Dustpad', unit: 'Rs / Meter' },
+  { key: 'outer_clit', label: 'Outer Clit', unit: 'Rs / Piece' },
+  { key: 'sash_clit', label: 'Shutter Clit', unit: 'Rs / Piece' },
+  { key: 'l_pati', label: 'L Pati', unit: 'Rs / Piece' },
+  { key: 'lockguide_cap', label: 'Lockguide Cap', unit: 'Rs / Piece' },
+  { key: 'interlock_cap', label: 'Interlock Cap', unit: 'Rs / Piece' },
+  { key: 'bubstopper', label: 'Bub Stopper', unit: 'Rs / Piece' },
+  { key: 'ugid', label: 'Ugid', unit: 'Rs / Piece' },
+  { key: 'lockguid', label: 'Lockguid', unit: 'Rs / Piece' },
+  { key: 'water_drainage', label: 'Water Drainage', unit: 'Rs / Piece' },
+  { key: 'brassrubber', label: 'Brush Rubber', unit: 'Rs / Meter' },
+  { key: 'suitbelt', label: 'Suit Bolt', unit: 'Rs / Piece' },
 ]
 
 const OVERLAP_FIELDS: { key: keyof CostSettings; label: string }[] = [
   { key: 'slider_width_overlap', label: 'Slider width' },
   { key: 'slider_height_overlap', label: 'Slider height' },
   { key: 'slider_glass_overlap', label: 'Slider glass' },
+  { key: 'slim_width_overlap', label: 'Slim width' },
   { key: 'casement_width_overlap', label: 'Casement width' },
   { key: 'casement_height_overlap', label: 'Casement height' },
   { key: 'casement_glass_overlap', label: 'Casement glass' },
