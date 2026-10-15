@@ -15,11 +15,30 @@ import {
   type PanelAccessory,
 } from '@/lib/design-editor/frame-model'
 import { priceFrame, type PricingConfig } from '@/lib/design-editor/frame-pricing'
+import {
+  priceFrameBom,
+  resolveBomInputs,
+  type CostSettings,
+} from '@/lib/design-editor/bom-pricing'
 import { formatCurrency } from '@/lib/utils'
 
+/** A profile series with its series-scoped profiles (track/sash/interlock…). */
+export interface SeriesOption {
+  id: string
+  company: string
+  series_name: string
+  profiles: {
+    profile_group: string
+    profile_code: string | null
+    name: string
+    weight_per_meter: number
+  }[]
+}
+
 export interface EditorLists {
-  glasses: { name: string }[]
+  glasses: { name: string; rate: number }[]
   colors: { name: string }[]
+  series: SeriesOption[]
   tracks: { name: string }[]
   sashes: { name: string }[]
   interlocks: { name: string }[]
@@ -62,9 +81,11 @@ function kindsForType(type: WindowTypeId, meshOn: boolean): typeof SECTION_ACCES
 
 export function FrameDetailsPanel({
   lists,
+  costSettings,
   onClose,
 }: {
   lists: EditorLists
+  costSettings?: Partial<CostSettings>
   onClose?: () => void
 }) {
   const doc = useFrameStore((s) => s.doc)
@@ -75,8 +96,24 @@ export function FrameDetailsPanel({
 
   const details = doc.details
   const selected = doc.sections.find((s) => s.id === selectedId) ?? null
-  const price = priceFrame(doc, lists.pricing)
   const selectSection = useFrameStore((s) => s.selectSection)
+
+  // Price with the weight-based BOM engine when a series is selected; else the
+  // legacy area × type-rate engine.
+  const useBom = Boolean(details.seriesId)
+  const price = priceFrame(doc, lists.pricing)
+  const bom = useBom
+    ? priceFrameBom(
+        doc,
+        resolveBomInputs({
+          cost: costSettings,
+          series: lists.series,
+          seriesId: details.seriesId,
+          glasses: lists.glasses,
+          glassType: details.glassType,
+        })
+      )
+    : null
 
   const issues: string[] = []
   if (!details.designRef.trim()) issues.push('Design Ref is required')
@@ -255,12 +292,22 @@ export function FrameDetailsPanel({
                   <option value="upvc">uPVC</option>
                 </Select>
               </Field>
-              <Field label="Series" hint="optional">
-                <Input
-                  value={details.series ?? ''}
-                  placeholder="e.g. 2721"
-                  onChange={(e) => patchDetails({ series: e.target.value })}
-                />
+              <Field label="Series" hint="drives pricing">
+                <Select
+                  value={details.seriesId ?? ''}
+                  onChange={(e) => {
+                    const id = e.target.value
+                    const s = lists.series.find((x) => x.id === id)
+                    patchDetails({ seriesId: id || undefined, series: s?.series_name })
+                  }}
+                >
+                  <option value="">Select series…</option>
+                  {lists.series.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.company} · {s.series_name}
+                    </option>
+                  ))}
+                </Select>
               </Field>
             </div>
 
@@ -285,21 +332,52 @@ export function FrameDetailsPanel({
 
         {/* Live pricing (pre-tax base; GST + install are applied on the
             quotation's Pricing page, not per design). */}
-        <div className="space-y-1 rounded-lg bg-gray-900 p-3 text-white">
-          <Row label="Area" value={`${price.areaSqft.toFixed(2)} Sqft`} />
-          {price.accessoriesTotal > 0 && (
-            <Row label="Accessories" value={formatCurrency(price.accessoriesTotal)} />
-          )}
-          <Row label="Base (per unit)" value={formatCurrency(price.subtotal)} />
-          {price.quantity > 1 && <Row label="Qty" value={`× ${price.quantity}`} />}
-          <div className="mt-1 flex items-center justify-between border-t border-white/20 pt-1 text-sm font-bold">
-            <span>Base Total</span>
-            <span>{formatCurrency(price.subtotal * price.quantity)}</span>
+        {bom ? (
+          <div className="space-y-1 rounded-lg bg-gray-900 p-3 text-white">
+            <div className="mb-1 flex items-center justify-between text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
+              <span>Weight-based BOM</span>
+              <span>{bom.weightKg.toFixed(1)} kg</span>
+            </div>
+            <Row label="Area" value={`${bom.areaSqft.toFixed(2)} Sqft`} />
+            <Row label="Aluminium" value={formatCurrency(bom.aluminiumCost)} />
+            {bom.coatingCost > 0 && <Row label="Coating" value={formatCurrency(bom.coatingCost)} />}
+            <Row label="Glass" value={formatCurrency(bom.glassCost)} />
+            {bom.hardwareCost > 0 && <Row label="Hardware" value={formatCurrency(bom.hardwareCost)} />}
+            {bom.consumablesCost > 0 && <Row label="Consumables" value={formatCurrency(bom.consumablesCost)} />}
+            <Row label="Labour" value={formatCurrency(bom.labourCost)} />
+            <div className="mt-1 flex items-center justify-between border-t border-white/20 pt-1 text-xs">
+              <span>Subtotal</span>
+              <span>{formatCurrency(bom.subtotal)}</span>
+            </div>
+            {bom.profit > 0 && <Row label={`Profit`} value={formatCurrency(bom.profit)} />}
+            {bom.quantity > 1 && <Row label="Qty" value={`× ${bom.quantity}`} />}
+            <div className="mt-1 flex items-center justify-between border-t border-white/20 pt-1 text-sm font-bold">
+              <span>Base Total</span>
+              <span>{formatCurrency(bom.total)}</span>
+            </div>
+            <p className="pt-0.5 text-[10px] leading-snug text-white/50">
+              {bom.ratePerSqft > 0 && `≈ ${formatCurrency(bom.ratePerSqft)}/sqft · `}
+              GST &amp; installation are applied on the quotation&apos;s Pricing page.
+            </p>
           </div>
-          <p className="pt-0.5 text-[10px] leading-snug text-white/50">
-            GST, installation &amp; other charges are applied on the quotation&apos;s Pricing page.
-          </p>
-        </div>
+        ) : (
+          <div className="space-y-1 rounded-lg bg-gray-900 p-3 text-white">
+            <Row label="Area" value={`${price.areaSqft.toFixed(2)} Sqft`} />
+            {price.accessoriesTotal > 0 && (
+              <Row label="Accessories" value={formatCurrency(price.accessoriesTotal)} />
+            )}
+            <Row label="Base (per unit)" value={formatCurrency(price.subtotal)} />
+            {price.quantity > 1 && <Row label="Qty" value={`× ${price.quantity}`} />}
+            <div className="mt-1 flex items-center justify-between border-t border-white/20 pt-1 text-sm font-bold">
+              <span>Base Total</span>
+              <span>{formatCurrency(price.subtotal * price.quantity)}</span>
+            </div>
+            <p className="pt-0.5 text-[10px] leading-snug text-white/50">
+              Select a Series for weight-based pricing. GST &amp; installation are applied on the
+              quotation&apos;s Pricing page.
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="space-y-2 border-t border-gray-200 bg-gray-50/60 p-4">

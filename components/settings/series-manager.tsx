@@ -53,6 +53,7 @@ interface ProfileRow {
   profile_code: string | null
   name: string
   thickness: number | null
+  weight_per_meter: number | null
   is_active: boolean
   sort_order: number
 }
@@ -318,6 +319,7 @@ function SeriesProfiles({
         profile_group: group,
         name: 'New',
         profile_code: '',
+        weight_per_meter: 0.6,
         sort_order: profiles.filter((p) => p.profile_group === group).length + 1,
         created_by: userId,
       },
@@ -397,6 +399,18 @@ function SeriesProfiles({
                       setProfiles((prev) => prev.map((x) => (x.id === p.id ? { ...x, thickness: Number(e.target.value) } : x)))
                     }
                     onBlur={(e) => patch(p.id, { thickness: e.target.value === '' ? null : Number(e.target.value) })}
+                    className="h-7 w-16 text-xs"
+                  />
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={p.weight_per_meter ?? ''}
+                    placeholder="kg/m"
+                    title="Weight per metre (kg/m) — drives aluminium cost"
+                    onChange={(e) =>
+                      setProfiles((prev) => prev.map((x) => (x.id === p.id ? { ...x, weight_per_meter: Number(e.target.value) } : x)))
+                    }
+                    onBlur={(e) => patch(p.id, { weight_per_meter: e.target.value === '' ? 0 : Number(e.target.value) })}
                     className="h-7 w-16 text-xs"
                   />
                   <button

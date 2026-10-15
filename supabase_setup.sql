@@ -66,6 +66,8 @@ CREATE TABLE public.window_designs (
   hardware JSONB DEFAULT '[]'::JSONB,
   preview_image TEXT,
   editor_document JSONB,
+  -- Per-section weight-based BOM breakdown (profiles cut-list + cost lines).
+  panel_details JSONB,
   -- A design belongs to a quotation (nullable so the standalone editor works).
   -- FK added after the quotations table is created (see ALTER below).
   quotation_id UUID,

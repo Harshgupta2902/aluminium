@@ -52,13 +52,24 @@ Ordered by priority. Details for each are in the sections below. Check off as do
   - [ ] **T0.4c** Extend `gen-seed.js` cost-head mapping + reseed so values load.
 
 ### Phase 1 — close the costing gap (biggest correctness issue)
-- [ ] **T1.1** Build the Company+Series profile catalog so hardware V-codes map
-  to a series. See §3.2.
-- [ ] **T1.2** Extend the mesh model (sash/type/handle/clip/slim/divider +
-  roller) and emit a costed mesh panel. See §3.1.
-- [ ] **T1.3** Rework `lib/design-editor/frame-pricing.ts` to a **per-panel BOM**
-  engine (sum real catalog piece costs). See §3.3.
-- [ ] **T1.4** Persist a `data[]` per-panel costed breakdown on each design. See §3.4.
+- [x] **T1.1** Company+Series profile catalog wired into the designer: real
+  Series dropdown (`aluminium_series`) + series-scoped profiles
+  (`series_profiles`) resolved per design. `FrameDetails.seriesId` drives it.
+- [~] **T1.2** Mesh: cut-list + hardware are summed by the BOM engine, but a
+  fully separate costed mesh panel (meshSash/clip/slim as its own M-panel) is
+  still simplified. Revisit if mesh accuracy matters.
+- [x] **T1.3** New **weight-based BOM engine** `lib/design-editor/bom-pricing.ts`:
+  `aluminium = Σ(cut_length_m × weight_per_meter) × rate`, + coating + glass +
+  hardware + consumables + labour + profit%. Replaces area×type-rate when a
+  series is selected (legacy engine kept as fallback). Calibrated to ~0.91 of a
+  real sample on first pass; `weight_per_meter` is editable per profile to tune.
+- [x] **T1.4** Per-section BOM breakdown persisted to
+  `window_designs.panel_details` (JSONB) on save; live breakdown shown in the
+  designer's details panel (weight, aluminium, glass, hardware, labour, profit).
+
+> **DB (Phase 1, applied + merged):** `series_profiles.weight_per_meter`
+> (kg/m, group-default backfill) and `window_designs.panel_details` (JSONB).
+> `weight_per_meter` editable in Settings → Aluminium Coating per profile.
 
 ### Phase 2 — missing revenue/workflow modules
 - [ ] **T2.1** WhatsApp send (`/whatsapp`) — one-click PDF to client.

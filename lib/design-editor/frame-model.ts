@@ -377,9 +377,11 @@ export interface FrameDetails {
   sash?: string
   interlock?: string
   lock?: string
-  /** Optional profile material + series (metadata; does not change pricing). */
+  /** Optional profile material. */
   material?: 'aluminium' | 'upvc'
+  /** Selected profile series name (display) + id (drives BOM profile weights). */
   series?: string
+  seriesId?: string
 }
 
 /**

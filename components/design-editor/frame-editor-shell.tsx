@@ -8,6 +8,12 @@ import { Save, Loader2 } from 'lucide-react'
 import { useFrameStore } from '@/store/frame-editor'
 import { type FrameDocument } from '@/lib/design-editor/frame-model'
 import { framePersistedPricing, DEFAULT_PRICING, type PricingConfig } from '@/lib/design-editor/frame-pricing'
+import {
+  framePersistedBom,
+  resolveBomInputs,
+  type CostSettings,
+  DEFAULT_COST_SETTINGS,
+} from '@/lib/design-editor/bom-pricing'
 import { FrameToolRail } from './frame-tool-rail'
 import { FrameCanvas } from './frame-canvas'
 import { FrameToolbar } from './frame-toolbar'
@@ -15,18 +21,19 @@ import { FrameDetailsPanel, type EditorLists } from './frame-details-panel'
 
 const FALLBACK_LISTS: EditorLists = {
   glasses: [
-    { name: '4MM CLEAR GLASS' },
-    { name: '5MM CLEAR GLASS' },
-    { name: '5MM CLEAR TOUGHENED GLASS' },
-    { name: '6MM TINTED GLASS' },
-    { name: '6MM TOUGHENED GLASS' },
-    { name: '8MM TOUGHENED GLASS' },
-    { name: 'DOUBLE GLAZED UNIT' },
+    { name: '4MM CLEAR GLASS', rate: 75 },
+    { name: '5MM CLEAR GLASS', rate: 90 },
+    { name: '5MM CLEAR TOUGHENED GLASS', rate: 90 },
+    { name: '6MM TINTED GLASS', rate: 180 },
+    { name: '6MM TOUGHENED GLASS', rate: 110 },
+    { name: '8MM TOUGHENED GLASS', rate: 150 },
+    { name: 'DOUBLE GLAZED UNIT', rate: 500 },
   ],
   colors: [
     { name: 'White' }, { name: 'Black' }, { name: 'Grey' }, { name: 'Brown' },
     { name: 'Bronze' }, { name: 'Wood Finish' }, { name: 'Anodized' },
   ],
+  series: [],
   tracks: [{ name: '2 Track' }, { name: '3 Track' }, { name: 'Slim Track' }],
   sashes: [{ name: 'Standard Sash' }, { name: 'Slim Sash' }],
   interlocks: [{ name: 'Standard Interlock' }, { name: 'Slim Interlock' }],
@@ -51,6 +58,7 @@ export function FrameEditorShell({
   const details = doc.details
 
   const [lists, setLists] = useState<EditorLists>(FALLBACK_LISTS)
+  const [costSettings, setCostSettings] = useState<Partial<CostSettings>>(DEFAULT_COST_SETTINGS)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -65,9 +73,9 @@ export function FrameEditorShell({
     let active = true
     async function fetchLists() {
       try {
-        const [glasses, colors, tracks, sashes, interlocks, locks, rates, cfg, accessories] =
+        const [glasses, colors, tracks, sashes, interlocks, locks, rates, cfg, accessories, seriesRows, profileRows] =
           await Promise.all([
-            supabase.from('design_glasses').select('name').eq('is_active', true).order('sort_order'),
+            supabase.from('design_glasses').select('name, rate_per_sqft').eq('is_active', true).order('sort_order'),
             supabase.from('design_colors').select('name').eq('is_active', true).order('sort_order'),
             supabase.from('gi_tracks').select('name').eq('is_active', true).order('sort_order'),
             supabase.from('gi_sashes').select('name').eq('is_active', true).order('sort_order'),
@@ -80,8 +88,25 @@ export function FrameEditorShell({
               .select('id, kind, name, price')
               .eq('is_active', true)
               .order('sort_order'),
+            supabase
+              .from('aluminium_series')
+              .select('id, company, series_name')
+              .eq('is_active', true)
+              .order('sort_order'),
+            supabase
+              .from('series_profiles')
+              .select('series_id, profile_group, profile_code, name, weight_per_meter')
+              .eq('is_active', true)
+              .order('sort_order'),
           ])
         if (!active) return
+
+        // Per-user aluminium cost settings for the BOM engine (own row).
+        const { data: costRow } = await supabase
+          .from('aluminium_cost_settings')
+          .select('*')
+          .maybeSingle()
+        if (active && costRow) setCostSettings(costRow as Partial<CostSettings>)
 
         // If the tables aren't there yet, keep fallbacks.
         if (!glasses.data) return
@@ -94,9 +119,31 @@ export function FrameEditorShell({
           installPercentage: Number(cfg.data?.install_percentage ?? DEFAULT_PRICING.installPercentage),
         }
 
+        // Group series_profiles under their series.
+        const profilesBySeries = new Map<string, EditorLists['series'][number]['profiles']>()
+        for (const p of profileRows.data ?? []) {
+          const list = profilesBySeries.get(p.series_id) ?? []
+          list.push({
+            profile_group: p.profile_group,
+            profile_code: p.profile_code,
+            name: p.name,
+            weight_per_meter: Number(p.weight_per_meter) || 0,
+          })
+          profilesBySeries.set(p.series_id, list)
+        }
+        const series: EditorLists['series'] = (seriesRows.data ?? []).map((s) => ({
+          id: s.id,
+          company: s.company,
+          series_name: s.series_name,
+          profiles: profilesBySeries.get(s.id) ?? [],
+        }))
+
         setLists({
-          glasses: glasses.data?.length ? glasses.data : FALLBACK_LISTS.glasses,
+          glasses: glasses.data?.length
+            ? glasses.data.map((g) => ({ name: g.name, rate: Number(g.rate_per_sqft) || 0 }))
+            : FALLBACK_LISTS.glasses,
           colors: colors.data?.length ? colors.data : FALLBACK_LISTS.colors,
+          series,
           tracks: tracks.data?.length ? tracks.data : FALLBACK_LISTS.tracks,
           sashes: sashes.data?.length ? sashes.data : FALLBACK_LISTS.sashes,
           interlocks: interlocks.data?.length ? interlocks.data : FALLBACK_LISTS.interlocks,
@@ -141,22 +188,49 @@ export function FrameEditorShell({
         return
       }
 
-      const pricing = framePersistedPricing(current, lists.pricing)
       const first = current.sections.find((s) => s.window)!.window!
+
+      // Use the weight-based BOM engine when a series is selected (its profiles
+      // give real weights); otherwise fall back to the area × type-rate engine.
+      const useBom = Boolean(current.details.seriesId)
+      let areaSqft: number
+      let ratePerSqft: number
+      let amount: number
+      let breakdown: unknown = null
+      if (useBom) {
+        const bomInputs = resolveBomInputs({
+          cost: costSettings,
+          series: lists.series,
+          seriesId: current.details.seriesId,
+          glasses: lists.glasses,
+          glassType: current.details.glassType,
+        })
+        const p = framePersistedBom(current, bomInputs)
+        areaSqft = p.areaSqft
+        ratePerSqft = p.ratePerSqft
+        amount = p.amount
+        breakdown = p.breakdown
+      } else {
+        const p = framePersistedPricing(current, lists.pricing)
+        areaSqft = p.areaSqft
+        ratePerSqft = p.ratePerSqft
+        amount = p.amount
+      }
 
       const row = {
         name: current.details.designName || current.details.designRef || 'Untitled',
         window_type: first.type,
         width: current.width,
         height: current.height,
-        profile_type: 'aluminium',
+        profile_type: current.details.material ?? 'aluminium',
         glass_type: current.details.glassType || 'clear',
         glass_thickness: 5,
         color: current.details.colour,
         editor_document: current,
-        area_sqft: pricing.areaSqft,
-        rate_per_sqft: pricing.ratePerSqft,
-        amount: pricing.amount,
+        panel_details: breakdown,
+        area_sqft: areaSqft,
+        rate_per_sqft: ratePerSqft,
+        amount,
         created_by: user.id,
       }
 
@@ -235,7 +309,7 @@ export function FrameEditorShell({
             )}
           </div>
         </div>
-        <FrameDetailsPanel lists={lists} />
+        <FrameDetailsPanel lists={lists} costSettings={costSettings} />
       </div>
     </div>
   )
