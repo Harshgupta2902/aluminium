@@ -1,0 +1,3935 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn">
+        <link rel="manifest" href="/manifest.json" />
+
+        <title>Soft Window</title>
+
+        <link href="https://www.softwinquote.com/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://www.softwinquote.com/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://www.softwinquote.com/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(function(registration) {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        })
+                        .catch(function(error) {
+                            console.error('Service Worker registration failed:', error);
+                        });
+                });
+            }
+        </script>
+        <style>
+            .container-xxl{
+                max-width: unset;
+            }
+            .topbar .topbar-custom .topbar-item, .topbar{
+                height: unset;
+                padding: 5px 0px;
+            }
+            .page-wrapper .page-content{
+                height: 80px;
+                margin-top: 100px
+            }
+        </style>
+    </head>
+
+    <body class="font-sans antialiased">
+
+
+
+            <div class="topbar d-print-none">
+            <div class="container-xxl">
+                <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">
+
+
+                    <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+                        <li>
+                            <button class="nav-link mobile-menu-btn nav-icon" id="togglemenu">
+                                <i class="iconoir-menu-scale"></i>
+                            </button>
+                        </li>
+
+                    </ul>
+                    <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+
+
+
+
+
+
+                        <li class="dropdown topbar-item">
+                                                    <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <img src="/storage/logos/UogUXXGOGpdRwOCA1BWSJIvsZ2dHNbV4namaVZfB.jpg" alt="" class="thumb-lg rounded-circle">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end py-0">
+                                <div class="d-flex align-items-center dropdown-item py-2 bg-secondary-subtle">
+                                    <div class="flex-shrink-0">
+
+
+                                        <img src="/storage/logos/UogUXXGOGpdRwOCA1BWSJIvsZ2dHNbV4namaVZfB.jpg" alt="" class="thumb-md rounded-circle">
+                                    </div>
+                                    <div class="flex-grow-1 ms-2 text-truncate align-self-center">
+
+                                    </div><!--end media-body-->
+                                </div>
+                                <div class="dropdown-divider mt-0"></div>
+
+                                <div class="dropdown-divider mb-0"></div>
+                                <a class="dropdown-item text-danger" href="/logout"><i class="las la-power-off fs-18 me-1 align-text-bottom"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul><!--end topbar-nav-->
+                </nav>
+                <!-- end navbar-->
+            </div>
+        </div>
+
+      
+
+
+                                                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
+
+<style>
+    .startbar {
+        background: linear-gradient(180deg, #0b1b33 0%, #09162b 100%);
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .startbar .brand {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        padding: 8px 14px;
+        overflow: hidden;
+    }
+
+    .startbar .softmark-logo img {
+        width: 150px;
+        filter: brightness(1.05);
+        transition: width .3s ease, opacity .3s ease;
+        display: block;
+    }
+
+    /* Collapsed: shrink logo smoothly */
+    body[data-sidebar-size="collapsed"] .startbar:not(:hover) .softmark-logo img {
+        width: 36px;
+        opacity: 0.85;
+    }
+
+    /* Override framework's width:0 on logo-lg so our logo stays visible */
+    body[data-sidebar-size="collapsed"] .startbar:not(:hover) .brand .logo .logo-lg {
+        width: auto !important;
+        margin-left: 0;
+    }
+
+    .startbar .startbar-menu .navbar-nav {
+        padding: 10px 8px 16px;
+        gap: 2px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .menu-title {
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        color: rgba(222, 233, 255, 0.55);
+        font-weight: 600;
+        padding: 14px 12px 8px;
+        text-transform: uppercase;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-separator {
+        list-style: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin: 10px 12px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(240, 246, 255, 0.86);
+        padding: 9px 12px;
+        margin: 0 4px;
+        border-bottom: 0;
+        transition: all .18s ease;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link.active,
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link[aria-expanded="true"] {
+        background: #132e58;
+        color: #fff;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        opacity: 0.95;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link span {
+        line-height: 1.2;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav.flex-column .nav-link {
+        color: rgba(240, 246, 255, 0.75);
+        font-size: 12px;
+        padding-left: 34px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav.flex-column .nav-link:hover {
+        color: #fff;
+    }
+
+    /* CRMS SSO: submit button living inside a nav form - must look like a link */
+    .startbar .startbar-menu .navbar-nav .nav-item .crms-sso-link {
+        background: transparent;
+        border: 0;
+        width: 100%;
+        text-align: left;
+        margin: 0;
+        border-radius: 0;
+        cursor: pointer;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .crms-sso-link:hover {
+        background: rgba(255, 255, 255, 0.16);
+    }
+
+</style>
+
+
+
+
+<div class="startbar d-print-none">
+            <!--start brand-->
+            <div class="brand">
+                <a href="/dashboard" class="logo">
+                    <span class="logo-lg">
+                        <div class="softmark-logo">
+                            <img src="https://www.softwinquote.com/images/login-logo3.png" alt="brand-logo">
+                        </div>
+                    </span>
+                </a>
+            </div>
+            <!--end brand-->
+            <!--start startbar-menu-->
+            <div class="startbar-menu" data-simplebar>
+                <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
+<div class="simplebar-wrapper" style="margin: 0px -16px -16px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
+        <div class="simplebar-content" >
+                    <div class="d-flex align-items-start flex-column w-100">
+                        <!-- Navigation -->
+
+
+<!-- SVG SPRITE -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <!-- Dashboard -->
+  <symbol id="i-dashboard" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="8" height="8" rx="2"/>
+    <rect x="13" y="3" width="8" height="5" rx="2"/>
+    <rect x="13" y="10" width="8" height="11" rx="2"/>
+    <rect x="3" y="13" width="8" height="8" rx="2"/>
+  </symbol>
+
+  <!-- Quotes -->
+  <symbol id="i-quotes" viewBox="0 0 24 24">
+    <rect x="5" y="3" width="14" height="18" rx="2"/>
+    <path d="M8 11h3l-1 4h2M14 11h2l-1 4h2"/>
+  </symbol>
+
+  <!-- Billing -->
+  <symbol id="i-billing" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="14" rx="2"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+    <rect x="6" y="14" width="5" height="2" rx="1"/>
+  </symbol>
+
+  <!-- PI (Receipt) -->
+  <symbol id="i-pi" viewBox="0 0 24 24">
+    <rect x="5" y="3" width="14" height="18" rx="2"/>
+    <line x1="8" y1="8" x2="16" y2="8"/>
+    <line x1="8" y1="12" x2="16" y2="12"/>
+    <line x1="8" y1="16" x2="14" y2="16"/>
+  </symbol>
+
+  <!-- Optimizer -->
+  <symbol id="i-optimizer" viewBox="0 0 24 24">
+    <line x1="4" y1="6" x2="20" y2="6"/>
+    <circle cx="10" cy="6" r="2"/>
+    <line x1="4" y1="12" x2="20" y2="12"/>
+    <circle cx="14" cy="12" r="2"/>
+    <line x1="4" y1="18" x2="20" y2="18"/>
+    <circle cx="7" cy="18" r="2"/>
+  </symbol>
+
+  <!-- Window Design -->
+  <symbol id="i-window" viewBox="0 0 24 24">
+    <rect x="3" y="4" width="18" height="16" rx="1"/>
+    <line x1="12" y1="4" x2="12" y2="20"/>
+    <line x1="3" y1="12" x2="21" y2="12"/>
+  </symbol>
+
+  <!-- Profile -->
+  <symbol id="i-user" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M4 20a8 8 0 0 1 16 0"/>
+  </symbol>
+
+  <!-- Whatsapp -->
+  <symbol id="i-whatsapp" viewBox="0 0 24 24">
+    <path d="M12 2a10 10 0 0 0-9.5 13.5L2 22l6.5-2.5A10 10 0 1 0 12 2z"/>
+    <path d="M8 10c1 4 5 6 6 6s1-2 2-2 2 1 2 2-2 4-6 2-5-5-4-8z"/>
+  </symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24">
+  <path d="M12 2l9 6-9 6-9-6 9-6z"></path>
+            <path d="M3 14l9 6 9-6"></path>
+            <path d="M3 10l9 6 9-6"></path>
+            </symbol>
+
+  <!-- Help -->
+  <symbol id="i-help" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10"></circle>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-2 2.5-2 4"></path>
+    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+  </symbol>
+
+  <!-- External link (CRMS SSO) -->
+  <symbol id="i-external" viewBox="0 0 24 24">
+    <path d="M14 4h6v6"/>
+    <path d="M20 4L11 13"/>
+    <path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>
+  </symbol>
+  <!-- Letter Header -->
+<symbol id="i-letter" viewBox="0 0 24 24">
+    <path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path>
+    <path d="M14 3v6h6"></path>
+    <line x1="8" y1="13" x2="16" y2="13"></line>
+    <line x1="8" y1="17" x2="16" y2="17"></line>
+</symbol>
+
+</svg>
+                        <ul class="navbar-nav mb-auto w-100 sidebar_wrapper sidebar">
+                            <li class="menu-title">Main</li>
+                             <li class="nav-item">
+                                <a class="nav-link " href="/dashboard" role="button" aria-expanded="false" >
+                                         <svg><use href="#i-dashboard"/></svg>
+                                    <span>Dashboard</span>
+                                </a>
+
+                            </li>
+
+                            
+                            <li class="nav-separator"></li> <!-- Separation here -->
+                                                            <li class="nav-item">
+                                <a class="nav-link " href="/quotations" role="button" aria-expanded="false" >
+                                <svg><use href="#i-quotes"/></svg>
+                                    <span>Quotes</span>
+                                </a>
+
+                            </li>
+                             <li class="nav-separator"></li>
+                                    <li class="nav-item" style="background: linear-gradient(180deg, #22c55e, #22c55e); border-radius: 8px; overflow: hidden;">
+                                        <form method="POST" action="https://www.softwinquote.com/open-crms">
+                                                <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">
+                                                <button type="submit" class="nav-link crms-sso-link" style="color:#fff" title="Open CRMS (Single Sign-On)">
+                                                  <svg><use href="#i-external"/></svg>
+                                                    <span>CRMS</span>
+                                                </button>
+                                            </form>
+                                        </li>
+                            <!--end nav-item-->
+
+                         <!---   <li class="nav-item">
+                                <a class="nav-link " href="#sidebarForms" data-bs-toggle="collapse" role="button"  aria-controls="sidebarForms">
+                                    <i class="iconoir-journal-page menu-icon"></i>
+                                    <span>CRMS</span>
+                                </a>
+                                <div class="collapse " id="sidebarForms" style="">
+                                    <ul class="nav flex-column">
+                                         <li class="nav-item active">
+                                            <a class="nav-link " href="/today_call">Today Leads</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/leads/">Leads</a>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+                            </li>-->
+
+                            <!--<li class="nav-item">
+                                <a class="nav-link" href="/opportunities"  role="button" aria-expanded="false" >
+                                <i class="iconoir-compact-disc menu-icon"></i>
+                                    <span>Opportunity</span>
+                                </a>
+
+                            </li> -->
+                        <!--end nav-item-->
+                            <li class="nav-separator"></li> <!-- Separation here -->
+
+
+                            <li class="nav-item">
+                                <a class="nav-link " href="/billings" role="button" aria-expanded="false" >
+           <svg><use href="#i-billing"/></svg>
+                                    <span>Billing</span>
+                                </a>
+
+                            </li>
+                            <li class="nav-separator"></li>
+                                 <li class="nav-item">
+                                <a class="nav-link " href="/invoices" role="button" aria-expanded="false" >
+           <svg><use href="#i-billing"/></svg>
+                                    <span>Invoices</span>
+                                </a>
+
+                            </li>
+                             <li class="nav-separator"></li> <!-- Separation here -->
+
+                            <li class="nav-item">
+                                <a class="nav-link " href="/performas" role="button" aria-expanded="false" >
+           <svg><use href="#i-pi"/></svg>
+                                    <span>PI</span>
+                                </a>
+
+                            </li>
+                        <li class="nav-separator"></li>
+
+                            <!--end nav-item--
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/6ab35a4cdd6fa2da7009c5fa/edit"  role="button" aria-expanded="false" >
+                                <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
+                                    <span>Profile</span>
+                                </a>
+
+                            </li><!--end nav-item-->
+
+
+                            </li>
+
+<li class="nav-item">
+
+    <a href="https://www.softwinquote.com/letter-header"
+       class="nav-link ">
+
+        <svg><use href="#i-letter"/></svg>
+
+        <span>
+            Letter Header
+        </span>
+
+    </a>
+
+</li>
+                        <li class="nav-separator"></li>
+
+                    <li class="nav-item">
+                                <a class="nav-link " href="#sidebarForms" data-bs-toggle="collapse" role="button" >
+           <svg><use href="#i-optimizer"/></svg>
+                                    <span>Setting </span>
+                                </a>
+                                <div class="collapse " id="sidebarForms" style="">
+                                    <ul class="nav flex-column">
+
+                                                                           <li class="nav-item">
+                                                <a class="nav-link" href="/quotation-pdf-jobs"  role="button" aria-expanded="false" >
+                                                <svg><use href="#i-grid"/></svg>
+                                                    <span>Bulk Designs Link</span>
+                                                </a>
+
+                                            </li>
+                                                                          
+
+
+
+                              
+
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_setting/">Aluminium Setting</a>
+                                        </li><!--end nav-item-->
+                                         <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_accessories/">Aluminium Hardware</a>
+                                        </li><!--end nav-item-->
+
+                                        <li class="nav-separator"></li>
+
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/coatings/">Aluminium Coating</a>
+                                        </li><!--end nav-item-->
+                                        <li class="nav-separator"></li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_stock/">Aluminium StockLength</a>
+                                        </li><!--end nav-item-->
+
+
+
+                                        <li class="nav-separator"></li>
+
+
+                                
+                                   
+                                                                   <li class="nav-item ">
+                                            <a class="nav-link " href="/glass">Glass</a>
+                                        </li>
+                                   
+
+
+
+
+
+
+                                 </li>
+                                    </ul><!--end nav-->
+                                </div><!--end startbarForms-->
+                                 </li>
+
+
+                            <li class="nav-separator"></li>
+
+                            <!-- Admin Management Section -->
+                            
+                            <!-- Subscriptions Section -->
+                            
+<li class="menu-title">System</li>
+<li class="nav-item">
+    <a class="nav-link" href="/tutorial" role="button" aria-expanded="false">
+        <svg><use href="#i-help" /></svg>
+        <span>Help & Tutorials</span>
+    </a>
+</li>
+
+                            <li class="nav-separator"></li>
+                                
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/6ab35a4cdd6fa2da7009c5fa/edit"  role="button" aria-expanded="false" >
+         <svg><use href="#i-user"/></svg>
+                                    <span> Profile</span>
+                                </a>
+
+                            </li>
+                            
+
+
+                             </li>
+                            <li class="nav-item" style="display:none">
+                                <a class="nav-link" href="/whatsapp"  role="button" aria-expanded="false" >
+  <svg><use href="#i-whatsapp"/></svg>
+                                    <span>Whatsapp</span>
+                                </a>
+
+                            </li>
+                            <li class="nav-separator"></li>
+
+
+
+
+                        </ul><!--end navbar-nav--->
+
+
+
+                    </div>
+                </div></div></div></div><div class="simplebar-placeholder" style="width: 70px; height: 649px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; transform: translate3d(0px, 0px, 0px); display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 25px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div><!--end startbar-collapse-->
+            </div><!--end startbar-menu-->
+        </div>
+                           
+        <div class="page-wrapper">
+            <!-- Page Content-->
+            <div class="page-content">
+                <div class="container-xxl">
+                    <!-- Page Content -->
+                    <main id="main" class="main">
+                                                  <link href="https://www.softwinquote.com/assets/libs/simple-datatables/style.css" rel="stylesheet" type="text/css" />
+    <link href="https://www.softwinquote.com/assets/libs/mobius1-selectr/selectr.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Edit Glass Modal -->
+    <div class="modal fade" id="editGlassModal" tabindex="-1" aria-labelledby="editGlassModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editGlassModalLabel">Edit Glass</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editGlassForm">
+                        <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">                        <input type="hidden" id="glass_id">
+
+                        <div class="col-md-12 mb-3">
+                            <label for="edit_name" class="form-label">Name *</label>
+                            <input type="text" class="form-control" name="name" id="edit_name" required>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="edit_price_per_sqft" class="form-label">Price per SqFt *</label>
+                            <input type="number" step="0.01" class="form-control" name="price_per_sqft" id="edit_price_per_sqft" required>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+        <!-- Create Glass Modal -->
+    <div class="modal fade" id="createGlassModal" tabindex="-1" aria-labelledby="createGlassModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createGlassModalLabel">Create Glass</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="https://www.softwinquote.com/glass">
+                        <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">                        <div class="col-md-12 mb-3">
+                            <label for="name" class="form-label">Name *</label>
+                            <input type="text" class="form-control" name="name" id="name" required>
+                        </div>
+                          <div class="col-md-12 mb-3">
+                            <label for="name" class="form-label">Glass Size</label>
+                            <input type="number" class="form-control" name="glass_size" id="glass_size" >
+                        </div>
+
+                           <div class="col-md-12 mb-3">
+                            <label for="name" class="form-label">Panel Type</label>
+                            <select name="glass_type" class="form-select">
+                                   <option value="">Select Glass</option>
+                                     <option value="glass"  >Glass</option>
+                                      <option value="mesh"  >Mesh</option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Glass Entries Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="card-title">Glass </h4>
+                        </div>
+                        <div class="col-auto">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createGlassModal">
+        <i class="fas fa-plus me-1"></i> Create Glass
+    </button>
+                        </div>
+                    </div>
+                </div>
+                  <div class="row mb-3 justify-content-between align-items-center">
+    <!-- Left side: Download button -->
+    <div class="col-auto ms-4">
+        <a href="https://www.softwinquote.com/glasses-export-csv" class="btn btn-success btn-sm">
+     <img src="https://www.softwinquote.com/all_icons/download.png" alt="Download" width="16" height="16" style="margin-right: 5px;">
+Download</a>
+ <br>
+    <small class="text-muted">Bulk download of data in csv format</small>
+    </div>
+
+    <!-- Right side: Upload form -->
+    <div class="col-auto">
+        <form action="https://www.softwinquote.com/glasses-import-csv" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">            <div class="d-flex align-items-center gap-2 mb-1">
+            <input type="file" name="csv_file" accept=".csv" required class="form-control form-control-sm">
+            <button type="submit" class="btn btn-info btn-sm me-3" style="background-color: #49cfd1ff; color: white;">
+Upload
+            </button>
+            </div>
+<div>
+        <small class="text-muted">Please upload updated price in csv format</small>
+    </div>
+        </form>
+    </div>
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-0" id="datatable_1">
+                            <thead class="table-light">
+                                <tr class="fs-5 fw-bold">
+
+                                        <th>Name</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                                                                            <tr class="glass_updated">
+
+
+
+                                        <td>5MM CLEAR TOUGHENED GLASS</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="90" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682375eab1da4021d60fb2ab"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8MM CLEAR TOUGHNED GLASS</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="150" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682375fa69990ef69904ddc2"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5+10MM Argon Gas+5T</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="650" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823765e9faddd722a0e5e9e"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5MM FROSTED GLASS</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237672b1da4021d60fb2ac"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Frosted Toughend</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="140" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823768169990ef69904ddc3"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm clear toughend Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="110" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682376909faddd722a0e5e9f"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm brown tinted toughened glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="120" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682376a1b1da4021d60fb2ad"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>12mm clear toughend Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="190" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682376b169990ef69904ddc4"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5+1.52 PVB+5T LAM</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="650" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682376bf9faddd722a0e5ea0"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6MM+15ARGON+6MMT</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="700" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682376d2b1da4021d60fb2ae"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8MM TOUGHEND BLACK TINTED</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="180" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237747b1da4021d60fb2af"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>mesh only</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="20" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823775869990ef69904ddc6"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6MM+10 ARGON+6MMT</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="700" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823779a9faddd722a0e5ea1"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>S167-5+10MM ARGON+5 BLACK</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="750" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682377b1b1da4021d60fb2b0"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6 MM CERAMIC TOUGHEND</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="170" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682377c169990ef69904ddc7"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Frosted Glass TOUGHEND</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="150" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682377d09faddd722a0e5ea2"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>22 MM DGU WITH TOUGHENED GLASS</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="575" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682377dfb1da4021d60fb2b1"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Laminated Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="650" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682377ee69990ef69904ddc8"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5+1.52+5 BLACK LAMINATED</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="700" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682377fc9faddd722a0e5ea3"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Plain Toughned Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="90" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237811b1da4021d60fb2b2"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Plain Frosted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="85" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823782a69990ef69904ddc9"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Toughened Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="110" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823783f9faddd722a0e5ea4"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Clear Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="75" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237861b1da4021d60fb2b3"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Reflective Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="180" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823787769990ef69904ddca"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Frosted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="180" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682378859faddd722a0e5ea5"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Tinted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="180" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237899b1da4021d60fb2b4"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Laminated Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="700" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682378aa69990ef69904ddcb"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Plain Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="75" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682378d19faddd722a0e5ea6"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Plain Toughned Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="110" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682378fbb1da4021d60fb2b5"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Plain Frosted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="110" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823790d69990ef69904ddcc"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8mm  Black Toughened Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="140" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823791c9faddd722a0e5ea7"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8mm Clear Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="275" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237932b1da4021d60fb2b6"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8mm Reflective Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="190" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823794a69990ef69904ddcd"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8mm Frosted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="150" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682379599faddd722a0e5ea8"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8mm Tinted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="180" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823796cb1da4021d60fb2b7"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8mm Laminated Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="750" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823797a69990ef69904ddce"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8mm Frosted Toughened Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="185" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682379899faddd722a0e5ea9"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8mm Frosted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="150" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6823799cb1da4021d60fb2b8"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8mm Tinted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="180" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682379de9faddd722a0e5eaa"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8+1.52+8T Laminated</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="120" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="682379f2b1da4021d60fb2b9"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>4 mm acp partition sheet white</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="80" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237a1169990ef69904ddcf"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8mm Plain Toughned Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="140" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237a209faddd722a0e5eab"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8mm Plain Frosted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="180" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237a2fb1da4021d60fb2ba"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>10mm Toughened Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="170" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237a4069990ef69904ddd0"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>10mm Clear Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="100" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237a509faddd722a0e5eac"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>10mm Reflective Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="180" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237a5fb1da4021d60fb2bb"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Frosted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237a7169990ef69904ddd1"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>10mm Tinted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="185" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237a899faddd722a0e5ead"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>10mm Laminated Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="420" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237a9db1da4021d60fb2bc"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>10mm Frosted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="190" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237aae69990ef69904ddd2"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>10mm Tinted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="185" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237abf9faddd722a0e5eae"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>10mm Plain Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="150" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237aedb1da4021d60fb2bd"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>10mm Plain Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="150" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237aed9faddd722a0e5eaf"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>10mm Plain Toughned Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="170" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237afdb1da4021d60fb2be"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>12mm Frosted Toughened Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="180" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237b1169990ef69904ddd3"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>Security Glass 5+1.5+5</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="50" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237b209faddd722a0e5eb0"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>DGU Glass 6+10+6</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="500" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237b2db1da4021d60fb2bf"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>UPVC PANEL 20 MM</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="50" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="68237b3b69990ef69904ddd4"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>DGU glass -5+10+5  T</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="684a9153fa7da2257d0ce78a"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>DGU Glass -6+12+6 T</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="500" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="684a9183fa7da2257d0ce78b"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>DGU glass -8+12+8 T</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="500" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="684a9190d6c9a322900d07c3"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>Security Glass -6+1.52+6 T</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="60" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="684a91a0d6c9a322900d07c4"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>Security glass -5+1.52+5 T</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="50" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="684a91b32a02cd9c7c087ab3"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>Security glass 8+2.25+8 T</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="80" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="684a91c12a02cd9c7c087ab4"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>12mm  Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="690ed539b769333979092e2a"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>LM +Dg(6 St167+1.52+6)13.52 mm + 8 Arg+ 5 T)</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="80" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="693edbad44561047120519a4"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6 mm ST 167</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="60" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="693edbdf91c9fdf75c02af06"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>(6+1.52+6) 13.52 mm Security Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="60" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="693edc2891c9fdf75c02af07"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>4mm Clear Tuff</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="130" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="695362cc0cb6371d090fc1e0"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Clear Toughened glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="695362dda5972dca410969cb"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Clear Toughened glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="110" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="695362edca4dfaafaf09a207"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8mm Clear Tuff</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="140" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="695362fd0cb6371d090fc1e1"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>10mm Clear Tuff</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="170" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6953636b0cb6371d090fc1e2"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>12mm Clear glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6953637ca5972dca410969cc"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Cl. Tuff+1.52 Pvb+5mm Cl Tuff</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="130" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6953638dca4dfaafaf09a208"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Cl. Tuff+1.52 Pvb+6mm Cl Tuff</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="110" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6953639e0cb6371d090fc1e3"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Cl. Tuff+1.52 Pvb+4mm Cl Tuff</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="130" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="695363aca5972dca410969cd"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Cl. Tuff+1.52 Pvb+4mm Cl Tuff</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="110" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="695363baca4dfaafaf09a209"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Cl. Tuff+12mm Air gap With Argon+5mm Cl Tuff</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="220" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="695363ca0cb6371d090fc1e4"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Cl. Tuff+10mm Air gap With Argon+5mm Cl Tuff</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="170" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="695363d6a5972dca410969ce"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Cl. Tuff+10mm Air gap With Organ+6mm Cl Tuff</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="170" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="695363e5ca4dfaafaf09a20a"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6mm Cl. Tuff+12mm Air gap With Argon+6mm Cl Tuff</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="220" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="695363f40cb6371d090fc1e5"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Forest Green Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="150" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="697b07c3a5e87303e702b59e"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Forest Green Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="150" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="697b396071c5926a75044518"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Brown reflective glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="180" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6983193fa520f36b4a0c86b2"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>12mm toughened glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="150" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69833be7e29b49471c08f4a4"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Black Reflective Glass toughened glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="180" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69957a16aea1dd4a7b029075"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>12mm Toughened Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="150" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69b272b507c2c9a0ee0c5bfe"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>BOTH SIDE PLEATED MESH</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="352.91" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69bcd390e3607672816c35bb"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>CENTER OPENING PLEATED MESH</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="352.91" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69bcd390e3607672816c35bc"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>FIBRE MESH BLACK</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="4.68" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69bcd390e3607672816c35be"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>FIBRE MESH GREY</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="4.68" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69bcd390e3607672816c35bf"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>LEFT TO RIGHT PLEATED MESH</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="353.01" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69bcd390e3607672816c35c2"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>PULL DOWN MESH</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="352.91" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69bcd390e3607672816c35c3"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>RIGHT TO LEFT PLEATED MESH</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="352.91" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69bcd390e3607672816c35c5"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>SS SECURITY MESH</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="28.11" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69bcd390e3607672816c35c8"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>SS Mesh</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="28.11" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69bcd390e3607672816c35ca"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5MM CLEAR REFLECTIVE TOUGHENED GLASS</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="170" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69e207f5f9b5c4f534050372"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Black Reflective Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="170" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69e20bee4764a94b0e0637b4"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5MM CLEAR REFLECTIVE TOUGHENED GLASS</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="170" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69e20c242685f9f5be0a8ea7"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Black Reflective Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="170" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69e3299848b6326ad5019b75"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Clear Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69f0a4bf10301d66c207d44a"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>Nylone Mesh</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="70" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69f9a3a0daa0929a9f0ed8e9"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>Aluminium Mesh</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="90" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69f9a3c5daa0929a9f0ed8ea"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm testing glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="100" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69fb05500aa39edc6e05ea9e"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm testing glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="100" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="69fb05ad6a1a20e57c0b7741"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Black Reflective Raw Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a04326ba2104d7fd10740a9"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Frosted Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a0968a650d1648ffe0ceeaa"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Clear Toughened Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a096df3ec24ce8ad0051799"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>4mm Pinhead Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="85" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a0bffb77226d635330a869c"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5+1.52+5+10air+5 LAMINATION DGU</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a0c6bdf680d9872460a3dc6"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm black dimond</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a0d9f207a35b34c480c5a04"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>3.5MM CLEAR GLASS</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a0ef480f59de47b2e0e5792"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>4mm CLEAR GLASS-MBG</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a0fdf93f02b13b4800c61da"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>4MM ONE WAY GLASS-MBG</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a0fdfaf6961de63fd06f8ac"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>DUG GLASS (5+10+5) Toughened</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a116fe0a749117ef60508e0"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5MM MILKY GLASS-MBG</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a13ce4dd3de1d07a30ce30b"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5MM AQUA BLUE REFLECTIVE TOUGHNED GLASS</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a15423bce16a2e1c70e1004"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5+1.5+5 Lamination Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a167ce2b9e1cee0f9048d94"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6+1.52 PVB+6T LAM</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a167d2eb9e1cee0f9048d96"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>UPVC Louvers</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a1696d751a53963c90f8419"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>5mm Black Reflective Toughened Glass</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="120" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a198aca1ae45741fd0707ca"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>6 MM Etching Design TOUGHENED GLASS</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a1ab7ba27d91055830a4615"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>PVC Mesh</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a7da886d34292916b0dc226"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>Without GLASS</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="0" style="width:100px">
+
+
+
+
+
+  
+
+
+<input type="button" name="glass_button" data-glassid="6a846139b0cfb1f7d6054796"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>8MM BLACK FLUTED GLASS TOUGHENE</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="325" style="width:100px">
+
+
+
+
+
+      <a href="/glass/6ac8ac9fdbc71e68260c4714/edit" class="btn btn-sm btn-primary">
+        Edit
+    </a>
+
+
+
+<input type="button" name="glass_button" data-glassid="6ac8ac9fdbc71e68260c4714"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>FLUTED 8MM TOUGHENE</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="275" style="width:100px">
+
+
+
+
+
+      <a href="/glass/6ac8ace7c94281b4b10eb69c/edit" class="btn btn-sm btn-primary">
+        Edit
+    </a>
+
+
+
+<input type="button" name="glass_button" data-glassid="6ac8ace7c94281b4b10eb69c"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                                                <tr class="glass_updated">
+
+
+
+                                        <td>MANUAL DGU BLIND</td>
+                                        <td>
+                                 <div class="d-flex align-items-center gap-2">
+
+
+  <input type="text" class="form-control price_section" name="price_section" value="1200" style="width:100px">
+
+
+
+
+
+      <a href="/glass/6ad06790e1ccbb3e0d0e364d/edit" class="btn btn-sm btn-primary">
+        Edit
+    </a>
+
+
+
+<input type="button" name="glass_button" data-glassid="6ad06790e1ccbb3e0d0e364d"  class="btn btn-sm btn-primary glass_button" value="Save">
+
+
+
+       </td>
+                                    </tr>
+                                                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+
+         $(document).on('click', '.glass_button', function() {
+
+              var glass_id=$(this).attr('data-glassid');
+              var price =$(this).closest('.glass_updated').find('.price_section').val();
+                var object =$(this);
+
+        $.ajax({
+                url: '/glassPriceUpdate', // Laravel route
+                method: 'POST',
+                data: {price:price,glass_id:glass_id},
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Get the CSRF token from the meta tag
+                },
+                success: function(data) {
+                    object.val("Updated");
+
+
+                }
+        });
+    });
+
+
+        function editGlass(id, category, name, pricePerSqFt, companyName) {
+            $('#glass_id').val(id);
+            $('#edit_category').val(category).trigger("change");
+            $('#edit_name').val(name);
+            $('#edit_price_per_sqft').val(pricePerSqFt);
+            $('#edit_company_name').val(companyName);
+            const updateUrl = "https://www.softwinquote.com/glass/:glass".replace(':glass', id);
+            $('#editGlassForm').attr('action', updateUrl);
+        }
+
+        $('#editGlassForm').submit(function (e) {
+            e.preventDefault();
+            const id = $('#glass_id').val();
+            const category = $('#edit_category').val();
+            const name = $('#edit_name').val();
+            const pricePerSqFt = $('#edit_price_per_sqft').val();
+            const companyName = $('#edit_company_name').val();
+            const _token = $("input[name=_token]").val();
+
+            $.ajax({
+                url: "/glass/" + id,
+                type: "PUT",
+                data: { _token, category, name, price_per_sqft: pricePerSqFt, company_name: companyName },
+                success: function () {
+                    alert("Glass updated successfully!");
+                    $('#editGlassModal').modal('hide');
+                    location.reload();
+                },
+                error: function () {
+                    alert("Something went wrong. Please try again.");
+                }
+            });
+        });
+
+
+    </script>
+
+    <script src="https://www.softwinquote.com/assets/libs/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="https://www.softwinquote.com/assets/js/pages/datatable.init.js"></script>
+    <script src="https://www.softwinquote.com/assets/libs/mobius1-selectr/selectr.min.js"></script>
+    <script src="https://www.softwinquote.com/assets/js/pages/forms-advanced.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    </main>
+                </div>
+            </div>
+        </div>
+    
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="ajaxToast" class="toast align-items-center text-bg-success" role="alert" aria-live="assertive">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Operation successful!
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="globalLoader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; text-align: center;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <img src="https://www.softwinquote.com/img/loader.gif" alt="Loading..." style="width: 80px; height: 80px;">
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        // Show loader before every AJAX request
+        $(document).ajaxStart(function () {
+            $('#globalLoader').fadeIn(); // Show the loader
+        });
+
+        // Hide loader after every AJAX request completes
+        $(document).ajaxStop(function () {
+            $('#globalLoader').fadeOut(); // Hide the loader
+        });
+    </script>
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+        <div class="copyright"></div>
+    </footer>
+    <!-- End Footer -->
+    <script>
+        function confirmDelete(actionUrl) {
+            // Set the form action dynamically
+            const deleteForm = document.getElementById('deleteForm');
+            deleteForm.action = actionUrl;
+
+            // Show the modal
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+    </script>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this item?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="POST" style="display:inline;">
+                        <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">                        <input type="hidden" name="_method" value="DELETE">                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="https://www.softwinquote.com/assets/apexcharts/apexcharts.min.js"></script> -->
+
+    <script src="https://www.softwinquote.com/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="https://www.softwinquote.com/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.softwinquote.com/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="https://www.softwinquote.com/vendor/tinymce/tinymce.min.js"></script>
+
+    <script src="https://www.softwinquote.com/assets/js/app.js"></script>
+
+    </body>
+</html>
