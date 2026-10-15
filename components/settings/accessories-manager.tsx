@@ -4,8 +4,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Loader2, Plus, Trash2, Check } from 'lucide-react'
+import { Loader2, Plus, Trash2, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
+
+const CARD_PAGE_SIZE = 20
 
 export type AccessoryKind =
   | 'sash'
@@ -198,6 +200,8 @@ function KindCard({
   const [name, setName] = useState('')
   const [code, setCode] = useState('')
   const [price, setPrice] = useState('')
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(0)
 
   const submit = () => {
     onAdd(name, code, price)
@@ -206,6 +210,18 @@ function KindCard({
     setPrice('')
   }
 
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    if (!q) return rows
+    return rows.filter(
+      (r) => r.name.toLowerCase().includes(q) || (r.code ?? '').toLowerCase().includes(q)
+    )
+  }, [rows, search])
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / CARD_PAGE_SIZE))
+  const current = Math.min(page, pageCount - 1)
+  const pageRows = filtered.slice(current * CARD_PAGE_SIZE, current * CARD_PAGE_SIZE + CARD_PAGE_SIZE)
+
   return (
     <div className="rounded-lg border border-border bg-card p-4">
       <div className="mb-3 flex items-center justify-between">
@@ -213,11 +229,23 @@ function KindCard({
         <span className="text-xs text-muted-foreground">{rows.length}</span>
       </div>
 
+      {rows.length > CARD_PAGE_SIZE && (
+        <Input
+          value={search}
+          placeholder="Search…"
+          onChange={(e) => {
+            setSearch(e.target.value)
+            setPage(0)
+          }}
+          className="mb-2 h-8"
+        />
+      )}
+
       <div className="space-y-1.5">
-        {rows.length === 0 && (
+        {pageRows.length === 0 && (
           <p className="py-2 text-xs text-muted-foreground">No {label.toLowerCase()} options yet.</p>
         )}
-        {rows.map((r) => (
+        {pageRows.map((r) => (
           <div key={r.id} className="flex items-center gap-2 rounded-md border border-border/60 px-2 py-1.5">
             <Input
               value={r.name}
@@ -266,6 +294,34 @@ function KindCard({
           </div>
         ))}
       </div>
+
+      {pageCount > 1 && (
+        <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
+          <span>
+            {current * CARD_PAGE_SIZE + 1}–{Math.min((current + 1) * CARD_PAGE_SIZE, filtered.length)} of{' '}
+            {filtered.length}
+          </span>
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              disabled={current === 0}
+              className="flex h-7 w-7 items-center justify-center rounded hover:bg-muted disabled:opacity-40"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <span className="px-1">{current + 1} / {pageCount}</span>
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
+              disabled={current >= pageCount - 1}
+              className="flex h-7 w-7 items-center justify-center rounded hover:bg-muted disabled:opacity-40"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="mt-3 flex items-center gap-2 border-t border-border/60 pt-3">
         <Input value={name} placeholder={`Add ${label.toLowerCase()}…`} onChange={(e) => setName(e.target.value)} className="h-8 flex-1" />

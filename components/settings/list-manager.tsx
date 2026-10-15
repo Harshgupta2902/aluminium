@@ -1,10 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Loader2, Plus, Trash2, Check } from 'lucide-react'
+import { Loader2, Plus, Trash2, Check, ChevronLeft, ChevronRight } from 'lucide-react'
+
+const PAGE_SIZE = 20
 
 interface ListRow {
   id: string
@@ -42,6 +44,23 @@ export function ListManager({
   const [newExtra, setNewExtra] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(0)
+
+  // Filter by name (and extra column) then paginate 20 at a time.
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    if (!q) return rows
+    return rows.filter(
+      (r) =>
+        r.name.toLowerCase().includes(q) ||
+        String(r[extraColumn as keyof ListRow] ?? '').toLowerCase().includes(q)
+    )
+  }, [rows, search, extraColumn])
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const current = Math.min(page, pageCount - 1)
+  const pageRows = filtered.slice(current * PAGE_SIZE, current * PAGE_SIZE + PAGE_SIZE)
 
   const refresh = async () => {
     const { data, error: err } = await supabase
@@ -110,6 +129,18 @@ export function ListManager({
         <span className="text-xs text-muted-foreground">{rows.length} items</span>
       </div>
 
+      {rows.length > PAGE_SIZE && (
+        <Input
+          value={search}
+          placeholder="Search…"
+          onChange={(e) => {
+            setSearch(e.target.value)
+            setPage(0)
+          }}
+          className="mb-2 h-8"
+        />
+      )}
+
       {error && (
         <p className="mb-2 rounded bg-rose-50 px-2 py-1 text-xs text-rose-700">{error}</p>
       )}
@@ -120,7 +151,10 @@ export function ListManager({
         </div>
       ) : (
         <div className="space-y-1.5">
-          {rows.map((r) => (
+          {pageRows.length === 0 && (
+            <p className="py-3 text-center text-xs text-muted-foreground">No matches.</p>
+          )}
+          {pageRows.map((r) => (
             <div key={r.id} className="flex items-center gap-2 rounded-md border border-border/60 px-2 py-1.5">
               <Input
                 value={r.name}
@@ -162,6 +196,36 @@ export function ListManager({
               </button>
             </div>
           ))}
+        </div>
+      )}
+
+      {!loading && pageCount > 1 && (
+        <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
+          <span>
+            {current * PAGE_SIZE + 1}–{Math.min((current + 1) * PAGE_SIZE, filtered.length)} of{' '}
+            {filtered.length}
+          </span>
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              disabled={current === 0}
+              className="flex h-7 w-7 items-center justify-center rounded hover:bg-muted disabled:opacity-40"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <span className="px-1">
+              {current + 1} / {pageCount}
+            </span>
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
+              disabled={current >= pageCount - 1}
+              className="flex h-7 w-7 items-center justify-center rounded hover:bg-muted disabled:opacity-40"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       )}
 

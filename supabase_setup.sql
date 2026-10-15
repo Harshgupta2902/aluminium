@@ -267,10 +267,23 @@ CREATE TABLE public.aluminium_cost_settings (
   screw NUMERIC NOT NULL DEFAULT 0,               -- Rs / piece
   rail NUMERIC NOT NULL DEFAULT 0,                -- Rs / meter
   fastner NUMERIC NOT NULL DEFAULT 0,             -- Rs / piece
+  dustpad NUMERIC NOT NULL DEFAULT 0,             -- Rs / meter
+  outer_clit NUMERIC NOT NULL DEFAULT 0,          -- Rs / piece
+  sash_clit NUMERIC NOT NULL DEFAULT 0,           -- Rs / piece (Shutter Clit)
+  l_pati NUMERIC NOT NULL DEFAULT 0,              -- Rs / piece
+  lockguide_cap NUMERIC NOT NULL DEFAULT 0,       -- Rs / piece
+  interlock_cap NUMERIC NOT NULL DEFAULT 0,       -- Rs / piece
+  bubstopper NUMERIC NOT NULL DEFAULT 0,          -- Rs / piece
+  ugid NUMERIC NOT NULL DEFAULT 0,                -- Rs / piece
+  lockguid NUMERIC NOT NULL DEFAULT 0,            -- Rs / piece
+  water_drainage NUMERIC NOT NULL DEFAULT 0,      -- Rs / piece
+  brassrubber NUMERIC NOT NULL DEFAULT 0,         -- Rs / meter (Brush Rubber)
+  suitbelt NUMERIC NOT NULL DEFAULT 0,            -- Rs / piece (Suit Bolt)
   -- Overlaps (mm) that affect cut sizes; used by the BOM engine later.
   slider_width_overlap NUMERIC NOT NULL DEFAULT 25,
   slider_height_overlap NUMERIC NOT NULL DEFAULT 18,
   slider_glass_overlap NUMERIC NOT NULL DEFAULT 16,
+  slim_width_overlap NUMERIC NOT NULL DEFAULT 25,
   casement_width_overlap NUMERIC NOT NULL DEFAULT 12,
   casement_height_overlap NUMERIC NOT NULL DEFAULT 12,
   casement_glass_overlap NUMERIC NOT NULL DEFAULT 20,
