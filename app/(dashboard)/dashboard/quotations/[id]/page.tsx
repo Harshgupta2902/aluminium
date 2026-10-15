@@ -83,7 +83,7 @@ export default async function QuotationDetailPage({
         <CardHeader>
           <CardTitle className="text-base">Designs</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-2">
           {designs.length === 0 ? (
             <p className="py-6 text-center text-sm text-muted-foreground">
               No designs on this quotation.
@@ -92,39 +92,31 @@ export default async function QuotationDetailPage({
             designs.map((design, index) => (
               <div
                 key={design.id}
-                className="flex flex-col gap-4 rounded-lg border border-border p-3 sm:flex-row"
+                className="flex gap-3 rounded-lg border border-border p-2.5"
               >
-                <div className="flex shrink-0 items-center justify-center rounded-md bg-secondary/40 p-2">
+                <div className="flex h-[108px] w-[150px] shrink-0 items-center justify-center rounded-md bg-secondary/40">
                   {design.editor_document ? (
                     <DesignPreview
                       document={design.editor_document}
-                      width={240}
-                      height={190}
+                      width={146}
+                      height={104}
                     />
                   ) : (
-                    <div className="flex h-[190px] w-[240px] items-center justify-center text-xs text-muted-foreground">
-                      No preview
-                    </div>
+                    <span className="text-xs text-muted-foreground">No preview</span>
                   )}
                 </div>
-                <div className="flex flex-1 flex-col justify-between gap-3">
-                  <div className="flex items-start justify-between">
-                    <h4 className="text-sm font-semibold text-heading">
+                <div className="flex min-w-0 flex-1 flex-col gap-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <h4 className="truncate text-sm font-semibold text-heading">
                       {index + 1}. {design.name || 'Untitled design'}
                     </h4>
-                    <p className="text-lg font-bold text-primary">
+                    <p className="shrink-0 text-base font-bold text-primary">
                       {formatCurrency(design.amount)}
                     </p>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
-                    <Field
-                      label="Area"
-                      value={`${Number(design.area_sqft).toFixed(2)} Sqft`}
-                    />
-                    <Field
-                      label="Rate/Sqft"
-                      value={formatCurrency(design.rate_per_sqft)}
-                    />
+                  <div className="grid max-w-2xl grid-cols-2 gap-x-6 gap-y-1.5 text-sm sm:grid-cols-4">
+                    <Field label="Area" value={`${Number(design.area_sqft).toFixed(2)} Sqft`} />
+                    <Field label="Rate/Sqft" value={formatCurrency(design.rate_per_sqft)} />
                     <Field label="Glass" value={design.glass_type || '—'} />
                     <Field label="Color" value={design.color || '—'} capitalize />
                   </div>
