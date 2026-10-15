@@ -61,8 +61,15 @@ Ordered by priority. Details for each are in the sections below. Check off as do
 - [x] **T1.3** New **weight-based BOM engine** `lib/design-editor/bom-pricing.ts`:
   `aluminium = Σ(cut_length_m × weight_per_meter) × rate`, + coating + glass +
   hardware + consumables + labour + profit%. Replaces area×type-rate when a
-  series is selected (legacy engine kept as fallback). Calibrated to ~0.91 of a
-  real sample on first pass; `weight_per_meter` is editable per profile to tune.
+  series is selected (legacy engine kept as fallback). `weight_per_meter`
+  editable per profile to tune further.
+- [x] **T1.5 (calibration)** Scraped **73 real quotation panels** from the
+  original (`swq_pages/cal/samples.json`) and grid-searched the engine
+  parameters against them. Result: **MAPE ~17%, near-zero bias** (casement 10%,
+  door 15%, sliding 20%); the original reference sample now predicts within
+  ~3%. Calibrated defaults baked in: group weights (track 0.8 / sash 0.5 /
+  interlock 1.2 kg/m), per-type hardware allowance (sliding ₹7000, casement
+  ₹300, door ₹1500), and perimeter-proportional consumables.
 - [x] **T1.4** Per-section BOM breakdown persisted to
   `window_designs.panel_details` (JSONB) on save; live breakdown shown in the
   designer's details panel (weight, aluminium, glass, hardware, labour, profit).

@@ -75,20 +75,41 @@ export const DEFAULT_COST_SETTINGS: CostSettings = {
   casement_glass_overlap: 20,
 }
 
-/** Weight per metre (kg/m) by profile group — industry-standard fallbacks. */
+/**
+ * Weight per metre (kg/m) by profile group. Calibrated against 73 real
+ * softwinquote quotation panels (MAPE ~17%, near-zero bias). These are the
+ * fallbacks when a profile's own weight_per_meter isn't set.
+ */
 export const DEFAULT_GROUP_WEIGHT: Record<string, number> = {
-  track: 1.0,
-  sash: 0.75,
-  mesh_sash: 0.55,
-  interlock: 0.6,
-  slim_interlock: 0.45,
-  slim_huricane: 0.5,
-  mullion: 1.1,
+  track: 0.8,
+  sash: 0.5,
+  mesh_sash: 0.4,
+  interlock: 1.2,
+  slim_interlock: 0.9,
+  slim_huricane: 0.9,
+  mullion: 1.0,
   clip: 0.3,
   mesh_clip: 0.25,
-  outer_top: 1.0,
-  outer_left: 1.0,
-  frame: 1.0, // outer frame uses the track weight by convention
+  outer_top: 0.8,
+  outer_left: 0.8,
+  frame: 0.8, // outer frame uses the track weight by convention
+}
+
+/**
+ * Default hardware allowance (₹) per window type, used when no per-panel
+ * accessories are explicitly selected. Calibrated from the real samples: a
+ * 3-track slider carries far more hardware (rollers/handles/locks × panels)
+ * than a single casement leaf.
+ */
+export const DEFAULT_HARDWARE_BY_TYPE: Record<string, number> = {
+  sliding: 7000,
+  casement: 300,
+  'double-casement': 600,
+  'fixed-casement': 0,
+  tophung: 400,
+  awning: 400,
+  'door-single': 1500,
+  'door-double': 3000,
 }
 
 /** Resolved pricing inputs the engine needs. */
@@ -305,10 +326,16 @@ function sectionProfiles(
  * Hardware + consumables
  * ------------------------------------------------------------------ */
 
-/** Sum per-item accessory prices on a section (section-level + per-panel). */
+/**
+ * Hardware cost for a section. If the user has explicitly selected accessories
+ * (section-level or per-panel), sum their real prices. Otherwise fall back to a
+ * calibrated per-type allowance so a design still prices sensibly before
+ * hardware is picked.
+ */
 function sectionHardwareCost(section: FrameSection): number {
   const props = section.window?.props
-  if (!props) return 0
+  const type = section.window?.type
+  if (!props || !type) return 0
   let sum = 0
   const addMap = (acc: unknown) => {
     if (!acc || typeof acc !== 'object') return
@@ -320,30 +347,24 @@ function sectionHardwareCost(section: FrameSection): number {
   addMap(props.accessories)
   const panelAcc = props.panelAccessories
   if (Array.isArray(panelAcc)) for (const panel of panelAcc) addMap(panel)
+
+  // No explicit selections → calibrated per-type allowance.
+  if (sum <= 0) return DEFAULT_HARDWARE_BY_TYPE[type] ?? 0
   return sum
 }
 
 /**
- * Per-piece consumables for a section: corner cleats + screws scale with the
- * number of corners/joints; weather strip + rail scale with length. Kept simple
- * and transparent — refine with real counts as needed.
+ * Consumables for a section — perimeter-proportional (corner cleats + weather
+ * strip), plus the bottom rail for sliders. Calibration showed a per-corner
+ * count over-weighted small windows, so this stays length-based.
  */
 function sectionConsumablesCost(section: FrameSection, cost: CostSettings): number {
   const type = section.window?.type
   if (!type) return 0
-  const w = section.sw
-  const h = section.sh
-  const perimeterM = mm2m(2 * (w + h))
-
-  // 4 frame corners always; sliding/casement add sash corners.
-  const panels = panelCount(section)
-  const corners = 4 + (type === 'sliding' ? panels * 4 : 0)
-  const cleats = corners * cost.corner_cleat
-  const screws = corners * 2 * cost.screw // ~2 screws per corner
-  const weatherStrip = perimeterM * cost.weather_strip
-  const rail = type === 'sliding' ? mm2m(w) * cost.rail : 0
-
-  return cleats + screws + weatherStrip + rail
+  const perimeterM = mm2m(2 * (section.sw + section.sh))
+  const perStrip = perimeterM * (cost.weather_strip + cost.corner_cleat)
+  const rail = type === 'sliding' ? mm2m(section.sw) * cost.rail : 0
+  return perStrip + rail
 }
 
 /* ------------------------------------------------------------------ *
