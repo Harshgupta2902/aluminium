@@ -38,13 +38,13 @@ export default function NotFound() {
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link href="/dashboard">
-            <Button size="lg" className="w-full sm:w-auto">
+            <Button size="lg" className="w-full sm:w-auto cursor-pointer">
               <LayoutDashboard className="h-4 w-4" />
               Go to Dashboard
             </Button>
           </Link>
           <Link href="/">
-            <Button size="lg" variant="outline" className="w-full sm:w-auto">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto cursor-pointer">
               <Home className="h-4 w-4" />
               Back to Home
             </Button>
