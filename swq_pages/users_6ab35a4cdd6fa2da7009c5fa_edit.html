@@ -1,0 +1,1409 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn">
+        <link rel="manifest" href="/manifest.json" />
+
+        <title>Soft Window</title>
+
+        <link href="https://www.softwinquote.com/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://www.softwinquote.com/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://www.softwinquote.com/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(function(registration) {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        })
+                        .catch(function(error) {
+                            console.error('Service Worker registration failed:', error);
+                        });
+                });
+            }
+        </script>
+        <style>
+            .container-xxl{
+                max-width: unset;
+            }
+            .topbar .topbar-custom .topbar-item, .topbar{
+                height: unset;
+                padding: 5px 0px;
+            }
+            .page-wrapper .page-content{
+                height: 80px;
+                margin-top: 100px
+            }
+        </style>
+    </head>
+
+    <body class="font-sans antialiased">
+
+
+
+            <div class="topbar d-print-none">
+            <div class="container-xxl">
+                <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">
+
+
+                    <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+                        <li>
+                            <button class="nav-link mobile-menu-btn nav-icon" id="togglemenu">
+                                <i class="iconoir-menu-scale"></i>
+                            </button>
+                        </li>
+
+                    </ul>
+                    <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+
+
+
+
+
+
+                        <li class="dropdown topbar-item">
+                                                    <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <img src="/storage/logos/UogUXXGOGpdRwOCA1BWSJIvsZ2dHNbV4namaVZfB.jpg" alt="" class="thumb-lg rounded-circle">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end py-0">
+                                <div class="d-flex align-items-center dropdown-item py-2 bg-secondary-subtle">
+                                    <div class="flex-shrink-0">
+
+
+                                        <img src="/storage/logos/UogUXXGOGpdRwOCA1BWSJIvsZ2dHNbV4namaVZfB.jpg" alt="" class="thumb-md rounded-circle">
+                                    </div>
+                                    <div class="flex-grow-1 ms-2 text-truncate align-self-center">
+
+                                    </div><!--end media-body-->
+                                </div>
+                                <div class="dropdown-divider mt-0"></div>
+
+                                <div class="dropdown-divider mb-0"></div>
+                                <a class="dropdown-item text-danger" href="/logout"><i class="las la-power-off fs-18 me-1 align-text-bottom"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul><!--end topbar-nav-->
+                </nav>
+                <!-- end navbar-->
+            </div>
+        </div>
+
+      
+
+
+                                                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
+
+<style>
+    .startbar {
+        background: linear-gradient(180deg, #0b1b33 0%, #09162b 100%);
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .startbar .brand {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        padding: 8px 14px;
+        overflow: hidden;
+    }
+
+    .startbar .softmark-logo img {
+        width: 150px;
+        filter: brightness(1.05);
+        transition: width .3s ease, opacity .3s ease;
+        display: block;
+    }
+
+    /* Collapsed: shrink logo smoothly */
+    body[data-sidebar-size="collapsed"] .startbar:not(:hover) .softmark-logo img {
+        width: 36px;
+        opacity: 0.85;
+    }
+
+    /* Override framework's width:0 on logo-lg so our logo stays visible */
+    body[data-sidebar-size="collapsed"] .startbar:not(:hover) .brand .logo .logo-lg {
+        width: auto !important;
+        margin-left: 0;
+    }
+
+    .startbar .startbar-menu .navbar-nav {
+        padding: 10px 8px 16px;
+        gap: 2px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .menu-title {
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        color: rgba(222, 233, 255, 0.55);
+        font-weight: 600;
+        padding: 14px 12px 8px;
+        text-transform: uppercase;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-separator {
+        list-style: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin: 10px 12px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(240, 246, 255, 0.86);
+        padding: 9px 12px;
+        margin: 0 4px;
+        border-bottom: 0;
+        transition: all .18s ease;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link.active,
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link[aria-expanded="true"] {
+        background: #132e58;
+        color: #fff;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        opacity: 0.95;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link span {
+        line-height: 1.2;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav.flex-column .nav-link {
+        color: rgba(240, 246, 255, 0.75);
+        font-size: 12px;
+        padding-left: 34px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav.flex-column .nav-link:hover {
+        color: #fff;
+    }
+
+    /* CRMS SSO: submit button living inside a nav form - must look like a link */
+    .startbar .startbar-menu .navbar-nav .nav-item .crms-sso-link {
+        background: transparent;
+        border: 0;
+        width: 100%;
+        text-align: left;
+        margin: 0;
+        border-radius: 0;
+        cursor: pointer;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .crms-sso-link:hover {
+        background: rgba(255, 255, 255, 0.16);
+    }
+
+</style>
+
+
+
+
+<div class="startbar d-print-none">
+            <!--start brand-->
+            <div class="brand">
+                <a href="/dashboard" class="logo">
+                    <span class="logo-lg">
+                        <div class="softmark-logo">
+                            <img src="https://www.softwinquote.com/images/login-logo3.png" alt="brand-logo">
+                        </div>
+                    </span>
+                </a>
+            </div>
+            <!--end brand-->
+            <!--start startbar-menu-->
+            <div class="startbar-menu" data-simplebar>
+                <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
+<div class="simplebar-wrapper" style="margin: 0px -16px -16px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
+        <div class="simplebar-content" >
+                    <div class="d-flex align-items-start flex-column w-100">
+                        <!-- Navigation -->
+
+
+<!-- SVG SPRITE -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <!-- Dashboard -->
+  <symbol id="i-dashboard" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="8" height="8" rx="2"/>
+    <rect x="13" y="3" width="8" height="5" rx="2"/>
+    <rect x="13" y="10" width="8" height="11" rx="2"/>
+    <rect x="3" y="13" width="8" height="8" rx="2"/>
+  </symbol>
+
+  <!-- Quotes -->
+  <symbol id="i-quotes" viewBox="0 0 24 24">
+    <rect x="5" y="3" width="14" height="18" rx="2"/>
+    <path d="M8 11h3l-1 4h2M14 11h2l-1 4h2"/>
+  </symbol>
+
+  <!-- Billing -->
+  <symbol id="i-billing" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="14" rx="2"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+    <rect x="6" y="14" width="5" height="2" rx="1"/>
+  </symbol>
+
+  <!-- PI (Receipt) -->
+  <symbol id="i-pi" viewBox="0 0 24 24">
+    <rect x="5" y="3" width="14" height="18" rx="2"/>
+    <line x1="8" y1="8" x2="16" y2="8"/>
+    <line x1="8" y1="12" x2="16" y2="12"/>
+    <line x1="8" y1="16" x2="14" y2="16"/>
+  </symbol>
+
+  <!-- Optimizer -->
+  <symbol id="i-optimizer" viewBox="0 0 24 24">
+    <line x1="4" y1="6" x2="20" y2="6"/>
+    <circle cx="10" cy="6" r="2"/>
+    <line x1="4" y1="12" x2="20" y2="12"/>
+    <circle cx="14" cy="12" r="2"/>
+    <line x1="4" y1="18" x2="20" y2="18"/>
+    <circle cx="7" cy="18" r="2"/>
+  </symbol>
+
+  <!-- Window Design -->
+  <symbol id="i-window" viewBox="0 0 24 24">
+    <rect x="3" y="4" width="18" height="16" rx="1"/>
+    <line x1="12" y1="4" x2="12" y2="20"/>
+    <line x1="3" y1="12" x2="21" y2="12"/>
+  </symbol>
+
+  <!-- Profile -->
+  <symbol id="i-user" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M4 20a8 8 0 0 1 16 0"/>
+  </symbol>
+
+  <!-- Whatsapp -->
+  <symbol id="i-whatsapp" viewBox="0 0 24 24">
+    <path d="M12 2a10 10 0 0 0-9.5 13.5L2 22l6.5-2.5A10 10 0 1 0 12 2z"/>
+    <path d="M8 10c1 4 5 6 6 6s1-2 2-2 2 1 2 2-2 4-6 2-5-5-4-8z"/>
+  </symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24">
+  <path d="M12 2l9 6-9 6-9-6 9-6z"></path>
+            <path d="M3 14l9 6 9-6"></path>
+            <path d="M3 10l9 6 9-6"></path>
+            </symbol>
+
+  <!-- Help -->
+  <symbol id="i-help" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10"></circle>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-2 2.5-2 4"></path>
+    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+  </symbol>
+
+  <!-- External link (CRMS SSO) -->
+  <symbol id="i-external" viewBox="0 0 24 24">
+    <path d="M14 4h6v6"/>
+    <path d="M20 4L11 13"/>
+    <path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>
+  </symbol>
+  <!-- Letter Header -->
+<symbol id="i-letter" viewBox="0 0 24 24">
+    <path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path>
+    <path d="M14 3v6h6"></path>
+    <line x1="8" y1="13" x2="16" y2="13"></line>
+    <line x1="8" y1="17" x2="16" y2="17"></line>
+</symbol>
+
+</svg>
+                        <ul class="navbar-nav mb-auto w-100 sidebar_wrapper sidebar">
+                            <li class="menu-title">Main</li>
+                             <li class="nav-item">
+                                <a class="nav-link " href="/dashboard" role="button" aria-expanded="false" >
+                                         <svg><use href="#i-dashboard"/></svg>
+                                    <span>Dashboard</span>
+                                </a>
+
+                            </li>
+
+                            
+                            <li class="nav-separator"></li> <!-- Separation here -->
+                                                            <li class="nav-item">
+                                <a class="nav-link " href="/quotations" role="button" aria-expanded="false" >
+                                <svg><use href="#i-quotes"/></svg>
+                                    <span>Quotes</span>
+                                </a>
+
+                            </li>
+                             <li class="nav-separator"></li>
+                                    <li class="nav-item" style="background: linear-gradient(180deg, #22c55e, #22c55e); border-radius: 8px; overflow: hidden;">
+                                        <form method="POST" action="https://www.softwinquote.com/open-crms">
+                                                <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">
+                                                <button type="submit" class="nav-link crms-sso-link" style="color:#fff" title="Open CRMS (Single Sign-On)">
+                                                  <svg><use href="#i-external"/></svg>
+                                                    <span>CRMS</span>
+                                                </button>
+                                            </form>
+                                        </li>
+                            <!--end nav-item-->
+
+                         <!---   <li class="nav-item">
+                                <a class="nav-link " href="#sidebarForms" data-bs-toggle="collapse" role="button"  aria-controls="sidebarForms">
+                                    <i class="iconoir-journal-page menu-icon"></i>
+                                    <span>CRMS</span>
+                                </a>
+                                <div class="collapse " id="sidebarForms" style="">
+                                    <ul class="nav flex-column">
+                                         <li class="nav-item active">
+                                            <a class="nav-link " href="/today_call">Today Leads</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/leads/">Leads</a>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+                            </li>-->
+
+                            <!--<li class="nav-item">
+                                <a class="nav-link" href="/opportunities"  role="button" aria-expanded="false" >
+                                <i class="iconoir-compact-disc menu-icon"></i>
+                                    <span>Opportunity</span>
+                                </a>
+
+                            </li> -->
+                        <!--end nav-item-->
+                            <li class="nav-separator"></li> <!-- Separation here -->
+
+
+                            <li class="nav-item">
+                                <a class="nav-link " href="/billings" role="button" aria-expanded="false" >
+           <svg><use href="#i-billing"/></svg>
+                                    <span>Billing</span>
+                                </a>
+
+                            </li>
+                            <li class="nav-separator"></li>
+                                 <li class="nav-item">
+                                <a class="nav-link " href="/invoices" role="button" aria-expanded="false" >
+           <svg><use href="#i-billing"/></svg>
+                                    <span>Invoices</span>
+                                </a>
+
+                            </li>
+                             <li class="nav-separator"></li> <!-- Separation here -->
+
+                            <li class="nav-item">
+                                <a class="nav-link " href="/performas" role="button" aria-expanded="false" >
+           <svg><use href="#i-pi"/></svg>
+                                    <span>PI</span>
+                                </a>
+
+                            </li>
+                        <li class="nav-separator"></li>
+
+                            <!--end nav-item--
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/6ab35a4cdd6fa2da7009c5fa/edit"  role="button" aria-expanded="false" >
+                                <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
+                                    <span>Profile</span>
+                                </a>
+
+                            </li><!--end nav-item-->
+
+
+                            </li>
+
+<li class="nav-item">
+
+    <a href="https://www.softwinquote.com/letter-header"
+       class="nav-link ">
+
+        <svg><use href="#i-letter"/></svg>
+
+        <span>
+            Letter Header
+        </span>
+
+    </a>
+
+</li>
+                        <li class="nav-separator"></li>
+
+                    <li class="nav-item">
+                                <a class="nav-link " href="#sidebarForms" data-bs-toggle="collapse" role="button" >
+           <svg><use href="#i-optimizer"/></svg>
+                                    <span>Setting </span>
+                                </a>
+                                <div class="collapse " id="sidebarForms" style="">
+                                    <ul class="nav flex-column">
+
+                                                                           <li class="nav-item">
+                                                <a class="nav-link" href="/quotation-pdf-jobs"  role="button" aria-expanded="false" >
+                                                <svg><use href="#i-grid"/></svg>
+                                                    <span>Bulk Designs Link</span>
+                                                </a>
+
+                                            </li>
+                                                                          
+
+
+
+                              
+
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_setting/">Aluminium Setting</a>
+                                        </li><!--end nav-item-->
+                                         <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_accessories/">Aluminium Hardware</a>
+                                        </li><!--end nav-item-->
+
+                                        <li class="nav-separator"></li>
+
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/coatings/">Aluminium Coating</a>
+                                        </li><!--end nav-item-->
+                                        <li class="nav-separator"></li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_stock/">Aluminium StockLength</a>
+                                        </li><!--end nav-item-->
+
+
+
+                                        <li class="nav-separator"></li>
+
+
+                                
+                                   
+                                                                   <li class="nav-item ">
+                                            <a class="nav-link " href="/glass">Glass</a>
+                                        </li>
+                                   
+
+
+
+
+
+
+                                 </li>
+                                    </ul><!--end nav-->
+                                </div><!--end startbarForms-->
+                                 </li>
+
+
+                            <li class="nav-separator"></li>
+
+                            <!-- Admin Management Section -->
+                            
+                            <!-- Subscriptions Section -->
+                            
+<li class="menu-title">System</li>
+<li class="nav-item">
+    <a class="nav-link" href="/tutorial" role="button" aria-expanded="false">
+        <svg><use href="#i-help" /></svg>
+        <span>Help & Tutorials</span>
+    </a>
+</li>
+
+                            <li class="nav-separator"></li>
+                                
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/6ab35a4cdd6fa2da7009c5fa/edit"  role="button" aria-expanded="false" >
+         <svg><use href="#i-user"/></svg>
+                                    <span> Profile</span>
+                                </a>
+
+                            </li>
+                            
+
+
+                             </li>
+                            <li class="nav-item" style="display:none">
+                                <a class="nav-link" href="/whatsapp"  role="button" aria-expanded="false" >
+  <svg><use href="#i-whatsapp"/></svg>
+                                    <span>Whatsapp</span>
+                                </a>
+
+                            </li>
+                            <li class="nav-separator"></li>
+
+
+
+
+                        </ul><!--end navbar-nav--->
+
+
+
+                    </div>
+                </div></div></div></div><div class="simplebar-placeholder" style="width: 70px; height: 649px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; transform: translate3d(0px, 0px, 0px); display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 25px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div><!--end startbar-collapse-->
+            </div><!--end startbar-menu-->
+        </div>
+                           
+        <div class="page-wrapper">
+            <!-- Page Content-->
+            <div class="page-content">
+                <div class="container-xxl">
+                    <!-- Page Content -->
+                    <main id="main" class="main">
+                                                  <div class="card">
+
+ <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <h4 class="card-title">Profile Details</h4>
+                                        </div><!--end col-->
+                                        <div class="col-auto">
+
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                </div>
+
+
+
+
+
+                                <div class="row">
+
+<div class="col-3">
+          <div class="nav-tabs-custom text-center">
+                  <ul class="nav nav-tabs tab_wrapper_opportunity" role="tablist">
+                      <li class="nav-item active" role="presentation">
+                          <a class="nav-link text-center active" data-bs-toggle="tab" href="#cu_home" role="tab" aria-selected="true" tabindex="-1"><i class="la la-home d-block"></i>Basic Detail</a>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                          <a class="nav-link text-center" data-bs-toggle="tab" href="#cu_profile" role="tab" aria-selected="false" tabindex="-1"><i class="la la-cog d-block"></i>Setting</a>
+                      </li>
+
+                  </ul>
+              </div>
+           </div>
+
+
+
+  <div class="col-9">
+  <form action="https://www.softwinquote.com/users/6ab35a4cdd6fa2da7009c5fa" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">              <div class="tab-content">
+                  <div class="tab-pane p-3 active" id="cu_home" role="tabpanel">
+                       <div class="row">
+                                         <div class="col-3">
+
+                                                <div class="upload-container">
+                                                                                                                
+                                                                                                         </div>
+
+                                            </div>
+
+                                         <div class="col-2">
+                                              <div class="image_wrapper">
+                                                                                                                                                <div class="flex-shrink-0">
+
+                                                         <img src="/storage/logos/UogUXXGOGpdRwOCA1BWSJIvsZ2dHNbV4namaVZfB.jpg" alt="Current Image" class="rounded-circle" id="imagePreview" style="max-width: 100px;">
+                                                 </div>
+                                            </div>
+                                         </div>
+                                         </div>
+                                         <div class="row" style="padding:20px 0">
+
+
+                                                <div class="col-6">
+    <p style="font-weight:bold">Profile Logo</p>
+
+    
+
+    <input type="file" name="profile_logo" id="profile_logo" accept="image/*" onchange="previewProfileLogo(event)">
+    <br/>
+
+
+    
+            <img id="profileLogoPreview" class="rounded-circle" style="max-width: 100px; display:none;">
+    </div>
+
+
+                                            </div>
+
+                                        <div class="row mb-3" >
+
+
+                                            <div class="col-6">
+                                                <label for="exampleInputEmail1" class="form-label">Company Name<span style="color:red">*</span></label>
+                                                <input type="text" name="first_name" class="form-control" value="MATESHWARI ALUMINIUM &amp; GLASS"  placeholder="Company Name" required>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <label for="exampleInputEmail1" class="form-label">Phone Number <span style="color:red">*</span></label>
+                                                <input type="number" name="phone_number" class="form-control" id="phone_number"  value="9001010537"   placeholder="Phone Number" >
+
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="exampleInputEmail1" class="form-label">Phone Number(Optional)</label>
+                                                <input type="nummber"  name="second_phone_number" class="form-control" id="second_phone_number" value="7976408293,6378515935"   placeholder="Other Phone Number">
+
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+
+
+                                                <label for="exampleInputEmail1" class="form-label">Email Id<span style="color:red">*</span></label>
+                                                <input type="email" name="email_id" class="form-control" value="aluminiummateshwari@gmail.com"    placeholder="Email Id" required readonly>
+
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="exampleInputEmail1" class="form-label">Address <span style="color:red">*</span></label>
+<textarea
+        name="address"
+        id="address"
+        class="form-control"
+        rows="3"
+        required
+    >100ft R.T.O. road,Near hotal zankar,Rajendra nagar, Udaipur (Raj.)-313001</textarea>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row mb-3">
+                                        <div class="col-6">
+                                                <label for="exampleInputEmail1" class="form-label">GST  </label>
+                                                <input type="text" name="gst_number" id="gst_number" class="form-control"  value="08AHCPL8893M1ZI"   placeholder="GST" >
+
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="exampleInputEmail1" class="form-label">Bank Name</label>
+                                                <input type="text" name="bank_name" id="bank_name" class="form-control"  value="BANK OF BARODA"   placeholder="Bank Name" >
+
+                                            </div>
+
+                                        </div>
+
+                                <div class="row mb-3">
+                                        <div class="col-6">
+                                                <label for="exampleInputEmail1" class="form-label">Account Number </label>
+                                                <input type="text" name="account_number" id="account_number" class="form-control"  value="01370400001737"   placeholder="Account Number" >
+
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="exampleInputEmail1" class="form-label">IFSC Code </label>
+                                                <input type="text" name="ifsc_code" id="ifsc_code" class="form-control"  value="BARB0UDAIPU"   placeholder="IFSC Code " >
+
+                                            </div>
+
+                                            <!-- Employees Access -->
+<!-- <div class="row mb-3">
+    <div class="col-6">
+    <label class="form-label">Allow Employees Creation</label>
+
+        <input type="checkbox" name="can_create_employees" id="can_create_employees" value="1"
+             />
+        <label for="can_create_employees" style="margin-left:8px;">Yes</label>
+    </div>
+
+<div class="col-6">
+    <label class="form-label">No. of Employees (limit)</label>
+    <input type="number" name="employees_limit" id="employees_limit" class="form-control"
+        value="" placeholder="Enter number of employees" min="0">
+</div>
+
+</div> -->
+
+
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label for="exampleInputEmail1" class="form-label">  Profile Detail</label>
+                                                <textarea name="profile_detail"  id="myEditor1"  name="profile_detail"  class="tinymce-editor" ><pre><span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;">Dear,</span><br><br><br><span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;">We are very pleased that you are considering <strong>MATESHWARI ALUMINIUM &amp; GLASS</strong> for your property.</span><br><br><br><span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;">Our brand has gained rapid acceptance across all cities of India for the overwhelming advantages such as</span><br><span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;">energy saving and better protection from noise, heat, rain, dust, and pollution.</span><br><span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;">In making this proposal, we have suggested designs which we think will enhance your property</span><br><span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;">significantly. Together with the comfort and aesthetics of the inside of your home, it will also improve the</span><br><span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;">facade of your building.</span></pre>
+<ul>
+<li style="font-size: 12pt; font-family: arial, helvetica, sans-serif; line-height: 1.5;">
+<pre><span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;">You can rely on and trust <strong>MATESHWARI ALUMINIUM &amp; GLASS</strong> &nbsp;after-sales service. Our offer comprises:</span></pre>
+</li>
+<li style="font-size: 12pt; font-family: arial, helvetica, sans-serif; line-height: 1.5;">
+<pre><span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;">Window design, specification, and value</span></pre>
+</li>
+</ul></textarea>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label for="exampleInputEmail1" class="form-label">Term & Condition</label>
+                                                <textarea name="term_condition"  id="myEditor" class="tinymce-editor"   > <p>1. Payments terms: -</p>
+<p>a. 100% Advance along with order, if it is less than INR 50,000/-.</p>
+<p>b. 50% advance along with order, 50% before delivery, if it is more than INR 50,000/-.</p>
+<p>2. Validation of quote 15 days.</p>
+<p>3. As per Govt regulations, PAN details are mandatory for order values Rs 2 lakhs and above.</p>
+<p>4. The prices are valid for variation in sizes up to +/- 25mm per window provided the design and style of product remains unchanged. The customer will be charged on pro-rate basis for difference between the actual sizes and given sizes, if any, beyond the above variation.</p>
+<p>5. After handovering the windows, cleaning not our scope.</p>
+<p>6. Silicon shall be applied for the gaps upto 5 mm only, additional filling shall be charged extra as per the requirement.</p>
+<p>7. The rates are based on the current statutory taxes, duties and levies. Any change in statutory taxes, duties and levies will be passed onto the client.</p>
+<p>8. Civil works is not included in the scope. All such works will need to be done by the client.</p>
+<p>9. Material unloading &amp; storage should be your scope.</p>
+<p>10. All disputes shall be subject jurisdiction only.</p>
+<p>11. Material will be dispatched within 2 working days of receiving the final payment.</p>
+<p>12. Freight chargeable (on actuals) for all outstation work and local orders below Rs 1 Lakh. If client wishes to split delivery into multiple consignments, all additional costs, including freight, lead &amp; lift, installer visit charges would have to be borne by the client.</p>
+<p>13. Once Production has started in factory, no changes (including order cancellation) will be possible.</p>
+<p>14. NO WARRANTY ON GLASS. WARRANTY VOID IN CASE OF PHYSICAL DAMAGE.</p>
+<p>&nbsp;</p>
+<p>4. Provision of safe storage of material at site and electricity for installation work is responsibility of client.</p>
+<p>I hereby accept the estimate as per above mentioned price and specifications. I have read and understood the terms &amp; conditions and agree to them.</p></textarea>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label for="exampleInputEmail1" class="form-label">Billing Term & Condition</label>
+                                                <textarea name="billing_term_condition"  id="billing_term_condition" class="tinymce-editor"   > </textarea>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label for="exampleInputEmail1" class="form-label">PI Term & Condition</label>
+                                                <textarea name="billing_pi"  id="billing_pi" class="tinymce-editor"   > </textarea>
+
+                                            </div>
+
+                                        </div>
+                                        <button type="submit" name="submit" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Update Profile</button>
+
+
+                  </div>
+                  </div>
+                  <div class="tab-pane p-3" id="cu_profile" role="tabpanel">
+
+                                            <div class="row mb-3" >
+
+                                                  <!-- <div class="col-6 mb-1">
+                                                        <label for="exampleInputEmail1" class="form-label">Quotaion Email Id</label>
+                                                        <input type="text" name="quotation_email"  id="quotation_email" class="form-control" value=""   placeholder="Quotation Email Id">
+
+                                                    </div>
+                                                    <div class="col-6 mb-1">
+                                                        <label for="exampleInputEmail1" class="form-label">Cost/SqFt</label>
+                                                        <input type="number" name="costing"  id="costing" class="form-control" value="0"   placeholder="Cost/Sqft">
+
+                                                    </div>
+
+                                                    <div class="col-6 mb-1">
+                                                        <label for="exampleInputEmail1" class="form-label">Heading</label>
+                                                        <input type="text" name="heading"  id="heading" class="form-control" value=""   placeholder="Heading">
+
+                                                    </div> -->
+                                                    <div class="col-6 mb-1">
+    <label class="form-label">Quotation Design PDF</label>
+
+  <select name="selected_pdf" id="pdfSelector" class="form-select mb-1">
+    <option value="">Select Design</option>
+
+            <option value="Template1"
+            data-preview="https://www.softwinquote.com/storage/pdf_templates/0hG9RRjaLvrAsVySFNxtbwFCKOw7co3OoS9ebWKF.png"
+            >
+            Template1
+        </option>
+            <option value="Template2"
+            data-preview="https://www.softwinquote.com/storage/pdf_templates/5vU7s8n4bySoplqfdMSuw8A1NeMkXZNfbc6IheO3.png"
+            >
+            Template2
+        </option>
+            <option value="Template3"
+            data-preview="https://www.softwinquote.com/storage/pdf_templates/xFZ5Ioc4TD9VpMATfLp0gBH5A8El3ckPTqp1y7kE.png"
+            selected>
+            Template3
+        </option>
+            <option value="Template4"
+            data-preview="https://www.softwinquote.com/storage/pdf_templates/6XtHA0xR50oDKNzeTO3tDMaO743QC8izvrZQ5EOK.png"
+            >
+            Template4
+        </option>
+            <option value="Template5"
+            data-preview="https://www.softwinquote.com/storage/pdf_templates/GLEUiylvAdzJ5yCOGtyazhSsFKLvdvEzocmFk1jJ.png"
+            >
+            Template5
+        </option>
+            <option value="template6"
+            data-preview="https://www.softwinquote.com/storage/pdf_templates/dDGunWjUlVRP2HRhqSrwaHEBzebgli6m1tDZwtMG.png"
+            >
+            template6
+        </option>
+            <option value="template7"
+            data-preview="https://www.softwinquote.com/storage/pdf_templates/m4ZnEQMOdbnVMFWShcPA3THe8tLSJoeLxHSDCreX.png"
+            >
+            template7
+        </option>
+            <option value="template8"
+            data-preview="https://www.softwinquote.com/storage/pdf_templates/vAIZ8t1BxXJsE82FO2lFoQO3MTPknVpvwrOUxrNW.png"
+            >
+            template8
+        </option>
+    </select>
+
+</div>
+<div class="col-6 mb-1">
+    <label class="form-label">CuttingList Design PDF</label>
+
+  <select name="cutting_pdf" id="cutting_pdf" class="form-select mb-1">
+    <option value="">Select Design</option>
+
+            <option value="result"
+            selected>
+            Cutting List Template 1
+        </option>
+            <option value="result1"
+            >
+            Cutting List Template 2
+        </option>
+    </select>
+
+</div>
+                                                    <div class="col-6 mb-1">
+                                                              <label for="exampleInputEmail1" class="form-label">Installation /SqFt</label>
+                                                             <input type="number"  name="installation" id="installation"  name="installation" class="form-control" value="25"   placeholder="Installation/Sqft">
+
+                                                    </div>
+                                                    <div class="col-6 mb-1">
+                                                          <label for="exampleInputEmail1" class="form-label">Formulla (width x height)/NUMBER</label>
+                                                        <input type="number"    name="cal_div" id="cal_div" class="form-control" value="0" >
+
+                                                    </div>
+                                                    <div class="col-6">
+                                                            <label for="exampleInputEmail1" class="form-label">Area Condition <span style="color:red">*</span></label>
+                                                              <input type="checkbox" name="area_apply" value="1" id="area_apply"  checked/>
+
+                                                    </div>
+                                                    <div class="col-6">
+                                                            <label for="exampleInputEmail1" class="form-label">New Design</label>
+                                                              <input type="checkbox" name="new_design" value="1" id="new_design"  checked/>
+
+                                                    </div>
+                                                     <div class="col-6">
+                                                            <label for="exampleInputEmail1" class="form-label">Upvc New Layout</label>
+                                                              <input type="checkbox" name="upvc_new_design" value="1" id="upvc_new_design"  checked/>
+
+                                                    </div>
+
+
+
+                                             <div class="col-6">
+                                                            <label for="exampleInputEmail1" class="form-label">Auto Price Calculation</label>
+                                                              <input type="checkbox" name="auto_price" value="1" id="auto_price"  checked/>
+
+                                                    </div>
+
+
+
+                                                    <div class="col-6">
+                                                               <label for="exampleInputEmail1" class="form-label">Rate will not show in quotation PDF <span style="color:red">*</span></label>
+                                                              <input type="checkbox" name="quotation_rate_pdf" value="1" id="quotation_rate_pdf"  />
+
+                                                    </div>
+                                                         <div class="col-6">
+                                                               <label for="exampleInputEmail1" class="form-label">Average Rate Shown <span style="color:red"></span></label>
+                                                              <input type="checkbox" name="average_rate_pdf" value="1" id="average_rate_pdf"  checked/>
+
+                                                    </div>
+                                                     <div class="col-6">
+                                                               <label for="exampleInputEmail1" class="form-label">Special Aluminium  Formulla</label>
+                                                              <input type="checkbox" name="special_aluminium_formulla" value="1" id="special_aluminium_formulla"  checked/>
+
+                                                    </div>
+
+
+                                                </div>
+                                                <button type="button" id="costing_charge" name="submit" class="btn btn-primary"><i class="fas fa-cog me-1"></i> Update Setting</button>
+
+                  </div>
+                  <div class="tab-pane opprt_wrap p-3  " id="cu_settings" role="tabpanel">
+                  <div class="row mb-3" >
+                                                                <div class="col-3 mb-3">
+                                                                    <label for="exampleInputEmail1" class="form-label">Width(MM)</label>
+                                                                    <input type="number" name="width" id="width"  class="form-control"  placeholder="MM">
+
+                                                                </div>
+                                                                <div class="col-3 mb-3">
+                                                                    <label for="exampleInputEmail1" class="form-label">Height(MM)</label>
+                                                                    <input type="number"  name="height" id="height"  name="installation" class="form-control"  placeholder="MM">
+
+                                                                </div>
+                                                                <div class="col-3 mb-3">
+                                                                    <label for="exampleInputEmail1" class="form-label">Formulla ID</label>
+                                                                    <input type="number"  name="formulla_id" id="formulla_id"  name="installation" class="form-control"  placeholder="">
+
+                                                                </div>
+
+
+                                                                <div class="col-3 mb-3">
+
+                                                                    <button  type="button" class="btn btn-primary" onclick="calculate()" style="margin-top:25px">Calculate</button>
+
+
+                                                                </div>
+                                                    <div id="result"></div>
+
+                                                            </div>
+                                                        </div>
+
+
+</div>
+
+                                                </div>
+                    </div>
+
+
+<input type="hidden" name="user_id"  id="user_id" value="6ab35a4cdd6fa2da7009c5fa">
+
+
+
+</form>
+
+  <div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">PDF Preview</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-0">
+                                <iframe id="pdfFrame" width="100%" height="600px" style="border: none;"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- /.col-9 -->
+        </div> <!-- /.row -->
+    </div>
+
+
+
+<style>
+
+ul.nav.nav-tabs.tab_wrapper_opportunity {
+    padding-left: 21px;
+}
+
+ul.nav.nav-tabs.tab_wrapper_opportunity li {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+
+
+ul.nav.nav-tabs.tab_wrapper_opportunity li a i { float:left
+}
+.del_icon {
+    text-align: right;
+    padding-right: 31%;
+}
+.del_icon i {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.profile-logo-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-del-icon {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #000;
+    color: #fff;
+    border-radius: 50%;
+    padding: 4px 7px;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0.85;
+}
+
+.profile-del-icon:hover {
+    background: #d00;
+    opacity: 1;
+}
+
+.profile-del-icon i {
+    font-size: 14px;
+}
+
+</style>
+<script>
+
+function previewProfileLogo(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.getElementById('profileLogoPreview');
+            img.src = e.target.result;
+            img.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Delete profile logo via AJAX
+$(document).on('click', '.profile-del-icon', function() {
+    const user_id = '6ab35a4cdd6fa2da7009c5fa';
+    $.ajax({
+        url: "/delete_image",  // Adjust route if needed
+        method: "GET",
+        data: {user_id: user_id, type: 'profile_logo'}, // send 'type' to know which image
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            if (response.success) {
+                $('.profile-logo-wrapper').remove();
+            } else {
+                alert(response.message || 'Error deleting logo.');
+            }
+        },
+        error: function(xhr) {
+            alert('Error deleting logo.');
+        }
+    });});
+
+
+function triggerFileInput(fieldId) {
+
+    document.getElementById(fieldId).click();
+}
+
+
+        function calculate() {
+            const width = document.getElementById('width').value;
+            const height = document.getElementById('height').value;
+            const formulla_id = document.getElementById('formulla_id').value;
+
+
+            if (width && height) {
+                const result = (width * height) / formulla_id;
+                document.getElementById('result').innerText = `Result: ${result.toFixed(2)} SQFT`;
+            } else {
+                document.getElementById('result').innerText = 'Please enter both width and height.';
+            }
+        }
+
+function previewImage(event) {
+    var file = event.target.files[0];
+    if (file) {
+        var reader = new FileReader();
+
+        // Set the preview image when the file is loaded
+        reader.onload = function (e) {
+            var image = document.getElementById('imagePreview');
+            image.src = e.target.result;
+            image.style.display = 'block'; // Show the image
+        };
+       $("#imagePreview").show();
+        // Read the file as a data URL
+        reader.readAsDataURL(file);
+    }
+}
+
+$('#costing_charge').on('click', function () {
+
+       var costing = $("#costing").val();
+var quotation_email = $("#quotation_email").val();
+var installation = $("#installation").val();
+var cal_div = $("#cal_div").val();
+
+var area_apply = $("#area_apply").is(":checked") ? 1 : 0;
+var user_id = '6ab35a4cdd6fa2da7009c5fa';
+var heading = $("#heading").val();
+
+var quotation_rate_pdf = $('input[name="quotation_rate_pdf"]').is(':checked')
+    ? $('input[name="quotation_rate_pdf"]').val()
+    : '';
+
+    var average_rate_pdf = $('input[name="average_rate_pdf"]').is(':checked')
+    ? $('input[name="average_rate_pdf"]').val()
+    : '';
+
+var new_design = $('input[name="new_design"]').is(':checked')
+    ? $('input[name="new_design"]').val()
+    : '';
+var upvc_new_design = $('input[name="upvc_new_design"]').is(':checked')
+    ? $('input[name="upvc_new_design"]').val()
+    : ''
+
+
+
+var auto_price = $('input[name="auto_price"]').is(':checked')
+    ? $('input[name="auto_price"]').val()
+    : '';
+var special_aluminium_formulla = $('input[name="special_aluminium_formulla"]').is(':checked')
+    ? $('input[name="special_aluminium_formulla"]').val()
+    : '';
+
+
+
+var selected_pdf = $('#pdfSelector').val();
+var cutting_pdf = $('#cutting_pdf').val();
+
+     var data={'costing':costing,
+              'installation':installation,
+              'cal_div':cal_div,
+              'user_id':user_id,
+              'area_apply':area_apply,
+              'heading':heading,
+              'quotation_email':quotation_email,
+              'quotation_rate_pdf':quotation_rate_pdf,
+              'new_design':new_design,
+              'auto_price':auto_price,
+              'selected_pdf':selected_pdf,
+              'average_rate_pdf':average_rate_pdf,
+              'upvc_new_design':upvc_new_design,
+              'special_aluminium_formulla':special_aluminium_formulla,
+                'cutting_pdf':cutting_pdf,
+
+            }
+
+        // AJAX request to upload file
+        $.ajax({
+            url: "https://www.softwinquote.com/users/second_tab", // Adjust route accordingly
+            method: "POST",
+            data: data,
+
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  // Ensure the token is included
+            },
+            success: function (response) {
+
+
+            },
+            error: function (xhr) {
+                alert(`Error uploading ${fieldName}: ${xhr.responseJSON.message}`);
+            }
+        });
+
+});
+
+$('.del_icon').on('click', function () {
+
+    var user_id ='6ab35a4cdd6fa2da7009c5fa';
+
+
+    $.ajax({
+            url: "/profile_delete_image", // Adjust route accordingly
+            method: "GET",
+            data: {user_id:user_id},
+
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  // Ensure the token is included
+            },
+            success: function (response) {
+
+                $(".del_icon").hide();
+                $("#imagePreview").hide();
+                if (response.success) {
+
+                    // Optionally display uploaded file URL
+                    $('#image_wrapper').hide();
+
+
+
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function (xhr) {
+                alert(`Error uploading ${fieldName}: ${xhr.responseJSON.message}`);
+            }
+        });
+
+});
+
+document.getElementById('pdfSelector').addEventListener('change', function () {
+
+    const selectedOption = this.options[this.selectedIndex];
+    const previewUrl = selectedOption.getAttribute('data-preview');
+
+    const pdfFrame = document.getElementById('pdfFrame');
+    const pdfModalEl = document.getElementById('pdfModal');
+
+    if (!previewUrl) {
+        pdfFrame.src = '';
+        return;
+    }
+
+    pdfFrame.src = previewUrl;
+
+    const pdfModal = new bootstrap.Modal(pdfModalEl);
+    pdfModal.show();
+});
+
+// Clear iframe on modal close (important)
+document.getElementById('pdfModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('pdfFrame').src = '';
+});
+
+
+</script>
+                    </main>
+                </div>
+            </div>
+        </div>
+    
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="ajaxToast" class="toast align-items-center text-bg-success" role="alert" aria-live="assertive">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Operation successful!
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="globalLoader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; text-align: center;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <img src="https://www.softwinquote.com/img/loader.gif" alt="Loading..." style="width: 80px; height: 80px;">
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        // Show loader before every AJAX request
+        $(document).ajaxStart(function () {
+            $('#globalLoader').fadeIn(); // Show the loader
+        });
+
+        // Hide loader after every AJAX request completes
+        $(document).ajaxStop(function () {
+            $('#globalLoader').fadeOut(); // Hide the loader
+        });
+    </script>
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+        <div class="copyright"></div>
+    </footer>
+    <!-- End Footer -->
+    <script>
+        function confirmDelete(actionUrl) {
+            // Set the form action dynamically
+            const deleteForm = document.getElementById('deleteForm');
+            deleteForm.action = actionUrl;
+
+            // Show the modal
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+    </script>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this item?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="POST" style="display:inline;">
+                        <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">                        <input type="hidden" name="_method" value="DELETE">                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="https://www.softwinquote.com/assets/apexcharts/apexcharts.min.js"></script> -->
+
+    <script src="https://www.softwinquote.com/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="https://www.softwinquote.com/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.softwinquote.com/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="https://www.softwinquote.com/vendor/tinymce/tinymce.min.js"></script>
+
+    <script src="https://www.softwinquote.com/assets/js/app.js"></script>
+
+    </body>
+</html>
+
+<style>
+
+
+        .upload-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .upload-box {
+            flex: 1;
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            text-align: center;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            max-width:170px;
+        }
+
+        .upload-box:hover {
+            background-color: #f0f9ff;
+            border-color: #0056b3;
+        }
+
+        .upload-box i {
+            font-size: 2rem;
+            color: #007bff;
+        }
+
+    </style>
+<style>
+    .del_icon i {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.del_icon {
+    text-align: right;
+    padding-right: 31%;
+}
+    .uploadBtn {
+    margin-top: 10px;
+    margin-left: 32px;
+}
+</style>
+<script src="https://www.softwinquote.com/vendor/tinymce/tinymce.min.js"></script>
+<!-- Bootstrap 5 JS (include if not already) -->
+
+
+
+<!-- Template Main JS File -->
+<script src="https://www.softwinquote.com/js/main.js"></script>

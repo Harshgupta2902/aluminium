@@ -1,0 +1,716 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn">
+        <link rel="manifest" href="/manifest.json" />
+
+        <title>Soft Window</title>
+
+        <link href="https://www.softwinquote.com/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://www.softwinquote.com/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://www.softwinquote.com/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(function(registration) {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        })
+                        .catch(function(error) {
+                            console.error('Service Worker registration failed:', error);
+                        });
+                });
+            }
+        </script>
+        <style>
+            .container-xxl{
+                max-width: unset;
+            }
+            .topbar .topbar-custom .topbar-item, .topbar{
+                height: unset;
+                padding: 5px 0px;
+            }
+            .page-wrapper .page-content{
+                height: 80px;
+                margin-top: 100px
+            }
+        </style>
+    </head>
+
+    <body class="font-sans antialiased">
+
+
+
+            <div class="topbar d-print-none">
+            <div class="container-xxl">
+                <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">
+
+
+                    <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+                        <li>
+                            <button class="nav-link mobile-menu-btn nav-icon" id="togglemenu">
+                                <i class="iconoir-menu-scale"></i>
+                            </button>
+                        </li>
+
+                    </ul>
+                    <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+
+
+
+
+
+
+                        <li class="dropdown topbar-item">
+                                                    <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <img src="/storage/logos/UogUXXGOGpdRwOCA1BWSJIvsZ2dHNbV4namaVZfB.jpg" alt="" class="thumb-lg rounded-circle">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end py-0">
+                                <div class="d-flex align-items-center dropdown-item py-2 bg-secondary-subtle">
+                                    <div class="flex-shrink-0">
+
+
+                                        <img src="/storage/logos/UogUXXGOGpdRwOCA1BWSJIvsZ2dHNbV4namaVZfB.jpg" alt="" class="thumb-md rounded-circle">
+                                    </div>
+                                    <div class="flex-grow-1 ms-2 text-truncate align-self-center">
+
+                                    </div><!--end media-body-->
+                                </div>
+                                <div class="dropdown-divider mt-0"></div>
+
+                                <div class="dropdown-divider mb-0"></div>
+                                <a class="dropdown-item text-danger" href="/logout"><i class="las la-power-off fs-18 me-1 align-text-bottom"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul><!--end topbar-nav-->
+                </nav>
+                <!-- end navbar-->
+            </div>
+        </div>
+
+      
+
+
+                                                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
+
+<style>
+    .startbar {
+        background: linear-gradient(180deg, #0b1b33 0%, #09162b 100%);
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .startbar .brand {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        padding: 8px 14px;
+        overflow: hidden;
+    }
+
+    .startbar .softmark-logo img {
+        width: 150px;
+        filter: brightness(1.05);
+        transition: width .3s ease, opacity .3s ease;
+        display: block;
+    }
+
+    /* Collapsed: shrink logo smoothly */
+    body[data-sidebar-size="collapsed"] .startbar:not(:hover) .softmark-logo img {
+        width: 36px;
+        opacity: 0.85;
+    }
+
+    /* Override framework's width:0 on logo-lg so our logo stays visible */
+    body[data-sidebar-size="collapsed"] .startbar:not(:hover) .brand .logo .logo-lg {
+        width: auto !important;
+        margin-left: 0;
+    }
+
+    .startbar .startbar-menu .navbar-nav {
+        padding: 10px 8px 16px;
+        gap: 2px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .menu-title {
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        color: rgba(222, 233, 255, 0.55);
+        font-weight: 600;
+        padding: 14px 12px 8px;
+        text-transform: uppercase;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-separator {
+        list-style: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin: 10px 12px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(240, 246, 255, 0.86);
+        padding: 9px 12px;
+        margin: 0 4px;
+        border-bottom: 0;
+        transition: all .18s ease;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link.active,
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link[aria-expanded="true"] {
+        background: #132e58;
+        color: #fff;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        opacity: 0.95;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link span {
+        line-height: 1.2;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav.flex-column .nav-link {
+        color: rgba(240, 246, 255, 0.75);
+        font-size: 12px;
+        padding-left: 34px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav.flex-column .nav-link:hover {
+        color: #fff;
+    }
+
+    /* CRMS SSO: submit button living inside a nav form - must look like a link */
+    .startbar .startbar-menu .navbar-nav .nav-item .crms-sso-link {
+        background: transparent;
+        border: 0;
+        width: 100%;
+        text-align: left;
+        margin: 0;
+        border-radius: 0;
+        cursor: pointer;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .crms-sso-link:hover {
+        background: rgba(255, 255, 255, 0.16);
+    }
+
+</style>
+
+
+
+
+<div class="startbar d-print-none">
+            <!--start brand-->
+            <div class="brand">
+                <a href="/dashboard" class="logo">
+                    <span class="logo-lg">
+                        <div class="softmark-logo">
+                            <img src="https://www.softwinquote.com/images/login-logo3.png" alt="brand-logo">
+                        </div>
+                    </span>
+                </a>
+            </div>
+            <!--end brand-->
+            <!--start startbar-menu-->
+            <div class="startbar-menu" data-simplebar>
+                <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
+<div class="simplebar-wrapper" style="margin: 0px -16px -16px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
+        <div class="simplebar-content" >
+                    <div class="d-flex align-items-start flex-column w-100">
+                        <!-- Navigation -->
+
+
+<!-- SVG SPRITE -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <!-- Dashboard -->
+  <symbol id="i-dashboard" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="8" height="8" rx="2"/>
+    <rect x="13" y="3" width="8" height="5" rx="2"/>
+    <rect x="13" y="10" width="8" height="11" rx="2"/>
+    <rect x="3" y="13" width="8" height="8" rx="2"/>
+  </symbol>
+
+  <!-- Quotes -->
+  <symbol id="i-quotes" viewBox="0 0 24 24">
+    <rect x="5" y="3" width="14" height="18" rx="2"/>
+    <path d="M8 11h3l-1 4h2M14 11h2l-1 4h2"/>
+  </symbol>
+
+  <!-- Billing -->
+  <symbol id="i-billing" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="14" rx="2"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+    <rect x="6" y="14" width="5" height="2" rx="1"/>
+  </symbol>
+
+  <!-- PI (Receipt) -->
+  <symbol id="i-pi" viewBox="0 0 24 24">
+    <rect x="5" y="3" width="14" height="18" rx="2"/>
+    <line x1="8" y1="8" x2="16" y2="8"/>
+    <line x1="8" y1="12" x2="16" y2="12"/>
+    <line x1="8" y1="16" x2="14" y2="16"/>
+  </symbol>
+
+  <!-- Optimizer -->
+  <symbol id="i-optimizer" viewBox="0 0 24 24">
+    <line x1="4" y1="6" x2="20" y2="6"/>
+    <circle cx="10" cy="6" r="2"/>
+    <line x1="4" y1="12" x2="20" y2="12"/>
+    <circle cx="14" cy="12" r="2"/>
+    <line x1="4" y1="18" x2="20" y2="18"/>
+    <circle cx="7" cy="18" r="2"/>
+  </symbol>
+
+  <!-- Window Design -->
+  <symbol id="i-window" viewBox="0 0 24 24">
+    <rect x="3" y="4" width="18" height="16" rx="1"/>
+    <line x1="12" y1="4" x2="12" y2="20"/>
+    <line x1="3" y1="12" x2="21" y2="12"/>
+  </symbol>
+
+  <!-- Profile -->
+  <symbol id="i-user" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M4 20a8 8 0 0 1 16 0"/>
+  </symbol>
+
+  <!-- Whatsapp -->
+  <symbol id="i-whatsapp" viewBox="0 0 24 24">
+    <path d="M12 2a10 10 0 0 0-9.5 13.5L2 22l6.5-2.5A10 10 0 1 0 12 2z"/>
+    <path d="M8 10c1 4 5 6 6 6s1-2 2-2 2 1 2 2-2 4-6 2-5-5-4-8z"/>
+  </symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24">
+  <path d="M12 2l9 6-9 6-9-6 9-6z"></path>
+            <path d="M3 14l9 6 9-6"></path>
+            <path d="M3 10l9 6 9-6"></path>
+            </symbol>
+
+  <!-- Help -->
+  <symbol id="i-help" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10"></circle>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-2 2.5-2 4"></path>
+    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+  </symbol>
+
+  <!-- External link (CRMS SSO) -->
+  <symbol id="i-external" viewBox="0 0 24 24">
+    <path d="M14 4h6v6"/>
+    <path d="M20 4L11 13"/>
+    <path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>
+  </symbol>
+  <!-- Letter Header -->
+<symbol id="i-letter" viewBox="0 0 24 24">
+    <path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path>
+    <path d="M14 3v6h6"></path>
+    <line x1="8" y1="13" x2="16" y2="13"></line>
+    <line x1="8" y1="17" x2="16" y2="17"></line>
+</symbol>
+
+</svg>
+                        <ul class="navbar-nav mb-auto w-100 sidebar_wrapper sidebar">
+                            <li class="menu-title">Main</li>
+                             <li class="nav-item">
+                                <a class="nav-link " href="/dashboard" role="button" aria-expanded="false" >
+                                         <svg><use href="#i-dashboard"/></svg>
+                                    <span>Dashboard</span>
+                                </a>
+
+                            </li>
+
+                            
+                            <li class="nav-separator"></li> <!-- Separation here -->
+                                                            <li class="nav-item">
+                                <a class="nav-link " href="/quotations" role="button" aria-expanded="false" >
+                                <svg><use href="#i-quotes"/></svg>
+                                    <span>Quotes</span>
+                                </a>
+
+                            </li>
+                             <li class="nav-separator"></li>
+                                    <li class="nav-item" style="background: linear-gradient(180deg, #22c55e, #22c55e); border-radius: 8px; overflow: hidden;">
+                                        <form method="POST" action="https://www.softwinquote.com/open-crms">
+                                                <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">
+                                                <button type="submit" class="nav-link crms-sso-link" style="color:#fff" title="Open CRMS (Single Sign-On)">
+                                                  <svg><use href="#i-external"/></svg>
+                                                    <span>CRMS</span>
+                                                </button>
+                                            </form>
+                                        </li>
+                            <!--end nav-item-->
+
+                         <!---   <li class="nav-item">
+                                <a class="nav-link " href="#sidebarForms" data-bs-toggle="collapse" role="button"  aria-controls="sidebarForms">
+                                    <i class="iconoir-journal-page menu-icon"></i>
+                                    <span>CRMS</span>
+                                </a>
+                                <div class="collapse " id="sidebarForms" style="">
+                                    <ul class="nav flex-column">
+                                         <li class="nav-item active">
+                                            <a class="nav-link " href="/today_call">Today Leads</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/leads/">Leads</a>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+                            </li>-->
+
+                            <!--<li class="nav-item">
+                                <a class="nav-link" href="/opportunities"  role="button" aria-expanded="false" >
+                                <i class="iconoir-compact-disc menu-icon"></i>
+                                    <span>Opportunity</span>
+                                </a>
+
+                            </li> -->
+                        <!--end nav-item-->
+                            <li class="nav-separator"></li> <!-- Separation here -->
+
+
+                            <li class="nav-item">
+                                <a class="nav-link " href="/billings" role="button" aria-expanded="false" >
+           <svg><use href="#i-billing"/></svg>
+                                    <span>Billing</span>
+                                </a>
+
+                            </li>
+                            <li class="nav-separator"></li>
+                                 <li class="nav-item">
+                                <a class="nav-link " href="/invoices" role="button" aria-expanded="false" >
+           <svg><use href="#i-billing"/></svg>
+                                    <span>Invoices</span>
+                                </a>
+
+                            </li>
+                             <li class="nav-separator"></li> <!-- Separation here -->
+
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/performas" role="button" aria-expanded="false" >
+           <svg><use href="#i-pi"/></svg>
+                                    <span>PI</span>
+                                </a>
+
+                            </li>
+                        <li class="nav-separator"></li>
+
+                            <!--end nav-item--
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/6ab35a4cdd6fa2da7009c5fa/edit"  role="button" aria-expanded="false" >
+                                <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
+                                    <span>Profile</span>
+                                </a>
+
+                            </li><!--end nav-item-->
+
+
+                            </li>
+
+<li class="nav-item">
+
+    <a href="https://www.softwinquote.com/letter-header"
+       class="nav-link ">
+
+        <svg><use href="#i-letter"/></svg>
+
+        <span>
+            Letter Header
+        </span>
+
+    </a>
+
+</li>
+                        <li class="nav-separator"></li>
+
+                    <li class="nav-item">
+                                <a class="nav-link " href="#sidebarForms" data-bs-toggle="collapse" role="button" >
+           <svg><use href="#i-optimizer"/></svg>
+                                    <span>Setting </span>
+                                </a>
+                                <div class="collapse " id="sidebarForms" style="">
+                                    <ul class="nav flex-column">
+
+                                                                           <li class="nav-item">
+                                                <a class="nav-link" href="/quotation-pdf-jobs"  role="button" aria-expanded="false" >
+                                                <svg><use href="#i-grid"/></svg>
+                                                    <span>Bulk Designs Link</span>
+                                                </a>
+
+                                            </li>
+                                                                          
+
+
+
+                              
+
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_setting/">Aluminium Setting</a>
+                                        </li><!--end nav-item-->
+                                         <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_accessories/">Aluminium Hardware</a>
+                                        </li><!--end nav-item-->
+
+                                        <li class="nav-separator"></li>
+
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/coatings/">Aluminium Coating</a>
+                                        </li><!--end nav-item-->
+                                        <li class="nav-separator"></li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_stock/">Aluminium StockLength</a>
+                                        </li><!--end nav-item-->
+
+
+
+                                        <li class="nav-separator"></li>
+
+
+                                
+                                   
+                                                                   <li class="nav-item ">
+                                            <a class="nav-link " href="/glass">Glass</a>
+                                        </li>
+                                   
+
+
+
+
+
+
+                                 </li>
+                                    </ul><!--end nav-->
+                                </div><!--end startbarForms-->
+                                 </li>
+
+
+                            <li class="nav-separator"></li>
+
+                            <!-- Admin Management Section -->
+                            
+                            <!-- Subscriptions Section -->
+                            
+<li class="menu-title">System</li>
+<li class="nav-item">
+    <a class="nav-link" href="/tutorial" role="button" aria-expanded="false">
+        <svg><use href="#i-help" /></svg>
+        <span>Help & Tutorials</span>
+    </a>
+</li>
+
+                            <li class="nav-separator"></li>
+                                
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/6ab35a4cdd6fa2da7009c5fa/edit"  role="button" aria-expanded="false" >
+         <svg><use href="#i-user"/></svg>
+                                    <span> Profile</span>
+                                </a>
+
+                            </li>
+                            
+
+
+                             </li>
+                            <li class="nav-item" style="display:none">
+                                <a class="nav-link" href="/whatsapp"  role="button" aria-expanded="false" >
+  <svg><use href="#i-whatsapp"/></svg>
+                                    <span>Whatsapp</span>
+                                </a>
+
+                            </li>
+                            <li class="nav-separator"></li>
+
+
+
+
+                        </ul><!--end navbar-nav--->
+
+
+
+                    </div>
+                </div></div></div></div><div class="simplebar-placeholder" style="width: 70px; height: 649px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; transform: translate3d(0px, 0px, 0px); display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 25px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div><!--end startbar-collapse-->
+            </div><!--end startbar-menu-->
+        </div>
+                           
+        <div class="page-wrapper">
+            <!-- Page Content-->
+            <div class="page-content">
+                <div class="container-xxl">
+                    <!-- Page Content -->
+                    <main id="main" class="main">
+                                                  <link href="https://www.softwinquote.com/assets/libs/simple-datatables/style.css" rel="stylesheet" type="text/css" />
+<link href="https://www.softwinquote.com/assets/libs/mobius1-selectr/selectr.min.css" rel="stylesheet" type="text/css" />
+
+            <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+    <div class="col">
+        <h4 class="card-title">Proforma</h4>
+    </div>
+    <div class="col-auto">
+                    <a href="/performas/create" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i> Create Proforma
+            </a>
+            </div>
+</div>
+
+    <div class="mt-3 p-3 rounded bg-warning-subtle"
+         style="border:1px solid #ffe69c">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="fw-semibold text-warning" style="font-size:13px;">
+                <i class="ri-information-line me-1"></i>
+                                    Plan <strong>Basic Plan</strong>: 0 / 5 PI entries used.
+                            </span>
+            <span class="text-muted" style="font-size:12px;">0/5</span>
+        </div>
+        <div class="progress" style="height:6px;">
+            <div class="progress-bar bg-warning"
+                 style="width:0%"></div>
+        </div>
+    </div>
+                                </div><!--end card-header-->
+
+
+                                <div class="card-body pt-0">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0" id="datatable_1">
+                                            <thead class="table-light">
+                                            <tr class="fs-5 fw-bold">
+                                                <th scope="col"><input type="checkbox"></th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Phone</th>
+                                                <th scope="col">Created At</th>
+                                                <th scope="col">Action</th>
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            
+
+                                            </tbody>
+                                          </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- end col -->
+                    </div> <!-- end row -->
+
+    <script src="https://www.softwinquote.com/assets/libs/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="https://www.softwinquote.com/assets/js/pages/datatable.init.js"></script>
+    <script src="https://www.softwinquote.com/assets/libs/mobius1-selectr/selectr.min.js"></script>
+    <script src=" https://www.softwinquote.com/assets/js/pages/forms-advanced.js"></script>
+                    </main>
+                </div>
+            </div>
+        </div>
+    
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="ajaxToast" class="toast align-items-center text-bg-success" role="alert" aria-live="assertive">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Operation successful!
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="globalLoader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; text-align: center;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <img src="https://www.softwinquote.com/img/loader.gif" alt="Loading..." style="width: 80px; height: 80px;">
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        // Show loader before every AJAX request
+        $(document).ajaxStart(function () {
+            $('#globalLoader').fadeIn(); // Show the loader
+        });
+
+        // Hide loader after every AJAX request completes
+        $(document).ajaxStop(function () {
+            $('#globalLoader').fadeOut(); // Hide the loader
+        });
+    </script>
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+        <div class="copyright"></div>
+    </footer>
+    <!-- End Footer -->
+    <script>
+        function confirmDelete(actionUrl) {
+            // Set the form action dynamically
+            const deleteForm = document.getElementById('deleteForm');
+            deleteForm.action = actionUrl;
+
+            // Show the modal
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+    </script>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this item?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="POST" style="display:inline;">
+                        <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">                        <input type="hidden" name="_method" value="DELETE">                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="https://www.softwinquote.com/assets/apexcharts/apexcharts.min.js"></script> -->
+
+    <script src="https://www.softwinquote.com/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="https://www.softwinquote.com/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.softwinquote.com/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="https://www.softwinquote.com/vendor/tinymce/tinymce.min.js"></script>
+
+    <script src="https://www.softwinquote.com/assets/js/app.js"></script>
+
+    </body>
+</html>
+

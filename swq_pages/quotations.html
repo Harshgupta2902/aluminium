@@ -1,0 +1,1965 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn">
+        <link rel="manifest" href="/manifest.json" />
+
+        <title>Soft Window</title>
+
+        <link href="https://www.softwinquote.com/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://www.softwinquote.com/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://www.softwinquote.com/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(function(registration) {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        })
+                        .catch(function(error) {
+                            console.error('Service Worker registration failed:', error);
+                        });
+                });
+            }
+        </script>
+        <style>
+            .container-xxl{
+                max-width: unset;
+            }
+            .topbar .topbar-custom .topbar-item, .topbar{
+                height: unset;
+                padding: 5px 0px;
+            }
+            .page-wrapper .page-content{
+                height: 80px;
+                margin-top: 100px
+            }
+        </style>
+    </head>
+
+    <body class="font-sans antialiased">
+
+
+
+            <div class="topbar d-print-none">
+            <div class="container-xxl">
+                <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">
+
+
+                    <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+                        <li>
+                            <button class="nav-link mobile-menu-btn nav-icon" id="togglemenu">
+                                <i class="iconoir-menu-scale"></i>
+                            </button>
+                        </li>
+
+                    </ul>
+                    <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+
+
+
+
+
+
+                        <li class="dropdown topbar-item">
+                                                    <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <img src="/storage/logos/UogUXXGOGpdRwOCA1BWSJIvsZ2dHNbV4namaVZfB.jpg" alt="" class="thumb-lg rounded-circle">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end py-0">
+                                <div class="d-flex align-items-center dropdown-item py-2 bg-secondary-subtle">
+                                    <div class="flex-shrink-0">
+
+
+                                        <img src="/storage/logos/UogUXXGOGpdRwOCA1BWSJIvsZ2dHNbV4namaVZfB.jpg" alt="" class="thumb-md rounded-circle">
+                                    </div>
+                                    <div class="flex-grow-1 ms-2 text-truncate align-self-center">
+
+                                    </div><!--end media-body-->
+                                </div>
+                                <div class="dropdown-divider mt-0"></div>
+
+                                <div class="dropdown-divider mb-0"></div>
+                                <a class="dropdown-item text-danger" href="/logout"><i class="las la-power-off fs-18 me-1 align-text-bottom"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul><!--end topbar-nav-->
+                </nav>
+                <!-- end navbar-->
+            </div>
+        </div>
+
+      
+
+
+                                                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
+
+<style>
+    .startbar {
+        background: linear-gradient(180deg, #0b1b33 0%, #09162b 100%);
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .startbar .brand {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        padding: 8px 14px;
+        overflow: hidden;
+    }
+
+    .startbar .softmark-logo img {
+        width: 150px;
+        filter: brightness(1.05);
+        transition: width .3s ease, opacity .3s ease;
+        display: block;
+    }
+
+    /* Collapsed: shrink logo smoothly */
+    body[data-sidebar-size="collapsed"] .startbar:not(:hover) .softmark-logo img {
+        width: 36px;
+        opacity: 0.85;
+    }
+
+    /* Override framework's width:0 on logo-lg so our logo stays visible */
+    body[data-sidebar-size="collapsed"] .startbar:not(:hover) .brand .logo .logo-lg {
+        width: auto !important;
+        margin-left: 0;
+    }
+
+    .startbar .startbar-menu .navbar-nav {
+        padding: 10px 8px 16px;
+        gap: 2px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .menu-title {
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        color: rgba(222, 233, 255, 0.55);
+        font-weight: 600;
+        padding: 14px 12px 8px;
+        text-transform: uppercase;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-separator {
+        list-style: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin: 10px 12px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(240, 246, 255, 0.86);
+        padding: 9px 12px;
+        margin: 0 4px;
+        border-bottom: 0;
+        transition: all .18s ease;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link.active,
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link[aria-expanded="true"] {
+        background: #132e58;
+        color: #fff;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        opacity: 0.95;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link span {
+        line-height: 1.2;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav.flex-column .nav-link {
+        color: rgba(240, 246, 255, 0.75);
+        font-size: 12px;
+        padding-left: 34px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav.flex-column .nav-link:hover {
+        color: #fff;
+    }
+
+    /* CRMS SSO: submit button living inside a nav form - must look like a link */
+    .startbar .startbar-menu .navbar-nav .nav-item .crms-sso-link {
+        background: transparent;
+        border: 0;
+        width: 100%;
+        text-align: left;
+        margin: 0;
+        border-radius: 0;
+        cursor: pointer;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .crms-sso-link:hover {
+        background: rgba(255, 255, 255, 0.16);
+    }
+
+</style>
+
+
+
+
+<div class="startbar d-print-none">
+            <!--start brand-->
+            <div class="brand">
+                <a href="/dashboard" class="logo">
+                    <span class="logo-lg">
+                        <div class="softmark-logo">
+                            <img src="https://www.softwinquote.com/images/login-logo3.png" alt="brand-logo">
+                        </div>
+                    </span>
+                </a>
+            </div>
+            <!--end brand-->
+            <!--start startbar-menu-->
+            <div class="startbar-menu" data-simplebar>
+                <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
+<div class="simplebar-wrapper" style="margin: 0px -16px -16px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
+        <div class="simplebar-content" >
+                    <div class="d-flex align-items-start flex-column w-100">
+                        <!-- Navigation -->
+
+
+<!-- SVG SPRITE -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <!-- Dashboard -->
+  <symbol id="i-dashboard" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="8" height="8" rx="2"/>
+    <rect x="13" y="3" width="8" height="5" rx="2"/>
+    <rect x="13" y="10" width="8" height="11" rx="2"/>
+    <rect x="3" y="13" width="8" height="8" rx="2"/>
+  </symbol>
+
+  <!-- Quotes -->
+  <symbol id="i-quotes" viewBox="0 0 24 24">
+    <rect x="5" y="3" width="14" height="18" rx="2"/>
+    <path d="M8 11h3l-1 4h2M14 11h2l-1 4h2"/>
+  </symbol>
+
+  <!-- Billing -->
+  <symbol id="i-billing" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="14" rx="2"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+    <rect x="6" y="14" width="5" height="2" rx="1"/>
+  </symbol>
+
+  <!-- PI (Receipt) -->
+  <symbol id="i-pi" viewBox="0 0 24 24">
+    <rect x="5" y="3" width="14" height="18" rx="2"/>
+    <line x1="8" y1="8" x2="16" y2="8"/>
+    <line x1="8" y1="12" x2="16" y2="12"/>
+    <line x1="8" y1="16" x2="14" y2="16"/>
+  </symbol>
+
+  <!-- Optimizer -->
+  <symbol id="i-optimizer" viewBox="0 0 24 24">
+    <line x1="4" y1="6" x2="20" y2="6"/>
+    <circle cx="10" cy="6" r="2"/>
+    <line x1="4" y1="12" x2="20" y2="12"/>
+    <circle cx="14" cy="12" r="2"/>
+    <line x1="4" y1="18" x2="20" y2="18"/>
+    <circle cx="7" cy="18" r="2"/>
+  </symbol>
+
+  <!-- Window Design -->
+  <symbol id="i-window" viewBox="0 0 24 24">
+    <rect x="3" y="4" width="18" height="16" rx="1"/>
+    <line x1="12" y1="4" x2="12" y2="20"/>
+    <line x1="3" y1="12" x2="21" y2="12"/>
+  </symbol>
+
+  <!-- Profile -->
+  <symbol id="i-user" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M4 20a8 8 0 0 1 16 0"/>
+  </symbol>
+
+  <!-- Whatsapp -->
+  <symbol id="i-whatsapp" viewBox="0 0 24 24">
+    <path d="M12 2a10 10 0 0 0-9.5 13.5L2 22l6.5-2.5A10 10 0 1 0 12 2z"/>
+    <path d="M8 10c1 4 5 6 6 6s1-2 2-2 2 1 2 2-2 4-6 2-5-5-4-8z"/>
+  </symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24">
+  <path d="M12 2l9 6-9 6-9-6 9-6z"></path>
+            <path d="M3 14l9 6 9-6"></path>
+            <path d="M3 10l9 6 9-6"></path>
+            </symbol>
+
+  <!-- Help -->
+  <symbol id="i-help" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10"></circle>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-2 2.5-2 4"></path>
+    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+  </symbol>
+
+  <!-- External link (CRMS SSO) -->
+  <symbol id="i-external" viewBox="0 0 24 24">
+    <path d="M14 4h6v6"/>
+    <path d="M20 4L11 13"/>
+    <path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>
+  </symbol>
+  <!-- Letter Header -->
+<symbol id="i-letter" viewBox="0 0 24 24">
+    <path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path>
+    <path d="M14 3v6h6"></path>
+    <line x1="8" y1="13" x2="16" y2="13"></line>
+    <line x1="8" y1="17" x2="16" y2="17"></line>
+</symbol>
+
+</svg>
+                        <ul class="navbar-nav mb-auto w-100 sidebar_wrapper sidebar">
+                            <li class="menu-title">Main</li>
+                             <li class="nav-item">
+                                <a class="nav-link " href="/dashboard" role="button" aria-expanded="false" >
+                                         <svg><use href="#i-dashboard"/></svg>
+                                    <span>Dashboard</span>
+                                </a>
+
+                            </li>
+
+                            
+                            <li class="nav-separator"></li> <!-- Separation here -->
+                                                            <li class="nav-item">
+                                <a class="nav-link active" href="/quotations" role="button" aria-expanded="false" >
+                                <svg><use href="#i-quotes"/></svg>
+                                    <span>Quotes</span>
+                                </a>
+
+                            </li>
+                             <li class="nav-separator"></li>
+                                    <li class="nav-item" style="background: linear-gradient(180deg, #22c55e, #22c55e); border-radius: 8px; overflow: hidden;">
+                                        <form method="POST" action="https://www.softwinquote.com/open-crms">
+                                                <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">
+                                                <button type="submit" class="nav-link crms-sso-link" style="color:#fff" title="Open CRMS (Single Sign-On)">
+                                                  <svg><use href="#i-external"/></svg>
+                                                    <span>CRMS</span>
+                                                </button>
+                                            </form>
+                                        </li>
+                            <!--end nav-item-->
+
+                         <!---   <li class="nav-item">
+                                <a class="nav-link " href="#sidebarForms" data-bs-toggle="collapse" role="button"  aria-controls="sidebarForms">
+                                    <i class="iconoir-journal-page menu-icon"></i>
+                                    <span>CRMS</span>
+                                </a>
+                                <div class="collapse " id="sidebarForms" style="">
+                                    <ul class="nav flex-column">
+                                         <li class="nav-item active">
+                                            <a class="nav-link " href="/today_call">Today Leads</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/leads/">Leads</a>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+                            </li>-->
+
+                            <!--<li class="nav-item">
+                                <a class="nav-link" href="/opportunities"  role="button" aria-expanded="false" >
+                                <i class="iconoir-compact-disc menu-icon"></i>
+                                    <span>Opportunity</span>
+                                </a>
+
+                            </li> -->
+                        <!--end nav-item-->
+                            <li class="nav-separator"></li> <!-- Separation here -->
+
+
+                            <li class="nav-item">
+                                <a class="nav-link " href="/billings" role="button" aria-expanded="false" >
+           <svg><use href="#i-billing"/></svg>
+                                    <span>Billing</span>
+                                </a>
+
+                            </li>
+                            <li class="nav-separator"></li>
+                                 <li class="nav-item">
+                                <a class="nav-link " href="/invoices" role="button" aria-expanded="false" >
+           <svg><use href="#i-billing"/></svg>
+                                    <span>Invoices</span>
+                                </a>
+
+                            </li>
+                             <li class="nav-separator"></li> <!-- Separation here -->
+
+                            <li class="nav-item">
+                                <a class="nav-link " href="/performas" role="button" aria-expanded="false" >
+           <svg><use href="#i-pi"/></svg>
+                                    <span>PI</span>
+                                </a>
+
+                            </li>
+                        <li class="nav-separator"></li>
+
+                            <!--end nav-item--
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/6ab35a4cdd6fa2da7009c5fa/edit"  role="button" aria-expanded="false" >
+                                <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
+                                    <span>Profile</span>
+                                </a>
+
+                            </li><!--end nav-item-->
+
+
+                            </li>
+
+<li class="nav-item">
+
+    <a href="https://www.softwinquote.com/letter-header"
+       class="nav-link ">
+
+        <svg><use href="#i-letter"/></svg>
+
+        <span>
+            Letter Header
+        </span>
+
+    </a>
+
+</li>
+                        <li class="nav-separator"></li>
+
+                    <li class="nav-item">
+                                <a class="nav-link " href="#sidebarForms" data-bs-toggle="collapse" role="button" >
+           <svg><use href="#i-optimizer"/></svg>
+                                    <span>Setting </span>
+                                </a>
+                                <div class="collapse " id="sidebarForms" style="">
+                                    <ul class="nav flex-column">
+
+                                                                           <li class="nav-item">
+                                                <a class="nav-link" href="/quotation-pdf-jobs"  role="button" aria-expanded="false" >
+                                                <svg><use href="#i-grid"/></svg>
+                                                    <span>Bulk Designs Link</span>
+                                                </a>
+
+                                            </li>
+                                                                          
+
+
+
+                              
+
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_setting/">Aluminium Setting</a>
+                                        </li><!--end nav-item-->
+                                         <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_accessories/">Aluminium Hardware</a>
+                                        </li><!--end nav-item-->
+
+                                        <li class="nav-separator"></li>
+
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/coatings/">Aluminium Coating</a>
+                                        </li><!--end nav-item-->
+                                        <li class="nav-separator"></li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_stock/">Aluminium StockLength</a>
+                                        </li><!--end nav-item-->
+
+
+
+                                        <li class="nav-separator"></li>
+
+
+                                
+                                   
+                                                                   <li class="nav-item ">
+                                            <a class="nav-link " href="/glass">Glass</a>
+                                        </li>
+                                   
+
+
+
+
+
+
+                                 </li>
+                                    </ul><!--end nav-->
+                                </div><!--end startbarForms-->
+                                 </li>
+
+
+                            <li class="nav-separator"></li>
+
+                            <!-- Admin Management Section -->
+                            
+                            <!-- Subscriptions Section -->
+                            
+<li class="menu-title">System</li>
+<li class="nav-item">
+    <a class="nav-link" href="/tutorial" role="button" aria-expanded="false">
+        <svg><use href="#i-help" /></svg>
+        <span>Help & Tutorials</span>
+    </a>
+</li>
+
+                            <li class="nav-separator"></li>
+                                
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/6ab35a4cdd6fa2da7009c5fa/edit"  role="button" aria-expanded="false" >
+         <svg><use href="#i-user"/></svg>
+                                    <span> Profile</span>
+                                </a>
+
+                            </li>
+                            
+
+
+                             </li>
+                            <li class="nav-item" style="display:none">
+                                <a class="nav-link" href="/whatsapp"  role="button" aria-expanded="false" >
+  <svg><use href="#i-whatsapp"/></svg>
+                                    <span>Whatsapp</span>
+                                </a>
+
+                            </li>
+                            <li class="nav-separator"></li>
+
+
+
+
+                        </ul><!--end navbar-nav--->
+
+
+
+                    </div>
+                </div></div></div></div><div class="simplebar-placeholder" style="width: 70px; height: 649px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; transform: translate3d(0px, 0px, 0px); display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 25px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div><!--end startbar-collapse-->
+            </div><!--end startbar-menu-->
+        </div>
+                           
+        <div class="page-wrapper">
+            <!-- Page Content-->
+            <div class="page-content">
+                <div class="container-xxl">
+                    <!-- Page Content -->
+                    <main id="main" class="main">
+                                                  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+<style>
+    /* ===== PAGE LAYOUT ===== */
+    .quotes-page {
+        padding: 16px;
+        background: #f5f6fa;
+        min-height: 100vh;
+    }
+
+    /* ===== TOP HEADER CARD ===== */
+    .quotes-header-card {
+        background: #fff;
+        border-radius: 8px;
+        padding: 10px 16px;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+
+    .quotes-header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .quotes-icon-box {
+        width: 36px;
+        height: 36px;
+        background: #1a73e8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 15px;
+        flex-shrink: 0;
+    }
+
+    .quotes-title h2 {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a2e;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    .quotes-title p {
+        font-size: 11px;
+        color: #888;
+        margin: 0;
+    }
+
+    /* ===== FILTER AREA ===== */
+    .quotes-filters {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .filter-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 2px;
+    }
+
+    .filter-group {
+        display: flex;
+        align-items: flex-end;
+        gap: 6px;
+    }
+
+    .filter-field label {
+        display: block;
+        font-size: 10px;
+        color: #888;
+        margin-bottom: 2px;
+    }
+
+    .filter-input {
+        border: 1px solid #dde3ed;
+        border-radius: 6px;
+        padding: 5px 8px;
+        font-size: 12px;
+        color: #333;
+        background: #fff;
+        outline: none;
+        height: 32px;
+    }
+
+    .filter-input:focus {
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 2px rgba(26,115,232,0.1);
+    }
+
+    .filter-date { width: 135px; }
+    .filter-name { width: 140px; }
+
+    .btn-search {
+        background: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0 14px;
+        font-size: 12px;
+        font-weight: 600;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        white-space: nowrap;
+    }
+
+    .btn-search:hover { background: #218838; }
+
+    .btn-quick-quote {
+        background: #1a73e8;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0 14px;
+        font-size: 12px;
+        font-weight: 600;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.2s;
+        white-space: nowrap;
+    }
+
+    .btn-quick-quote:hover { background: #1558b0; color: #fff; }
+
+    /* ===== TABLE CARD ===== */
+    .quotes-table-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+        overflow: hidden;
+    }
+
+    /* ===== TABLE CONTROLS ===== */
+    .table-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .entries-selector {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #555;
+    }
+
+    .entries-select {
+        border: 1px solid #dde3ed;
+        border-radius: 5px;
+        padding: 3px 8px;
+        font-size: 12px;
+        color: #333;
+        background: #fff;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .table-search-input {
+        border: 1px solid #dde3ed;
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-size: 12px;
+        color: #333;
+        width: 180px;
+        outline: none;
+    }
+
+    .table-search-input:focus {
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 2px rgba(26,115,232,0.1);
+    }
+
+    /* ===== TABLE ===== */
+    .quotes-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .quotes-table thead tr {
+        background: #1a73e8;
+        color: #fff;
+    }
+
+    .quotes-table thead th {
+        padding: 9px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        text-align: left;
+        white-space: nowrap;
+        border: none;
+    }
+
+    .quotes-table thead th.text-center { text-align: center; }
+
+    .th-sort {
+        cursor: pointer;
+        user-select: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+    }
+
+    .sort-icon { font-size: 9px; opacity: 0.8; }
+
+    /* ===== TABLE BODY ===== */
+    .quotes-table tbody tr {
+        border-bottom: 1px solid #f0f2f8;
+        transition: background 0.15s;
+    }
+
+    .quotes-table tbody tr:hover { background: #f7f9ff; }
+
+    .quotes-table tbody td {
+        padding: 8px 12px;
+        font-size: 12.5px;
+        color: #333;
+        vertical-align: middle;
+        border: none;
+    }
+
+    .quotes-table tbody td.text-center { text-align: center; }
+
+    /* ===== AREA/AMOUNT BADGE ===== */
+    .area-amount-badge {
+        display: inline-flex;
+        align-items: center;
+        background: #e8f5e9;
+        border: 1px solid #c8e6c9;
+        border-radius: 20px;
+        overflow: hidden;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: box-shadow 0.2s;
+    }
+
+    .area-amount-badge:hover { box-shadow: 0 2px 6px rgba(40,167,69,0.2); }
+
+    .badge-area {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 8px;
+        color: #2e7d32;
+        border-right: 1px solid #c8e6c9;
+    }
+
+    .badge-amount {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 8px;
+        color: #1b5e20;
+    }
+
+    .badge-icon { font-size: 10px; }
+
+    /* ===== STATUS SELECT ===== */
+    .status-select {
+        border: 1px solid #dde3ed;
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 11.5px;
+        color: #555;
+        background: #fff;
+        cursor: pointer;
+        outline: none;
+        min-width: 95px;
+        transition: border-color 0.2s;
+    }
+
+    .status-select:focus { border-color: #1a73e8; }
+    .status-select.status-new  { border-color: #1a73e8; color: #1a73e8; }
+    .status-select.status-won  { border-color: #28a745; color: #28a745; }
+    .status-select.status-lost { border-color: #dc3545; color: #dc3545; }
+
+    /* ===== ACTION BUTTONS ===== */
+    .action-btns {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-wrap: nowrap;
+    }
+
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        border-radius: 5px;
+        font-size: 11.5px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        transition: opacity 0.15s, transform 0.1s;
+        white-space: nowrap;
+    }
+
+    .btn-action:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-action:active { transform: translateY(0); }
+
+    .btn-duplicate { background: #1a73e8; color: #fff; }
+    .btn-view      { background: #28a745; color: #fff; }
+    .btn-delete    { background: #dc3545; color: #fff; }
+
+    /* ===== TABLE FOOTER ===== */
+    .table-footer {
+        padding: 10px 16px;
+        font-size: 11.5px;
+        color: #666;
+        border-top: 1px solid #f0f2f8;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    /* ===== MODAL ===== */
+    .modal-content {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    .modal-header {
+        background: #1a73e8;
+        color: #fff;
+        border-radius: 10px 10px 0 0;
+        padding: 12px 16px;
+        border-bottom: none;
+    }
+
+    .modal-title { font-size: 14px; font-weight: 700; }
+
+    .btn-close { filter: invert(1) brightness(2); }
+
+    .modal-body { padding: 16px; }
+
+    .modal-footer {
+        padding: 10px 16px;
+        border-top: 1px solid #f0f2f8;
+    }
+
+    .form-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #444;
+        margin-bottom: 4px;
+        display: block;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid #dde3ed;
+        border-radius: 6px;
+        padding: 6px 10px;
+        font-size: 12.5px;
+        color: #333;
+        outline: none;
+        width: 100%;
+        transition: border-color 0.2s;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 2px rgba(26,115,232,0.1);
+    }
+
+    .is-invalid { border-color: #dc3545 !important; }
+
+    .btn-modal-cancel {
+        background: #6c757d; color: #fff; border: none;
+        border-radius: 6px; padding: 6px 14px;
+        font-size: 12px; font-weight: 600; cursor: pointer;
+        transition: background 0.2s;
+    }
+    .btn-modal-cancel:hover { background: #5a6268; }
+
+    .btn-modal-save {
+        background: #1a73e8; color: #fff; border: none;
+        border-radius: 6px; padding: 6px 14px;
+        font-size: 12px; font-weight: 600; cursor: pointer;
+        transition: background 0.2s;
+    }
+    .btn-modal-save:hover { background: #1558b0; }
+
+    /* ===== PAGINATION ===== */
+    .custom-pagination {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .page-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 28px;
+        padding: 0 8px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #1a73e8;
+        background: #fff;
+        border: 1px solid #dde3ed;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.15s;
+    }
+
+    .page-btn:hover:not(.disabled):not(.active) {
+        background: #e8f0fe;
+        border-color: #1a73e8;
+        color: #1a73e8;
+    }
+
+    .page-btn.active {
+        background: #1a73e8;
+        border-color: #1a73e8;
+        color: #fff;
+        cursor: default;
+    }
+
+    .page-btn.disabled {
+        color: #aaa;
+        cursor: default;
+        background: #f8f9fa;
+    }
+
+    @media (max-width: 768px) {
+        .quotes-header-card { flex-direction: column; align-items: flex-start; }
+        .quotes-filters { width: 100%; }
+        .filter-date, .filter-name { width: 110px; }
+        .action-btns { flex-wrap: wrap; }
+    }
+</style>
+
+<div class="quotes-page">
+
+    
+    <div class="quotes-header-card">
+        <div class="quotes-header-left">
+            <div class="quotes-icon-box">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="quotes-title">
+                <h2>Quotes</h2>
+                <p>Manage all your quotes</p>
+            </div>
+        </div>
+
+        
+        <div style="font-size:12px; color:#555; background:#f0f4ff; border:1px solid #d0ddf7; border-radius:6px; padding:5px 12px; white-space:nowrap;">
+            <i class="fas fa-crown" style="color:#f5a623; margin-right:4px;"></i>
+            <strong>Plan Basic Plan:</strong>
+            7 / ∞ Quotation entries used.
+        </div>
+
+        
+        <div class="quotes-filters">
+            <span class="filter-label">Filter</span>
+
+            <div class="filter-group">
+                <div class="filter-field">
+                    <label>From</label>
+                    <input type="date" class="filter-input filter-date" id="filter_from" value="">
+                </div>
+                <div class="filter-field">
+                    <label>To</label>
+                    <input type="date" class="filter-input filter-date" id="filter_to" value="">
+                </div>
+                <div class="filter-field">
+                    <label>Enter Name</label>
+                    <input type="text" class="filter-input filter-name" id="filter_name" placeholder="All" value="">
+                </div>
+            </div>
+
+            <button class="btn-search" onclick="doSearch()">
+                <i class="fas fa-search"></i> Search
+            </button>
+
+            <button class="btn-quick-quote" data-bs-toggle="modal" data-bs-target="#quickqote">
+                <i class="fas fa-plus"></i> Quick Quote
+            </button>
+        </div>
+    </div>
+
+    
+    <div class="quotes-table-card">
+
+        
+        <div class="table-controls">
+            <div class="entries-selector">
+                <select class="entries-select" id="entries_per_page" onchange="changeEntries(this.value)">
+                                        <option value="10" selected>10</option>
+                                        <option value="25" >25</option>
+                                        <option value="50" >50</option>
+                                        <option value="100" >100</option>
+                                    </select>
+                entries per page
+            </div>
+            <input type="text" class="table-search-input" id="table_search" placeholder="Search..." oninput="liveSearch(this.value)">
+        </div>
+
+        
+        <div class="table-responsive">
+            <table class="quotes-table">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width:60px;">
+                            <span class="th-sort" onclick="sortTable('id')">S.No. <span class="sort-icon">↕</span></span>
+                        </th>
+                        <th>
+                            <span class="th-sort" onclick="sortTable('name')">Client Name <span class="sort-icon">↕</span></span>
+                        </th>
+                        <th class="text-center">
+                            <span class="th-sort" onclick="sortTable('phone_number')">Mobile Number <span class="sort-icon">↕</span></span>
+                        </th>
+                        <th class="text-center">
+                            <span class="th-sort">Area/Price SQ/Ft <span class="sort-icon">↕</span></span>
+                        </th>
+                        <th class="text-center">
+                            <span class="th-sort" onclick="sortTable('created_at')">Created On <span class="sort-icon">↕</span></span>
+                        </th>
+                        <th class="text-center">
+                            <span class="th-sort" onclick="sortTable('status')">Status <span class="sort-icon">↕</span></span>
+                        </th>
+                        <th class="text-center">
+                            <span class="th-sort">Action <span class="sort-icon">↕</span></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="quotation_tbody">
+                                        <tr>
+                        
+                        <td class="text-center" style="font-weight:600;color:#555;">
+                            1
+                        </td>
+
+                        
+                        <td>
+                            <span style="font-weight:600;color:#1a1a2e;">CHANDRABHAN SINGH JI JALA</span>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#555;">
+                            9828122822
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <div class="data_total_6acf475f774ff5a5c40fe136">
+                                <button class="area-amount-badge quotation_total" data-quotation="6acf475f774ff5a5c40fe136" style="border:none;background:none;padding:0;">
+                                    <span class="badge-area">
+                                        <i class="fas fa-map-marker-alt badge-icon"></i> Area
+                                    </span>
+                                    <span class="badge-amount">
+                                        <i class="fas fa-dollar-sign badge-icon"></i> Amount
+                                    </span>
+                                </button>
+                            </div>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#666;font-size:13px;">
+                            2026-10-14 14:41:59
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <select class="status-select quotation_status status-" data-quotation="6acf475f774ff5a5c40fe136">
+                                <option value="">Status</option>
+                                <option value="new"  >New</option>
+                                <option value="won"  >Won</option>
+                                <option value="lost" >Lost</option>
+                            </select>
+                        </td>
+
+                        
+                        <td>
+                            <div class="action-btns">
+                                <a href="/quotations/duplicate/6acf475f774ff5a5c40fe136"
+                                   class="btn-action btn-duplicate"
+                                   onclick="return confirm('Are you sure you want to duplicate this quotation?');">
+                                    <i class="fas fa-copy"></i> Duplicate
+                                </a>
+                                <a href="quotations/6acf475f774ff5a5c40fe136" class="btn-action btn-view">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                <button type="button"
+        class="btn-action btn-delete"
+
+        onclick="confirmDelete('/quotation/6acf475f774ff5a5c40fe136')">
+    <i class="fas fa-trash"></i> Delete
+</button>
+                            </div>
+                        </td>
+                    </tr>
+                                        <tr>
+                        
+                        <td class="text-center" style="font-weight:600;color:#555;">
+                            2
+                        </td>
+
+                        
+                        <td>
+                            <span style="font-weight:600;color:#1a1a2e;">DIPANSHU JI</span>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#555;">
+                            9887884309
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <div class="data_total_6aca45557e250588b40ff1c7">
+                                <button class="area-amount-badge quotation_total" data-quotation="6aca45557e250588b40ff1c7" style="border:none;background:none;padding:0;">
+                                    <span class="badge-area">
+                                        <i class="fas fa-map-marker-alt badge-icon"></i> Area
+                                    </span>
+                                    <span class="badge-amount">
+                                        <i class="fas fa-dollar-sign badge-icon"></i> Amount
+                                    </span>
+                                </button>
+                            </div>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#666;font-size:13px;">
+                            2026-10-10 19:31:57
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <select class="status-select quotation_status status-" data-quotation="6aca45557e250588b40ff1c7">
+                                <option value="">Status</option>
+                                <option value="new"  >New</option>
+                                <option value="won"  >Won</option>
+                                <option value="lost" >Lost</option>
+                            </select>
+                        </td>
+
+                        
+                        <td>
+                            <div class="action-btns">
+                                <a href="/quotations/duplicate/6aca45557e250588b40ff1c7"
+                                   class="btn-action btn-duplicate"
+                                   onclick="return confirm('Are you sure you want to duplicate this quotation?');">
+                                    <i class="fas fa-copy"></i> Duplicate
+                                </a>
+                                <a href="quotations/6aca45557e250588b40ff1c7" class="btn-action btn-view">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                <button type="button"
+        class="btn-action btn-delete"
+
+        onclick="confirmDelete('/quotation/6aca45557e250588b40ff1c7')">
+    <i class="fas fa-trash"></i> Delete
+</button>
+                            </div>
+                        </td>
+                    </tr>
+                                        <tr>
+                        
+                        <td class="text-center" style="font-weight:600;color:#555;">
+                            3
+                        </td>
+
+                        
+                        <td>
+                            <span style="font-weight:600;color:#1a1a2e;">TANMAY JI JAIN</span>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#555;">
+                            9929902821
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <div class="data_total_6ac8bf38abd14270140d4001">
+                                <button class="area-amount-badge quotation_total" data-quotation="6ac8bf38abd14270140d4001" style="border:none;background:none;padding:0;">
+                                    <span class="badge-area">
+                                        <i class="fas fa-map-marker-alt badge-icon"></i> Area
+                                    </span>
+                                    <span class="badge-amount">
+                                        <i class="fas fa-dollar-sign badge-icon"></i> Amount
+                                    </span>
+                                </button>
+                            </div>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#666;font-size:13px;">
+                            2026-10-09 15:47:28
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <select class="status-select quotation_status status-" data-quotation="6ac8bf38abd14270140d4001">
+                                <option value="">Status</option>
+                                <option value="new"  >New</option>
+                                <option value="won"  >Won</option>
+                                <option value="lost" >Lost</option>
+                            </select>
+                        </td>
+
+                        
+                        <td>
+                            <div class="action-btns">
+                                <a href="/quotations/duplicate/6ac8bf38abd14270140d4001"
+                                   class="btn-action btn-duplicate"
+                                   onclick="return confirm('Are you sure you want to duplicate this quotation?');">
+                                    <i class="fas fa-copy"></i> Duplicate
+                                </a>
+                                <a href="quotations/6ac8bf38abd14270140d4001" class="btn-action btn-view">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                <button type="button"
+        class="btn-action btn-delete"
+
+        onclick="confirmDelete('/quotation/6ac8bf38abd14270140d4001')">
+    <i class="fas fa-trash"></i> Delete
+</button>
+                            </div>
+                        </td>
+                    </tr>
+                                        <tr>
+                        
+                        <td class="text-center" style="font-weight:600;color:#555;">
+                            4
+                        </td>
+
+                        
+                        <td>
+                            <span style="font-weight:600;color:#1a1a2e;">TANMAY JI JAIN</span>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#555;">
+                            9929902821
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <div class="data_total_6ac8aa4fd8fe43b97f034a08">
+                                <button class="area-amount-badge quotation_total" data-quotation="6ac8aa4fd8fe43b97f034a08" style="border:none;background:none;padding:0;">
+                                    <span class="badge-area">
+                                        <i class="fas fa-map-marker-alt badge-icon"></i> Area
+                                    </span>
+                                    <span class="badge-amount">
+                                        <i class="fas fa-dollar-sign badge-icon"></i> Amount
+                                    </span>
+                                </button>
+                            </div>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#666;font-size:13px;">
+                            2026-10-09 14:18:15
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <select class="status-select quotation_status status-" data-quotation="6ac8aa4fd8fe43b97f034a08">
+                                <option value="">Status</option>
+                                <option value="new"  >New</option>
+                                <option value="won"  >Won</option>
+                                <option value="lost" >Lost</option>
+                            </select>
+                        </td>
+
+                        
+                        <td>
+                            <div class="action-btns">
+                                <a href="/quotations/duplicate/6ac8aa4fd8fe43b97f034a08"
+                                   class="btn-action btn-duplicate"
+                                   onclick="return confirm('Are you sure you want to duplicate this quotation?');">
+                                    <i class="fas fa-copy"></i> Duplicate
+                                </a>
+                                <a href="quotations/6ac8aa4fd8fe43b97f034a08" class="btn-action btn-view">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                <button type="button"
+        class="btn-action btn-delete"
+
+        onclick="confirmDelete('/quotation/6ac8aa4fd8fe43b97f034a08')">
+    <i class="fas fa-trash"></i> Delete
+</button>
+                            </div>
+                        </td>
+                    </tr>
+                                        <tr>
+                        
+                        <td class="text-center" style="font-weight:600;color:#555;">
+                            5
+                        </td>
+
+                        
+                        <td>
+                            <span style="font-weight:600;color:#1a1a2e;">Lokesh ji regar</span>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#555;">
+                            919571874750
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <div class="data_total_6ac52bb374c3671f360cbf24">
+                                <button class="area-amount-badge quotation_total" data-quotation="6ac52bb374c3671f360cbf24" style="border:none;background:none;padding:0;">
+                                    <span class="badge-area">
+                                        <i class="fas fa-map-marker-alt badge-icon"></i> Area
+                                    </span>
+                                    <span class="badge-amount">
+                                        <i class="fas fa-dollar-sign badge-icon"></i> Amount
+                                    </span>
+                                </button>
+                            </div>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#666;font-size:13px;">
+                            2026-10-06 22:41:15
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <select class="status-select quotation_status status-" data-quotation="6ac52bb374c3671f360cbf24">
+                                <option value="">Status</option>
+                                <option value="new"  >New</option>
+                                <option value="won"  >Won</option>
+                                <option value="lost" >Lost</option>
+                            </select>
+                        </td>
+
+                        
+                        <td>
+                            <div class="action-btns">
+                                <a href="/quotations/duplicate/6ac52bb374c3671f360cbf24"
+                                   class="btn-action btn-duplicate"
+                                   onclick="return confirm('Are you sure you want to duplicate this quotation?');">
+                                    <i class="fas fa-copy"></i> Duplicate
+                                </a>
+                                <a href="quotations/6ac52bb374c3671f360cbf24" class="btn-action btn-view">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                <button type="button"
+        class="btn-action btn-delete"
+
+        onclick="confirmDelete('/quotation/6ac52bb374c3671f360cbf24')">
+    <i class="fas fa-trash"></i> Delete
+</button>
+                            </div>
+                        </td>
+                    </tr>
+                                        <tr>
+                        
+                        <td class="text-center" style="font-weight:600;color:#555;">
+                            6
+                        </td>
+
+                        
+                        <td>
+                            <span style="font-weight:600;color:#1a1a2e;">Naveen ji</span>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#555;">
+                            9928416374
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <div class="data_total_6ac1e3b41ef310185309d666">
+                                <button class="area-amount-badge quotation_total" data-quotation="6ac1e3b41ef310185309d666" style="border:none;background:none;padding:0;">
+                                    <span class="badge-area">
+                                        <i class="fas fa-map-marker-alt badge-icon"></i> Area
+                                    </span>
+                                    <span class="badge-amount">
+                                        <i class="fas fa-dollar-sign badge-icon"></i> Amount
+                                    </span>
+                                </button>
+                            </div>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#666;font-size:13px;">
+                            2026-10-04 10:57:16
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <select class="status-select quotation_status status-" data-quotation="6ac1e3b41ef310185309d666">
+                                <option value="">Status</option>
+                                <option value="new"  >New</option>
+                                <option value="won"  >Won</option>
+                                <option value="lost" >Lost</option>
+                            </select>
+                        </td>
+
+                        
+                        <td>
+                            <div class="action-btns">
+                                <a href="/quotations/duplicate/6ac1e3b41ef310185309d666"
+                                   class="btn-action btn-duplicate"
+                                   onclick="return confirm('Are you sure you want to duplicate this quotation?');">
+                                    <i class="fas fa-copy"></i> Duplicate
+                                </a>
+                                <a href="quotations/6ac1e3b41ef310185309d666" class="btn-action btn-view">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                <button type="button"
+        class="btn-action btn-delete"
+
+        onclick="confirmDelete('/quotation/6ac1e3b41ef310185309d666')">
+    <i class="fas fa-trash"></i> Delete
+</button>
+                            </div>
+                        </td>
+                    </tr>
+                                        <tr>
+                        
+                        <td class="text-center" style="font-weight:600;color:#555;">
+                            7
+                        </td>
+
+                        
+                        <td>
+                            <span style="font-weight:600;color:#1a1a2e;">AMAR SINGH JI</span>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#555;">
+                            9892318521
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <div class="data_total_6aba1632f27c890ff60628c3">
+                                <button class="area-amount-badge quotation_total" data-quotation="6aba1632f27c890ff60628c3" style="border:none;background:none;padding:0;">
+                                    <span class="badge-area">
+                                        <i class="fas fa-map-marker-alt badge-icon"></i> Area
+                                    </span>
+                                    <span class="badge-amount">
+                                        <i class="fas fa-dollar-sign badge-icon"></i> Amount
+                                    </span>
+                                </button>
+                            </div>
+                        </td>
+
+                        
+                        <td class="text-center" style="color:#666;font-size:13px;">
+                            2026-09-28 12:54:34
+                        </td>
+
+                        
+                        <td class="text-center">
+                            <select class="status-select quotation_status status-" data-quotation="6aba1632f27c890ff60628c3">
+                                <option value="">Status</option>
+                                <option value="new"  >New</option>
+                                <option value="won"  >Won</option>
+                                <option value="lost" >Lost</option>
+                            </select>
+                        </td>
+
+                        
+                        <td>
+                            <div class="action-btns">
+                                <a href="/quotations/duplicate/6aba1632f27c890ff60628c3"
+                                   class="btn-action btn-duplicate"
+                                   onclick="return confirm('Are you sure you want to duplicate this quotation?');">
+                                    <i class="fas fa-copy"></i> Duplicate
+                                </a>
+                                <a href="quotations/6aba1632f27c890ff60628c3" class="btn-action btn-view">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                <button type="button"
+        class="btn-action btn-delete"
+
+        onclick="confirmDelete('/quotation/6aba1632f27c890ff60628c3')">
+    <i class="fas fa-trash"></i> Delete
+</button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                                    </tbody>
+            </table>
+        </div>
+
+        
+        <div class="table-footer">
+            <span>Showing 1 to 7 of 7 entries</span>
+
+            
+                    </div>
+    </div>
+
+</div>
+
+
+
+
+<div class="modal fade" id="quickqote" tabindex="-1" role="dialog" aria-labelledby="quickqoteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="quickqoteLabel"><i class="fas fa-file-alt me-2"></i> Quick Quote</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="https://www.softwinquote.com/quotations" method="post" id="quickQuoteForm" novalidate>
+                <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Name <span style="color:#dc3545;">*</span></label>
+                            <input type="text" class="form-control" name="name" id="name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Mobile</label>
+                            <input type="number" class="form-control" name="phone_number" id="phone_number">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" name="site_location" id="site_location">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Reference</label>
+                            <input type="text" class="form-control" name="refrence" id="refrence">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email Id</label>
+                            <input type="email" class="form-control" name="email_id" id="email_id">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Material Type <span style="color:#dc3545;">*</span></label>
+                                                        <select name="material_type" id="material_type" class="form-select" required>
+                                <option value="">Select Material</option>
+                                                                    <option value="Aluminium" selected>Aluminium</option>
+                                                            </select>
+                        </div>
+                         <div class="col-md-6">
+                            <label class="form-label">Profile Company <span style="color:#dc3545;">*</span></label>
+                             
+                            <select name="profile_company" class="form-select" required>
+                                <option value="">Select Company</option>
+                                                                                                            <option value="Vitco"selected>Vitco</option>
+                                                                                                        </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-modal-cancel" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn-modal-save" id="quickQuoteSubmit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="sendMailModal" tabindex="-1" aria-labelledby="sendMailModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="https://www.softwinquote.com/send-quotation-mail">
+            <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">            <input type="hidden" name="quotation_id" id="quotation_id1" value="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-envelope me-2"></i>Send Quotation Mail</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Email ID</label>
+                        <input type="email" name="mail_id" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn-modal-save">Send</button>
+                    <button type="button" class="btn-modal-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+/* ===== DELETE CONFIRM ===== */
+function confirmDelete(url) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'This quotation will be permanently deleted.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                data: { _token: $('meta[name="csrf-token"]').attr('content') },
+                success: function() {
+                    Swal.fire('Deleted!', 'Quotation has been deleted.', 'success')
+                        .then(() => location.reload());
+                },
+                error: function() {
+                    Swal.fire('Error!', 'Something went wrong.', 'error');
+                }
+            });
+        }
+    });
+}
+
+/* ===== GET AREA / AMOUNT ===== */
+
+
+$(document).on('change', '#material_type', function () {
+
+
+var profile_type= $(this).val();
+    $.ajax({
+        url: '/getRelatedProfile',
+        method: 'GET',
+        data: {
+                    profile_type: profile_type,
+
+                    companies: ["Vitco"]                },
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        success: function (response) {
+
+             let select = $('select[name="profile_company"]');
+
+                        select.empty();
+
+                        select.append('<option value="">Select Company</option>');
+
+                        $.each(response.data, function(index, company) {
+                            select.append(
+                                $('<option>', {
+                                    value: company,
+                                    text: company
+                                })
+                            );
+                        });
+
+
+        },
+        error: function () {
+            wrapper.html('<span style="color:#dc3545;font-size:12px;">Error loading</span>');
+        }
+    });
+});
+$(document).on('click', '.quotation_total', function () {
+    var btn = $(this);
+    var quotation_id = btn.data('quotation');
+    var wrapper = $('.data_total_' + quotation_id);
+
+    btn.prop('disabled', true).html('<span class="badge-area"><i class="fas fa-spinner fa-spin badge-icon"></i> Loading</span>');
+
+    $.ajax({
+        url: '/getQuoatationAmount',
+        method: 'GET',
+        data: { quotation_id: quotation_id },
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        success: function (response) {
+            wrapper.html(
+                '<span style="font-size:13px;font-weight:600;color:#2e7d32;">' +
+                '<i class="fas fa-map-marker-alt me-1"></i>' + response.data.area + ' Sqft' +
+                ' &nbsp;|&nbsp; ' +
+                '<i class="fas fa-rupee-sign me-1"></i>' + response.data.amount +
+                '</span>'
+            );
+        },
+        error: function () {
+            wrapper.html('<span style="color:#dc3545;font-size:12px;">Error loading</span>');
+        }
+    });
+});
+
+/* ===== STATUS CHANGE ===== */
+$(document).on('change', '.quotation_status', function () {
+    var id     = $(this).data('quotation');
+    var status = $(this).val();
+    var sel    = $(this);
+
+    // Update color class
+    sel.removeClass('status-new status-won status-lost');
+    if (status) sel.addClass('status-' + status);
+
+    $.ajax({
+        url: '/quotation/update_status/' + id,
+        type: 'PUT',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            status: status,
+        },
+        success: function () {
+            // subtle success toast
+            Swal.fire({ toast: true, position: 'top-end', icon: 'success',
+                title: 'Status updated!', showConfirmButton: false, timer: 1800 });
+        },
+        error: function () {
+            Swal.fire({ toast: true, position: 'top-end', icon: 'error',
+                title: 'Update failed!', showConfirmButton: false, timer: 2000 });
+        }
+    });
+});
+
+/* ===== MAIL MODAL ===== */
+$(document).on('click', '.mail_info', function () {
+    $('#quotation_id1').val($(this).data('mail'));
+});
+
+/* ===== FORM VALIDATION ===== */
+document.getElementById('quickQuoteForm').addEventListener('submit', function (e) {
+    var isValid = true;
+    var submitBtn = document.getElementById('quickQuoteSubmit');
+
+    this.querySelectorAll('[required]').forEach(function (field) {
+        field.classList.remove('is-invalid');
+        if (!field.value.trim()) {
+            field.classList.add('is-invalid');
+            isValid = false;
+        } else if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim())) {
+            field.classList.add('is-invalid');
+            isValid = false;
+        }
+    });
+
+    if (!isValid) {
+        e.preventDefault();
+    } else {
+        submitBtn.textContent = 'Saving...';
+        submitBtn.disabled = true;
+    }
+});
+
+/* ===== SEARCH / FILTER ===== */
+function doSearch() {
+    var from   = document.getElementById('filter_from').value;
+    var to     = document.getElementById('filter_to').value;
+    var name   = document.getElementById('filter_name').value;
+    var url    = new URL(window.location.href);
+    url.searchParams.set('from', from);
+    url.searchParams.set('to', to);
+    url.searchParams.set('search', name);
+    url.searchParams.set('page', 1);
+    window.location.href = url.toString();
+}
+
+var searchTimer;
+function liveSearch(val) {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function () {
+        var url = new URL(window.location.href);
+        url.searchParams.set('search', val);
+        url.searchParams.set('page', 1);
+        window.location.href = url.toString();
+    }, 500);
+}
+
+function changeEntries(val) {
+    var url = new URL(window.location.href);
+    url.searchParams.set('per_page', val);
+    url.searchParams.set('page', 1);
+    window.location.href = url.toString();
+}
+
+/* ===== SORTING ===== */
+function sortTable(col) {
+    var url = new URL(window.location.href);
+    var current = url.searchParams.get('sort_by');
+    var order   = url.searchParams.get('sort_order');
+    url.searchParams.set('sort_by', col);
+    url.searchParams.set('sort_order', (current === col && order === 'asc') ? 'desc' : 'asc');
+    window.location.href = url.toString();
+}
+</script>
+                    </main>
+                </div>
+            </div>
+        </div>
+    
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="ajaxToast" class="toast align-items-center text-bg-success" role="alert" aria-live="assertive">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Operation successful!
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="globalLoader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; text-align: center;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <img src="https://www.softwinquote.com/img/loader.gif" alt="Loading..." style="width: 80px; height: 80px;">
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        // Show loader before every AJAX request
+        $(document).ajaxStart(function () {
+            $('#globalLoader').fadeIn(); // Show the loader
+        });
+
+        // Hide loader after every AJAX request completes
+        $(document).ajaxStop(function () {
+            $('#globalLoader').fadeOut(); // Hide the loader
+        });
+    </script>
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+        <div class="copyright"></div>
+    </footer>
+    <!-- End Footer -->
+    <script>
+        function confirmDelete(actionUrl) {
+            // Set the form action dynamically
+            const deleteForm = document.getElementById('deleteForm');
+            deleteForm.action = actionUrl;
+
+            // Show the modal
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+    </script>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this item?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="POST" style="display:inline;">
+                        <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">                        <input type="hidden" name="_method" value="DELETE">                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="https://www.softwinquote.com/assets/apexcharts/apexcharts.min.js"></script> -->
+
+    <script src="https://www.softwinquote.com/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="https://www.softwinquote.com/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.softwinquote.com/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="https://www.softwinquote.com/vendor/tinymce/tinymce.min.js"></script>
+
+    <script src="https://www.softwinquote.com/assets/js/app.js"></script>
+
+    </body>
+</html>

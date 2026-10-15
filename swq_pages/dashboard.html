@@ -1,0 +1,1253 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn">
+        <link rel="manifest" href="/manifest.json" />
+
+        <title>Soft Window</title>
+
+        <link href="https://www.softwinquote.com/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://www.softwinquote.com/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://www.softwinquote.com/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(function(registration) {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        })
+                        .catch(function(error) {
+                            console.error('Service Worker registration failed:', error);
+                        });
+                });
+            }
+        </script>
+        <style>
+            .container-xxl{
+                max-width: unset;
+            }
+            .topbar .topbar-custom .topbar-item, .topbar{
+                height: unset;
+                padding: 5px 0px;
+            }
+            .page-wrapper .page-content{
+                height: 80px;
+                margin-top: 100px
+            }
+        </style>
+    </head>
+
+    <body class="font-sans antialiased">
+
+
+
+            <div class="topbar d-print-none">
+            <div class="container-xxl">
+                <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">
+
+
+                    <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+                        <li>
+                            <button class="nav-link mobile-menu-btn nav-icon" id="togglemenu">
+                                <i class="iconoir-menu-scale"></i>
+                            </button>
+                        </li>
+
+                    </ul>
+                    <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+
+
+
+
+
+
+                        <li class="dropdown topbar-item">
+                                                    <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <img src="/storage/logos/UogUXXGOGpdRwOCA1BWSJIvsZ2dHNbV4namaVZfB.jpg" alt="" class="thumb-lg rounded-circle">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end py-0">
+                                <div class="d-flex align-items-center dropdown-item py-2 bg-secondary-subtle">
+                                    <div class="flex-shrink-0">
+
+
+                                        <img src="/storage/logos/UogUXXGOGpdRwOCA1BWSJIvsZ2dHNbV4namaVZfB.jpg" alt="" class="thumb-md rounded-circle">
+                                    </div>
+                                    <div class="flex-grow-1 ms-2 text-truncate align-self-center">
+
+                                    </div><!--end media-body-->
+                                </div>
+                                <div class="dropdown-divider mt-0"></div>
+
+                                <div class="dropdown-divider mb-0"></div>
+                                <a class="dropdown-item text-danger" href="/logout"><i class="las la-power-off fs-18 me-1 align-text-bottom"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul><!--end topbar-nav-->
+                </nav>
+                <!-- end navbar-->
+            </div>
+        </div>
+
+      
+
+
+                                                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
+
+<style>
+    .startbar {
+        background: linear-gradient(180deg, #0b1b33 0%, #09162b 100%);
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .startbar .brand {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        padding: 8px 14px;
+        overflow: hidden;
+    }
+
+    .startbar .softmark-logo img {
+        width: 150px;
+        filter: brightness(1.05);
+        transition: width .3s ease, opacity .3s ease;
+        display: block;
+    }
+
+    /* Collapsed: shrink logo smoothly */
+    body[data-sidebar-size="collapsed"] .startbar:not(:hover) .softmark-logo img {
+        width: 36px;
+        opacity: 0.85;
+    }
+
+    /* Override framework's width:0 on logo-lg so our logo stays visible */
+    body[data-sidebar-size="collapsed"] .startbar:not(:hover) .brand .logo .logo-lg {
+        width: auto !important;
+        margin-left: 0;
+    }
+
+    .startbar .startbar-menu .navbar-nav {
+        padding: 10px 8px 16px;
+        gap: 2px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .menu-title {
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        color: rgba(222, 233, 255, 0.55);
+        font-weight: 600;
+        padding: 14px 12px 8px;
+        text-transform: uppercase;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-separator {
+        list-style: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin: 10px 12px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(240, 246, 255, 0.86);
+        padding: 9px 12px;
+        margin: 0 4px;
+        border-bottom: 0;
+        transition: all .18s ease;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link.active,
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link[aria-expanded="true"] {
+        background: #132e58;
+        color: #fff;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        opacity: 0.95;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .nav-link span {
+        line-height: 1.2;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav.flex-column .nav-link {
+        color: rgba(240, 246, 255, 0.75);
+        font-size: 12px;
+        padding-left: 34px;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav.flex-column .nav-link:hover {
+        color: #fff;
+    }
+
+    /* CRMS SSO: submit button living inside a nav form - must look like a link */
+    .startbar .startbar-menu .navbar-nav .nav-item .crms-sso-link {
+        background: transparent;
+        border: 0;
+        width: 100%;
+        text-align: left;
+        margin: 0;
+        border-radius: 0;
+        cursor: pointer;
+    }
+
+    .startbar .startbar-menu .navbar-nav .nav-item .crms-sso-link:hover {
+        background: rgba(255, 255, 255, 0.16);
+    }
+
+</style>
+
+
+
+
+<div class="startbar d-print-none">
+            <!--start brand-->
+            <div class="brand">
+                <a href="/dashboard" class="logo">
+                    <span class="logo-lg">
+                        <div class="softmark-logo">
+                            <img src="https://www.softwinquote.com/images/login-logo3.png" alt="brand-logo">
+                        </div>
+                    </span>
+                </a>
+            </div>
+            <!--end brand-->
+            <!--start startbar-menu-->
+            <div class="startbar-menu" data-simplebar>
+                <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
+<div class="simplebar-wrapper" style="margin: 0px -16px -16px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
+        <div class="simplebar-content" >
+                    <div class="d-flex align-items-start flex-column w-100">
+                        <!-- Navigation -->
+
+
+<!-- SVG SPRITE -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <!-- Dashboard -->
+  <symbol id="i-dashboard" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="8" height="8" rx="2"/>
+    <rect x="13" y="3" width="8" height="5" rx="2"/>
+    <rect x="13" y="10" width="8" height="11" rx="2"/>
+    <rect x="3" y="13" width="8" height="8" rx="2"/>
+  </symbol>
+
+  <!-- Quotes -->
+  <symbol id="i-quotes" viewBox="0 0 24 24">
+    <rect x="5" y="3" width="14" height="18" rx="2"/>
+    <path d="M8 11h3l-1 4h2M14 11h2l-1 4h2"/>
+  </symbol>
+
+  <!-- Billing -->
+  <symbol id="i-billing" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="14" rx="2"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+    <rect x="6" y="14" width="5" height="2" rx="1"/>
+  </symbol>
+
+  <!-- PI (Receipt) -->
+  <symbol id="i-pi" viewBox="0 0 24 24">
+    <rect x="5" y="3" width="14" height="18" rx="2"/>
+    <line x1="8" y1="8" x2="16" y2="8"/>
+    <line x1="8" y1="12" x2="16" y2="12"/>
+    <line x1="8" y1="16" x2="14" y2="16"/>
+  </symbol>
+
+  <!-- Optimizer -->
+  <symbol id="i-optimizer" viewBox="0 0 24 24">
+    <line x1="4" y1="6" x2="20" y2="6"/>
+    <circle cx="10" cy="6" r="2"/>
+    <line x1="4" y1="12" x2="20" y2="12"/>
+    <circle cx="14" cy="12" r="2"/>
+    <line x1="4" y1="18" x2="20" y2="18"/>
+    <circle cx="7" cy="18" r="2"/>
+  </symbol>
+
+  <!-- Window Design -->
+  <symbol id="i-window" viewBox="0 0 24 24">
+    <rect x="3" y="4" width="18" height="16" rx="1"/>
+    <line x1="12" y1="4" x2="12" y2="20"/>
+    <line x1="3" y1="12" x2="21" y2="12"/>
+  </symbol>
+
+  <!-- Profile -->
+  <symbol id="i-user" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M4 20a8 8 0 0 1 16 0"/>
+  </symbol>
+
+  <!-- Whatsapp -->
+  <symbol id="i-whatsapp" viewBox="0 0 24 24">
+    <path d="M12 2a10 10 0 0 0-9.5 13.5L2 22l6.5-2.5A10 10 0 1 0 12 2z"/>
+    <path d="M8 10c1 4 5 6 6 6s1-2 2-2 2 1 2 2-2 4-6 2-5-5-4-8z"/>
+  </symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24">
+  <path d="M12 2l9 6-9 6-9-6 9-6z"></path>
+            <path d="M3 14l9 6 9-6"></path>
+            <path d="M3 10l9 6 9-6"></path>
+            </symbol>
+
+  <!-- Help -->
+  <symbol id="i-help" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10"></circle>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-2 2.5-2 4"></path>
+    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+  </symbol>
+
+  <!-- External link (CRMS SSO) -->
+  <symbol id="i-external" viewBox="0 0 24 24">
+    <path d="M14 4h6v6"/>
+    <path d="M20 4L11 13"/>
+    <path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>
+  </symbol>
+  <!-- Letter Header -->
+<symbol id="i-letter" viewBox="0 0 24 24">
+    <path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path>
+    <path d="M14 3v6h6"></path>
+    <line x1="8" y1="13" x2="16" y2="13"></line>
+    <line x1="8" y1="17" x2="16" y2="17"></line>
+</symbol>
+
+</svg>
+                        <ul class="navbar-nav mb-auto w-100 sidebar_wrapper sidebar">
+                            <li class="menu-title">Main</li>
+                             <li class="nav-item">
+                                <a class="nav-link active" href="/dashboard" role="button" aria-expanded="false" >
+                                         <svg><use href="#i-dashboard"/></svg>
+                                    <span>Dashboard</span>
+                                </a>
+
+                            </li>
+
+                            
+                            <li class="nav-separator"></li> <!-- Separation here -->
+                                                            <li class="nav-item">
+                                <a class="nav-link " href="/quotations" role="button" aria-expanded="false" >
+                                <svg><use href="#i-quotes"/></svg>
+                                    <span>Quotes</span>
+                                </a>
+
+                            </li>
+                             <li class="nav-separator"></li>
+                                    <li class="nav-item" style="background: linear-gradient(180deg, #22c55e, #22c55e); border-radius: 8px; overflow: hidden;">
+                                        <form method="POST" action="https://www.softwinquote.com/open-crms">
+                                                <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">
+                                                <button type="submit" class="nav-link crms-sso-link" style="color:#fff" title="Open CRMS (Single Sign-On)">
+                                                  <svg><use href="#i-external"/></svg>
+                                                    <span>CRMS</span>
+                                                </button>
+                                            </form>
+                                        </li>
+                            <!--end nav-item-->
+
+                         <!---   <li class="nav-item">
+                                <a class="nav-link " href="#sidebarForms" data-bs-toggle="collapse" role="button"  aria-controls="sidebarForms">
+                                    <i class="iconoir-journal-page menu-icon"></i>
+                                    <span>CRMS</span>
+                                </a>
+                                <div class="collapse " id="sidebarForms" style="">
+                                    <ul class="nav flex-column">
+                                         <li class="nav-item active">
+                                            <a class="nav-link " href="/today_call">Today Leads</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/leads/">Leads</a>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+                            </li>-->
+
+                            <!--<li class="nav-item">
+                                <a class="nav-link" href="/opportunities"  role="button" aria-expanded="false" >
+                                <i class="iconoir-compact-disc menu-icon"></i>
+                                    <span>Opportunity</span>
+                                </a>
+
+                            </li> -->
+                        <!--end nav-item-->
+                            <li class="nav-separator"></li> <!-- Separation here -->
+
+
+                            <li class="nav-item">
+                                <a class="nav-link " href="/billings" role="button" aria-expanded="false" >
+           <svg><use href="#i-billing"/></svg>
+                                    <span>Billing</span>
+                                </a>
+
+                            </li>
+                            <li class="nav-separator"></li>
+                                 <li class="nav-item">
+                                <a class="nav-link " href="/invoices" role="button" aria-expanded="false" >
+           <svg><use href="#i-billing"/></svg>
+                                    <span>Invoices</span>
+                                </a>
+
+                            </li>
+                             <li class="nav-separator"></li> <!-- Separation here -->
+
+                            <li class="nav-item">
+                                <a class="nav-link " href="/performas" role="button" aria-expanded="false" >
+           <svg><use href="#i-pi"/></svg>
+                                    <span>PI</span>
+                                </a>
+
+                            </li>
+                        <li class="nav-separator"></li>
+
+                            <!--end nav-item--
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/6ab35a4cdd6fa2da7009c5fa/edit"  role="button" aria-expanded="false" >
+                                <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
+                                    <span>Profile</span>
+                                </a>
+
+                            </li><!--end nav-item-->
+
+
+                            </li>
+
+<li class="nav-item">
+
+    <a href="https://www.softwinquote.com/letter-header"
+       class="nav-link ">
+
+        <svg><use href="#i-letter"/></svg>
+
+        <span>
+            Letter Header
+        </span>
+
+    </a>
+
+</li>
+                        <li class="nav-separator"></li>
+
+                    <li class="nav-item">
+                                <a class="nav-link " href="#sidebarForms" data-bs-toggle="collapse" role="button" >
+           <svg><use href="#i-optimizer"/></svg>
+                                    <span>Setting </span>
+                                </a>
+                                <div class="collapse " id="sidebarForms" style="">
+                                    <ul class="nav flex-column">
+
+                                                                           <li class="nav-item">
+                                                <a class="nav-link" href="/quotation-pdf-jobs"  role="button" aria-expanded="false" >
+                                                <svg><use href="#i-grid"/></svg>
+                                                    <span>Bulk Designs Link</span>
+                                                </a>
+
+                                            </li>
+                                                                          
+
+
+
+                              
+
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_setting/">Aluminium Setting</a>
+                                        </li><!--end nav-item-->
+                                         <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_accessories/">Aluminium Hardware</a>
+                                        </li><!--end nav-item-->
+
+                                        <li class="nav-separator"></li>
+
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/coatings/">Aluminium Coating</a>
+                                        </li><!--end nav-item-->
+                                        <li class="nav-separator"></li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/aluminium_stock/">Aluminium StockLength</a>
+                                        </li><!--end nav-item-->
+
+
+
+                                        <li class="nav-separator"></li>
+
+
+                                
+                                   
+                                                                   <li class="nav-item ">
+                                            <a class="nav-link " href="/glass">Glass</a>
+                                        </li>
+                                   
+
+
+
+
+
+
+                                 </li>
+                                    </ul><!--end nav-->
+                                </div><!--end startbarForms-->
+                                 </li>
+
+
+                            <li class="nav-separator"></li>
+
+                            <!-- Admin Management Section -->
+                            
+                            <!-- Subscriptions Section -->
+                            
+<li class="menu-title">System</li>
+<li class="nav-item">
+    <a class="nav-link" href="/tutorial" role="button" aria-expanded="false">
+        <svg><use href="#i-help" /></svg>
+        <span>Help & Tutorials</span>
+    </a>
+</li>
+
+                            <li class="nav-separator"></li>
+                                
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/6ab35a4cdd6fa2da7009c5fa/edit"  role="button" aria-expanded="false" >
+         <svg><use href="#i-user"/></svg>
+                                    <span> Profile</span>
+                                </a>
+
+                            </li>
+                            
+
+
+                             </li>
+                            <li class="nav-item" style="display:none">
+                                <a class="nav-link" href="/whatsapp"  role="button" aria-expanded="false" >
+  <svg><use href="#i-whatsapp"/></svg>
+                                    <span>Whatsapp</span>
+                                </a>
+
+                            </li>
+                            <li class="nav-separator"></li>
+
+
+
+
+                        </ul><!--end navbar-nav--->
+
+
+
+                    </div>
+                </div></div></div></div><div class="simplebar-placeholder" style="width: 70px; height: 649px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; transform: translate3d(0px, 0px, 0px); display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 25px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div><!--end startbar-collapse-->
+            </div><!--end startbar-menu-->
+        </div>
+                           
+        <div class="page-wrapper">
+            <!-- Page Content-->
+            <div class="page-content">
+                <div class="container-xxl">
+                    <!-- Page Content -->
+                    <main id="main" class="main">
+                                                  <style>
+/* ── Dashboard Custom Styles ── */
+.dash-page { padding: 6px 0 30px; }
+
+/* KPI Cards */
+.kpi-card {
+    border-radius: 14px;
+    padding: 22px 24px;
+    border: 1px solid rgba(255,255,255,.06);
+    position: relative;
+    overflow: hidden;
+    transition: transform .25s, box-shadow .25s;
+    cursor: default;
+}
+.kpi-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,.18); }
+.kpi-card .kpi-icon {
+    width: 52px; height: 52px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 16px;
+}
+.kpi-card .kpi-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .7px; opacity: .65; margin-bottom: 6px; }
+.kpi-card .kpi-value { font-size: 30px; font-weight: 800; line-height: 1; letter-spacing: -1px; margin-bottom: 8px; }
+.kpi-card .kpi-sub { font-size: 12.5px; opacity: .55; }
+.kpi-card .kpi-sub .badge-up   { color: #4ade80; font-weight: 600; }
+.kpi-card .kpi-sub .badge-down { color: #f87171; font-weight: 600; }
+.kpi-card .kpi-bg-icon {
+    position: absolute; right: -10px; bottom: -12px;
+    font-size: 90px; opacity: .06; line-height: 1;
+    pointer-events: none;
+}
+
+/* Blue card */
+.kpi-blue  { background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%); color: #fff; }
+.kpi-blue .kpi-icon  { background: rgba(255,255,255,.15); color: #fff; }
+
+/* Green card */
+.kpi-green { background: linear-gradient(135deg, #064e3b 0%, #059669 100%); color: #fff; }
+.kpi-green .kpi-icon { background: rgba(255,255,255,.15); color: #fff; }
+
+/* Amber card */
+.kpi-amber { background: linear-gradient(135deg, #78350f 0%, #d97706 100%); color: #fff; }
+.kpi-amber .kpi-icon { background: rgba(255,255,255,.15); color: #fff; }
+
+/* Red card */
+.kpi-red   { background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%); color: #fff; }
+.kpi-red .kpi-icon   { background: rgba(255,255,255,.15); color: #fff; }
+
+/* Slate card */
+.kpi-slate { background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: #fff; }
+.kpi-slate .kpi-icon { background: rgba(255,255,255,.12); color: #fff; }
+
+/* Indigo card */
+.kpi-indigo { background: linear-gradient(135deg, #312e81 0%, #6366f1 100%); color: #fff; }
+.kpi-indigo .kpi-icon { background: rgba(255,255,255,.15); color: #fff; }
+
+/* Chart cards */
+.chart-card {
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid #f1f5f9;
+    padding: 20px 22px 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+.chart-card .chart-title { font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 2px; }
+.chart-card .chart-sub   { font-size: 12px; color: #94a3b8; margin-bottom: 14px; }
+
+/* Filter card */
+.filter-card {
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid #f1f5f9;
+    padding: 16px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    margin-bottom: 20px;
+}
+.filter-card .form-label { font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: .5px; }
+.filter-card .form-control { border-radius: 8px; font-size: 13px; border-color: #e2e8f0; }
+.filter-card .form-control:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.1); }
+.filter-card .btn-filter {
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    border: none; border-radius: 8px; color: #fff;
+    font-size: 13px; font-weight: 600; padding: 8px 20px;
+    margin-top: 24px; transition: .2s;
+}
+.filter-card .btn-filter:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(29,78,216,.4); }
+
+/* Section labels */
+.section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: #94a3b8; margin-bottom: 12px;
+}
+
+/* Win rate bar */
+.win-bar { height: 8px; border-radius: 4px; background: #f1f5f9; overflow: hidden; margin-top: 6px; }
+.win-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #1d4ed8, #22c55e); transition: width .8s cubic-bezier(.23,1,.32,1); }
+
+/* Recent table */
+.recent-table { border-radius: 14px; overflow: hidden; background: #fff; border: 1px solid #f1f5f9; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.recent-table .rt-head { background: #f8fafc; padding: 14px 20px; border-bottom: 1px solid #f1f5f9; }
+.recent-table .rt-head span { font-size: 14px; font-weight: 700; color: #1e293b; }
+.recent-table .rt-head small { font-size: 12px; color: #94a3b8; float: right; margin-top: 2px; }
+.recent-table table { width: 100%; border-collapse: collapse; }
+.recent-table table thead th {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .6px; color: #94a3b8; padding: 10px 20px; background: #f8fafc;
+    border-bottom: 1px solid #f1f5f9;
+}
+.recent-table table tbody tr { border-bottom: 1px solid #f8fafc; transition: .15s; }
+.recent-table table tbody tr:hover { background: #f8faff; }
+.recent-table table tbody tr:last-child { border-bottom: none; }
+.recent-table table tbody td { padding: 12px 20px; font-size: 13px; color: #334155; vertical-align: middle; }
+.badge-status {
+    padding: 4px 11px; border-radius: 100px; font-size: 11px; font-weight: 600;
+    text-transform: capitalize; display: inline-block;
+}
+.badge-new  { background: #eff6ff; color: #2563eb; }
+.badge-won  { background: #f0fdf4; color: #16a34a; }
+.badge-lost { background: #fef2f2; color: #dc2626; }
+
+/* Page header */
+.dash-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f1f5f9; }
+.dash-header h4 { font-size: 20px; font-weight: 800; color: #1e293b; letter-spacing: -.4px; margin: 0; }
+.dash-header p  { font-size: 13px; color: #94a3b8; margin: 4px 0 0; }
+
+/* ── Original Opportunity Cards ── */
+.opp-card {
+    border-radius: 16px;
+    padding: 22px 22px 16px;
+    border: 1px solid rgba(0,0,0,.06);
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    transition: transform .25s, box-shadow .25s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+}
+.opp-card:hover { transform: translateY(-4px); box-shadow: 0 10px 32px rgba(0,0,0,.12); }
+
+/* left accent line */
+.opp-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    border-radius: 16px 0 0 16px;
+}
+.opp-blue::before  { background: linear-gradient(180deg, #3b82f6, #1d4ed8); }
+.opp-amber::before { background: linear-gradient(180deg, #fbbf24, #d97706); }
+.opp-green::before { background: linear-gradient(180deg, #4ade80, #16a34a); }
+.opp-red::before   { background: linear-gradient(180deg, #f87171, #dc2626); }
+
+.opp-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+.opp-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+}
+.opp-num {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    color: #0f172a;
+}
+.opp-icon-wrap {
+    width: 58px; height: 58px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.opp-icon-blue  { background: linear-gradient(135deg, #eff6ff, #dbeafe); box-shadow: 0 4px 12px rgba(59,130,246,.2); }
+.opp-icon-amber { background: linear-gradient(135deg, #fffbeb, #fef3c7); box-shadow: 0 4px 12px rgba(245,158,11,.2); }
+.opp-icon-green { background: linear-gradient(135deg, #f0fdf4, #dcfce7); box-shadow: 0 4px 12px rgba(34,197,94,.2); }
+.opp-icon-red   { background: linear-gradient(135deg, #fef2f2, #fee2e2); box-shadow: 0 4px 12px rgba(239,68,68,.2); }
+
+.opp-divider {
+    height: 1px;
+    background: #f1f5f9;
+    margin: 0 0 12px;
+    border-radius: 1px;
+}
+.opp-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.opp-val-label { font-size: 12px; color: #94a3b8; font-weight: 500; }
+.opp-val       { font-size: 13px; font-weight: 700; }
+.opp-val-green { color: #16a34a; }
+.opp-val-red   { color: #dc2626; }
+
+/* Donut legend */
+.donut-legend { display: flex; flex-direction: column; gap: 10px; padding: 8px 0; }
+.donut-legend-item { display: flex; align-items: center; gap: 10px; }
+.donut-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.donut-legend-label { font-size: 13px; color: #475569; flex: 1; }
+.donut-legend-value { font-size: 13px; font-weight: 700; color: #1e293b; }
+ .card-body { padding: 0.75rem 1rem; }
+    .card-body h3 { font-size: 1.25rem; margin-top: 0.25rem !important; }
+    .card-body .fs-14 { font-size: 13px !important; }
+    .card-body .border-dashed-bottom { padding-bottom: 0.5rem !important; }
+    .card-body p.mt-3 { margin-top: 0.5rem !important; font-size: 12px; }
+    .card-body .thumb-xl { width: 40px; height: 40px; }
+    .card-body .thumb-xl i { font-size: 18px !important; } 
+</style>
+
+<div class="dash-page">
+
+    
+    <div class="dash-header d-flex align-items-center justify-content-between">
+        <div>
+            <h4>Dashboard</h4>
+            <p>Welcome back! Here's what's happening with your business.</p>
+        </div>
+        <div style="font-size:12px;color:#94a3b8;">
+            <i class="las la-calendar me-1"></i>
+            Thu, 15 Oct 2026
+        </div>
+    </div>
+
+    
+    <div class="filter-card">
+        <form method="GET" action="https://www.softwinquote.com/dashboard">
+            <div class="row align-items-end g-3">
+                <div class="col-auto">
+                    <label class="form-label">Start Date</label>
+                    <input class="form-control" type="date" name="start_date" value="2025-10-15">
+                </div>
+                <div class="col-auto">
+                    <label class="form-label">End Date</label>
+                    <input class="form-control" type="date" name="end_date" value="2026-10-15">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn-filter d-flex align-items-center gap-2">
+                        <i class="las la-filter"></i> Apply Filter
+                    </button>
+                </div>
+                <div class="col-auto ms-auto text-end" style="color:#94a3b8;font-size:12px;">
+                    Showing data from <strong style="color:#334155">15 Oct 2025</strong>
+                    to <strong style="color:#334155">15 Oct 2026</strong>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    
+    <div class="row g-3 mb-3">
+
+        
+        <div class="col-md-6 col-lg-3">
+            <div class="opp-card opp-blue">
+                <div class="opp-top">
+                    <div>
+                        <div class="opp-label">Created Opportunity</div>
+                        <div class="opp-num">7</div>
+                    </div>
+                    <div class="opp-icon-wrap opp-icon-blue">
+                        <img src="https://www.softwinquote.com/images/total_opportunity.png" style="width:34px;height:34px;object-fit:contain;">
+                    </div>
+                </div>
+                <div class="opp-divider"></div>
+                <div class="opp-bottom">
+                    <span class="opp-val-label">Total Value</span>
+                    <span class="opp-val opp-val-green">₹2,542,657.90</span>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-md-6 col-lg-3">
+            <div class="opp-card opp-amber">
+                <div class="opp-top">
+                    <div>
+                        <div class="opp-label">Newly Quoted</div>
+                        <div class="opp-num">7</div>
+                    </div>
+                    <div class="opp-icon-wrap opp-icon-amber">
+                        <img src="https://www.softwinquote.com/images/new_opportunity.png" style="width:34px;height:34px;object-fit:contain;">
+                    </div>
+                </div>
+                <div class="opp-divider"></div>
+                <div class="opp-bottom">
+                    <span class="opp-val-label">Total Value</span>
+                    <span class="opp-val opp-val-green">₹2,542,657.90</span>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-md-6 col-lg-3">
+            <div class="opp-card opp-green">
+                <div class="opp-top">
+                    <div>
+                        <div class="opp-label">Won Opportunity</div>
+                        <div class="opp-num">0</div>
+                    </div>
+                    <div class="opp-icon-wrap opp-icon-green">
+                        <img src="https://www.softwinquote.com/images/won_opportunity.png" style="width:34px;height:34px;object-fit:contain;">
+                    </div>
+                </div>
+                <div class="opp-divider"></div>
+                <div class="opp-bottom">
+                    <span class="opp-val-label">Total Value</span>
+                    <span class="opp-val opp-val-green">₹0.00</span>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-md-6 col-lg-3">
+            <div class="opp-card opp-red">
+                <div class="opp-top">
+                    <div>
+                        <div class="opp-label">Lost Opportunity</div>
+                        <div class="opp-num">0</div>
+                    </div>
+                    <div class="opp-icon-wrap opp-icon-red">
+                        <img src="https://www.softwinquote.com/images/loss_oportunity.png" style="width:34px;height:34px;object-fit:contain;">
+                    </div>
+                </div>
+                <div class="opp-divider"></div>
+                <div class="opp-bottom">
+                    <span class="opp-val-label">Total Value</span>
+                    <span class="opp-val opp-val-red">₹0.00</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+    <div class="row g-3 mb-3">
+
+        
+        <div class="col-lg-8">
+            <div class="chart-card" style="min-height:320px;">
+                <div class="chart-title">Monthly Quotation Trend</div>
+                <div class="chart-sub">New, Won & Lost quotations over the last 6 months</div>
+                <div id="chart-monthly" style="min-height:260px;"></div>
+            </div>
+        </div>
+
+        
+        <div class="col-lg-4">
+            <div class="chart-card" style="min-height:320px;">
+                <div class="chart-title">Quote Status Distribution</div>
+                <div class="chart-sub">Win / Open / Loss ratio</div>
+                <div id="chart-donut" style="min-height:200px;"></div>
+                <div class="donut-legend mt-2">
+                    <div class="donut-legend-item">
+                        <div class="donut-legend-dot" style="background:#f59e0b"></div>
+                        <div class="donut-legend-label">New / Open</div>
+                        <div class="donut-legend-value">7</div>
+                    </div>
+                    <div class="donut-legend-item">
+                        <div class="donut-legend-dot" style="background:#22c55e"></div>
+                        <div class="donut-legend-label">Won</div>
+                        <div class="donut-legend-value">0</div>
+                    </div>
+                    <div class="donut-legend-item">
+                        <div class="donut-legend-dot" style="background:#ef4444"></div>
+                        <div class="donut-legend-label">Lost</div>
+                        <div class="donut-legend-value">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row g-3 mb-3">
+
+        
+        <div class="col-lg-7">
+            <div class="chart-card">
+                <div class="chart-title">Revenue / Quote Value Trend</div>
+                <div class="chart-sub">Monthly quote value (in ₹ thousands) — last 6 months</div>
+                <div id="chart-revenue" style="min-height:250px;"></div>
+            </div>
+        </div>
+
+        
+        <div class="col-lg-5">
+            <div class="chart-card h-100">
+                <div class="chart-title">Performance Summary</div>
+                <div class="chart-sub">Conversion & win rate at a glance</div>
+
+                
+                <div style="margin-top:10px;">
+                    <div class="d-flex justify-content-between mb-1" style="font-size:13px;">
+                        <span style="color:#475569;font-weight:500;">Win Rate</span>
+                        <span style="font-weight:700;color:#16a34a;">0%</span>
+                    </div>
+                    <div class="win-bar"><div class="win-bar-fill" style="width:0%;background:linear-gradient(90deg,#1d4ed8,#22c55e)"></div></div>
+                </div>
+                <div style="margin-top:14px;">
+                    <div class="d-flex justify-content-between mb-1" style="font-size:13px;">
+                        <span style="color:#475569;font-weight:500;">Open Rate</span>
+                        <span style="font-weight:700;color:#d97706;">100%</span>
+                    </div>
+                    <div class="win-bar"><div class="win-bar-fill" style="width:100%;background:linear-gradient(90deg,#d97706,#fbbf24)"></div></div>
+                </div>
+                <div style="margin-top:14px;">
+                    <div class="d-flex justify-content-between mb-1" style="font-size:13px;">
+                        <span style="color:#475569;font-weight:500;">Loss Rate</span>
+                        <span style="font-weight:700;color:#dc2626;">0%</span>
+                    </div>
+                    <div class="win-bar"><div class="win-bar-fill" style="width:0%;background:linear-gradient(90deg,#dc2626,#f87171)"></div></div>
+                </div>
+
+                <hr style="border-color:#f1f5f9;margin:18px 0 14px;">
+
+                <div class="row g-2 text-center">
+                    <div class="col-4">
+                        <div style="font-size:22px;font-weight:800;color:#1d4ed8;letter-spacing:-1px;">7</div>
+                        <div style="font-size:11px;color:#94a3b8;font-weight:600;">Total</div>
+                    </div>
+                    <div class="col-4">
+                        <div style="font-size:22px;font-weight:800;color:#16a34a;letter-spacing:-1px;">0</div>
+                        <div style="font-size:11px;color:#94a3b8;font-weight:600;">Won</div>
+                    </div>
+                    <div class="col-4">
+                        <div style="font-size:22px;font-weight:800;color:#dc2626;letter-spacing:-1px;">0</div>
+                        <div style="font-size:11px;color:#94a3b8;font-weight:600;">Lost</div>
+                    </div>
+                </div>
+
+                <hr style="border-color:#f1f5f9;margin:14px 0 14px;">
+                <div style="font-size:13px;color:#475569;margin-bottom:6px;font-weight:500;">Total Portfolio Value</div>
+                <div style="font-size:24px;font-weight:800;color:#1e293b;letter-spacing:-1px;">₹2,542,657.90</div>
+                <div style="font-size:12px;color:#94a3b8;margin-top:2px;">Won: ₹0.00</div>
+            </div>
+        </div>
+    </div>
+
+    
+    
+    
+        <div class="recent-table mb-3">
+        <div class="rt-head d-flex align-items-center justify-content-between">
+            <span>Recent Quotations</span>
+            <a href="https://www.softwinquote.com/quotations" style="font-size:12px;color:#3b82f6;text-decoration:none;font-weight:600;">View All &rarr;</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Client Name</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                                <tr>
+                    <td style="color:#94a3b8;font-weight:600;">1</td>
+                    <td style="font-weight:600;">CHANDRABHAN SINGH JI JALA</td>
+                    <td style="color:#94a3b8;">14 Oct 2026</td>
+                    <td style="font-weight:700;color:#1e293b;">₹898,727.00</td>
+                    <td><span class="badge-status badge-new">New</span></td>
+                    <td>
+                        <a href="https://www.softwinquote.com/quotations/6acf475f774ff5a5c40fe136" style="font-size:12px;color:#3b82f6;text-decoration:none;font-weight:600;">View</a>
+                    </td>
+                </tr>
+                                <tr>
+                    <td style="color:#94a3b8;font-weight:600;">2</td>
+                    <td style="font-weight:600;">DIPANSHU JI</td>
+                    <td style="color:#94a3b8;">10 Oct 2026</td>
+                    <td style="font-weight:700;color:#1e293b;">₹260,339.07</td>
+                    <td><span class="badge-status badge-new">New</span></td>
+                    <td>
+                        <a href="https://www.softwinquote.com/quotations/6aca45557e250588b40ff1c7" style="font-size:12px;color:#3b82f6;text-decoration:none;font-weight:600;">View</a>
+                    </td>
+                </tr>
+                                <tr>
+                    <td style="color:#94a3b8;font-weight:600;">3</td>
+                    <td style="font-weight:600;">TANMAY JI JAIN</td>
+                    <td style="color:#94a3b8;">09 Oct 2026</td>
+                    <td style="font-weight:700;color:#1e293b;">₹282,937.92</td>
+                    <td><span class="badge-status badge-new">New</span></td>
+                    <td>
+                        <a href="https://www.softwinquote.com/quotations/6ac8bf38abd14270140d4001" style="font-size:12px;color:#3b82f6;text-decoration:none;font-weight:600;">View</a>
+                    </td>
+                </tr>
+                                <tr>
+                    <td style="color:#94a3b8;font-weight:600;">4</td>
+                    <td style="font-weight:600;">TANMAY JI JAIN</td>
+                    <td style="color:#94a3b8;">09 Oct 2026</td>
+                    <td style="font-weight:700;color:#1e293b;">₹263,398.55</td>
+                    <td><span class="badge-status badge-new">New</span></td>
+                    <td>
+                        <a href="https://www.softwinquote.com/quotations/6ac8aa4fd8fe43b97f034a08" style="font-size:12px;color:#3b82f6;text-decoration:none;font-weight:600;">View</a>
+                    </td>
+                </tr>
+                                <tr>
+                    <td style="color:#94a3b8;font-weight:600;">5</td>
+                    <td style="font-weight:600;">Lokesh ji regar</td>
+                    <td style="color:#94a3b8;">06 Oct 2026</td>
+                    <td style="font-weight:700;color:#1e293b;">₹441,551.33</td>
+                    <td><span class="badge-status badge-new">New</span></td>
+                    <td>
+                        <a href="https://www.softwinquote.com/quotations/6ac52bb374c3671f360cbf24" style="font-size:12px;color:#3b82f6;text-decoration:none;font-weight:600;">View</a>
+                    </td>
+                </tr>
+                                <tr>
+                    <td style="color:#94a3b8;font-weight:600;">6</td>
+                    <td style="font-weight:600;">Naveen ji</td>
+                    <td style="color:#94a3b8;">04 Oct 2026</td>
+                    <td style="font-weight:700;color:#1e293b;">₹75,775.16</td>
+                    <td><span class="badge-status badge-new">New</span></td>
+                    <td>
+                        <a href="https://www.softwinquote.com/quotations/6ac1e3b41ef310185309d666" style="font-size:12px;color:#3b82f6;text-decoration:none;font-weight:600;">View</a>
+                    </td>
+                </tr>
+                                <tr>
+                    <td style="color:#94a3b8;font-weight:600;">7</td>
+                    <td style="font-weight:600;">AMAR SINGH JI</td>
+                    <td style="color:#94a3b8;">28 Sep 2026</td>
+                    <td style="font-weight:700;color:#1e293b;">₹319,928.87</td>
+                    <td><span class="badge-status badge-new">New</span></td>
+                    <td>
+                        <a href="https://www.softwinquote.com/quotations/6aba1632f27c890ff60628c3" style="font-size:12px;color:#3b82f6;text-decoration:none;font-weight:600;">View</a>
+                    </td>
+                </tr>
+                            </tbody>
+        </table>
+    </div>
+    
+</div>
+
+
+<script src="https://www.softwinquote.com/assets/libs/apexcharts/apexcharts.min.js"></script>
+<script>
+(function(){
+
+    var labels  = ["May 2026","Jun 2026","Jul 2026","Aug 2026","Sep 2026","Oct 2026"];
+    var dataNew  = [0,0,0,0,1,6];
+    var dataWon  = [0,0,0,0,0,0];
+    var dataLost = [0,0,0,0,0,0];
+    var dataRev  = [0,0,0,0,319.9,2222.7];
+
+    /* ── 1. Monthly Area Chart ── */
+    new ApexCharts(document.getElementById('chart-monthly'), {
+        chart: { type: 'area', height: 260, toolbar: { show: false }, zoom: { enabled: false }, fontFamily: 'Inter, sans-serif' },
+        series: [
+            { name: 'New',  data: dataNew  },
+            { name: 'Won',  data: dataWon  },
+            { name: 'Lost', data: dataLost }
+        ],
+        colors: ['#f59e0b','#22c55e','#ef4444'],
+        fill: {
+            type: 'gradient',
+            gradient: { opacityFrom: 0.35, opacityTo: 0.02, shadeIntensity: 1, type: 'vertical' }
+        },
+        stroke: { curve: 'smooth', width: 2.5 },
+        xaxis: { categories: labels, labels: { style: { fontSize: '12px', colors: '#94a3b8' } }, axisBorder: { show: false }, axisTicks: { show: false } },
+        yaxis: { labels: { style: { fontSize: '12px', colors: '#94a3b8' } }, tickAmount: 4, min: 0 },
+        grid: { borderColor: '#f1f5f9', strokeDashArray: 4 },
+        dataLabels: { enabled: false },
+        legend: { position: 'top', horizontalAlign: 'right', fontSize: '12px', fontWeight: 600 },
+        tooltip: { theme: 'light', y: { formatter: val => val + ' quotes' } },
+        markers: { size: 4, strokeWidth: 2, hover: { size: 6 } }
+    }).render();
+
+    /* ── 2. Donut Chart ── */
+    var totalQ = 7;
+    new ApexCharts(document.getElementById('chart-donut'), {
+        chart: { type: 'donut', height: 200, fontFamily: 'Inter, sans-serif' },
+        series: [7, 0, 0],
+        labels: ['New / Open', 'Won', 'Lost'],
+        colors: ['#f59e0b','#22c55e','#ef4444'],
+        plotOptions: { pie: { donut: { size: '68%', labels: { show: true, total: { show: true, label: 'Total', fontSize: '13px', color: '#94a3b8', formatter: () => totalQ } } } } },
+        dataLabels: { enabled: false },
+        legend: { show: false },
+        stroke: { width: 2, colors: ['#fff'] },
+        tooltip: { y: { formatter: val => val + ' quotes' } }
+    }).render();
+
+    /* ── 3. Revenue Bar Chart ── */
+    new ApexCharts(document.getElementById('chart-revenue'), {
+        chart: { type: 'bar', height: 250, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
+        series: [{ name: 'Value (₹K)', data: dataRev }],
+        colors: ['#1d4ed8'],
+        plotOptions: { bar: { borderRadius: 7, columnWidth: '50%', dataLabels: { position: 'top' } } },
+        dataLabels: { enabled: true, offsetY: -18, style: { fontSize: '11px', fontWeight: 700, colors: ['#64748b'] }, formatter: val => val > 0 ? '₹' + val + 'K' : '' },
+        xaxis: { categories: labels, labels: { style: { fontSize: '12px', colors: '#94a3b8' } }, axisBorder: { show: false }, axisTicks: { show: false } },
+        yaxis: { labels: { style: { fontSize: '12px', colors: '#94a3b8' }, formatter: val => '₹' + val + 'K' }, tickAmount: 4, min: 0 },
+        grid: { borderColor: '#f1f5f9', strokeDashArray: 4 },
+        fill: { type: 'gradient', gradient: { shade: 'light', type: 'vertical', shadeIntensity: .3, opacityFrom: 1, opacityTo: .7 } },
+        tooltip: { y: { formatter: val => '₹' + val + 'K' } }
+    }).render();
+
+})();
+</script>
+                    </main>
+                </div>
+            </div>
+        </div>
+    
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="ajaxToast" class="toast align-items-center text-bg-success" role="alert" aria-live="assertive">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Operation successful!
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="globalLoader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; text-align: center;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <img src="https://www.softwinquote.com/img/loader.gif" alt="Loading..." style="width: 80px; height: 80px;">
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        // Show loader before every AJAX request
+        $(document).ajaxStart(function () {
+            $('#globalLoader').fadeIn(); // Show the loader
+        });
+
+        // Hide loader after every AJAX request completes
+        $(document).ajaxStop(function () {
+            $('#globalLoader').fadeOut(); // Hide the loader
+        });
+    </script>
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+        <div class="copyright"></div>
+    </footer>
+    <!-- End Footer -->
+    <script>
+        function confirmDelete(actionUrl) {
+            // Set the form action dynamically
+            const deleteForm = document.getElementById('deleteForm');
+            deleteForm.action = actionUrl;
+
+            // Show the modal
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+    </script>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this item?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="POST" style="display:inline;">
+                        <input type="hidden" name="_token" value="7HRFWJjak5BZvBuYKNuGvV3roblBQpo4FXBIytfn" autocomplete="off">                        <input type="hidden" name="_method" value="DELETE">                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="https://www.softwinquote.com/assets/apexcharts/apexcharts.min.js"></script> -->
+
+    <script src="https://www.softwinquote.com/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="https://www.softwinquote.com/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.softwinquote.com/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="https://www.softwinquote.com/vendor/tinymce/tinymce.min.js"></script>
+
+    <script src="https://www.softwinquote.com/assets/js/app.js"></script>
+
+    </body>
+</html>
