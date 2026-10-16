@@ -14,7 +14,6 @@ import { DesignPreview } from '@/components/design-editor/design-preview'
 import {
   Plus,
   Trash2,
-  Send,
   Check,
   Loader2,
   CloudOff,
@@ -340,7 +339,7 @@ export default function NewQuotationPage() {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
     }
-  }, [hydrated, clientName, clientEmail, clientPhone, notes, validUntil, persistDraft])
+  }, [hydrated, selectedClientId, clientName, clientEmail, clientPhone, notes, validUntil, persistDraft])
 
   // Open the design editor for a new design belonging to this quotation.
   const addDesign = async () => {
@@ -423,13 +422,13 @@ export default function NewQuotationPage() {
     await refreshDesigns(quotationId)
   }
 
-  const sendQuotation = async () => {
+  const saveQuotation = async () => {
     if (!clientName.trim() || !clientPhone.trim()) {
       setError('Client name and phone are required.')
       return
     }
     if (designs.length === 0) {
-      setError('Add at least one design before sending.')
+      setError('Add at least one design before saving.')
       return
     }
 
@@ -437,29 +436,16 @@ export default function NewQuotationPage() {
     setError(null)
 
     try {
+      // Cancel any pending debounced autosave so it can't overwrite this save.
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+
       const id = await persistDraft()
       if (!id) return
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-      if (!user) {
-        setError('You must be logged in.')
-        return
-      }
-
-      const clientId = await resolveClientId(user.id)
-      const payload = buildPayload('sent', clientId)
-      const { error: updateError } = await supabase
-        .from('quotations')
-        .update(payload)
-        .eq('id', id)
-      if (updateError) throw updateError
 
       router.push('/dashboard/quotations')
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to send quotation')
+      setError(err instanceof Error ? err.message : 'Failed to save quotation')
     } finally {
       setSending(false)
     }
@@ -484,9 +470,9 @@ export default function NewQuotationPage() {
         >
           Cancel
         </Button>
-        <Button size="sm" onClick={sendQuotation} disabled={sending}>
-          <Send className="h-4 w-4" />
-          {sending ? 'Sending...' : 'Save & Send'}
+        <Button size="sm" onClick={saveQuotation} disabled={sending}>
+          <Check className="h-4 w-4" />
+          {sending ? 'Saving...' : 'Save'}
         </Button>
       </PageHeader>
 
@@ -498,11 +484,10 @@ export default function NewQuotationPage() {
 
       {!editId && usage && !usage.unlimited && (
         <div
-          className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm ring-1 ring-inset ${
-            usage.canCreate
-              ? 'bg-primary-soft text-primary ring-primary/20'
-              : 'bg-amber-50 text-amber-700 ring-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20'
-          }`}
+          className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm ring-1 ring-inset ${usage.canCreate
+            ? 'bg-primary-soft text-primary ring-primary/20'
+            : 'bg-amber-50 text-amber-700 ring-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20'
+            }`}
         >
           <span>
             {usage.canCreate
@@ -523,103 +508,131 @@ export default function NewQuotationPage() {
           <CardTitle className="text-base">Client Information</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-            <div className="space-y-1.5">
-              <Label htmlFor="clientSelect">Client</Label>
-              <Select
-                id="clientSelect"
-                value={selectedClientId}
-                onChange={(e) => handleSelectClient(e.target.value)}
-              >
-                <option value={NEW_CLIENT}>+ New client</option>
-                {clients.length > 0 && (
-                  <optgroup label="Existing clients">
-                    {clients.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                        {c.phone ? ` — ${c.phone}` : ''}
-                      </option>
-                    ))}
-                  </optgroup>
-                )}
-              </Select>
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="validUntil">Valid Until</Label>
-              <Input
-                id="validUntil"
-                type="date"
-                value={validUntil}
-                onChange={(e) => setValidUntil(e.target.value)}
-              />
-            </div>
-          </div>
+          {editId ? (
+            /* EDIT MODE — client is locked (view only). */
+            <>
 
-          {selectedClientId === NEW_CLIENT ? (
-            <div className="space-y-3 border-t border-border/60 pt-3">
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                <div className="space-y-1.5">
-                  <Label htmlFor="clientName">Client Name *</Label>
-                  <Input
-                    id="clientName"
-                    value={clientName}
-                    onChange={(e) => setClientName(e.target.value)}
-                    placeholder="Enter client name"
-                    required
-                  />
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-2">
+                <div className="flex items-center gap-3 rounded-lg border border-border bg-secondary/40 p-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-soft text-sm font-semibold text-primary">
+                    {clientName.charAt(0).toUpperCase() || 'C'}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-heading">{clientName || '—'}</p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {clientPhone}
+                      {clientEmail ? ` · ${clientEmail}` : ''}
+                    </p>
+                  </div>
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="clientPhone">Phone Number *</Label>
+                  <Label htmlFor="validUntil">Valid Until</Label>
                   <Input
-                    id="clientPhone"
-                    type="tel"
-                    value={clientPhone}
-                    onChange={(e) => setClientPhone(e.target.value)}
-                    placeholder="Enter phone number"
-                    required
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="clientEmail">Email (optional)</Label>
-                  <Input
-                    id="clientEmail"
-                    type="email"
-                    value={clientEmail}
-                    onChange={(e) => setClientEmail(e.target.value)}
-                    placeholder="Enter email"
+                    id="validUntil"
+                    type="date"
+                    value={validUntil}
+                    onChange={(e) => setValidUntil(e.target.value)}
                   />
                 </div>
               </div>
-              <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <UserPlus className="h-3.5 w-3.5" />
-                This client will be saved to your client list automatically.
+              <p className="text-xs text-muted-foreground">
+                The client can&apos;t be changed on an existing quotation. Create a new quotation to
+                use a different client.
               </p>
-            </div>
+            </>
           ) : (
-            <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-secondary/40 p-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-soft text-sm font-semibold text-primary">
-                  {clientName.charAt(0).toUpperCase() || 'C'}
+            /* CREATE MODE — pick or enter a client. */
+            <>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <div className="space-y-1.5">
+                  <Label htmlFor="clientSelect">Client</Label>
+                  <Select
+                    id="clientSelect"
+                    value={selectedClientId}
+                    onChange={(e) => handleSelectClient(e.target.value)}
+                  >
+                    <option value={NEW_CLIENT}>+ New client</option>
+                    {clients.length > 0 && (
+                      <optgroup label="Existing clients">
+                        {clients.map((c) => (
+                          <option key={c.id} value={c.id}>
+                            {c.name}
+                            {c.phone ? ` — ${c.phone}` : ''}
+                          </option>
+                        ))}
+                      </optgroup>
+                    )}
+                  </Select>
+                  <p className="text-xs text-muted-foreground">
+                    Pick an existing client or choose “+ New client” to enter a new one.
+                  </p>
                 </div>
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-heading">
-                    {clientName}
-                  </p>
-                  <p className="truncate text-xs text-muted-foreground">
-                    {clientPhone}
-                    {clientEmail ? ` · ${clientEmail}` : ''}
-                  </p>
+                <div className="space-y-1.5">
+                  <Label htmlFor="validUntil">Valid Until</Label>
+                  <Input
+                    id="validUntil"
+                    type="date"
+                    value={validUntil}
+                    onChange={(e) => setValidUntil(e.target.value)}
+                  />
                 </div>
               </div>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => handleSelectClient(NEW_CLIENT)}
-              >
-                Change
-              </Button>
-            </div>
+
+              {selectedClientId === NEW_CLIENT ? (
+                <div className="space-y-3 border-t border-border/60 pt-3">
+                  <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="clientName">Client Name *</Label>
+                      <Input
+                        id="clientName"
+                        value={clientName}
+                        onChange={(e) => setClientName(e.target.value)}
+                        placeholder="Enter client name"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="clientPhone">Phone Number *</Label>
+                      <Input
+                        id="clientPhone"
+                        type="tel"
+                        value={clientPhone}
+                        onChange={(e) => setClientPhone(e.target.value)}
+                        placeholder="Enter phone number"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="clientEmail">Email (optional)</Label>
+                      <Input
+                        id="clientEmail"
+                        type="email"
+                        value={clientEmail}
+                        onChange={(e) => setClientEmail(e.target.value)}
+                        placeholder="Enter email"
+                      />
+                    </div>
+                  </div>
+                  <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <UserPlus className="h-3.5 w-3.5" />
+                    This client will be saved to your client list automatically.
+                  </p>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 rounded-lg border border-border bg-secondary/40 p-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-soft text-sm font-semibold text-primary">
+                    {clientName.charAt(0).toUpperCase() || 'C'}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-heading">{clientName}</p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {clientPhone}
+                      {clientEmail ? ` · ${clientEmail}` : ''}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </CardContent>
       </Card>
