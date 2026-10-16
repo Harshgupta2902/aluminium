@@ -47,7 +47,7 @@ const SETTINGS_CHILDREN: NavChild[] = [
   { name: 'Aluminium Hardware', href: '/dashboard/settings/hardware', icon: Wrench },
   { name: 'Aluminium Coating', href: '/dashboard/settings/coating', icon: Layers },
   { name: 'Glass', href: '/dashboard/settings/glass', icon: GlassWater },
-  { name: 'Catalog & Pricing', href: '/dashboard/settings/design-catalog', icon: LayoutGrid },
+  { name: 'Colours & Pricing', href: '/dashboard/settings/design-catalog', icon: LayoutGrid },
 ]
 
 // Regular user navigation.

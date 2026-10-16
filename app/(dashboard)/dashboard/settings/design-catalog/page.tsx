@@ -1,25 +1,16 @@
-import { ListManager } from '@/components/settings/list-manager'
-import { PricingManager } from '@/components/settings/pricing-manager'
 import { PageHeader } from '@/components/dashboard/page-header'
+import { CatalogManager } from '@/components/settings/catalog-manager'
+
+export const metadata = { title: 'Colours & Pricing · SoftWindow' }
 
 export default function DesignCatalogSettingsPage() {
   return (
     <div className="space-y-5">
       <PageHeader
-        title="Catalog & Pricing"
-        description="Glass, colour and hardware options plus pricing used by the design editor."
+        title="Colours & Fallback Pricing"
+        description="Window colours, plus the base per-type rates used only when a design has no profile series selected (series-based designs use the weight-based BOM engine)."
       />
-
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <ListManager table="design_glasses" title="Glass Types" extraColumn="rate_per_sqft" extraLabel="₹/sqft" />
-        <ListManager table="design_colors" title="Colours" extraColumn="hex" extraLabel="#hex" />
-        <ListManager table="gi_tracks" title="GI Tracks" extraColumn="profile_code" extraLabel="Code" />
-        <ListManager table="gi_sashes" title="GI Sashes" extraColumn="profile_code" extraLabel="Code" />
-        <ListManager table="gi_interlocks" title="GI Interlocks" extraColumn="profile_code" extraLabel="Code" />
-        <ListManager table="gi_locks" title="GI Locks" extraColumn="profile_code" extraLabel="Code" />
-      </div>
-
-      <PricingManager />
+      <CatalogManager />
     </div>
   )
 }
