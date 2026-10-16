@@ -98,11 +98,18 @@ export function AccessoriesManager() {
   const [draft, setDraft] = useState<Draft>({ name: '', code: '', price: '' })
   const [busyId, setBusyId] = useState<string | null>(null)
 
-  // Add row
+  // Add modal
+  const [addOpen, setAddOpen] = useState(false)
   const [adding, setAdding] = useState<{ kind: AccessoryKind; name: string; code: string; price: string }>(
     { kind: 'handle', name: '', code: '', price: '' }
   )
   const [addBusy, setAddBusy] = useState(false)
+
+  const closeAdd = () => {
+    if (addBusy) return
+    setAddOpen(false)
+    setAdding({ kind: 'handle', name: '', code: '', price: '' })
+  }
 
   const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE))
 
@@ -143,6 +150,22 @@ export function AccessoriesManager() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setPage(0)
   }, [debouncedSearch, kindFilter])
+
+  // Modal: Escape to close + lock background scroll.
+  useEffect(() => {
+    if (!addOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeAdd()
+    }
+    document.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prev
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addOpen])
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -196,7 +219,10 @@ export function AccessoriesManager() {
       setError(err.message)
       return
     }
-    setAdding((a) => ({ ...a, name: '', code: '', price: '' }))
+    setAddOpen(false)
+    setAdding({ kind: 'handle', name: '', code: '', price: '' })
+    // After adding, jump to the first page so the new row is findable.
+    setPage(0)
     await fetchPage()
   }
 
@@ -211,8 +237,8 @@ export function AccessoriesManager() {
         </p>
       )}
 
-      {/* Toolbar: search + filter */}
-      <div className="flex flex-col gap-2 sm:flex-row">
+      {/* Toolbar: search + filter (left) · add (right) */}
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
         <div className="relative sm:w-72">
           <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -234,6 +260,12 @@ export function AccessoriesManager() {
             </option>
           ))}
         </Select>
+        <div className="sm:ml-auto">
+          <Button onClick={() => setAddOpen(true)}>
+            <Plus className="h-4 w-4" />
+            Add Hardware
+          </Button>
+        </div>
       </div>
 
       {/* Table */}
@@ -361,44 +393,6 @@ export function AccessoriesManager() {
             </tbody>
           </table>
         </div>
-
-        {/* Add row */}
-        <div className="flex flex-wrap items-center gap-2 border-t border-border bg-muted/20 px-4 py-3">
-          <Select
-            value={adding.kind}
-            onChange={(e) => setAdding((a) => ({ ...a, kind: e.target.value as AccessoryKind }))}
-            className="h-8 w-40"
-          >
-            {ACCESSORY_KINDS.map((k) => (
-              <option key={k.kind} value={k.kind}>
-                {k.label}
-              </option>
-            ))}
-          </Select>
-          <Input
-            value={adding.name}
-            placeholder="Name"
-            onChange={(e) => setAdding((a) => ({ ...a, name: e.target.value }))}
-            className="h-8 flex-1 min-w-40"
-          />
-          <Input
-            value={adding.code}
-            placeholder="Code"
-            onChange={(e) => setAdding((a) => ({ ...a, code: e.target.value }))}
-            className="h-8 w-28"
-          />
-          <Input
-            type="number"
-            value={adding.price}
-            placeholder="₹"
-            onChange={(e) => setAdding((a) => ({ ...a, price: e.target.value }))}
-            className="h-8 w-24"
-          />
-          <Button size="sm" onClick={addRow} disabled={addBusy || !adding.name.trim()}>
-            {addBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
-            Add
-          </Button>
-        </div>
       </div>
 
       {/* Pagination */}
@@ -428,6 +422,95 @@ export function AccessoriesManager() {
           </button>
         </div>
       </div>
+
+      {/* Add Hardware modal */}
+      {addOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={closeAdd}
+        >
+          <div
+            className="w-full max-w-md rounded-xl border border-border bg-card shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-border px-4 py-3">
+              <h2 className="text-base font-semibold text-heading">Add Hardware</h2>
+              <button
+                type="button"
+                onClick={closeAdd}
+                className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-heading"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                void addRow()
+              }}
+            >
+              <div className="space-y-3 px-4 py-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Type</label>
+                  <Select
+                    value={adding.kind}
+                    onChange={(e) => setAdding((a) => ({ ...a, kind: e.target.value as AccessoryKind }))}
+                    className="h-9"
+                  >
+                    {ACCESSORY_KINDS.map((k) => (
+                      <option key={k.kind} value={k.kind}>
+                        {k.label}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Name *</label>
+                  <Input
+                    autoFocus
+                    value={adding.name}
+                    placeholder="e.g. METRO HANDLE"
+                    onChange={(e) => setAdding((a) => ({ ...a, name: e.target.value }))}
+                    className="h-9"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-muted-foreground">Code</label>
+                    <Input
+                      value={adding.code}
+                      placeholder="optional"
+                      onChange={(e) => setAdding((a) => ({ ...a, code: e.target.value }))}
+                      className="h-9"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-muted-foreground">Price (₹)</label>
+                    <Input
+                      type="number"
+                      value={adding.price}
+                      placeholder="0"
+                      onChange={(e) => setAdding((a) => ({ ...a, price: e.target.value }))}
+                      className="h-9"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 border-t border-border px-4 py-3">
+                <Button type="button" variant="outline" size="sm" onClick={closeAdd} disabled={addBusy}>
+                  Cancel
+                </Button>
+                <Button type="submit" size="sm" disabled={addBusy || !adding.name.trim()}>
+                  {addBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+                  Add Hardware
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
