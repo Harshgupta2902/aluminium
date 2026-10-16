@@ -1,13 +1,23 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Loader2, Plus, Trash2, Check, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Select } from '@/components/ui/select'
+import {
+  Loader2,
+  Plus,
+  Check,
+  X,
+  Pencil,
+  ChevronLeft,
+  ChevronRight,
+  Search,
+} from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 
-const CARD_PAGE_SIZE = 20
+const PAGE_SIZE = 20
 
 export type AccessoryKind =
   | 'sash'
@@ -27,26 +37,19 @@ export type AccessoryKind =
   | 'friction_stay'
   | 'common'
 
-export const ACCESSORY_KINDS: { kind: AccessoryKind; label: string; group: string }[] = [
-  { kind: 'sash', label: 'Sash', group: 'Core' },
-  { kind: 'interlock', label: 'Interlock', group: 'Core' },
-  { kind: 'handle', label: 'Handle', group: 'Core' },
-  { kind: 'roller', label: 'Roller', group: 'Core' },
-  { kind: 'lock', label: 'Lock', group: 'Core' },
-  { kind: 'hinge', label: 'Hinge', group: 'Core' },
-  { kind: 'mesh', label: 'Mesh', group: 'Core' },
-  { kind: 'slim_interlock', label: 'Slim Interlock', group: 'Slim profile' },
-  { kind: 'reinforcement', label: 'Reinforcement', group: 'Slim profile' },
-  { kind: 'friction_stay', label: 'Friction Stay / Hinges', group: 'Casement' },
-  { kind: 'mesh_type', label: 'Mesh Type', group: 'Mesh' },
-  { kind: 'mesh_sash', label: 'Mesh Sash', group: 'Mesh' },
-  { kind: 'mesh_clip', label: 'Mesh Clip', group: 'Mesh' },
-  { kind: 'mesh_handle', label: 'Mesh Handle', group: 'Mesh' },
-  { kind: 'mesh_slim', label: 'Mesh Slim', group: 'Mesh' },
-  { kind: 'common', label: 'Common / Consumables', group: 'Common' },
+export const ACCESSORY_KINDS: { kind: AccessoryKind; label: string }[] = [
+  { kind: 'handle', label: 'Handle' },
+  { kind: 'roller', label: 'Roller' },
+  { kind: 'lock', label: 'Lock' },
+  { kind: 'hinge', label: 'Hinge' },
+  { kind: 'friction_stay', label: 'Friction Stay / Hinges' },
+  { kind: 'mesh', label: 'Mesh' },
+  { kind: 'common', label: 'Common' },
 ]
 
-const GROUP_ORDER = ['Core', 'Slim profile', 'Casement', 'Mesh', 'Common'] as const
+const KIND_LABEL: Record<string, string> = Object.fromEntries(
+  ACCESSORY_KINDS.map((k) => [k.kind, k.label])
+)
 
 interface AccessoryRow {
   id: string
@@ -54,289 +57,377 @@ interface AccessoryRow {
   name: string
   code: string | null
   price: number
-  is_active: boolean
-  is_default: boolean
-  sort_order: number
+}
+
+interface Draft {
+  name: string
+  code: string
+  price: string
+}
+
+/** Debounce a changing value. */
+function useDebounced<T>(value: T, ms: number): T {
+  const [v, setV] = useState(value)
+  useEffect(() => {
+    const t = setTimeout(() => setV(value), ms)
+    return () => clearTimeout(t)
+  }, [value, ms])
+  return v
 }
 
 /**
- * Manage the user's typed accessories (sash/interlock/handle/roller/lock/
- * hinge/mesh). Grouped by kind; add / rename / set price+code / default /
- * delete. Writes set created_by so per-user RLS is satisfied.
+ * Hardware / accessories manager — a single table with server-side pagination
+ * (20/page), search by name + code, and a kind filter. Per-row inline edit.
  */
 export function AccessoriesManager() {
   const supabase = createClient()
   const [rows, setRows] = useState<AccessoryRow[]>([])
+  const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [userId, setUserId] = useState<string | null>(null)
 
+  // Controls
+  const [search, setSearch] = useState('')
+  const debouncedSearch = useDebounced(search, 300)
+  const [kindFilter, setKindFilter] = useState<string>('')
+  const [page, setPage] = useState(0)
+
+  // Row editing
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [draft, setDraft] = useState<Draft>({ name: '', code: '', price: '' })
+  const [busyId, setBusyId] = useState<string | null>(null)
+
+  // Add row
+  const [adding, setAdding] = useState<{ kind: AccessoryKind; name: string; code: string; price: string }>(
+    { kind: 'handle', name: '', code: '', price: '' }
+  )
+  const [addBusy, setAddBusy] = useState(false)
+
+  const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE))
+
+  const fetchPage = useCallback(async () => {
+    setLoading(true)
+    let q = supabase
+      .from('design_accessories')
+      .select('id, kind, name, code, price', { count: 'exact' })
+      .order('kind', { ascending: true })
+      .order('sort_order', { ascending: true })
+
+    if (kindFilter) q = q.eq('kind', kindFilter)
+    if (debouncedSearch.trim()) {
+      const s = debouncedSearch.trim()
+      q = q.or(`name.ilike.%${s}%,code.ilike.%${s}%`)
+    }
+    const from = page * PAGE_SIZE
+    q = q.range(from, from + PAGE_SIZE - 1)
+
+    const { data, count, error: err } = await q
+    if (err) setError(err.message)
+    setRows((data as AccessoryRow[]) ?? [])
+    setTotal(count ?? 0)
+    setLoading(false)
+  }, [supabase, kindFilter, debouncedSearch, page])
+
   useEffect(() => {
-    let active = true
     void (async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser()
-      if (!active) return
       setUserId(user?.id ?? null)
-      const { data, error: err } = await supabase
-        .from('design_accessories')
-        .select('*')
-        .order('kind', { ascending: true })
-        .order('sort_order', { ascending: true })
-      if (!active) return
-      if (err) setError(err.message)
-      setRows((data as AccessoryRow[]) ?? [])
-      setLoading(false)
     })()
-    return () => {
-      active = false
-    }
   }, [supabase])
 
-  const refresh = async () => {
-    const { data } = await supabase
+  // Reset to page 0 when filters change.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPage(0)
+  }, [debouncedSearch, kindFilter])
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchPage()
+  }, [fetchPage])
+
+  const startEdit = (r: AccessoryRow) => {
+    setError(null)
+    setEditingId(r.id)
+    setDraft({ name: r.name, code: r.code ?? '', price: String(r.price ?? 0) })
+  }
+  const cancelEdit = () => {
+    setEditingId(null)
+  }
+
+  const saveEdit = async (id: string) => {
+    setBusyId(id)
+    setError(null)
+    const { error: err } = await supabase
       .from('design_accessories')
-      .select('*')
-      .order('kind', { ascending: true })
-      .order('sort_order', { ascending: true })
-    setRows((data as AccessoryRow[]) ?? [])
+      .update({
+        name: draft.name.trim(),
+        code: draft.code.trim() || null,
+        price: Number(draft.price) || 0,
+      })
+      .eq('id', id)
+    setBusyId(null)
+    if (err) {
+      setError(err.message)
+      return
+    }
+    setEditingId(null)
+    await fetchPage()
   }
 
-  const byKind = useMemo(() => {
-    const map = new Map<AccessoryKind, AccessoryRow[]>()
-    for (const { kind } of ACCESSORY_KINDS) map.set(kind, [])
-    for (const r of rows) map.get(r.kind)?.push(r)
-    return map
-  }, [rows])
-
-  const patch = async (id: string, p: Partial<AccessoryRow>) => {
-    const { error: err } = await supabase.from('design_accessories').update(p).eq('id', id)
-    if (err) setError(err.message)
-    await refresh()
-  }
-
-  const remove = async (id: string) => {
-    const { error: err } = await supabase.from('design_accessories').delete().eq('id', id)
-    if (err) setError(err.message)
-    await refresh()
-  }
-
-  const add = async (kind: AccessoryKind, name: string, code: string, price: string) => {
-    if (!name.trim()) return
+  const addRow = async () => {
+    if (!adding.name.trim()) return
+    setAddBusy(true)
     setError(null)
     const { error: err } = await supabase.from('design_accessories').insert([
       {
-        kind,
-        name: name.trim(),
-        code: code.trim() || null,
-        price: Number(price) || 0,
-        sort_order: (byKind.get(kind)?.length ?? 0) + 1,
+        kind: adding.kind,
+        name: adding.name.trim(),
+        code: adding.code.trim() || null,
+        price: Number(adding.price) || 0,
         created_by: userId,
       },
     ])
-    if (err) setError(err.message)
-    await refresh()
+    setAddBusy(false)
+    if (err) {
+      setError(err.message)
+      return
+    }
+    setAdding((a) => ({ ...a, name: '', code: '', price: '' }))
+    await fetchPage()
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center gap-2 py-6 text-sm text-muted-foreground">
-        <Loader2 className="h-4 w-4 animate-spin" /> Loading accessories...
-      </div>
-    )
-  }
+  const start = total === 0 ? 0 : page * PAGE_SIZE + 1
+  const end = Math.min((page + 1) * PAGE_SIZE, total)
 
   return (
     <div className="space-y-4">
       {error && (
-        <div className="rounded-lg bg-rose-50 p-3 text-sm text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20">
+        <p className="rounded-lg bg-rose-50 px-3 py-2 text-xs text-rose-700 ring-1 ring-inset ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20">
           {error}
-        </div>
-      )}
-      {GROUP_ORDER.map((group) => {
-        const kinds = ACCESSORY_KINDS.filter((k) => k.group === group)
-        if (kinds.length === 0) return null
-        return (
-          <div key={group} className="space-y-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              {group}
-            </h3>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-              {kinds.map(({ kind, label }) => (
-                <KindCard
-                  key={kind}
-                  label={label}
-                  rows={byKind.get(kind) ?? []}
-                  onAdd={(name, code, price) => add(kind, name, code, price)}
-                  onPatch={patch}
-                  onRemove={remove}
-                  onLocalChange={setRows}
-                />
-              ))}
-            </div>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
-function KindCard({
-  label,
-  rows,
-  onAdd,
-  onPatch,
-  onRemove,
-  onLocalChange,
-}: {
-  label: string
-  rows: AccessoryRow[]
-  onAdd: (name: string, code: string, price: string) => void
-  onPatch: (id: string, p: Partial<AccessoryRow>) => void
-  onRemove: (id: string) => void
-  onLocalChange: React.Dispatch<React.SetStateAction<AccessoryRow[]>>
-}) {
-  const [name, setName] = useState('')
-  const [code, setCode] = useState('')
-  const [price, setPrice] = useState('')
-  const [search, setSearch] = useState('')
-  const [page, setPage] = useState(0)
-
-  const submit = () => {
-    onAdd(name, code, price)
-    setName('')
-    setCode('')
-    setPrice('')
-  }
-
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase()
-    if (!q) return rows
-    return rows.filter(
-      (r) => r.name.toLowerCase().includes(q) || (r.code ?? '').toLowerCase().includes(q)
-    )
-  }, [rows, search])
-
-  const pageCount = Math.max(1, Math.ceil(filtered.length / CARD_PAGE_SIZE))
-  const current = Math.min(page, pageCount - 1)
-  const pageRows = filtered.slice(current * CARD_PAGE_SIZE, current * CARD_PAGE_SIZE + CARD_PAGE_SIZE)
-
-  return (
-    <div className="rounded-lg border border-border bg-card p-4">
-      <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-heading">{label}</h3>
-        <span className="text-xs text-muted-foreground">{rows.length}</span>
-      </div>
-
-      {rows.length > CARD_PAGE_SIZE && (
-        <Input
-          value={search}
-          placeholder="Search…"
-          onChange={(e) => {
-            setSearch(e.target.value)
-            setPage(0)
-          }}
-          className="mb-2 h-8"
-        />
-      )}
-
-      <div className="space-y-1.5">
-        {pageRows.length === 0 && (
-          <p className="py-2 text-xs text-muted-foreground">No {label.toLowerCase()} options yet.</p>
-        )}
-        {pageRows.map((r) => (
-          <div key={r.id} className="flex items-center gap-2 rounded-md border border-border/60 px-2 py-1.5">
-            <Input
-              value={r.name}
-              onChange={(e) =>
-                onLocalChange((prev) => prev.map((x) => (x.id === r.id ? { ...x, name: e.target.value } : x)))
-              }
-              onBlur={(e) => onPatch(r.id, { name: e.target.value })}
-              className="h-8 flex-1"
-            />
-            <Input
-              value={r.code ?? ''}
-              placeholder="Code"
-              onChange={(e) =>
-                onLocalChange((prev) => prev.map((x) => (x.id === r.id ? { ...x, code: e.target.value } : x)))
-              }
-              onBlur={(e) => onPatch(r.id, { code: e.target.value })}
-              className="h-8 w-20"
-            />
-            <Input
-              type="number"
-              value={r.price}
-              title="Price (₹)"
-              onChange={(e) =>
-                onLocalChange((prev) => prev.map((x) => (x.id === r.id ? { ...x, price: Number(e.target.value) } : x)))
-              }
-              onBlur={(e) => onPatch(r.id, { price: Number(e.target.value) })}
-              className="h-8 w-20"
-            />
-            <button
-              type="button"
-              title={r.is_default ? 'Default' : 'Set default'}
-              onClick={() => onPatch(r.id, { is_default: !r.is_default })}
-              className={`flex h-7 shrink-0 items-center gap-1 rounded px-2 text-xs ${
-                r.is_default ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' : 'bg-muted text-muted-foreground'
-              }`}
-            >
-              <Check className="h-3 w-3" />
-            </button>
-            <button
-              type="button"
-              onClick={() => onRemove(r.id)}
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10"
-            >
-              <Trash2 className="h-4 w-4" />
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {pageCount > 1 && (
-        <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
-          <span>
-            {current * CARD_PAGE_SIZE + 1}–{Math.min((current + 1) * CARD_PAGE_SIZE, filtered.length)} of{' '}
-            {filtered.length}
-          </span>
-          <div className="flex items-center gap-1">
-            <button
-              type="button"
-              onClick={() => setPage((p) => Math.max(0, p - 1))}
-              disabled={current === 0}
-              className="flex h-7 w-7 items-center justify-center rounded hover:bg-muted disabled:opacity-40"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <span className="px-1">{current + 1} / {pageCount}</span>
-            <button
-              type="button"
-              onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
-              disabled={current >= pageCount - 1}
-              className="flex h-7 w-7 items-center justify-center rounded hover:bg-muted disabled:opacity-40"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div className="mt-3 flex items-center gap-2 border-t border-border/60 pt-3">
-        <Input value={name} placeholder={`Add ${label.toLowerCase()}…`} onChange={(e) => setName(e.target.value)} className="h-8 flex-1" />
-        <Input value={code} placeholder="Code" onChange={(e) => setCode(e.target.value)} className="h-8 w-20" />
-        <Input type="number" value={price} placeholder="₹" onChange={(e) => setPrice(e.target.value)} className="h-8 w-20" />
-        <Button size="sm" onClick={submit} disabled={!name.trim()}>
-          <Plus className="h-4 w-4" />
-        </Button>
-      </div>
-
-      {rows.some((r) => r.price > 0) && (
-        <p className="mt-2 text-[11px] text-muted-foreground">
-          e.g. {rows.find((r) => r.price > 0)!.name}: {formatCurrency(rows.find((r) => r.price > 0)!.price)}
         </p>
       )}
+
+      {/* Toolbar: search + filter */}
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <div className="relative sm:w-72">
+          <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            value={search}
+            placeholder="Search name or code…"
+            onChange={(e) => setSearch(e.target.value)}
+            className="h-9 pl-8"
+          />
+        </div>
+        <Select
+          value={kindFilter}
+          onChange={(e) => setKindFilter(e.target.value)}
+          className="h-9 w-48"
+        >
+          <option value="">All types</option>
+          {ACCESSORY_KINDS.map((k) => (
+            <option key={k.kind} value={k.kind}>
+              {k.label}
+            </option>
+          ))}
+        </Select>
+      </div>
+
+      {/* Table */}
+      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full table-fixed border-collapse text-sm [&_td]:border [&_td]:border-dashed [&_td]:border-border [&_th]:border [&_th]:border-dashed [&_th]:border-border">
+            <colgroup>
+              <col className="w-40" />
+              <col />
+              <col className="w-32" />
+              <col className="w-28" />
+              <col className="w-28" />
+            </colgroup>
+            <thead>
+              <tr className="text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                <th className="px-4 py-2.5">Type</th>
+                <th className="px-4 py-2.5">Name</th>
+                <th className="px-4 py-2.5">Code</th>
+                <th className="px-4 py-2.5">Price</th>
+                <th className="px-4 py-2.5 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={5} className="px-4 py-8 text-center text-sm text-muted-foreground">
+                    <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                  </td>
+                </tr>
+              ) : rows.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-4 py-8 text-center text-sm text-muted-foreground">
+                    No accessories found.
+                  </td>
+                </tr>
+              ) : (
+                rows.map((r) => {
+                  const isEditing = editingId === r.id
+                  const isBusy = busyId === r.id
+                  return (
+                    <tr key={r.id} className="transition-colors hover:bg-muted/30">
+                      <td className="px-4 py-2.5">
+                        <span className="inline-flex items-center text-xs text-muted-foreground">
+                          {KIND_LABEL[r.kind] ?? r.kind}
+                        </span>
+                      </td>
+                      <td className="px-4 py-2.5 font-medium text-heading">
+                        {isEditing ? (
+                          <Input
+                            autoFocus
+                            value={draft.name}
+                            onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
+                            className="h-8"
+                          />
+                        ) : (
+                          r.name
+                        )}
+                      </td>
+                      <td className="px-4 py-2.5 text-muted-foreground">
+                        {isEditing ? (
+                          <Input
+                            value={draft.code}
+                            placeholder="—"
+                            onChange={(e) => setDraft((d) => ({ ...d, code: e.target.value }))}
+                            className="h-8"
+                          />
+                        ) : (
+                          r.code || '—'
+                        )}
+                      </td>
+                      <td className="px-4 py-2.5">
+                        {isEditing ? (
+                          <Input
+                            type="number"
+                            value={draft.price}
+                            onChange={(e) => setDraft((d) => ({ ...d, price: e.target.value }))}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') saveEdit(r.id)
+                              if (e.key === 'Escape') cancelEdit()
+                            }}
+                            className="h-8 w-24"
+                          />
+                        ) : (
+                          <span className="font-mono tabular-nums text-heading">
+                            {formatCurrency(r.price)}
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2.5 text-right">
+                        {isEditing ? (
+                          <div className="flex items-center justify-end gap-1">
+                            <Button size="sm" onClick={() => saveEdit(r.id)} disabled={isBusy}>
+                              {isBusy ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <Check className="h-3.5 w-3.5" />
+                              )}
+                              Save
+                            </Button>
+                            <button
+                              type="button"
+                              onClick={cancelEdit}
+                              disabled={isBusy}
+                              title="Cancel"
+                              className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-heading disabled:opacity-50"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => startEdit(r)}
+                            className="inline-flex h-8 items-center gap-1.5 rounded-md px-2.5 text-xs font-medium text-primary transition-colors hover:bg-primary-soft/50"
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                            Edit
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Add row */}
+        <div className="flex flex-wrap items-center gap-2 border-t border-border bg-muted/20 px-4 py-3">
+          <Select
+            value={adding.kind}
+            onChange={(e) => setAdding((a) => ({ ...a, kind: e.target.value as AccessoryKind }))}
+            className="h-8 w-40"
+          >
+            {ACCESSORY_KINDS.map((k) => (
+              <option key={k.kind} value={k.kind}>
+                {k.label}
+              </option>
+            ))}
+          </Select>
+          <Input
+            value={adding.name}
+            placeholder="Name"
+            onChange={(e) => setAdding((a) => ({ ...a, name: e.target.value }))}
+            className="h-8 flex-1 min-w-40"
+          />
+          <Input
+            value={adding.code}
+            placeholder="Code"
+            onChange={(e) => setAdding((a) => ({ ...a, code: e.target.value }))}
+            className="h-8 w-28"
+          />
+          <Input
+            type="number"
+            value={adding.price}
+            placeholder="₹"
+            onChange={(e) => setAdding((a) => ({ ...a, price: e.target.value }))}
+            className="h-8 w-24"
+          />
+          <Button size="sm" onClick={addRow} disabled={addBusy || !adding.name.trim()}>
+            {addBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+            Add
+          </Button>
+        </div>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <span>
+          {start}–{end} of {total}
+        </span>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.max(0, p - 1))}
+            disabled={page === 0 || loading}
+            className="flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-muted disabled:opacity-40"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <span className="px-2">
+            {page + 1} / {pageCount}
+          </span>
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
+            disabled={page >= pageCount - 1 || loading}
+            className="flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-muted disabled:opacity-40"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
