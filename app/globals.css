@@ -129,8 +129,9 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-primary: var(--shadow-primary);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* IBM Plex Sans is used everywhere, including monospace contexts. */
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-sans);
 }
 
 * {
