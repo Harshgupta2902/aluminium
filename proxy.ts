@@ -87,9 +87,11 @@ export async function proxy(request: NextRequest) {
 
     // Superadmin anywhere in the user-facing app (dashboard non-admin, or the
     // design editor) → their admin console. The superadmin has no use for the
-    // quotation/design tooling.
+    // quotation/design tooling. Exception: their own profile page is allowed.
+    const isOwnProfile = pathname === '/dashboard/profile'
     if (
       isSuper &&
+      !isOwnProfile &&
       ((pathname.startsWith('/dashboard') && !inAdminArea) ||
         pathname.startsWith('/design'))
     ) {
