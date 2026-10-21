@@ -9,6 +9,8 @@ import {
 
 export const metadata: Metadata = {
   title: 'Settings & catalog · SoftWindow Docs',
+  description:
+    'Configure glass types, colours, aluminium cost heads, profile series and hardware that power accurate quotations.',
 }
 
 export default function SettingsDocsPage() {

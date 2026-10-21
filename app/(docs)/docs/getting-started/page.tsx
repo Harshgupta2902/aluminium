@@ -10,6 +10,8 @@ import {
 
 export const metadata: Metadata = {
   title: 'Quick start · SoftWindow Docs',
+  description:
+    'Get started with SoftWindow: set up your catalog, create your first window design, and generate a quotation in minutes.',
 }
 
 export default function GettingStartedPage() {

@@ -3,6 +3,7 @@ import { LegalPage, LegalSection } from '@/components/legal/legal-page'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy · SoftWindow',
+  description: 'How SoftWindow collects, uses, and protects your data.',
 }
 
 export default function PrivacyPage() {

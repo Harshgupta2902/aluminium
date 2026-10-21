@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Loader2, Plus, Check, X, Pencil, ChevronLeft, ChevronRight, Search } from 'lucide-react'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, sanitizeSearch } from '@/lib/utils'
 
 const PAGE_SIZE = 20
 
@@ -71,7 +71,8 @@ export function GlassManager() {
       .select('id, name, rate_per_sqft', { count: 'exact' })
       .order('sort_order', { ascending: true })
 
-    if (debouncedSearch.trim()) q = q.ilike('name', `%${debouncedSearch.trim()}%`)
+    const s = sanitizeSearch(debouncedSearch)
+    if (s) q = q.ilike('name', `%${s}%`)
     const from = page * PAGE_SIZE
     q = q.range(from, from + PAGE_SIZE - 1)
 

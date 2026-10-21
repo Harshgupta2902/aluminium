@@ -9,6 +9,8 @@ import {
 
 export const metadata: Metadata = {
   title: 'PDF proposals · SoftWindow Docs',
+  description:
+    'Generate branded, professional PDF proposals from your quotations and share them with clients in one click.',
 }
 
 export default function PdfProposalsPage() {

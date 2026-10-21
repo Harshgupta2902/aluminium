@@ -3,6 +3,7 @@ import { LegalPage, LegalSection } from '@/components/legal/legal-page'
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions · SoftWindow',
+  description: 'The terms and conditions governing your use of the SoftWindow platform.',
 }
 
 export default function TermsPage() {

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
+import { getSiteUrl, siteName, siteDescription } from '@/lib/site'
 import {
   PanelsTopLeft,
   Calculator,
@@ -20,8 +21,35 @@ export default async function Home() {
   } = await supabase.auth.getUser()
   if (user) redirect('/dashboard')
 
+  const siteUrl = await getSiteUrl()
+  // Structured data for rich results (Organization + the product itself).
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `${siteUrl}/#organization`,
+        name: siteName,
+        url: siteUrl,
+      },
+      {
+        '@type': 'SoftwareApplication',
+        name: siteName,
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web',
+        description: siteDescription,
+        url: siteUrl,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' },
+      },
+    ],
+  }
+
   return (
     <div className="min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <SiteNav />
       <main>
         <Hero />

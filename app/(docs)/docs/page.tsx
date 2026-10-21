@@ -13,6 +13,8 @@ import {
 
 export const metadata: Metadata = {
   title: 'Documentation · SoftWindow',
+  description:
+    'Learn how to design aluminium and uPVC windows, build accurate quotations, and send branded PDF proposals with SoftWindow.',
 }
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {

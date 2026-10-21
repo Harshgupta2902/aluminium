@@ -15,6 +15,7 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import { WINDOW_TYPE_MAP } from '@/lib/design-editor/frame-model'
+import { sanitizeSearch } from '@/lib/utils'
 
 const PAGE_SIZE = 20
 
@@ -66,7 +67,8 @@ function ColoursTable() {
       .from('design_colors')
       .select('id, name, hex', { count: 'exact' })
       .order('sort_order', { ascending: true })
-    if (debouncedSearch.trim()) q = q.ilike('name', `%${debouncedSearch.trim()}%`)
+    const s = sanitizeSearch(debouncedSearch)
+    if (s) q = q.ilike('name', `%${s}%`)
     const from = page * PAGE_SIZE
     q = q.range(from, from + PAGE_SIZE - 1)
 

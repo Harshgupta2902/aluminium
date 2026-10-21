@@ -11,6 +11,8 @@ import {
 
 export const metadata: Metadata = {
   title: 'Designing windows · SoftWindow Docs',
+  description:
+    'Use the visual window designer to lay out frames, sections, panels and hardware, with live weight-based cost estimates.',
 }
 
 export default function DesigningWindowsPage() {

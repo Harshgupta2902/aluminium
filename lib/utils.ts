@@ -31,3 +31,19 @@ export function formatDate(date: Date | string): string {
     day: 'numeric',
   }).format(new Date(date))
 }
+
+/**
+ * Sanitize a free-text search term before using it in a Supabase/PostgREST
+ * `ilike` / `.or()` filter. Strips characters that are significant to the
+ * PostgREST filter grammar or the LIKE pattern language — commas and
+ * parentheses (which can break out of an `.or(...)` group), the `%`/`_`
+ * wildcards, and `*`/backslash/quotes — so user input can't alter the query
+ * shape. Returns a trimmed, length-capped plain string.
+ */
+export function sanitizeSearch(input: string): string {
+  return input
+    .replace(/[%_,()*\\"'`]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 100)
+}

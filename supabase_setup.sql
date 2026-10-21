@@ -330,6 +330,29 @@ RETURNS BOOLEAN AS $$
   );
 $$ LANGUAGE sql SECURITY DEFINER STABLE;
 
+-- Guard used by the profiles_update policy: confirms the admin-controlled
+-- columns in an UPDATE match the caller's CURRENT stored values, so a
+-- non-superadmin can't change their own role / is_active / access flags.
+CREATE OR REPLACE FUNCTION public.profile_admin_fields_unchanged(
+  p_id UUID,
+  p_role TEXT,
+  p_is_active BOOLEAN,
+  p_can_designs BOOLEAN,
+  p_can_billing BOOLEAN,
+  p_can_inventory BOOLEAN
+)
+RETURNS BOOLEAN AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = p_id
+      AND role = p_role
+      AND is_active = p_is_active
+      AND can_access_designs = p_can_designs
+      AND can_access_billing = p_can_billing
+      AND can_access_inventory = p_can_inventory
+  );
+$$ LANGUAGE sql SECURITY DEFINER STABLE;
+
 -- Quotations Table
 CREATE TABLE public.quotations (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -426,8 +449,22 @@ CREATE POLICY "profiles_select" ON public.profiles
   FOR SELECT USING (auth.uid() = id OR public.is_superadmin());
 CREATE POLICY "profiles_insert" ON public.profiles
   FOR INSERT WITH CHECK (auth.uid() = id OR public.is_superadmin());
+-- Non-superadmins may edit their own row only if the admin-controlled columns
+-- (role / is_active / access flags) are left unchanged — prevents self
+-- privilege-escalation via the REST API. Superadmins can change anything.
 CREATE POLICY "profiles_update" ON public.profiles
-  FOR UPDATE USING (auth.uid() = id OR public.is_superadmin());
+  FOR UPDATE
+  USING (auth.uid() = id OR public.is_superadmin())
+  WITH CHECK (
+    public.is_superadmin()
+    OR (
+      auth.uid() = id
+      AND public.profile_admin_fields_unchanged(
+        id, role, is_active,
+        can_access_designs, can_access_billing, can_access_inventory
+      )
+    )
+  );
 CREATE POLICY "profiles_delete" ON public.profiles
   FOR DELETE USING (public.is_superadmin());
 

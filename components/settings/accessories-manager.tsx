@@ -15,7 +15,7 @@ import {
   ChevronRight,
   Search,
 } from 'lucide-react'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, sanitizeSearch } from '@/lib/utils'
 
 const PAGE_SIZE = 20
 
@@ -122,8 +122,8 @@ export function AccessoriesManager() {
       .order('sort_order', { ascending: true })
 
     if (kindFilter) q = q.eq('kind', kindFilter)
-    if (debouncedSearch.trim()) {
-      const s = debouncedSearch.trim()
+    const s = sanitizeSearch(debouncedSearch)
+    if (s) {
       q = q.or(`name.ilike.%${s}%,code.ilike.%${s}%`)
     }
     const from = page * PAGE_SIZE

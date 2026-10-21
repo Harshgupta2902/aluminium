@@ -10,6 +10,8 @@ import {
 
 export const metadata: Metadata = {
   title: 'Building quotations · SoftWindow Docs',
+  description:
+    'Combine window designs into a quotation, apply GST, installation, labour and discounts, and track totals in real time.',
 }
 
 export default function QuotationsPage() {
