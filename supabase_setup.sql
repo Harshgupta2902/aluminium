@@ -29,6 +29,9 @@ CREATE TABLE public.profiles (
   company_name TEXT,
   phone TEXT,
   role TEXT CHECK (role IN ('superadmin', 'admin', 'user', 'sales', 'accounts')) DEFAULT 'user',
+  -- Onboarding gate: pending_review (self-signup awaiting approval) | active | rejected.
+  account_status TEXT NOT NULL DEFAULT 'active'
+    CHECK (account_status IN ('pending_review', 'active', 'rejected')),
   -- Per-user account controls (managed by the superadmin).
   is_active BOOLEAN NOT NULL DEFAULT TRUE,
   can_access_designs BOOLEAN NOT NULL DEFAULT TRUE,
@@ -339,7 +342,8 @@ CREATE OR REPLACE FUNCTION public.profile_admin_fields_unchanged(
   p_is_active BOOLEAN,
   p_can_designs BOOLEAN,
   p_can_billing BOOLEAN,
-  p_can_inventory BOOLEAN
+  p_can_inventory BOOLEAN,
+  p_account_status TEXT
 )
 RETURNS BOOLEAN AS $$
   SELECT EXISTS (
@@ -350,6 +354,18 @@ RETURNS BOOLEAN AS $$
       AND can_access_designs = p_can_designs
       AND can_access_billing = p_can_billing
       AND can_access_inventory = p_can_inventory
+      AND account_status = p_account_status
+  );
+$$ LANGUAGE sql SECURITY DEFINER STABLE;
+
+-- True when the caller's account is fully active (or superadmin). Gates all
+-- user writes so a pending_review/rejected account can't create/modify data.
+CREATE OR REPLACE FUNCTION public.is_account_active()
+RETURNS BOOLEAN AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid()
+      AND (role = 'superadmin' OR account_status = 'active')
   );
 $$ LANGUAGE sql SECURITY DEFINER STABLE;
 
@@ -461,7 +477,8 @@ CREATE POLICY "profiles_update" ON public.profiles
       auth.uid() = id
       AND public.profile_admin_fields_unchanged(
         id, role, is_active,
-        can_access_designs, can_access_billing, can_access_inventory
+        can_access_designs, can_access_billing, can_access_inventory,
+        account_status
       )
     )
   );
@@ -651,13 +668,15 @@ CREATE TRIGGER generate_invoice_number_trigger
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (id, email, full_name, company_name, role)
+  INSERT INTO public.profiles (id, email, full_name, company_name, phone, role, account_status)
   VALUES (
     NEW.id,
     NEW.email,
     COALESCE(NULLIF(NEW.raw_user_meta_data->>'full_name', ''), split_part(NEW.email, '@', 1)),
     NEW.raw_user_meta_data->>'company_name',
-    COALESCE(NULLIF(NEW.raw_user_meta_data->>'role', ''), 'user')
+    NEW.raw_user_meta_data->>'phone',
+    COALESCE(NULLIF(NEW.raw_user_meta_data->>'role', ''), 'user'),
+    COALESCE(NULLIF(NEW.raw_user_meta_data->>'account_status', ''), 'active')
   )
   ON CONFLICT (id) DO NOTHING;
   RETURN NEW;
@@ -754,3 +773,209 @@ INSERT INTO public.design_type_rates (window_type, base_rate, sort_order) VALUES
 -- Single pricing-config row.
 INSERT INTO public.design_pricing_config (id, gst_percentage, install_percentage)
 VALUES (1, 18, 10);
+
+-- =============================================================================
+-- SELF-SERVICE ONBOARDING — plans, leads, and account-active write gating
+-- =============================================================================
+-- (Merged from the signup feature migration.) Visitors sign up and pick a plan,
+-- which creates a locked account (account_status='pending_review') + a lead.
+-- The superadmin processes the lead, generates a billing period, and marks it
+-- paid — flipping the account to 'active'. Until active, the DB blocks all
+-- writes for that user, even via direct REST calls.
+-- =============================================================================
+
+-- 1) PLANS — catalog defined by the superadmin.
+CREATE TABLE IF NOT EXISTS public.plans (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT,
+  price NUMERIC NOT NULL DEFAULT 0,
+  billing_interval TEXT NOT NULL DEFAULT 'monthly'
+    CHECK (billing_interval IN ('monthly', 'quarterly', 'yearly')),
+  quotation_limit INTEGER,                 -- NULL = unlimited
+  can_access_designs BOOLEAN NOT NULL DEFAULT TRUE,
+  can_access_billing BOOLEAN NOT NULL DEFAULT TRUE,
+  can_access_inventory BOOLEAN NOT NULL DEFAULT TRUE,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  is_public BOOLEAN NOT NULL DEFAULT TRUE, -- show on the public signup page
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_by UUID REFERENCES public.profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+CREATE INDEX IF NOT EXISTS plans_active_idx ON public.plans (is_active, is_public, sort_order);
+ALTER TABLE public.plans ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "plans_select_public" ON public.plans
+  FOR SELECT USING ((is_active = TRUE AND is_public = TRUE) OR public.is_superadmin());
+CREATE POLICY "plans_write" ON public.plans
+  FOR ALL USING (public.is_superadmin()) WITH CHECK (public.is_superadmin());
+
+-- 2) LEADS — one per self-signup (the superadmin's sales pipeline).
+CREATE TABLE IF NOT EXISTS public.leads (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  full_name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT,
+  company_name TEXT,
+  plan_id UUID REFERENCES public.plans(id) ON DELETE SET NULL,
+  plan_name TEXT,
+  status TEXT NOT NULL DEFAULT 'new'
+    CHECK (status IN ('new', 'contacted', 'billing_sent', 'won', 'rejected')),
+  notes TEXT,
+  billing_period_id UUID REFERENCES public.billing_periods(id) ON DELETE SET NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+CREATE INDEX IF NOT EXISTS leads_status_idx ON public.leads (status, created_at DESC);
+CREATE INDEX IF NOT EXISTS leads_user_id_idx ON public.leads (user_id);
+ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "leads_select" ON public.leads
+  FOR SELECT USING (user_id = auth.uid() OR public.is_superadmin());
+CREATE POLICY "leads_insert" ON public.leads
+  FOR INSERT WITH CHECK (user_id = auth.uid() OR public.is_superadmin());
+CREATE POLICY "leads_update" ON public.leads
+  FOR UPDATE USING (public.is_superadmin()) WITH CHECK (public.is_superadmin());
+CREATE POLICY "leads_delete" ON public.leads
+  FOR DELETE USING (public.is_superadmin());
+
+-- 3) Starter plans (idempotent on name).
+INSERT INTO public.plans (name, description, price, billing_interval, quotation_limit, sort_order)
+SELECT * FROM (VALUES
+  ('Starter',  'For small shops getting started.',        999,  'monthly', 25,   1),
+  ('Business', 'For growing window & door businesses.',   2499, 'monthly', 150,  2),
+  ('Unlimited','Unlimited quotations for larger teams.',  4999, 'monthly', NULL, 3)
+) AS v(name, description, price, billing_interval, quotation_limit, sort_order)
+WHERE NOT EXISTS (SELECT 1 FROM public.plans p WHERE p.name = v.name);
+
+-- 4) Account-active write gating — re-apply write policies on every
+--    user-writable table so non-active accounts can't create/modify data.
+DO $$
+DECLARE
+  t TEXT;
+BEGIN
+  FOREACH t IN ARRAY ARRAY[
+    'clients','window_designs','quotations','invoices','quotation_cost_heads',
+    'design_accessories','aluminium_series','series_profiles'
+  ]
+  LOOP
+    EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', t || '_insert', t);
+    EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', t || '_update', t);
+    EXECUTE format('DROP POLICY IF EXISTS %I ON public.%I', t || '_delete', t);
+    EXECUTE format(
+      'CREATE POLICY %I ON public.%I FOR INSERT WITH CHECK ((created_by = auth.uid() AND public.is_account_active()) OR public.is_superadmin())',
+      t || '_insert', t
+    );
+    EXECUTE format(
+      'CREATE POLICY %I ON public.%I FOR UPDATE USING ((created_by = auth.uid() AND public.is_account_active()) OR public.is_superadmin())',
+      t || '_update', t
+    );
+    EXECUTE format(
+      'CREATE POLICY %I ON public.%I FOR DELETE USING ((created_by = auth.uid() AND public.is_account_active()) OR public.is_superadmin())',
+      t || '_delete', t
+    );
+  END LOOP;
+END $$;
+
+-- aluminium_cost_settings is keyed by user_id (no DELETE policy).
+DROP POLICY IF EXISTS "aluminium_cost_settings_insert" ON public.aluminium_cost_settings;
+DROP POLICY IF EXISTS "aluminium_cost_settings_update" ON public.aluminium_cost_settings;
+CREATE POLICY "aluminium_cost_settings_insert" ON public.aluminium_cost_settings
+  FOR INSERT WITH CHECK ((user_id = auth.uid() AND public.is_account_active()) OR public.is_superadmin());
+CREATE POLICY "aluminium_cost_settings_update" ON public.aluminium_cost_settings
+  FOR UPDATE USING ((user_id = auth.uid() AND public.is_account_active()) OR public.is_superadmin());
+
+-- =============================================================================
+-- AUDIT LOGS — who did what, when
+-- =============================================================================
+-- Two sources feed this table:
+--   (A) App-level: server actions call logAudit() for rich events
+--       (login, logout, email.sent, pdf.generated, signup) with full context.
+--   (C) DB-level: a trigger auto-logs INSERT/UPDATE/DELETE on key tables, so
+--       even direct REST/curl writes are captured.
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS public.audit_logs (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  user_email TEXT,                 -- denormalized so logs survive user deletion
+  action TEXT NOT NULL,            -- e.g. 'quotations.insert', 'login', 'email.sent'
+  entity_type TEXT,                -- 'quotation' | 'design' | 'client' | ...
+  entity_id TEXT,                  -- affected row id (text: ids are uuids)
+  source TEXT NOT NULL DEFAULT 'app',  -- 'app' | 'db'
+  metadata JSONB,                  -- extra context (amounts, names, changed cols)
+  ip_address TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::TEXT, NOW()) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS audit_logs_user_idx ON public.audit_logs (user_id);
+CREATE INDEX IF NOT EXISTS audit_logs_created_idx ON public.audit_logs (created_at DESC);
+CREATE INDEX IF NOT EXISTS audit_logs_action_idx ON public.audit_logs (action);
+CREATE INDEX IF NOT EXISTS audit_logs_entity_idx ON public.audit_logs (entity_type, entity_id);
+
+ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
+
+-- Users may read their OWN logs; superadmin reads everything.
+CREATE POLICY "audit_logs_select" ON public.audit_logs
+  FOR SELECT USING (user_id = auth.uid() OR public.is_superadmin());
+
+-- App-level inserts: a user may insert a log row attributed to themselves.
+-- (The DB-trigger path uses SECURITY DEFINER and bypasses RLS.)
+CREATE POLICY "audit_logs_insert" ON public.audit_logs
+  FOR INSERT WITH CHECK (user_id = auth.uid() OR public.is_superadmin());
+
+-- No UPDATE/DELETE policies → the log is append-only for everyone.
+
+-- (C) DB trigger — auto-log INSERT/UPDATE/DELETE on key tables.
+CREATE OR REPLACE FUNCTION public.audit_row_change()
+RETURNS TRIGGER AS $$
+DECLARE
+  v_action TEXT;
+  v_entity_id TEXT;
+  v_email TEXT;
+BEGIN
+  v_action := TG_TABLE_NAME || '.' || lower(TG_OP);  -- e.g. 'quotations.insert'
+  IF TG_OP = 'DELETE' THEN
+    v_entity_id := OLD.id::TEXT;
+  ELSE
+    v_entity_id := NEW.id::TEXT;
+  END IF;
+
+  SELECT email INTO v_email FROM public.profiles WHERE id = auth.uid();
+
+  INSERT INTO public.audit_logs (user_id, user_email, action, entity_type, entity_id, source)
+  VALUES (auth.uid(), v_email, v_action, TG_TABLE_NAME, v_entity_id, 'db');
+
+  IF TG_OP = 'DELETE' THEN
+    RETURN OLD;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS audit_quotations ON public.quotations;
+CREATE TRIGGER audit_quotations
+  AFTER INSERT OR UPDATE OR DELETE ON public.quotations
+  FOR EACH ROW EXECUTE FUNCTION public.audit_row_change();
+
+DROP TRIGGER IF EXISTS audit_window_designs ON public.window_designs;
+CREATE TRIGGER audit_window_designs
+  AFTER INSERT OR UPDATE OR DELETE ON public.window_designs
+  FOR EACH ROW EXECUTE FUNCTION public.audit_row_change();
+
+DROP TRIGGER IF EXISTS audit_clients ON public.clients;
+CREATE TRIGGER audit_clients
+  AFTER INSERT OR UPDATE OR DELETE ON public.clients
+  FOR EACH ROW EXECUTE FUNCTION public.audit_row_change();
+
+DROP TRIGGER IF EXISTS audit_invoices ON public.invoices;
+CREATE TRIGGER audit_invoices
+  AFTER INSERT OR UPDATE OR DELETE ON public.invoices
+  FOR EACH ROW EXECUTE FUNCTION public.audit_row_change();
+
+DROP TRIGGER IF EXISTS audit_profiles ON public.profiles;
+CREATE TRIGGER audit_profiles
+  AFTER UPDATE OR DELETE ON public.profiles
+  FOR EACH ROW EXECUTE FUNCTION public.audit_row_change();
