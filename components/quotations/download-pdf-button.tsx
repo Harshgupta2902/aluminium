@@ -6,6 +6,7 @@ import { Download } from 'lucide-react'
 import { downloadQuotationPDF, type QuotationPDFDesign } from '@/lib/pdf-generator'
 import { createClient } from '@/lib/supabase/client'
 import { computeQuotationPrice, type QuotationOverheads } from '@/lib/quotation-pricing'
+import { logPdfGenerated } from '@/app/(auth)/audit-actions'
 
 interface QuotationData {
   id: string
@@ -94,6 +95,7 @@ export function DownloadPDFButton({
         company_phone: '879475061, 8826619980',
         company_email: 'info@softwindow.com',
       })
+      void logPdfGenerated(quotation.id, quotation.quotation_number)
     } catch (error) {
       console.error('PDF generation failed:', error)
       alert('Failed to generate PDF')

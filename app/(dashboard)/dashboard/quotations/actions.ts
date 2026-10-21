@@ -31,6 +31,7 @@ import { getQuotationPDFBase64, type QuotationPDFDesign } from '@/lib/pdf-genera
 import { sendQuotationEmail } from '@/lib/mailer'
 import { computeQuotationPrice, type QuotationOverheads } from '@/lib/quotation-pricing'
 import { formatCurrency } from '@/lib/utils'
+import { logAudit } from '@/lib/audit'
 
 /**
  * Email a quotation proposal (PDF attached) to its client, via nodemailer SMTP.
@@ -117,6 +118,17 @@ export async function sendQuotationEmailAction(
       quotationNumber: quotation.quotation_number,
       grandTotal: formatCurrency(price.grandTotal || quotation.total_amount),
       pdfBase64,
+    })
+
+    await logAudit(supabase, {
+      action: 'email.sent',
+      entityType: 'quotation',
+      entityId: quotationId,
+      metadata: {
+        to,
+        quotation_number: quotation.quotation_number,
+        grand_total: price.grandTotal || quotation.total_amount,
+      },
     })
 
     return { ok: true, message: `Quotation emailed to ${to}` }

@@ -2,6 +2,7 @@
 
 import { z } from 'zod'
 import { createIsolatedClient } from '@/lib/supabase/isolated'
+import { logAudit } from '@/lib/audit'
 
 /* ------------------------------------------------------------------ *
  * Public self-service signup
@@ -103,6 +104,15 @@ export async function signUpWithPlan(input: SignupInput) {
     if (leadError) {
       console.error('[signUpWithPlan] lead insert failed:', leadError.message)
     }
+    // Audit the signup while we still hold the new user's session.
+    await logAudit(supabase, {
+      action: 'signup',
+      entityType: 'user',
+      entityId: newUserId,
+      userId: newUserId,
+      userEmail: email,
+      metadata: { plan: plan.name },
+    })
     // Drop the isolated session — never persisted to cookies anyway.
     await supabase.auth.signOut()
   } else {

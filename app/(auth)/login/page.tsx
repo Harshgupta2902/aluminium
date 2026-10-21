@@ -8,6 +8,7 @@ import { AuthShell } from '@/components/auth/auth-shell'
 import { AuthField } from '@/components/auth/auth-field'
 import { Mail, Lock, Loader2, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
+import { logAuthEvent } from '../audit-actions'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -35,6 +36,8 @@ export default function LoginPage() {
       }
 
       if (data.user) {
+        // Record the login (best-effort; never blocks navigation).
+        void logAuthEvent('login')
         router.push('/dashboard')
         router.refresh()
       }

@@ -19,6 +19,7 @@ import {
   ShieldCheck,
   ShieldHalf,
   CreditCard,
+  ScrollText,
   UserPlus,
   Package,
   ChevronDown,
@@ -26,6 +27,7 @@ import {
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { logAuthEvent } from '@/app/(auth)/audit-actions'
 
 interface NavChild {
   name: string
@@ -69,6 +71,7 @@ const ADMIN_NAV: NavItem[] = [
   { name: 'Plans', href: '/dashboard/admin/plans', icon: Package },
   { name: 'User permissions', href: '/dashboard/admin/permissions', icon: ShieldHalf },
   { name: 'Billings', href: '/dashboard/admin/billing', icon: CreditCard },
+  { name: 'Audit Logs', href: '/dashboard/admin/audit', icon: ScrollText },
 ]
 
 export function Sidebar({
@@ -89,6 +92,7 @@ export function Sidebar({
   const supabase = createClient()
 
   const handleLogout = async () => {
+    await logAuthEvent('logout').catch(() => {})
     await supabase.auth.signOut()
     router.push('/login')
     router.refresh()

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Bell, User, LogOut, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
+import { logAuthEvent } from '@/app/(auth)/audit-actions'
 
 interface HeaderProps {
   user?: {
@@ -30,6 +31,8 @@ export function Header({ user }: HeaderProps) {
   }, [open])
 
   const logout = async () => {
+    // Log before signOut so the event is attributed to the session.
+    await logAuthEvent('logout').catch(() => {})
     await supabase.auth.signOut()
     router.push('/login')
     router.refresh()
