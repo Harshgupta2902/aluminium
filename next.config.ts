@@ -12,6 +12,14 @@ const supabaseOrigin = (() => {
 })();
 const supabaseWs = supabaseOrigin.replace(/^http/, "ws");
 
+// React's development build uses eval()/new Function() for debugging features
+// (component stacks, Fast Refresh). Production React never calls eval(), so we
+// only allow 'unsafe-eval' in dev and keep the hardened policy for prod.
+const isDev = process.env.NODE_ENV !== "production";
+const scriptSrc = isDev
+  ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+  : "script-src 'self' 'unsafe-inline'";
+
 /**
  * Content-Security-Policy.
  * - 'unsafe-inline' is kept for styles (Tailwind + inline styles in the canvas
@@ -27,8 +35,9 @@ const csp = [
   "frame-ancestors 'none'",
   "form-action 'self'",
   // 'unsafe-inline' kept for Next.js App Router inline bootstrap/flight scripts
-  // and the JSON-LD block. 'unsafe-eval' removed — no client dep needs it.
-  "script-src 'self' 'unsafe-inline'",
+  // and the JSON-LD block. 'unsafe-eval' is added in dev only (see scriptSrc)
+  // because React's dev build needs it; prod keeps the hardened policy.
+  scriptSrc,
   // 'unsafe-inline' kept for Tailwind + the canvas designer's inline style=.
   "style-src 'self' 'unsafe-inline'",
   // Narrowed from a blanket https: to just what's used (self/data/blob + Supabase storage).

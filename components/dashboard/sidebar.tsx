@@ -19,6 +19,8 @@ import {
   ShieldCheck,
   ShieldHalf,
   CreditCard,
+  UserPlus,
+  Package,
   ChevronDown,
   LogOut,
 } from 'lucide-react'
@@ -62,18 +64,22 @@ const USER_NAV: NavItem[] = [
 // Superadmin navigation — a dedicated admin console, nothing else.
 const ADMIN_NAV: NavItem[] = [
   { name: 'Dashboard', href: '/dashboard/admin', icon: LayoutDashboard },
+  { name: 'Leads', href: '/dashboard/admin/leads', icon: UserPlus },
   { name: 'Users', href: '/dashboard/admin/users', icon: Users },
+  { name: 'Plans', href: '/dashboard/admin/plans', icon: Package },
   { name: 'User permissions', href: '/dashboard/admin/permissions', icon: ShieldHalf },
   { name: 'Billings', href: '/dashboard/admin/billing', icon: CreditCard },
 ]
 
 export function Sidebar({
   isSuperadmin = false,
+  pendingReview = false,
   canAccessDesigns = true,
   canAccessBilling = true,
   canAccessInventory = true,
 }: {
   isSuperadmin?: boolean
+  pendingReview?: boolean
   canAccessDesigns?: boolean
   canAccessBilling?: boolean
   canAccessInventory?: boolean
@@ -88,20 +94,22 @@ export function Sidebar({
     router.refresh()
   }
 
-  const visible = isSuperadmin
-    ? ADMIN_NAV
-    : USER_NAV.filter((item) => {
-        switch (item.gate) {
-          case 'designs':
-            return canAccessDesigns
-          case 'billing':
-            return canAccessBilling
-          case 'inventory':
-            return canAccessInventory
-          default:
-            return true
-        }
-      })
+  const visible = pendingReview
+    ? [{ name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard } as NavItem]
+    : isSuperadmin
+      ? ADMIN_NAV
+      : USER_NAV.filter((item) => {
+          switch (item.gate) {
+            case 'designs':
+              return canAccessDesigns
+            case 'billing':
+              return canAccessBilling
+            case 'inventory':
+              return canAccessInventory
+            default:
+              return true
+          }
+        })
 
   return (
     <div className="flex h-full w-64 flex-col border-r border-border bg-card">

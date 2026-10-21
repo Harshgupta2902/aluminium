@@ -288,3 +288,284 @@ export async function setBillingPaid(periodId: string, userId: string, isPaid: b
   revalidatePath(`/dashboard/admin/users/${userId}`)
   return { success: true as const }
 }
+
+
+/* ------------------------------------------------------------------ *
+ * Plans (catalog CRUD)
+ * ------------------------------------------------------------------ */
+
+export interface PlanRow {
+  id: string
+  name: string
+  description: string | null
+  price: number
+  billing_interval: 'monthly' | 'quarterly' | 'yearly'
+  quotation_limit: number | null
+  can_access_designs: boolean
+  can_access_billing: boolean
+  can_access_inventory: boolean
+  is_active: boolean
+  is_public: boolean
+  sort_order: number
+  created_at: string
+}
+
+const planSchema = z.object({
+  id: z.string().uuid().optional(),
+  name: z.string().trim().min(2, 'Plan name is required.'),
+  description: z.string().trim().optional().nullable(),
+  price: z.number().min(0, 'Price cannot be negative.'),
+  billingInterval: z.enum(['monthly', 'quarterly', 'yearly']).default('monthly'),
+  quotationLimit: z.number().int().min(0).nullable().default(null),
+  canAccessDesigns: z.boolean().default(true),
+  canAccessBilling: z.boolean().default(true),
+  canAccessInventory: z.boolean().default(true),
+  isActive: z.boolean().default(true),
+  isPublic: z.boolean().default(true),
+  sortOrder: z.number().int().min(0).default(0),
+})
+
+export type PlanInput = z.infer<typeof planSchema>
+
+export async function savePlan(input: PlanInput) {
+  const auth = await requireSuperadmin()
+  if (!auth.ok) return { success: false as const, error: auth.error }
+
+  const parsed = planSchema.safeParse(input)
+  if (!parsed.success) return { success: false as const, error: firstError(parsed.error) }
+  const d = parsed.data
+
+  const supabase = await createClient()
+  const row = {
+    name: d.name,
+    description: d.description ?? null,
+    price: d.price,
+    billing_interval: d.billingInterval,
+    quotation_limit: d.quotationLimit,
+    can_access_designs: d.canAccessDesigns,
+    can_access_billing: d.canAccessBilling,
+    can_access_inventory: d.canAccessInventory,
+    is_active: d.isActive,
+    is_public: d.isPublic,
+    sort_order: d.sortOrder,
+    updated_at: new Date().toISOString(),
+  }
+
+  const { error } = d.id
+    ? await supabase.from('plans').update(row).eq('id', d.id)
+    : await supabase.from('plans').insert({ ...row, created_by: auth.userId })
+
+  if (error) return { success: false as const, error: error.message }
+
+  revalidatePath('/dashboard/admin/plans')
+  return { success: true as const }
+}
+
+export async function setPlanActive(id: string, isActive: boolean) {
+  const auth = await requireSuperadmin()
+  if (!auth.ok) return { success: false as const, error: auth.error }
+
+  const supabase = await createClient()
+  const { error } = await supabase
+    .from('plans')
+    .update({ is_active: isActive, updated_at: new Date().toISOString() })
+    .eq('id', id)
+  if (error) return { success: false as const, error: error.message }
+
+  revalidatePath('/dashboard/admin/plans')
+  return { success: true as const }
+}
+
+export async function deletePlan(id: string) {
+  const auth = await requireSuperadmin()
+  if (!auth.ok) return { success: false as const, error: auth.error }
+
+  const supabase = await createClient()
+  const { error } = await supabase.from('plans').delete().eq('id', id)
+  if (error) return { success: false as const, error: error.message }
+
+  revalidatePath('/dashboard/admin/plans')
+  return { success: true as const }
+}
+
+/* ------------------------------------------------------------------ *
+ * Leads (manual onboarding pipeline)
+ * ------------------------------------------------------------------ */
+
+const leadStatusSchema = z.object({
+  id: z.string().uuid(),
+  status: z.enum(['new', 'contacted', 'billing_sent', 'won', 'rejected']),
+  notes: z.string().trim().optional().nullable(),
+})
+
+export async function updateLead(input: z.infer<typeof leadStatusSchema>) {
+  const auth = await requireSuperadmin()
+  if (!auth.ok) return { success: false as const, error: auth.error }
+
+  const parsed = leadStatusSchema.safeParse(input)
+  if (!parsed.success) return { success: false as const, error: firstError(parsed.error) }
+  const d = parsed.data
+
+  const supabase = await createClient()
+  const { error } = await supabase
+    .from('leads')
+    .update({ status: d.status, notes: d.notes ?? null, updated_at: new Date().toISOString() })
+    .eq('id', d.id)
+  if (error) return { success: false as const, error: error.message }
+
+  revalidatePath('/dashboard/admin/leads')
+  revalidatePath(`/dashboard/admin/leads/${d.id}`)
+  return { success: true as const }
+}
+
+/**
+ * Generate a billing period for a lead from its chosen plan, mark the lead
+ * 'billing_sent', and (optionally) email the user. Does NOT activate the
+ * account yet — activation happens when the superadmin marks the billing PAID
+ * (see markLeadPaid). The period dates run from today for the plan's interval.
+ */
+const generateBillingSchema = z.object({
+  leadId: z.string().uuid(),
+  amount: z.number().min(0),
+  quotationLimit: z.number().int().min(0).nullable(),
+  startsAt: z.string().min(1, 'Start date is required.'),
+  endsAt: z.string().min(1, 'End date is required.'),
+  planName: z.string().trim().min(1),
+})
+
+export async function generateLeadBilling(input: z.infer<typeof generateBillingSchema>) {
+  const auth = await requireSuperadmin()
+  if (!auth.ok) return { success: false as const, error: auth.error }
+
+  const parsed = generateBillingSchema.safeParse(input)
+  if (!parsed.success) return { success: false as const, error: firstError(parsed.error) }
+  const d = parsed.data
+
+  const supabase = await createClient()
+
+  // Fetch the lead + its user.
+  const { data: lead, error: leadErr } = await supabase
+    .from('leads')
+    .select('id, user_id, email, full_name, status')
+    .eq('id', d.leadId)
+    .single()
+  if (leadErr || !lead) return { success: false as const, error: 'Lead not found.' }
+  if (!lead.user_id) {
+    return { success: false as const, error: 'This lead has no linked account.' }
+  }
+
+  // Create the billing period (unpaid).
+  const { data: period, error: periodErr } = await supabase
+    .from('billing_periods')
+    .insert({
+      user_id: lead.user_id,
+      plan_name: d.planName,
+      amount: d.amount,
+      quotation_limit: d.quotationLimit,
+      starts_at: d.startsAt,
+      ends_at: d.endsAt,
+      is_paid: false,
+      created_by: auth.userId,
+    })
+    .select('id')
+    .single()
+  if (periodErr || !period) {
+    return { success: false as const, error: periodErr?.message ?? 'Could not create billing.' }
+  }
+
+  // Link the period to the lead + advance its status.
+  await supabase
+    .from('leads')
+    .update({
+      billing_period_id: period.id,
+      status: 'billing_sent',
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', lead.id)
+
+  revalidatePath('/dashboard/admin/leads')
+  revalidatePath(`/dashboard/admin/leads/${lead.id}`)
+  revalidatePath('/dashboard/admin')
+  return { success: true as const, billingPeriodId: period.id }
+}
+
+/**
+ * Mark a lead's billing as PAID. This is the activation switch: the billing
+ * period flips to paid, the lead becomes 'won', and the user's
+ * account_status -> 'active' so their dashboard unlocks.
+ */
+export async function markLeadPaid(leadId: string) {
+  const auth = await requireSuperadmin()
+  if (!auth.ok) return { success: false as const, error: auth.error }
+
+  const supabase = await createClient()
+
+  const { data: lead, error: leadErr } = await supabase
+    .from('leads')
+    .select('id, user_id, billing_period_id')
+    .eq('id', leadId)
+    .single()
+  if (leadErr || !lead) return { success: false as const, error: 'Lead not found.' }
+  if (!lead.user_id) return { success: false as const, error: 'This lead has no linked account.' }
+  if (!lead.billing_period_id) {
+    return { success: false as const, error: 'Generate billing for this lead first.' }
+  }
+
+  // 1) Mark the billing period paid.
+  const { error: payErr } = await supabase
+    .from('billing_periods')
+    .update({ is_paid: true, updated_at: new Date().toISOString() })
+    .eq('id', lead.billing_period_id)
+  if (payErr) return { success: false as const, error: payErr.message }
+
+  // 2) Activate the account.
+  const { error: actErr } = await supabase
+    .from('profiles')
+    .update({ account_status: 'active', is_active: true, updated_at: new Date().toISOString() })
+    .eq('id', lead.user_id)
+  if (actErr) return { success: false as const, error: actErr.message }
+
+  // 3) Mark the lead won.
+  await supabase
+    .from('leads')
+    .update({ status: 'won', updated_at: new Date().toISOString() })
+    .eq('id', lead.id)
+
+  revalidatePath('/dashboard/admin/leads')
+  revalidatePath(`/dashboard/admin/leads/${lead.id}`)
+  revalidatePath('/dashboard/admin')
+  revalidatePath('/dashboard/admin/users')
+  return { success: true as const }
+}
+
+/**
+ * Reject a lead's signup. Marks the lead 'rejected' and sets the account
+ * account_status -> 'rejected' (hard lockout).
+ */
+export async function rejectLead(leadId: string) {
+  const auth = await requireSuperadmin()
+  if (!auth.ok) return { success: false as const, error: auth.error }
+
+  const supabase = await createClient()
+  const { data: lead } = await supabase
+    .from('leads')
+    .select('id, user_id')
+    .eq('id', leadId)
+    .single()
+  if (!lead) return { success: false as const, error: 'Lead not found.' }
+
+  if (lead.user_id) {
+    await supabase
+      .from('profiles')
+      .update({ account_status: 'rejected', updated_at: new Date().toISOString() })
+      .eq('id', lead.user_id)
+  }
+  await supabase
+    .from('leads')
+    .update({ status: 'rejected', updated_at: new Date().toISOString() })
+    .eq('id', lead.id)
+
+  revalidatePath('/dashboard/admin/leads')
+  revalidatePath(`/dashboard/admin/leads/${lead.id}`)
+  return { success: true as const }
+}

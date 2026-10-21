@@ -1,17 +1,27 @@
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { createClient } from '@/lib/supabase/server'
 import { AuthShell } from '@/components/auth/auth-shell'
-import { ShieldCheck, ArrowRight } from 'lucide-react'
+import { SignupForm, type PublicPlan } from './signup-form'
 
 export const metadata = {
-  title: 'Request access · SoftWindow',
+  title: 'Create your account · SoftWindow',
 }
 
 /**
- * Public self-signup is disabled — accounts are created by an administrator.
- * (The middleware also redirects /signup, so this is a graceful fallback.)
+ * Public self-service signup. Loads the active, public plan catalog and renders
+ * the registration form with a plan picker. On submit, a pending-review account
+ * + a sales lead are created (see ./actions.ts). The superadmin then processes
+ * the lead, generates billing and activates the account.
  */
-export default function SignupPage() {
+export default async function SignupPage() {
+  const supabase = await createClient()
+  const { data: plans } = await supabase
+    .from('plans')
+    .select('id, name, description, price, billing_interval, quotation_limit')
+    .eq('is_active', true)
+    .eq('is_public', true)
+    .order('sort_order', { ascending: true })
+
   return (
     <AuthShell>
       <div className="mb-8 flex items-center gap-2.5 lg:hidden">
@@ -23,31 +33,32 @@ export default function SignupPage() {
         </span>
       </div>
 
-      <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-soft text-primary">
-        <ShieldCheck className="h-6 w-6" />
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold tracking-tight text-heading">
+          Create your account
+        </h1>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          Pick a plan to get started. Our team will review your request and
+          activate your account.
+        </p>
       </div>
 
-      <h1 className="text-2xl font-bold tracking-tight text-heading">
-        Accounts are created by your administrator
-      </h1>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-        SoftWindow accounts are set up for you. Contact your administrator to get
-        an account — you&apos;ll receive your login details by email. Already have
-        an account? Just log in.
-      </p>
+      <SignupForm plans={(plans ?? []) as PublicPlan[]} />
 
-      <div className="mt-7 flex flex-col gap-3">
-        <Link href="/login">
-          <Button size="lg" className="w-full">
-            Go to login
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-        </Link>
+      <div className="mt-6 space-y-4 text-center">
+        <div className="text-sm text-muted-foreground">
+          Already have an account?{' '}
+          <Link
+            href="/login"
+            className="font-medium text-primary hover:text-primary-hover hover:underline"
+          >
+            Log in
+          </Link>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Helpline: 879475061, 8826619980
+        </p>
       </div>
-
-      <p className="mt-6 text-xs text-muted-foreground">
-        Helpline: 879475061, 8826619980
-      </p>
     </AuthShell>
   )
 }

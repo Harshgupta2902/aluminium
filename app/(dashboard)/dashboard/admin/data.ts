@@ -175,3 +175,82 @@ export async function loadAdminStats(): Promise<AdminStats> {
     quotationsByMonth: buckets.map(({ month, count }) => ({ month, count })),
   }
 }
+
+
+/* ------------------------------------------------------------------ *
+ * Leads
+ * ------------------------------------------------------------------ */
+
+export interface AdminLeadRow {
+  id: string
+  user_id: string | null
+  full_name: string
+  email: string
+  phone: string | null
+  company_name: string | null
+  plan_id: string | null
+  plan_name: string | null
+  status: 'new' | 'contacted' | 'billing_sent' | 'won' | 'rejected'
+  notes: string | null
+  billing_period_id: string | null
+  created_at: string
+  // Joined plan details (price/limit/interval) for billing generation.
+  plan_price: number | null
+  plan_interval: string | null
+  plan_quotation_limit: number | null
+}
+
+/** Load all leads (superadmin only, enforced by RLS + the admin layout). */
+export async function loadLeads(): Promise<AdminLeadRow[]> {
+  const supabase = await createClient()
+  const { data: leads } = await supabase
+    .from('leads')
+    .select(
+      'id, user_id, full_name, email, phone, company_name, plan_id, plan_name, status, notes, billing_period_id, created_at'
+    )
+    .order('created_at', { ascending: false })
+
+  const rows = leads ?? []
+  if (rows.length === 0) return []
+
+  // Join plan pricing for the billing-generation form.
+  const planIds = Array.from(new Set(rows.map((l) => l.plan_id).filter(Boolean))) as string[]
+  const planById = new Map<
+    string,
+    { price: number; billing_interval: string; quotation_limit: number | null }
+  >()
+  if (planIds.length > 0) {
+    const { data: plans } = await supabase
+      .from('plans')
+      .select('id, price, billing_interval, quotation_limit')
+      .in('id', planIds)
+    for (const p of plans ?? []) {
+      planById.set(p.id, {
+        price: Number(p.price) || 0,
+        billing_interval: p.billing_interval,
+        quotation_limit: p.quotation_limit,
+      })
+    }
+  }
+
+  return rows.map((l) => {
+    const plan = l.plan_id ? planById.get(l.plan_id) : undefined
+    return {
+      id: l.id,
+      user_id: l.user_id,
+      full_name: l.full_name,
+      email: l.email,
+      phone: l.phone,
+      company_name: l.company_name,
+      plan_id: l.plan_id,
+      plan_name: l.plan_name,
+      status: l.status,
+      notes: l.notes,
+      billing_period_id: l.billing_period_id,
+      created_at: l.created_at,
+      plan_price: plan?.price ?? null,
+      plan_interval: plan?.billing_interval ?? null,
+      plan_quotation_limit: plan?.quotation_limit ?? null,
+    }
+  })
+}

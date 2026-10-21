@@ -97,12 +97,11 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // Public signup is disabled — route it to login (or the right home).
+  // Public signup is enabled. Only bounce AUTHENTICATED users off it to their
+  // correct home; anonymous visitors see the signup form.
   if (pathname === '/signup') {
     if (user) return isSuper ? toAdmin() : toDashboard()
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+    return supabaseResponse
   }
 
   // Redirect authenticated users away from the login page.

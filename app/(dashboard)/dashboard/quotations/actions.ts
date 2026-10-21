@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { getQuotationUsage, type QuotationUsage } from '@/lib/access'
+import { getQuotationUsage, requireActiveAccount, type QuotationUsage } from '@/lib/access'
 
 /**
  * Server-side quotation-limit check. The new-quotation page calls this before
@@ -45,6 +45,9 @@ export async function sendQuotationEmailAction(
     data: { user },
   } = await supabase.auth.getUser()
   if (!user) return { ok: false, message: 'You must be logged in.' }
+
+  const guard = await requireActiveAccount(supabase, user.id)
+  if (!guard.ok) return { ok: false, message: guard.error }
 
   const { data: quotation, error } = await supabase
     .from('quotations')
